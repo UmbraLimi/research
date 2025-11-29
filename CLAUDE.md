@@ -20,9 +20,11 @@ MyResearch/
 │   ├── prompts/          # Commands and prompt templates
 │   ├── learnings/        # Knowledge capture (learning-NNN-*.md)
 │   ├── decisions/        # Decision records (decision-NNN-*.md)
-│   └── .claude/commands/ # Claude Code slash commands (q-*)
+│   └── .claude/commands/ # Project-specific slash commands (r-*)
 └── file_holding/         # Temporary staging for file processing
 ```
+
+**Important:** Launch Claude Code from `Alpha-Peer/` folder, not `MyResearch/`.
 
 ## Key Conventions
 
@@ -42,9 +44,11 @@ After creating numbered files, update the "Current State" section in STRUCTURE.m
 
 ## Slash Commands
 
-All commands are in `Alpha-Peer/.claude/commands/`. Two prefixes distinguish command origins:
+Commands are split between two locations:
+- **`~/.claude/commands/`** - User-level `/q-*` commands (available in all projects)
+- **`Alpha-Peer/.claude/commands/`** - Project-specific `/r-*` commands
 
-### `/q-*` Commands (Session & Git)
+### `/q-*` Commands (Session & Git) - User-level
 
 | Command | Purpose |
 |---------|---------|
@@ -57,24 +61,20 @@ All commands are in `Alpha-Peer/.claude/commands/`. Two prefixes distinguish com
 | `/q-timestamp` | Get current date/time (utility, called by other commands) |
 | `/q-pare` | Optimize CLAUDE.md by moving content to OFFLOAD.md |
 
-### `/r-*` Commands (Research & Documentation)
+### `/r-*` Commands (Research & Documentation) - Project-level
 
 | Command | Purpose |
 |---------|---------|
-| `/r-start-session` | Begin a new work session with context loading |
-| `/r-end-session` | Close out session with full documentation |
 | `/r-research-tech` | Research a specific technology |
 | `/r-compare-tech` | Compare two technologies for a use case |
 | `/r-create-story` | Create a new user story |
 | `/r-update-needs` | Update Needs.md with recent work |
-| `/r-capture-learning` | Document a specific learning |
 | `/r-log-decision` | Document a decision with rationale |
 | `/r-add-client-doc` | Process client document(s) from file_holding |
 | `/r-status` | Show current project status |
 | `/r-review` | Review and suggest improvements to a file |
 | `/r-sync-structure` | Update STRUCTURE.md by scanning folders |
 | `/r-list` | List files in a specific project folder |
-| `/r-help` | List all available commands |
 
 ## Workflow Notes
 
