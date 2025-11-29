@@ -58,30 +58,36 @@ Comprehensive business plan defining Alpha Peer's core concept: a peer-to-peer A
 ---
 
 ### Feature_Summary_WIPold.pdf
-**Date Uploaded:** 2025-11-29  
+**Date Uploaded:** 2025-11-29
 **Summary for Needs.md:**
 
-Detailed feature specification and UI/UX design document outlining the complete platform architecture for Rapid Learning Community (Alpha Peer).
+Detailed feature specification and UI/UX design document outlining the complete platform architecture for Rapid Learning Community (Alpha Peer). Includes 11 pages of UI mockups created with Cursor.
 
 **Key elements for Needs.md:**
 - **Three Core Pillars:**
-  1. Community Flywheel: Learn → Certify → Teach → Grow cycle
-  2. Monetization Engine: 70% Student-Teacher, 15% Creator, 15% Platform split
-  3. Credentialing System: Learning Certificates, Teaching Certificates, Community Roles, Reputation System
+  1. Community Flywheel: Learn → Certify → Teach → Grow cycle (based on "Helper Therapy Principle")
+  2. Monetization Engine: 70% Student-Teacher, 15% Creator, 15% Platform split (flexible per creator, platform minimum required)
+  3. Credentialing System: Learning Certificates, Teaching Certificates, Community Roles (paid assistants with revenue sharing), Reputation System
 
 - **Core Features to Build:**
   - **Creator & Course Hub:** Open EdX LMS integration, flexible assessments, creator profiles
-  - **Algorithmic X.com-Style Feed:** Intelligent content prioritization, teacher discovery, session booking
+  - **Algorithmic X.com-Style Feed:** Intelligent content prioritization, teacher discovery, session booking/purchasing
   - **Student Lifecycle Engine:** Unified dashboard, dual-certificate system, public profiles, gated communities, earnings tracking
-  - **Screen Sharing:** Big Blue Button integration for peer-to-peer sessions with flexible content delivery
+  - **Screen Sharing:** Big Blue Button integration for peer-to-peer sessions with flexible content delivery (BYO lesson plans, web apps)
   - **AI Integration:** Strategic force multiplier for personalization and efficiency
 
-- **UI/UX Navigation Structure:**
+- **UI/UX Navigation Structure (with mockups in PDF):**
   - Browse Menu: Course search, Creator/Instructor search with detailed profiles
   - My Community: X.com-style algorithmic feed of followed content
   - Dashboard: Student/teacher activity tracking, calendar, quick actions
   - Messages: Private messaging system
-  - Profile: Student-Teacher vs Creator-Instructor views with role switching
+  - Profile: Student-Teacher vs Creator-Instructor views with "Switch User" and "Creator Studio" buttons
+
+- **Course Detail Page Elements:**
+  - Curriculum outline with time estimates
+  - Creator profile card with stats (Active Student-Teachers, Avg Taught per Teacher, badges)
+  - Action buttons: Enroll, Explore Teaching, Follow Course, Join Community
+  - Related courses suggestions
 
 - **Tech Stack Decisions:**
   - LMS: Open EdX for content creation and delivery
@@ -92,11 +98,12 @@ Detailed feature specification and UI/UX design document outlining the complete 
 - Integration layer between Open EdX, Bluesky, and Big Blue Button
 - Algorithmic feed engine for content relevance and engagement
 - Dual-mode profile system (Student-Teacher vs Creator-Instructor)
-- Certificate issuance and verification system
+- Certificate issuance and verification system (Teaching Certificate dynamically updates with student count)
 - Revenue tracking and distribution dashboard
 - Gated community access control based on credentials
 - Real-time scheduling and video conferencing integration
 - Creator Studio for course management (Open EdX wrapper)
+- Community Roles system with revenue sharing for creator assistants
 
 **Non-Functional Requirements:**
 - Social media-like endless scrolling engagement ("TikTok for education")
@@ -104,7 +111,7 @@ Detailed feature specification and UI/UX design document outlining the complete 
 - Seamless role switching between student and creator modes
 - Real-time updates for community feed
 - Scalable video conferencing infrastructure
-- Flexible revenue split configuration per creator
+- Flexible revenue split configuration per creator (with platform minimum)
 
 **Key Design Decisions:**
 - X.com interface pattern for familiarity and engagement
@@ -112,6 +119,7 @@ Detailed feature specification and UI/UX design document outlining the complete 
 - Creator control over community organization and content delivery
 - Screen sharing enables web-based collaborative learning beyond LMS constraints
 - AI as fabric-level integration, not add-on feature
+- "Switch User" button enables fluid role transitions within single account
 
 ---
 
