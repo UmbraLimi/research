@@ -1,7 +1,10 @@
 # Alpha Peer - User Stories
 
-**Last Updated:** 2025-11-29
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter)
+**Version:** v1
+**Last Updated:** 2025-11-30
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5)
+
+> **Version History:** Increment version when substantive changes occur (new stories, priority changes, removed stories). Minor edits (typos, formatting) don't require version bump.
 
 ---
 
@@ -294,6 +297,100 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 ---
 
+## Infrastructure Stories (Gap Analysis - 2025-11-30)
+
+*These stories were identified during Phase 2.5 technology research as gaps not covered by existing user stories.*
+
+### Authentication & Identity
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P007 | As a User, I need to create an account with email/password so that I can access the platform | P0 | Gap Analysis |
+| US-P008 | As a User, I need to log in securely so that I can access my account | P0 | Gap Analysis |
+| US-P009 | As a User, I need to reset my password via email so that I can recover my account | P0 | Gap Analysis |
+| US-P010 | As a User, I need to log out so that I can secure my session | P0 | Gap Analysis |
+| US-P011 | As a User, I need social login options (Google, etc.) so that I can sign up quickly | P2 | Gap Analysis |
+| US-P012 | As a System, I need to manage user sessions securely so that accounts are protected | P0 | Gap Analysis |
+| US-P013 | As a System, I need to verify email addresses so that accounts are legitimate | P0 | Gap Analysis |
+
+### Email & Notifications
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P014 | As a System, I need to send transactional emails (welcome, receipts, confirmations) so that users are informed | P0 | Gap Analysis |
+| US-P015 | As a System, I need to send session reminder emails so that users don't miss appointments | P0 | Gap Analysis |
+| US-P016 | As a System, I need to send payment confirmation emails so that financial transactions are documented | P0 | Gap Analysis |
+| US-P017 | As a User, I need in-app notifications for messages, sessions, and updates so that I stay informed | P0 | Gap Analysis |
+| US-P018 | As a User, I need to manage my notification preferences so that I control what alerts I receive | P1 | Gap Analysis |
+| US-P019 | As a System, I need to send certificate notification emails so that achievements are celebrated | P1 | Gap Analysis |
+
+### Calendar & Scheduling Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P020 | As a System, I need to display available time slots from teacher calendars so that students can book | P0 | Gap Analysis |
+| US-P021 | As a System, I need to prevent double-booking of sessions so that schedules don't conflict | P0 | Gap Analysis |
+| US-P022 | As a System, I need to handle timezone conversions so that global users see correct times | P0 | Gap Analysis |
+| US-P023 | As a System, I need to send calendar invites (ICS) for booked sessions so that users can add to their calendars | P1 | Gap Analysis |
+| US-P024 | As a Student, I need to select from available time slots when booking so that I can choose convenient times | P0 | Gap Analysis |
+| US-P025 | As a Teacher, I need to sync my availability with external calendars so that my schedule stays current | P2 | Gap Analysis |
+
+### Payment Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P026 | As a System, I need to process credit card payments securely so that students can pay for courses | P0 | Gap Analysis |
+| US-P027 | As a System, I need to split payments automatically (15% AP, 15% Creator, 70% Teacher) so that revenue is distributed correctly | P0 | Gap Analysis |
+| US-P028 | As a System, I need to hold funds until session completion so that refunds can be processed if needed | P0 | Gap Analysis |
+| US-P029 | As a System, I need to process payouts to Teachers/Creators so that they receive their earnings | P0 | Gap Analysis |
+| US-P030 | As a System, I need to handle refund requests so that cancellations are processed financially | P0 | Gap Analysis |
+| US-P031 | As a Teacher, I need to connect my bank account/payment method so that I can receive payouts | P0 | Gap Analysis |
+| US-P032 | As a System, I need to generate tax documents (1099s) for teachers/creators so that tax obligations are met | P1 | Gap Analysis |
+| US-P033 | As an Employer, I need to pay via invoice/PO so that corporate purchasing is supported | P2 | Gap Analysis |
+
+### AI Transcription (Video Session Support)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-V008 | As a System, I need to transcribe recorded sessions to text so that content is searchable | P1 | Gap Analysis |
+| US-V009 | As a System, I need to generate session summaries from transcripts so that key points are captured | P1 | Gap Analysis |
+| US-V010 | As a Student, I need to access transcripts of my sessions so that I can review what was discussed | P1 | Gap Analysis |
+| US-V011 | As a Student, I need to search within session transcripts so that I can find specific topics | P2 | Gap Analysis |
+
+### Database Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P034 | As a System, I need a relational database to store user accounts, courses, sessions, and transactions so that data is persisted reliably | P0 | Gap Analysis |
+| US-P035 | As a System, I need database backups and point-in-time recovery so that data loss is prevented | P0 | Gap Analysis |
+| US-P036 | As a System, I need database connection pooling so that the application scales under load | P1 | Gap Analysis |
+| US-P037 | As a System, I need to encrypt sensitive data at rest so that user information is protected | P0 | Gap Analysis |
+
+### File & Object Storage
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P038 | As a System, I need object storage for large files (videos, PDFs, recordings) so that media is stored cost-effectively | P0 | Gap Analysis |
+| US-P039 | As a System, I need secure file upload endpoints so that users can upload profile media and course materials | P0 | Gap Analysis |
+| US-P040 | As a System, I need file type validation and virus scanning so that malicious uploads are blocked | P0 | Gap Analysis |
+| US-P041 | As a System, I need signed URLs for private file access so that only authorized users can download files | P0 | Gap Analysis |
+| US-P042 | As a System, I need to store BBB session recordings so that recorded sessions are accessible after the session ends | P0 | Gap Analysis |
+| US-P043 | As a System, I need file size limits and quota management so that storage costs are controlled | P1 | Gap Analysis |
+| US-P044 | As a Creator, I need to upload course materials (PDFs, videos) so that students can access learning resources | P0 | Gap Analysis |
+| US-P045 | As a User, I need to upload profile pictures and videos so that my profile is personalized | P0 | Gap Analysis |
+
+### Image Optimization
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P046 | As a System, I need automatic image resizing and thumbnail generation so that images load quickly | P0 | Gap Analysis |
+| US-P047 | As a System, I need image format conversion (WebP, AVIF) so that modern browsers get optimized formats | P1 | Gap Analysis |
+| US-P048 | As a System, I need responsive image variants (srcset) so that appropriate sizes are served per device | P1 | Gap Analysis |
+| US-P049 | As a System, I need image CDN delivery so that images load fast globally | P0 | Gap Analysis |
+| US-P050 | As a System, I need lazy loading for images so that page load performance is optimized | P1 | Gap Analysis |
+
+---
+
 ## Story Statistics
 
 | Category | P0 | P1 | P2 | P3 | Total |
@@ -303,9 +400,23 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Student | 12 | 9 | 6 | 0 | 27 |
 | Student-Teacher | 7 | 4 | 2 | 0 | 13 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
-| Session (System) | 4 | 3 | 0 | 0 | 7 |
-| Platform/Navigation | 5 | 1 | 0 | 0 | 6 |
-| **Total** | **48** | **42** | **15** | **0** | **105** |
+| Session (System) | 4 | 6 | 1 | 0 | 11 |
+| Platform/Infrastructure | 34 | 9 | 4 | 0 | 47 |
+| **Total** | **77** | **53** | **20** | **0** | **150** |
+
+### Gap Analysis Stories Added (2025-11-30)
+
+| Category | P0 | P1 | P2 | Stories Added |
+|----------|----|----|----|----|
+| Authentication & Identity | 6 | 0 | 1 | US-P007 to US-P013 |
+| Email & Notifications | 4 | 2 | 0 | US-P014 to US-P019 |
+| Calendar & Scheduling | 4 | 1 | 1 | US-P020 to US-P025 |
+| Payment Infrastructure | 6 | 1 | 1 | US-P026 to US-P033 |
+| AI Transcription | 0 | 3 | 1 | US-V008 to US-V011 |
+| Database Infrastructure | 3 | 1 | 0 | US-P034 to US-P037 |
+| File & Object Storage | 7 | 1 | 0 | US-P038 to US-P045 |
+| Image Optimization | 2 | 3 | 0 | US-P046 to US-P050 |
+| **Gap Total** | **32** | **12** | **4** | **48 new stories** |
 
 ---
 
@@ -317,6 +428,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-002 | Feature Summary | US-C005, US-C009–C010, US-C021–C023, US-S003–S007, US-S009–S012, US-S019, US-S021–S025, US-T004–T005, US-T007, US-T013, US-V007, US-P001–P006 |
 | CD-003 | User Stories | US-A001–A025, US-C001–C020, US-S001–S002, US-S008, US-S013–S018, US-S020, US-S026–S027, US-T001–T011, US-E001–E006, US-V001–V006 |
 | CD-004 | Impact Filter | US-A023 |
+| Gap Analysis | Tech Research Phase 2.5 | US-P007–P050, US-V008–V011 |
 
 ---
 
@@ -329,8 +441,8 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Student | US-S | US-S028 |
 | Student-Teacher | US-T | US-T014 |
 | Employer/Funder | US-E | US-E007 |
-| Session (System) | US-V | US-V008 |
-| Platform/Navigation | US-P | US-P007 |
+| Session (System) | US-V | US-V012 |
+| Platform/Infrastructure | US-P | US-P051 |
 
 ---
 

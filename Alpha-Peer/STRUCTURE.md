@@ -13,7 +13,8 @@ Alpha-Peer/
 ├── STRUCTURE.md                        # THIS FILE - master guide
 ├── GOALS.md                            # Mission statement & goals (from client docs)
 ├── USER-STORIES.md                     # All user stories (from client docs)
-├── SPECS.md                            # Technical specs for Claude Code (continuously updated)
+├── DIRECTIVES.md                       # Constraints & restrictions for RUN phase
+├── SPECS.md                            # Technical specs (final selected scenario)
 │
 ├── /client-docs/                       # Client-provided context & materials
 │   └── README.md                      # Guide for organizing client materials
@@ -40,8 +41,11 @@ Alpha-Peer/
 │   ├── learnings-index.md             # Quick reference index
 │   └── learning-NNN-[topic].md        # Specific learnings
 │
-└── /decisions/                         # Decision log
-    └── decision-NNN-[topic].md        # Why we chose X over Y
+├── /decisions/                         # Decision log
+│   └── decision-NNN-[topic].md        # Why we chose X over Y
+│
+└── /scenarios/                         # SPECS.md variants for client comparison
+    └── sc-NNN-[description]-SPECS.md  # Named scenario variants
 ```
 
 ## Naming Conventions
@@ -76,12 +80,32 @@ Alpha-Peer/
   - Example: `learning-001-websocket-basics.md`
 - **Decisions:** `decision-NNN-[choice-made].md`
   - Example: `decision-001-chose-vercel-hosting.md`
+- **Scenarios:** `sc-NNN-[description]-SPECS.md`
+  - Example: `sc-001-supabase-stack-SPECS.md`
+  - Used for comparing different technology/architecture choices before finalizing SPECS.md
+- **Directives:** `DIR-NNN` in `DIRECTIVES.md`
+  - Example: `DIR-001: MUST-USE BigBlueButton for video conferencing`
+  - Constraints and restrictions consulted during RUN phase scenario generation
 
 ### Content guidelines
-- Use lowercase for filenames (except STRUCTURE.md, SPECS.md, GOALS.md, USER-STORIES.md, PLAN.md)
+- Use lowercase for filenames (except STRUCTURE.md, SPECS.md, GOALS.md, USER-STORIES.md, DIRECTIVES.md, PLAN.md)
 - Use hyphens for spaces in filenames
 - Keep filenames descriptive but concise
 - Date format: YYYY-MM-DD (ISO 8601)
+
+### Document Versioning
+Key documents have version numbers for scenario lineage tracking:
+
+| Document | Version Field | Increment When |
+|----------|---------------|----------------|
+| GOALS.md | `**Version:** vN` | New goals, changed metrics, revised mission |
+| USER-STORIES.md | `**Version:** vN` | New stories, priority changes, removed stories |
+| DIRECTIVES.md | `**Version:** vN` | New directives, changed constraints |
+| CLAUDE.md | `**Version:** vN` | New phases, changed workflows, new commands |
+
+**Do NOT increment** for minor edits (typos, formatting, clarifications).
+
+Scenarios record which versions they were built from. A scenario becomes **stale** when any source document version is newer than recorded.
 
 ## File Purposes
 
@@ -119,6 +143,48 @@ The evolving technical specifications document that will be handed to Claude Cod
 - Technology stack choices
 - Integration requirements
 - Non-functional requirements
+
+### DIRECTIVES.md
+Constraints, restrictions, and preferences that must be consulted during RUN phase:
+- **MUST-USE:** Required software/services (client-specified or technically necessary)
+- **MUST-AVOID:** Software/approaches to not use
+- **NO-COMBINE:** Technologies that don't work well together
+- **PREFER:** Favor this option when alternatives exist
+- **REQUIRES:** If using X, must also use Y
+- **FEATURE-FLAG:** Specific features to enable/disable
+
+Added via `/r-add-directive` command. Grows during GATHER, consumed during RUN.
+
+### Scenarios (/scenarios/)
+Alternative SPECS.md variants for client comparison and decision-making:
+- Each scenario represents a different technology stack or architectural approach
+- Format mirrors SPECS.md but with specific choices filled in
+- Client reviews scenarios and picks one to become the final SPECS.md
+- Workflow:
+  1. Create scenarios based on research findings
+  2. Client compares options (e.g., Supabase vs. separate services)
+  3. Client selects preferred scenario
+  4. Selected scenario becomes SPECS.md at root level
+
+**Required Scenario Header (Source Versions):**
+Every scenario file must include this header to track lineage:
+
+```markdown
+## Source Versions
+| Document | Version | Date |
+|----------|---------|------|
+| GOALS.md | v1 | 2025-11-30 |
+| USER-STORIES.md | v1 | 2025-11-30 |
+| DIRECTIVES.md | v1 | 2025-11-30 |
+| CLAUDE.md | v1 | 2025-11-30 |
+
+**Lineage Status:** ✅ Current
+```
+
+**Lineage Status values:**
+- ✅ **Current** - All source versions match or scenario is newer
+- ⚠️ **Stale** - One or more source documents updated since scenario created
+- 🔄 **Updating** - Scenario is being revised to match new sources
 
 ### Client documents (/client-docs/)
 Original materials provided by the Alpha Peer client:
@@ -161,17 +227,38 @@ Quick reference showing:
 
 ## Current State
 
-**Last session:** 2025-11-29
+**Last updated:** 2025-11-30
 
+### Document Versions (for scenario lineage)
+| Document | Current Version | Last Updated |
+|----------|-----------------|--------------|
+| GOALS.md | v1 | 2025-11-30 |
+| USER-STORIES.md | v1 | 2025-11-30 |
+| DIRECTIVES.md | v1 | 2025-11-30 |
+| CLAUDE.md | v1 | 2025-11-30 |
+
+### Numbering State
 | Category | Next Number |
 |----------|-------------|
 | Client Documents | CD-005 |
 | Goals | GO-018 |
-| Technologies | tech-001 |
+| Technologies | tech-006 |
 | Story files | story-001 |
-| Comparisons | comp-001 |
+| Comparisons | comp-002 |
 | Learnings | learning-001 |
 | Decisions | decision-001 |
+| Scenarios | sc-001 |
+| Directives | DIR-007 |
+
+### Research Files Created (2025-11-30)
+| File | Description |
+|------|-------------|
+| `tech-001-bigbluebutton.md` | Video conferencing (REQUIRED) |
+| `tech-002-stream.md` | Chat & activity feeds (REQUIRED) |
+| `tech-003-astrojs.md` | Meta-framework (PREFERRED) |
+| `tech-004-reactjs.md` | UI library (CONFIRMED) |
+| `tech-005-tailwindcss.md` | CSS framework (CONFIRMED) |
+| `comp-001-cloudflare-vs-vercel.md` | Deployment comparison |
 
 **Note:** User Story numbers (US-XNNN) are tracked in USER-STORIES.md "Current State" section by role.
 
@@ -193,3 +280,7 @@ Track significant changes to structure:
 - 2025-11-29: Added GOALS.md for mission statement and goals extracted from client documents
 - 2025-11-29: Added USER-STORIES.md for comprehensive user story tracking from client documents
 - 2025-11-29: Added CD-NNN numbering convention for client documents; renamed Needs.md to SPECS.md
+- 2025-11-30: Added Phase 2.5 for Third-Party Integrations; created 6 research documents (tech-001 through tech-005, comp-001)
+- 2025-11-30: Added /scenarios/ folder for SPECS.md variants; added scenario naming convention (sc-NNN-[description]-SPECS.md)
+- 2025-11-30: Added DIRECTIVES.md for constraints/restrictions; added DIR-NNN numbering and /r-add-directive command
+- 2025-11-30: Added document versioning system (v1, v2, etc.) to GOALS.md, USER-STORIES.md, DIRECTIVES.md, CLAUDE.md for scenario lineage tracking

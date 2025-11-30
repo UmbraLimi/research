@@ -1,7 +1,10 @@
 # Alpha Peer - Goals & Mission
 
-**Last Updated:** 2025-11-29
+**Version:** v1
+**Last Updated:** 2025-11-30
 **Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter)
+
+> **Version History:** Increment version when substantive changes occur (new goals, changed metrics, revised mission). Minor edits (typos, formatting) don't require version bump.
 
 ---
 
