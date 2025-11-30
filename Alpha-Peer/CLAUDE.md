@@ -12,10 +12,12 @@ This is a research and planning repository for **Alpha Peer**, a web application
 MyResearch/
 ├── Alpha-Peer/           # Main project folder
 │   ├── STRUCTURE.md      # Master guide for organization (check first!)
-│   ├── Needs.md          # Evolving requirements for handoff
+│   ├── GOALS.md          # Mission statement & goals (from client docs)
+│   ├── USER-STORIES.md   # All user stories (from client docs)
+│   ├── SPECS.md          # Technical specs for handoff
 │   ├── client-docs/      # Client-provided materials (don't modify originals)
 │   ├── research/         # Technology research (tech-NNN-*.md, comp-NNN-*.md)
-│   ├── user-stories/     # Requirements (story-NNN-*.md)
+│   ├── user-stories/     # Detailed story files (story-NNN-*.md)
 │   ├── docs/sessions/    # Session logs by month (YYYY-MM/)
 │   ├── prompts/          # Commands and prompt templates
 │   ├── learnings/        # Knowledge capture (learning-NNN-*.md)
@@ -28,11 +30,20 @@ MyResearch/
 
 ## Key Conventions
 
+### ID Numbering (all support up to 999)
+| Prefix | Format | Example | Tracked In |
+|--------|--------|---------|------------|
+| CD- | CD-NNN | CD-001 | client-docs-index.md |
+| GO- | GO-NNN | GO-001 | GOALS.md |
+| US- | US-[Role]NNN | US-A001, US-S015 | USER-STORIES.md |
+
+**User Story Role Codes:** A=Admin, C=Creator, S=Student, T=Student-Teacher, E=Employer, V=Video/Session, P=Platform
+
 ### File Naming
 - Numbers use zero-padded 3 digits: `001`, `002`, etc.
 - Lowercase with hyphens for filenames
 - Date format: YYYY-MM-DD (ISO 8601)
-- Session files use timestamp: `docs/sessions/2025-11/2025-11-25_14-30-00 Dev.md`
+- Session files use timestamp: `docs/sessions/2025-11/2025-11-25_14-30-00 Learnings.md`
 
 ### Before Creating Files
 Always check `Alpha-Peer/STRUCTURE.md` for:
@@ -68,7 +79,7 @@ Commands are split between two locations:
 | `/r-research-tech` | Research a specific technology |
 | `/r-compare-tech` | Compare two technologies for a use case |
 | `/r-create-story` | Create a new user story |
-| `/r-update-needs` | Update Needs.md with recent work |
+| `/r-update-specs` | Update SPECS.md with recent work |
 | `/r-log-decision` | Document a decision with rationale |
 | `/r-add-client-doc` | Process client document(s) from file_holding |
 | `/r-status` | Show current project status |
@@ -79,6 +90,6 @@ Commands are split between two locations:
 ## Workflow Notes
 
 - **Client docs are read-only** - Reference them but don't modify originals
-- **Needs.md is the handoff document** - Update it as decisions are made
+- **SPECS.md is the handoff document** - Update it as decisions are made
 - **Trace decisions to sources** - Link back to research, client docs, or learnings
 - **file_holding/ is temporary** - Files staged here get processed and moved

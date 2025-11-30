@@ -1,4 +1,4 @@
-# Alpha Peer - Needs Document
+# Alpha Peer - Technical Specifications
 
 **Version:** 0.1  
 **Last Updated:** 2025-11-25  

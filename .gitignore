@@ -1,5 +1,5 @@
 # macOS
-.DS_Store
+**/.DS_Store
 
 # Staging area symlink (temporary file processing)
 Alpha-Peer/file_holding

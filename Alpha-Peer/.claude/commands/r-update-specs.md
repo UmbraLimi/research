@@ -1,16 +1,16 @@
 ---
-description: Update Needs.md with recent work
+description: Update SPECS.md with recent work
 argument-hint: ""
 ---
 
-# Update Needs
+# Update Specs
 
-**Purpose:** Update Needs.md with recent work to keep the handoff document current.
+**Purpose:** Update SPECS.md with recent work to keep the handoff document current.
 
 ## Actions
 
 1. Review recent session files, decisions, and stories
-2. Update appropriate sections of Needs.md:
+2. Update appropriate sections of SPECS.md:
    - Add new user stories
    - Update technology stack decisions
    - Add architecture decisions
