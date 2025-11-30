@@ -22,6 +22,15 @@ cd Alpha-Peer && claude
 
 This ensures project-specific `.claude/commands/` are available.
 
+## Git Commit Workflow
+
+**Always commit from the root `~/MyResearch` folder:**
+1. Exit the subfolder session (do NOT run `/gr-commit` from subfolder)
+2. Change to `~/MyResearch`
+3. Run `/gr-commit` from there
+
+This keeps all commits at the repository root level.
+
 ## Slash Commands
 
 Commands are split between two locations:
