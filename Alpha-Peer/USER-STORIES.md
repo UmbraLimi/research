@@ -35,6 +35,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | **Employer/Funder** | Third party paying for student enrollment |
 | **Admin (AP Rep)** | Platform operations and oversight |
 | **System** | Automated platform functionality |
+| **Community Moderator** | Course community support staff (appointed by Creator) |
 
 ---
 
@@ -151,6 +152,13 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-C021 | As a Creator, I need community hubs with forums so that students can interact | P1 | CD-001, CD-002 |
 | US-C022 | As a Creator, I need to assign Community Roles (paid assistants with revenue sharing) so that I can scale my community | P2 | CD-002 |
 | US-C023 | As a Creator, I need control over community organization and content delivery so that I can customize the experience | P2 | CD-002 |
+| US-C024 | As a Creator, I need to host AMA sessions so that I can build excitement and answer student questions | P2 | CD-010 |
+| US-C025 | As a Creator, I need to share student success stories so that I can attract new students | P2 | CD-010 |
+| US-C026 | As a Creator, I need to publish newsletters (potentially with subscription payments) so that I can engage my audience | P3 | CD-010 |
+| US-C027 | As a Creator, I need to appoint Community Moderators so that I can scale community support | P1 | CD-010 |
+| US-C028 | As a Creator, I need extended course analytics so that I can monitor student activity on my courses | P1 | CD-011 |
+| US-C029 | As a Creator, I need to access student feedback on each Teacher Student so that I can monitor teaching quality | P1 | CD-011 |
+| US-C030 | As a Creator, I need to build a loyal community with high switching cost so that my audience stays engaged | P2 | CD-011 |
 
 ---
 
@@ -213,6 +221,13 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-S026 | As a Student, I need to refer potential students to AP re: courses and teachers so that I can help others | P2 | CD-003 |
 | US-S027 | As a Student, I need to ask AI for assistance when both teacher and student are stumped so that learning continues | P1 | CD-003 |
 | US-S028 | As a Student, I need to follow creators so that their content appears in my feed before I enroll | P0 | CD-008 |
+| US-S029 | As a Student, I need to select a Teacher Student (with random as default) so that I can choose my mentor | P1 | CD-010 |
+| US-S030 | As a Student, I need to earn goodwill points through participation so that my engagement is recognized | P2 | CD-010 |
+| US-S031 | As a Student, I need to see my power user level/tier so that I can track my community standing | P2 | CD-010 |
+| US-S032 | As a Student, I need to earn a Certificate of Mastery (separate from completion) so that I can prove deeper understanding | P1 | CD-011 |
+| US-S033 | As a Student, I need to request content that doesn't exist so that gaps in course offerings are filled | P2 | CD-011 |
+| US-S034 | As a Student, I need to opt out of a Teacher Student relationship at any point so that I can find a better match | P1 | CD-011 |
+| US-S035 | As a Student, I need to select a Teacher Student by schedule availability so that I can book convenient times | P1 | CD-011 |
 
 ---
 
@@ -255,6 +270,9 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |----|-------|----------|--------|
 | US-T012 | As a Student-Teacher, I need to receive 70% of session fees so that I earn from teaching | P0 | CD-001 |
 | US-T013 | As a Student-Teacher, I need an earnings dashboard so that I can track my income | P0 | CD-002 |
+| US-T014 | As a Student-Teacher, I need to opt out of a student relationship at any point so that I can manage difficult situations | P1 | CD-011 |
+| US-T015 | As a Student-Teacher, I need to earn points for teaching activity so that my engagement is recognized | P2 | CD-011 |
+| US-T016 | As a Student-Teacher, I need verifiable mastery credentials for career advancement so that teaching experience has professional value | P1 | CD-011 |
 
 ---
 
@@ -390,6 +408,44 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-P049 | As a System, I need image CDN delivery so that images load fast globally | P0 | Gap Analysis |
 | US-P050 | As a System, I need lazy loading for images so that page load performance is optimized | P1 | Gap Analysis |
 
+### Gamification System (from CD-010)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P051 | As a System, I need to track goodwill points for user actions so that engagement is gamified | P2 | CD-010 |
+| US-P052 | As a System, I need to calculate power user tiers based on points so that progression is visible | P2 | CD-010 |
+| US-P053 | As a System, I need to display leaderboards/rankings so that community standing is transparent | P3 | CD-010 |
+
+### Teacher Matchmaking (from CD-010)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P054 | As a System, I need to provide Teacher Student matchmaking with random default so that students can find teachers | P1 | CD-010 |
+| US-P055 | As a System, I need to show Teacher Student profiles for selection so that students can choose deliberately | P1 | CD-010 |
+
+### Credentialing & Content Requests (from CD-011)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P056 | As a System, I need to issue Certificates of Mastery (separate from completion) so that deeper understanding is credentialed | P1 | CD-011 |
+| US-P057 | As a System, I need to process content requests from students so that gaps in offerings are tracked | P2 | CD-011 |
+| US-P058 | As a System, I need to track Teacher Student points for activity so that gamification motivates teachers | P2 | CD-011 |
+| US-P059 | As a System, I need to handle bidirectional opt-out for Student-Teacher relationships so that both parties can exit gracefully | P1 | CD-011 |
+
+---
+
+## Community Moderator Stories
+
+*Note: Community Moderator is a NEW role identified in CD-010 (Miro Board). Distinct from Creator - handles day-to-day community support. Role code: M*
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-M001 | As a Community Moderator, I need to answer questions in community chats so that students get timely support | P1 | CD-010 |
+| US-M002 | As a Community Moderator, I need to troubleshoot common issues so that students aren't blocked | P1 | CD-010 |
+| US-M003 | As a Community Moderator, I need to moderate course-related chats so that community standards are maintained | P1 | CD-010 |
+| US-M004 | As a Community Moderator, I need to add users to closed/private chats so that access is managed | P2 | CD-010 |
+| US-M005 | As a Community Moderator, I need a support dashboard so that I can see pending questions and issues | P1 | CD-010 |
+
 ---
 
 ## Story Statistics
@@ -397,13 +453,14 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Category | P0 | P1 | P2 | P3 | Total |
 |----------|----|----|----|----|-------|
 | Admin | 12 | 10 | 1 | 0 | 23 |
-| Creator | 8 | 10 | 5 | 0 | 23 |
-| Student | 13 | 9 | 6 | 0 | 28 |
-| Student-Teacher | 7 | 4 | 2 | 0 | 13 |
+| Creator | 8 | 14 | 8 | 1 | 31 |
+| Student | 13 | 14 | 8 | 0 | 35 |
+| Student-Teacher | 7 | 6 | 3 | 0 | 16 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
-| Platform/Infrastructure | 34 | 9 | 4 | 0 | 47 |
-| **Total** | **78** | **53** | **20** | **0** | **151** |
+| Platform/Infrastructure | 34 | 13 | 8 | 1 | 56 |
+| Community Moderator | 0 | 4 | 1 | 0 | 5 |
+| **Total** | **78** | **72** | **31** | **2** | **183** |
 
 ### Gap Analysis Stories Added (2025-11-30)
 
@@ -435,6 +492,8 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-008 | Meeting - Budget/Feed | US-S028, US-S025, US-S006 (follow creators, feed as funnel) |
 | CD-009 | Slack - Blindside/Cloudflare | US-V001–V007, US-A013–A018 (BBB provider confirms video stories) |
 | Gap Analysis | Tech Research Phase 2.5 | US-P007–P050, US-V008–V011 |
+| CD-010 | Miro - Main Activities by Role | US-S029–S031, US-C024–C027, US-P051–P055, US-M001–M005 |
+| CD-011 | Miro - Drivers & Action Items | US-S032–S035, US-T014–T016, US-C028–C030, US-P056–P059 |
 
 ---
 
@@ -443,12 +502,13 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Role | Prefix | Next Number |
 |------|--------|-------------|
 | Admin | US-A | US-A026 |
-| Creator | US-C | US-C024 |
-| Student | US-S | US-S029 |
-| Student-Teacher | US-T | US-T014 |
+| Creator | US-C | US-C031 |
+| Student | US-S | US-S036 |
+| Student-Teacher | US-T | US-T017 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P051 |
+| Platform/Infrastructure | US-P | US-P060 |
+| Community Moderator | US-M | US-M006 |
 
 ---
 

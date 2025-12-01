@@ -563,9 +563,134 @@ Slack conversation confirming BBB hosting provider selection and Cloudflare depl
 
 ---
 
+### CD-010: Miro Board - Main Activities by Role
+**Date Uploaded:** 2025-11-30
+**Source:** Miro Board Screenshot - [Peer Loop] Project Board
+**Summary for SPECS.md:**
+
+Visual board mapping main activities and pain points for each user role. Introduces Community Moderator as a new distinct role.
+
+**Key elements for SPECS.md:**
+
+- **Five User Roles Mapped (with activities and pain points):**
+
+  | Role | Primary Activities | Key Pain Points |
+  |------|-------------------|-----------------|
+  | **Student** | Sign up, Browse courses, Pay/enroll, Complete courses, Apply for Teacher Student | Isolation/dropout, Lack of feedback, Confusing learning flow, Inability to matchmake teacher |
+  | **Teacher Student** | Apply to teach (creator approves), Track student activity, Earn commission, Provide feedback, Create availability calendar, Earn teaching certificate | Cost recovery, Timely feedback pressure, Confusing application process, Student-teacher mismatch risk |
+  | **Course Creator (Author)** | Develop curriculum, Assign Teacher Students, Earn royalty, Gather feedback, Host AMAs, Build personal brand, Appoint moderators | Building supportive community, Ensuring Teacher Student quality, Course visibility, Lack of content, Real-time communication needs |
+  | **Platform Admin** | Manage configurations, User management, Platform analytics | (none listed) |
+  | **Community Moderator** | Support staff, Answer questions, Troubleshoot issues, Moderate chats, Add users to closed chats | (none listed) |
+
+- **NEW ROLE: Community Moderator** - Distinct from Course Creator, handles day-to-day community support
+
+- **Student Engagement Features:**
+  - Goodwill points system
+  - "Power user" progression
+  - Teacher Student matchmaking (random is default)
+  - Discussion participation
+
+- **Teacher Student Economics:**
+  - Commission per mentored student
+  - Teaching certificate as credential
+  - Calendar-based availability
+
+- **Creator Revenue Model:**
+  - Course fee royalty
+  - Newsletter possibility with subscription payments (question raised)
+  - Moderator assistants for scaling
+
+- **Pain Points Theme:** Communication, feedback loops, and community building are recurring challenges across all roles
+
+**Technical Implications:**
+- Moderator role requires distinct permissions (not just creator sub-role)
+- Goodwill points/gamification system needed
+- Teacher matchmaking algorithm (with random fallback)
+- Newsletter/subscription infrastructure (potential feature)
+- Calendar integration for Teacher Students and Creators
+
+**Relationship to Other Docs:**
+- Expands on CD-003's role definitions with visual activity mapping
+- Adds Community Moderator role not explicitly in CD-003
+- Reinforces pain points around isolation (aligns with GO-014)
+- Confirms teaching certificate concept from CD-003
+
+**Goals Referenced:** GO-003 (sustainable income), GO-008 (multi-role system), GO-014 (combat isolation)
+**Stories Referenced:** US-C022 (Community Roles), US-S020 (apply for teacher status), US-T001 (calendar availability)
+
+---
+
+### CD-011: Miro Board - Drivers & Action Items
+**Date Uploaded:** 2025-11-30
+**Source:** Miro Board Screenshot - [Peer Loop] Project Board
+**Summary for SPECS.md:**
+
+Detailed mapping of user drivers (motivations/needs) and corresponding action items (platform features) for Student, Teacher Student, and Course Creator roles.
+
+**Key elements for SPECS.md:**
+
+- **DRIVERS by Role (What motivates users to engage):**
+
+  | Role | Key Drivers |
+  |------|-------------|
+  | **Student** | Friendly community, high-quality mentorship, cost recoup, AI assistance, diverse content, course discovery, teacher selection, content requests, opt-out ability, mastery certificate |
+  | **Teacher Student** | Community access, income/cost recovery, synchronous communication, clear application process, opt-out ability, verifiable mastery (career advancement) |
+  | **Course Creator** | User-friendly course management, strong community, royalty income, easy teacher approval, student activity monitoring, teaching quality monitoring, loyal tribe with high switching cost |
+
+- **ACTION ITEMS (Platform features needed):**
+
+  | Feature | Roles Served | Technology |
+  |---------|--------------|------------|
+  | Community tool (discussions, events, news) | All | Bluesky |
+  | Synchronous communication | Student, Teacher Student | Big Blue Button |
+  | Payment system (courses, commissions, royalties) | All | TBD |
+  | AI Assistant | Student | TBD |
+  | Newsletters | Student | TBD |
+  | Mastery Certificate (separate from completion) | Student | Custom |
+  | Teacher points/motivation system | Teacher Student | Custom |
+  | Teacher Student application functionality | Teacher Student | Custom |
+  | Content request form | Student | Custom |
+  | Teacher Student approval functionality | Creator | Custom |
+  | Extended course analytics | Creator | Custom |
+  | Student feedback access (per Teacher Student) | Creator | Custom |
+  | Flexible filtering | Creator | Custom |
+
+- **NEW REQUIREMENT - Two Certificate Types:**
+  1. **Certificate of Completion** - Standard course completion
+  2. **Certificate of Mastery** - Separate credential confirming deeper understanding
+
+- **BBB Pricing Model:** Usage-based fee (per session) to creator for unlimited BBB use
+
+- **Bluesky Confirmed:** Explicitly mentioned as community tool for all three roles
+
+- **Opt-Out for Both Parties:** Both Students AND Teacher Students need ability to exit relationships gracefully
+
+- **Teacher Motivation:** Points system to encourage Teacher Student activity
+
+- **Content Gap Handling:** Students can request content that doesn't exist yet
+
+**Technical Implications:**
+- Bluesky integration for community features (confirms CD-002 mention)
+- Dual certificate system (completion vs mastery)
+- Bidirectional opt-out workflow for Student-Teacher relationships
+- Content request/suggestion system
+- Teacher Student gamification (points, activity tracking)
+- Per-session BBB billing for creators
+
+**Relationship to Other Docs:**
+- Confirms Bluesky for community (aligns with CD-002)
+- Expands on CD-010's activities with underlying motivations
+- Adds mastery certificate concept (new)
+- Clarifies BBB pricing model (per-session)
+
+**Goals Referenced:** GO-002 (2 Sigma), GO-003 (sustainable income), GO-014 (combat isolation), GO-019 (gamification)
+**Stories Referenced:** US-S029 (matchmaking), US-S021-S022 (certificates), US-T012 (commissions)
+
+---
+
 ## Index Statistics
-- **Total Documents:** 9
-- **Next CD Number:** CD-010
+- **Total Documents:** 11
+- **Next CD Number:** CD-012
 - **Last Updated:** 2025-11-30
 
 ## Quick Reference
@@ -581,3 +706,5 @@ Slack conversation confirming BBB hosting provider selection and Cloudflare depl
 | CD-007 | Slack - P2P Video | Daily.co, Digital Samba, P2P for 1:1 sessions |
 | CD-008 | Meeting - Budget/Feed | $75K budget, 4mo timeline, Skool prototype, feeds-only Stream |
 | CD-009 | Slack - Blindside/Cloudflare | BBB via Blindside Networks, peerloop.com on Cloudflare |
+| CD-010 | Miro - Main Activities by Role | 5 roles mapped, Community Moderator NEW, pain points |
+| CD-011 | Miro - Drivers & Action Items | User motivations, Bluesky confirmed, mastery certificate, opt-out |

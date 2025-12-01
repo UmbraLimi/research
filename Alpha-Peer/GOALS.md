@@ -132,14 +132,23 @@ Build collaborative atmosphere:
 - Referral system for organic growth
 
 ### GO-011: Learning Management
-**Source:** CD-002, CD-003
+**Source:** CD-002, CD-003, CD-011
 
 Course creation and progression:
 - Open EdX LMS integration for content delivery
 - Course syllabi, quizzes, reference materials
 - Completion criteria and progression/leveling
-- Dual-certificate system (Learning + Teaching certificates)
 - Course retirement workflow
+
+### GO-020: Credentialing System
+**Source:** CD-002, CD-003, CD-011
+
+Three-tier certificate system:
+- **Certificate of Completion** - Standard course completion credential
+- **Certificate of Mastery** - Separate credential confirming deeper understanding (distinct from completion)
+- **Teaching Certificate** - Credential for Student-Teachers (dynamically updates with student count)
+- Verifiable credentials for career advancement
+- Creator grants certificates; platform verifies
 
 ### GO-012: Payment & Financial Infrastructure
 **Source:** CD-001, CD-003
@@ -161,6 +170,16 @@ Track all success metrics:
 - Revenue/transaction volume
 - User acquisition sources
 - Session monitoring (status, cancel, complete)
+
+### GO-019: Gamification & Engagement System
+**Source:** CD-010, CD-011
+
+Drive engagement through gamification:
+- **Goodwill points system** - Students earn points through participation
+- **Power user progression** - Levels/tiers based on engagement
+- **Discussion participation tracking** - Reward community involvement
+- **Teacher Student points** - Motivate Teacher Students to be more active (CD-011)
+- Purpose: Combat isolation by incentivizing ongoing engagement beyond course completion
 
 ---
 
@@ -220,9 +239,11 @@ AI education is strategic beachhead:
 | CD-007 | Slack - P2P Video | GO-009 (P2P alternatives for 1:1 sessions) |
 | CD-008 | Meeting - Budget/Feed | GO-018, GO-010, GO-014 (budget/timeline, community feed, isolation) |
 | CD-009 | Slack - Blindside/Cloudflare | GO-009, GO-018 (BBB provider confirmed, speed to market) |
+| CD-010 | Miro - Main Activities by Role | GO-003, GO-008, GO-014, GO-019 (roles, engagement, gamification) |
+| CD-011 | Miro - Drivers & Action Items | GO-002, GO-003, GO-011, GO-014, GO-019, GO-020 (drivers, mastery cert, gamification) |
 
 ---
 
 ## Current State
 
-**Next Goal Number:** GO-019
+**Next Goal Number:** GO-021
