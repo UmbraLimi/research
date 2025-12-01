@@ -20,13 +20,16 @@
 | Metric | Value |
 |--------|-------|
 | Current Phase | GATHER (Phase 2.5) 🔥 |
-| Client Docs Processed | 4 (CD-001 to CD-004) |
-| Goals Documented | 17 (GO-001 to GO-017) |
-| User Stories Created | 150 (77 P0, 53 P1, 20 P2) |
+| Client Docs Processed | 9 (CD-001 to CD-009) |
+| Goals Documented | 18 (GO-001 to GO-018) |
+| User Stories Created | 151 (78 P0, 53 P1, 20 P2) |
 | Tech Docs Created | 6 (tech-001 to tech-005, comp-001) |
 | Directives Created | 6 (DIR-001 to DIR-006) |
 | Scenarios Created | 0 |
 | Doc Versions | GOALS v1, USER-STORIES v1, DIRECTIVES v1, CLAUDE v1 |
+| Budget | $75,000 (from CD-008) |
+| Timeline | 4 months (from CD-008) |
+| Domain | peerloop.com (live on Cloudflare) |
 
 ---
 
@@ -37,11 +40,16 @@
 ## Phase 1: Discovery & Context Gathering ✅ COMPLETE
 
 ### 1.1 - Client Document Analysis ✅
-- [x] Process all client-provided documents (4 docs)
+- [x] Process all client-provided documents (9 docs)
   - CD-001: Business Plan - revenue model, flywheel, go-to-market
   - CD-002: Feature Summary - UI/UX mockups, tech stack, navigation
   - CD-003: User Stories - role-based needs, 6 user types
   - CD-004: Impact Filter - mission, success metrics, vision
+  - CD-005: Slack - GetStream feed discussion (Nov 13)
+  - CD-006: Slack - Calendar, BBB, Discord (Nov 16)
+  - CD-007: Slack - P2P video alternatives: Daily.co, Digital Samba (Nov 18)
+  - CD-008: Meeting - Budget $75K, 4mo timeline, Skool prototype, feeds-only Stream (Nov 26)
+  - CD-009: Slack - Blindside Networks for BBB, peerloop.com on Cloudflare (Nov 28)
 - [x] Extract business requirements and constraints → GOALS.md
 - [x] Identify user personas and their needs → USER-STORIES.md (6 roles)
 - [x] Document competing or evolving goals across documents → Goal Index table
@@ -84,8 +92,17 @@
 ### Required Services (Client-Specified)
 | Service | Type | Research Doc | User Stories Covered |
 |---------|------|--------------|---------------------|
-| Big Blue Button | Video Conferencing | `tech-001-bigbluebutton.md` | TBD |
-| Stream | Chat/Activity Feeds | `tech-002-stream.md` | TBD |
+| Big Blue Button | Video Conferencing | `tech-001-bigbluebutton.md` | US-V001-V007, US-A013-A018, US-T007 |
+| Stream | Chat/Activity Feeds | `tech-002-stream.md` | US-S016-S019, US-S025, US-C017, US-P002 |
+
+### Video Conferencing Alternatives (From CD-007)
+| Service | Type | Research Doc | Notes |
+|---------|------|--------------|-------|
+| Daily.co | P2P Video SDK | *pending* | Auto P2P switching, 10K free mins/mo |
+| Digital Samba | Low-code Video | *pending* | Iframe embed, 10K free mins/mo |
+| VideoSDK.live | Budget Video | *pending* | $0.003/min at scale |
+
+**⚠️ Decision Needed:** BBB vs P2P solutions for 1:1 sessions (see CD-006, CD-007)
 
 ### Framework & Deployment Stack
 | Technology | Type | Research Doc | Status |
@@ -125,6 +142,23 @@
 - [ ] Create comparison docs for gap-filling options
 
 ### 2.5.3 - Gap-Filling Service Research
+
+**Video Conferencing Alternatives (Priority - from CD-007):**
+- [ ] Research Daily.co capabilities → P2P SDK, auto-switching, 10K free mins
+- [ ] Research Digital Samba capabilities → Low-code iframe, Zoom-like UI
+- [ ] Create comparison: BBB vs Daily.co vs Digital Samba → `comp-002-video-conferencing.md`
+
+**Video Evaluation Criteria (Critical for 1:1 tutoring):**
+- [ ] 1:1 optimization: P2P support, latency, cost efficiency for two-person sessions
+- [ ] Recording capabilities:
+  - Where are recordings stored? (provider cloud, our storage, participant download)
+  - Recording format and quality options
+  - How can each participant access/playback their session recording?
+  - Retention period and storage costs
+  - Privacy controls (who can access recordings)
+- [ ] Integration with our file storage (US-P038-P042) for session recordings
+
+**Other Services:**
 - [ ] Research payment processing options (Stripe Connect) → US-P026-P033
 - [ ] Research authentication options (Clerk, Auth.js, Supabase Auth) → US-P007-P013
 - [ ] Research email/notification services (Resend, SendGrid) → US-P014-P019
@@ -189,9 +223,22 @@
 
 ## 🏁 Latest Completed
 
-**2025-11-30:** GATHER Phase Framework Complete
+**2025-11-30 (Session 2):** Client Document Batch Processing
+- Processed 5 additional client documents (CD-005 to CD-009)
+- Added GO-018: MVP Budget & Timeline Constraint ($75K, 4 months)
+- Added US-S028: Follow creators before enrolling
+- Total now: 9 docs, 18 goals, 151 stories (78 P0)
+- Key decisions confirmed:
+  - Budget: $75,000 / Timeline: 4 months
+  - BBB Provider: Blindside Networks (managed hosting)
+  - Hosting: Cloudflare (peerloop.com live)
+  - Stream: Feeds only (not video/chat)
+  - Feed prototype: Skool.com
+- Added video evaluation criteria (1:1 P2P, recording/playback)
+
+**2025-11-30 (Session 1):** GATHER Phase Framework Complete
 - Reorganized PLAN.md into GATHER/RUN phases
-- Added 48 infrastructure user stories (US-P007-P050, US-V008-V011) - Total now 150
+- Added 48 infrastructure user stories (US-P007-P050, US-V008-V011)
 - Created 6 tech research docs (tech-001 to tech-005, comp-001)
 - Created `/scenarios/` folder for SPECS.md variants
 - Added `/r-add-software`, `/r-add-user-story`, `/r-add-directive` commands
@@ -221,14 +268,23 @@ Completed 2025-11-29. All client documents processed, goals and user stories ext
 - ~~What is Alpha Peer's primary purpose?~~ → Peer-to-peer AI education platform with learn-teach-earn flywheel
 - ~~Who are the target users?~~ → 6 roles: Student, Student-Teacher, Creator, Employer, Admin, System
 - ~~What existing systems need integration?~~ → Open EdX, Big Blue Button, Bluesky (from CD-002)
-- ~~What is the timeline/budget context?~~ → 12 months to break-even, 3 founding creators for MVP
+- ~~What is the timeline/budget context?~~ → **$75K budget, 4 months** (CD-008)
+- ~~Hosting/infrastructure decisions?~~ → **Cloudflare** confirmed, peerloop.com live (CD-009)
+- ~~BBB provider?~~ → **Blindside Networks** (original BBB creators), managed hosting via API (CD-009)
+- ~~Stream scope?~~ → **Feeds only** (not video, chat is low priority) (CD-008)
+- ~~Community feed prototype?~~ → **Skool.com** as reference design (CD-008)
 
 ## Open Questions (New)
 
+- **Video conferencing decision:** BBB vs Daily.co vs Digital Samba for 1:1 sessions? (CD-006, CD-007)
+  - BBB: Full-featured, per-session pricing, group support (via Blindside Networks)
+  - Daily.co: P2P for 1:1 (cost-effective), auto-switching, SDK
+  - Digital Samba: Low-code iframe, quick integration
+  - Hybrid option: BBB for groups, P2P for 1:1?
+- **Feed technology:** GetStream (CD-005) vs Bluesky protocol (CD-002)?
 - Which payment processor best supports the 15/15/70 split model?
 - How to handle student-to-student messaging safely ("tricky" per CD-003)?
 - AI integration depth: fabric-level vs feature add-on?
-- Hosting/infrastructure decisions?
 
 ---
 
@@ -241,14 +297,14 @@ This plan follows a two-phase approach:
 Phases may be revisited as new information emerges.
 
 **Key Documents:**
-- `GOALS.md` - 17 goals with source traceability (v1)
-- `USER-STORIES.md` - 150 stories organized by role (v1)
+- `GOALS.md` - 18 goals with source traceability (v1)
+- `USER-STORIES.md` - 151 stories organized by role (v1)
 - `DIRECTIVES.md` - 6 constraints for scenario generation (v1)
 - `CLAUDE.md` - Project guidance and phase definitions (v1)
 - `SPECS.md` - Final technical specifications (populated from selected scenario)
 - `/scenarios/` - SPECS.md variants for comparison (with lineage tracking)
 - `/research/` - Technology research documents
-- `client-docs/client-docs-index.md` - Source document summaries
+- `client-docs/client-docs-index.md` - 9 source document summaries
 
 **Commands for Adding Information:**
 - `/r-add-client-doc` - Process new client documents

@@ -302,10 +302,271 @@ Strategic planning document (dated 10/29/2025) using the "Impact Filter" framewo
 
 ---
 
+### CD-005: Slack Message - GetStream Feed Discussion
+**Date Uploaded:** 2025-11-30
+**Original Date:** 2025-11-13
+**Summary for SPECS.md:**
+
+Client Slack message clarifying technology preferences and MVP priorities for the social feed component.
+
+**Key elements for SPECS.md:**
+
+- **Technology Decision:** GetStream.io mentioned as preferred solution for algorithmic feed
+  - Specifically wants the "feed option" from GetStream
+  - Target UX: X.com, Skool.com, Substack.com style feeds
+  - Purpose: "users to gather in a common area and see relevant posts based on their interests"
+
+- **MVP Requirements (client's stated priorities):**
+  1. Profiles
+  2. Payments
+  3. Calendar options
+  4. Algorithmic feed (interest-based content)
+
+- **Discord Evaluation:**
+  - Acceptable as temporary solution for initial technical users
+  - Client explicitly states: "I really don't like the idea of discord"
+  - "would be ok for technical users who we will target initially"
+  - Must be replaced by in-site X.com-style feed "in the near future"
+  - Discord is a compromise, not a preference
+
+- **Feed Vision:**
+  - Common gathering area for users
+  - Interest-based content relevance ("relevant posts based on their interests")
+  - Social media-style engagement pattern (X.com, Skool.com, Substack.com)
+
+**Technical Implications:**
+- GetStream.io integration for activity feeds (or equivalent)
+- Interest/preference system for algorithmic content delivery
+- Profile system must support feed interactions
+- Calendar integration for scheduling
+- Payment processing for transactions
+
+**Relationship to Other Docs:**
+- Reinforces CD-002's "Algorithmic X.com-Style Feed" requirement
+- Provides specific technology choice (GetStream.io) vs CD-002's mention of Bluesky protocol
+- **Chronology Note:** This message (Nov 13) predates CD-002 (Nov 29)
+- **⚠️ Requires Clarification:** GetStream.io vs Bluesky protocol—which is current preference? Later document (CD-002) typically takes precedence, but Stream is already marked REQUIRED in tech research
+
+**Goals Referenced:** GO-010 (Community & Engagement Features)
+**Stories Referenced:** US-S025, US-P002
+
+---
+
+### CD-006: Slack Message - Calendar, BBB, Discord Discussion
+**Date Uploaded:** 2025-11-30
+**Original Date:** 2025-11-16
+**Summary for SPECS.md:**
+
+Client Slack message clarifying infrastructure priorities and technology decisions for scheduling, video, and real-time communication.
+
+**Key elements for SPECS.md:**
+
+- **Calendar Feature:** "Full blown calendar feature" required
+  - Rationale: Avoid manual behind-the-scenes scheduling management
+  - Core MVP component alongside profiles
+  - Client quote: "we don't have to try and keep up behind the scenes with scheduling"
+
+- **Video Conferencing:** BigBlueButton (BBB) confirmed
+  - Use hosted service providers (not self-hosted)
+  - Pricing model: Per-session vs per-user (cost savings vs Zoom)
+  - Avoids user-paid monthly fees (reduces friction)
+  - Client quote: "BBB charges by the session instead of by the user. This is a huge cost savings versus zoom"
+
+- **Real-Time Communication:** Discord accepted as interim solution
+  - Alternatives mentioned: Slack, Telegram
+  - Users will need to set up external accounts
+  - Implies real-time chat is not MVP priority for in-platform build
+
+- **Cost Considerations:**
+  - BBB per-session pricing preferred over Zoom per-user pricing
+  - Avoiding user-paid monthly fees reduces friction and overhead
+  - Hosted BBB services preferred over self-hosting
+
+**Technical Implications:**
+- Calendar system must be robust ("full blown")
+- BBB integration via hosted provider API
+- External chat platform (Discord/Slack/Telegram) for real-time communication initially
+- No immediate need to build in-platform real-time chat for MVP
+
+**Relationship to Other Docs:**
+- Reinforces CD-002's BigBlueButton mention for video sessions
+- Reinforces CD-005's Discord as interim solution
+- Confirms calendar as MVP priority (also mentioned in CD-005)
+- **Chronology:** Nov 16 - between CD-005 (Nov 13) and CD-002 (Nov 29)
+
+**Goals Referenced:** GO-009 (Video Session Infrastructure)
+**Stories Referenced:** US-C006, US-T001, US-P020–P025 (calendar stories)
+
+---
+
+### CD-007: Slack Message - BBB Alternatives & P2P Video Research
+**Date Uploaded:** 2025-11-30
+**Original Date:** 2025-11-18
+**Summary for SPECS.md:**
+
+Client research on video conferencing alternatives to BBB, specifically optimized for 1:1 peer tutoring sessions.
+
+**Key elements for SPECS.md:**
+
+- **P2P Architecture Insight:** For 1:1 sessions, Peer-to-Peer architecture is critical
+  - Video data travels directly between devices
+  - Bypasses expensive SFU (Selective Forwarding Unit) servers
+  - Benefits: Lower latency, higher security, significantly lower costs
+
+- **Three Options Evaluated:**
+
+  | Service | Best For | Free Tier | Key Feature |
+  |---------|----------|-----------|-------------|
+  | Digital Samba | Low code (iframe) | 10,000 mins/mo (~83 hrs 1:1) | Pre-built Zoom-like UI |
+  | Daily.co | Developer SDK | 10,000 mins/mo | Auto P2P switching for 1:1 |
+  | VideoSDK.live | Scale/cost priority | N/A | $0.003/min (below industry $0.004) |
+
+- **Daily.co Highlighted Feature:** Automatic P2P switching
+  - 2 people → P2P mode (efficient)
+  - 3+ people → SFU mode (seamless switch)
+  - Many competitors always use SFU (inefficient for 1:1)
+
+- **Whereby Warning:** Recently imposed 30-minute limit on free calls (avoid)
+
+- **Client Recommendations:**
+  - Digital Samba: Quick integration, no UI code needed
+  - Daily.co: Professional SDK with intelligent P2P handling
+
+**Technical Implications:**
+- 1:1 tutoring sessions benefit from P2P-optimized solutions
+- May reconsider BBB if primarily 1:1 sessions (P2P alternatives more cost-effective)
+- Daily.co offers best developer experience with automatic optimization
+- Digital Samba offers fastest time-to-market
+
+**Relationship to Other Docs:**
+- **Potentially supersedes CD-006's BBB preference** for 1:1 use case
+- Aligns with CD-006's cost-consciousness (avoiding per-user fees)
+- **Chronology:** Nov 18 - after CD-006 (Nov 16), before CD-002 (Nov 29)
+- CD-002 still mentions BBB - may be for group sessions vs 1:1
+
+**⚠️ Requires Clarification:**
+- Daily.co vs Digital Samba vs BBB - final decision?
+- BBB for groups + P2P for 1:1? Or single solution?
+
+**Goals Referenced:** GO-009 (Video Session Infrastructure)
+**Stories Referenced:** US-V001, US-V002, US-T007, US-A014
+
+---
+
+### CD-008: Meeting Transcript - Budget, Timeline, Community Feed
+**Date Uploaded:** 2025-11-30
+**Original Date:** 2025-11-26
+**Summary for SPECS.md:**
+
+Meeting transcript capturing Brian's (client) stated positions on budget, timeline, and community feed priorities.
+
+**Key elements for SPECS.md:**
+
+- **Budget & Timeline (NEW):**
+  - Budget: **$75,000** (increased from earlier conservative estimates)
+  - Timeline: **4 months**
+  - Client quote: "I want to take a bigger risk"
+
+- **Community Feed - Critical MVP Priority:**
+  - Must build now, not later: "would be a nut house after the fact"
+  - Fallback value: Even if thesis fails, "I'll have a tutoring site with unique functionality"
+  - Purpose: **Marketing funnel** that overcomes resistance to purchase
+
+- **Community Feed as Marketing Funnel (User Journey):**
+  1. Student arrives → sees courses → clicks "follow" to explore
+  2. Sees creator → clicks "follow"
+  3. Subject/course feeds appear in their community feed
+  4. Social proof: "I took this course, built this app, got 8 weeks work in a week"
+  5. Public discussion of pros/cons
+  6. Conversion: "You can talk somebody into the course"
+  7. Retention: After course, stay in community to teach others
+
+- **Stream (GetStream.io) - Clarified Scope:**
+  - **Feeds only** - not their video conferencing
+  - Chat is "much lower on the priority list"
+  - Quote: "The community feeds is all I want out of there"
+
+- **Skool.com as Prototype:**
+  - Agreed to use Skool as reference for community feed design
+  - Quote: "Let's use Skool as the prototype to build our community feed"
+
+- **Core Philosophy - Human Connection:**
+  - "People motivate people. Computers don't motivate people."
+  - "The human connections are overlooked in this quest to educate people"
+  - "Just the one hour paid session is not enough of a connection"
+  - Self-paced sites create isolation; community feed combats this
+
+- **Video Conferencing:**
+  - Jitsi mentioned as possibility (from Claude/Q feedback)
+  - Concern: "doesn't seem like it's quite as full featured"
+
+**Technical Implications:**
+- Stream integration scoped to feeds only (reduces complexity)
+- Community feed is MVP-critical, not post-launch
+- Skool.com UX patterns should inform feed design
+- 4-month timeline requires focused scope
+
+**Relationship to Other Docs:**
+- **Supersedes** earlier budget/timeline assumptions
+- **Clarifies** CD-005's Stream mention (feeds only, not chat)
+- **Reinforces** CD-005's feed priority
+- Adds Jitsi to video options (CD-006, CD-007)
+- **Chronology:** Nov 26 - after CD-007 (Nov 18), before CD-002 (Nov 29)
+
+**Goals Referenced:** GO-010, GO-014 (Community & Combat Isolation)
+**Stories Referenced:** US-S025, US-P002, US-S001, US-S006
+
+---
+
+### CD-009: Slack Conversation - BBB Blindside Networks & Cloudflare Setup
+**Date Uploaded:** 2025-11-30
+**Original Date:** 2025-11-28
+**Summary for SPECS.md:**
+
+Slack conversation confirming BBB hosting provider selection and Cloudflare deployment.
+
+**Key elements for SPECS.md:**
+
+- **BBB Hosting Provider Confirmed:** Blindside Networks (https://blindsidenetworks.com/)
+  - They are the original creators of BigBlueButton
+  - Managed hosting - no SSH/root access (security/stability)
+  - Control via API or LMS integration
+  - Custom configurations, usage reports, and logs available on request
+
+- **Managed Hosting Rationale:**
+  - Quote: "It will get us to market quicker. We have lots of moving parts. We need to cut corners where ever possible."
+  - Speed to market is priority over self-hosting flexibility
+
+- **Cloudflare Hosting Confirmed:**
+  - Domain: **peerloop.com** set up on Cloudflare free tier
+  - Generic splash page deployed
+  - Quote: "I setup a cloudflare free site, pointed dns and setup a generic splash page. Free is good lol"
+
+- **Landing Page Purpose:**
+  - Form for prospective students and creators to invite
+  - Logo pending (Brian's wife will design)
+
+**Technical Implications:**
+- BBB integration will be API-based (no server customization)
+- Cloudflare free tier for hosting (confirms comp-001 preference)
+- peerloop.com is the production domain
+- Managed services preferred over self-hosting for speed
+
+**Relationship to Other Docs:**
+- **Confirms** CD-006's BBB decision with specific provider
+- **Confirms** comp-001's Cloudflare preference
+- **Reinforces** CD-008's "cut corners" / speed-to-market priority
+- **Chronology:** Nov 28 - after CD-008 (Nov 26), before CD-002 (Nov 29)
+
+**Goals Referenced:** GO-009 (Video Session Infrastructure), GO-018 (Budget/Timeline)
+**Stories Referenced:** US-V001-V007, US-A013-A018 (video/session stories)
+
+---
+
 ## Index Statistics
-- **Total Documents:** 4
-- **Next CD Number:** CD-005
-- **Last Updated:** 2025-11-29
+- **Total Documents:** 9
+- **Next CD Number:** CD-010
+- **Last Updated:** 2025-11-30
 
 ## Quick Reference
 
@@ -315,3 +576,8 @@ Strategic planning document (dated 10/29/2025) using the "Impact Filter" framewo
 | CD-002 | Feature Summary | UI/UX mockups, tech stack, navigation |
 | CD-003 | User Stories | Role-based needs, 6 user types |
 | CD-004 | Impact Filter | Mission, success metrics, vision |
+| CD-005 | Slack - GetStream | Feed tech choice, MVP priorities, Discord concerns |
+| CD-006 | Slack - Calendar/BBB | Calendar priority, BBB hosting, Discord interim |
+| CD-007 | Slack - P2P Video | Daily.co, Digital Samba, P2P for 1:1 sessions |
+| CD-008 | Meeting - Budget/Feed | $75K budget, 4mo timeline, Skool prototype, feeds-only Stream |
+| CD-009 | Slack - Blindside/Cloudflare | BBB via Blindside Networks, peerloop.com on Cloudflare |

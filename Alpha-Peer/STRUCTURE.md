@@ -240,8 +240,8 @@ Quick reference showing:
 ### Numbering State
 | Category | Next Number |
 |----------|-------------|
-| Client Documents | CD-005 |
-| Goals | GO-018 |
+| Client Documents | CD-010 |
+| Goals | GO-019 |
 | Technologies | tech-006 |
 | Story files | story-001 |
 | Comparisons | comp-002 |

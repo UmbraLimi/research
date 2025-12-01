@@ -56,6 +56,14 @@ Launch with three founding course creators and their initial cohorts:
 - Ignite flywheel with proven results (Phase 3)
 - Each creator builds 50+ active Student-Teachers
 
+### GO-018: MVP Budget & Timeline Constraint
+**Source:** CD-008
+
+Deliver MVP within defined constraints:
+- **Budget:** $75,000
+- **Timeline:** 4 months
+- Rationale: Client willing to "take a bigger risk" after 6-8 months of preparation
+
 ---
 
 ## Quantified Success Metrics
@@ -207,9 +215,14 @@ AI education is strategic beachhead:
 | CD-002 | Feature Summary | GO-003, GO-008, GO-009, GO-010, GO-011 |
 | CD-003 | User Stories | GO-008, GO-009, GO-010, GO-011, GO-012, GO-013 |
 | CD-004 | Impact Filter | GO-001, GO-002, GO-004, GO-005, GO-006, GO-007, GO-013, GO-014, GO-015, GO-016, GO-017 |
+| CD-005 | Slack - GetStream | GO-010 (reinforces feed requirement) |
+| CD-006 | Slack - Calendar/BBB | GO-009 (reinforces video/calendar infrastructure) |
+| CD-007 | Slack - P2P Video | GO-009 (P2P alternatives for 1:1 sessions) |
+| CD-008 | Meeting - Budget/Feed | GO-018, GO-010, GO-014 (budget/timeline, community feed, isolation) |
+| CD-009 | Slack - Blindside/Cloudflare | GO-009, GO-018 (BBB provider confirmed, speed to market) |
 
 ---
 
 ## Current State
 
-**Next Goal Number:** GO-018
+**Next Goal Number:** GO-019

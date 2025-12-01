@@ -212,6 +212,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-S025 | As a Student, I need an X.com-style algorithmic feed of followed content so that I discover relevant posts | P1 | CD-002 |
 | US-S026 | As a Student, I need to refer potential students to AP re: courses and teachers so that I can help others | P2 | CD-003 |
 | US-S027 | As a Student, I need to ask AI for assistance when both teacher and student are stumped so that learning continues | P1 | CD-003 |
+| US-S028 | As a Student, I need to follow creators so that their content appears in my feed before I enroll | P0 | CD-008 |
 
 ---
 
@@ -397,12 +398,12 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |----------|----|----|----|----|-------|
 | Admin | 12 | 10 | 1 | 0 | 23 |
 | Creator | 8 | 10 | 5 | 0 | 23 |
-| Student | 12 | 9 | 6 | 0 | 27 |
+| Student | 13 | 9 | 6 | 0 | 28 |
 | Student-Teacher | 7 | 4 | 2 | 0 | 13 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
 | Platform/Infrastructure | 34 | 9 | 4 | 0 | 47 |
-| **Total** | **77** | **53** | **20** | **0** | **150** |
+| **Total** | **78** | **53** | **20** | **0** | **151** |
 
 ### Gap Analysis Stories Added (2025-11-30)
 
@@ -428,6 +429,11 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-002 | Feature Summary | US-C005, US-C009–C010, US-C021–C023, US-S003–S007, US-S009–S012, US-S019, US-S021–S025, US-T004–T005, US-T007, US-T013, US-V007, US-P001–P006 |
 | CD-003 | User Stories | US-A001–A025, US-C001–C020, US-S001–S002, US-S008, US-S013–S018, US-S020, US-S026–S027, US-T001–T011, US-E001–E006, US-V001–V006 |
 | CD-004 | Impact Filter | US-A023 |
+| CD-005 | Slack - GetStream | US-S025, US-P002 (reinforces feed requirement) |
+| CD-006 | Slack - Calendar/BBB | US-C006, US-T001, US-P020–P025 (reinforces calendar/scheduling) |
+| CD-007 | Slack - P2P Video | US-V001, US-V002, US-T007, US-A014 (P2P video for 1:1) |
+| CD-008 | Meeting - Budget/Feed | US-S028, US-S025, US-S006 (follow creators, feed as funnel) |
+| CD-009 | Slack - Blindside/Cloudflare | US-V001–V007, US-A013–A018 (BBB provider confirms video stories) |
 | Gap Analysis | Tech Research Phase 2.5 | US-P007–P050, US-V008–V011 |
 
 ---
@@ -438,7 +444,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |------|--------|-------------|
 | Admin | US-A | US-A026 |
 | Creator | US-C | US-C024 |
-| Student | US-S | US-S028 |
+| Student | US-S | US-S029 |
 | Student-Teacher | US-T | US-T014 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
@@ -448,7 +454,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 ## Notes for Implementation
 
-1. **P0 stories (48 total)** are required for Genesis Cohort launch with 3 founding creators
+1. **P0 stories (78 total)** are required for Genesis Cohort launch with 3 founding creators
 2. **Student-to-student messaging (US-S017)** flagged as "tricky" - needs careful design to prevent abuse
 3. **Role switching (US-T005)** is critical UX - single account with multiple role views
 4. **Post-session assessment (US-V006)** enables quality tracking for flywheel validation
