@@ -688,10 +688,732 @@ Detailed mapping of user drivers (motivations/needs) and corresponding action it
 
 ---
 
+### CD-012: Meeting Prep - MVP Spec Review with Fraser & Gabriel
+**Date Uploaded:** 2025-12-04
+**Prepared:** December 2, 2025
+**Summary for SPECS.md:**
+
+Comprehensive meeting preparation document for MVP spec review with developer (Fraser) and strategic advisor (Gabriel). Consolidates all 8 decided MVP features with budget and timeline tracking.
+
+**Key elements for SPECS.md:**
+
+- **8 MUST HAVE MVP Features (Decided):**
+
+  | # | Feature | Dev Cost | Timeline |
+  |---|---------|----------|----------|
+  | 1 | Video Conferencing (BBB hosted) | $2.4K-3.6K/yr | - |
+  | 2 | Community Feed (getstream.io) | $3.4K-5.7K/yr | - |
+  | 3 | Calendar/Scheduling | $1.7K-3.8K | 1-2 weeks |
+  | 4 | Student Profile System | $14K-18.7K | 3-4 weeks |
+  | 5 | Creator Profiles | $500 | <1 week |
+  | 6 | Rebrand to PeerLoop | Complete | Done |
+  | 7 | Payment & Escrow | $11K-15K | 2-3 weeks |
+  | 8 | Course Content Delivery | $2K-4K | ~1 week |
+
+- **Budget Status:**
+  - Phase 1 Budget: **$75,000** (confirms CD-008)
+  - Allocated: $46K-62K (61-83%)
+  - Remaining: $13K-29K
+  - Status: Getting tight
+
+- **Timeline Milestones:**
+  - MVP Spec Deadline: **Dec 6, 2025**
+  - Build Period: Dec 6 → Apr 1 (~4 months)
+  - Genesis Cohort: Apr 1 → Jun 1 (60-80 students)
+
+- **Genesis Cohort Size:** 60-80 students across 4-5 courses (refines earlier "3 creators" estimates)
+
+- **Operational Model Confirmed (Critical for SPECS.md):**
+  - **Creators control their courses** - approve certifications, payouts, new Student-Teachers
+  - **Brian (Platform) = Strategic oversight only** - ~3-4 hours/week
+  - Minimal admin involvement in day-to-day operations
+
+- **Calendar Options Under Consideration:**
+  - Cal.com (Option B)
+  - Custom react-big-calendar (Option D)
+  - Google Calendar API (Option E)
+
+- **Three Potential Gaps Identified:**
+  1. **Certification Workflow** - ST recommends → Creator approves → Certificate issued
+  2. **Student-Teacher Application Workflow** - Student applies → Creator approves → Can teach
+  3. **Student Dashboard/Home** - Enrolled courses, next session, progress, quick actions
+
+- **Gap Budget:** $2K-4K total if needed (or manual for Genesis)
+
+- **6 Hypotheses Being Tested:**
+
+  | # | Hypothesis | Test | Feature Coverage |
+  |---|------------|------|------------------|
+  | H1 | Students pay $300-600 | Genesis payments | Payment System |
+  | H2 | 75%+ completion rate | Track completions | Content Delivery |
+  | H3 | Two customer segments | Analyze enrollments | Profile System |
+  | H4 | 10%+ become Student-Teachers | Track conversions | Profile System |
+  | H5 | Peer teaching matches experts | Quality feedback | **Manual for MVP** |
+  | H6 | Flywheel (2+ students recruited) | Track network growth | Profile System |
+
+**Technical Implications:**
+- GetStream.io confirmed for Activity Feeds (not chat)
+- BBB via hosted provider API (Blindside Networks)
+- Semi-automated payment approach (Stripe + manual payout approval)
+- Course content: simple pages, external video links, self-mark progress
+- Creator Dashboard for certification/payout approval workflows
+- Student Dashboard as minimal viable landing experience
+
+**Relationship to Other Docs:**
+- **Consolidates** CD-008's budget ($75K) and CD-009's BBB/Cloudflare decisions
+- **Confirms** GetStream for feeds (CD-005), not chat (CD-008)
+- **Refines** Genesis cohort: 60-80 students (vs earlier estimates)
+- **Adds** operational model detail: creator-controlled, minimal Brian involvement
+- **Identifies** three workflow gaps for prioritization
+
+**Goals Referenced:** GO-001 (flywheel), GO-004 (Genesis), GO-005 (validation metrics), GO-018 (budget/timeline)
+**Stories Referenced:** US-C014 (certification), US-S020 (apply for teacher status), US-P003 (dashboard)
+
+---
+
+### CD-013: MVP Decision - Community Feed (getstream.io)
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-11-25
+**Summary for SPECS.md:**
+
+Detailed MVP decision document for AI-sorted community feed feature using getstream.io. Documents rationale, hypothesis coverage, budget, timeline, and implementation requirements.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE - AI-sorted community feed
+- **Technology:** getstream.io (SaaS feed infrastructure)
+- **Approach:** SDK integration (NOT building feed from scratch)
+
+- **Core Functionality:**
+  - **Follow System:** Users can follow other users, courses, creators
+  - **Content Types:** Q&A, progress updates, teaching tips, announcements, success stories, availability
+  - **Social Interactions:** Like, Bookmark, Reply, Repost
+  - **AI/Algorithmic Feed:** Personalized based on interests, follows, engagement, relevance, recency
+
+- **User Role Permissions:**
+
+  | Role | Capabilities |
+  |------|-------------|
+  | Students | Create posts, like/bookmark/reply/repost, follow, flag content |
+  | Student-Teachers | All student + post teaching tips/availability, build following |
+  | Moderators | All user + delete posts, ban users, pin posts, see flagged queue |
+  | Creators | All user + course announcements, pin to course feed, analytics |
+  | Brian (Admin) | Full moderation powers, override, all analytics |
+
+- **Hypothesis Validation Coverage (5 of 6):**
+  - H1: Market Positioning (community as social proof)
+  - H3: Customer Segmentation (behavior reveals motivations)
+  - H4: Conversion to Teaching (ST success stories inspire others)
+  - H5: Peer Teaching Quality (STs share tips, get advice)
+  - H6: Flywheel (STs recruit students via feed - **critical for Brian's #1 uncertainty**)
+
+- **Budget & Timeline:**
+  - Development: 2-3 weeks, $3,000-4,500 (4-6% of $75K)
+  - Service: ~$100-300/month (Growth tier)
+  - Total Phase 1: $3,400-5,700
+
+- **Implementation Phases:**
+  - Week 1: Core setup, SDK integration, auth, basic feed, post creation
+  - Week 2: Social features (like, bookmark, reply, repost), notifications, profiles
+  - Week 3: Moderation tools, testing, mobile responsiveness, polish
+
+- **Success Metrics (Genesis Cohort):**
+  - 60%+ students post weekly
+  - 40%+ students engage daily
+  - 3-5 posts per day per course
+  - ST actively recruiting via feed
+  - At least 2-3 second-gen students found ST via feed
+
+- **Scale Consideration:** 75-100 people = perfect "village size" for community dynamics
+
+**Technical Implications:**
+- getstream.io SDK integration (React components available)
+- Authentication integration with PeerLoop required
+- Moderator tools: flag, delete, ban, pin
+- Mobile-responsive feed UI
+- ~9ms API response time from getstream.io
+
+**Relationship to Other Docs:**
+- **Expands** CD-005's GetStream mention with full decision rationale
+- **Confirms** CD-008's "feeds only" scope (not chat)
+- **Aligns with** CD-012's 8 MVP features list (Community Feed #2)
+- Provides detailed implementation plan for Fraser
+
+**Goals Referenced:** GO-001 (flywheel), GO-005 (validation metrics), GO-006 (engagement), GO-010 (community features)
+**Stories Referenced:** US-S025 (algorithmic feed), US-P002 (My Community feed), US-S028 (follow creators)
+
+---
+
+### CD-014: MVP Decision - Video Conferencing Integration (BBB/Jitsi)
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-11-25
+**Summary for SPECS.md:**
+
+Detailed MVP decision document for video conferencing integration. Core infrastructure enabling live 1-on-1 sessions between Student-Teachers and students.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE - Video conferencing integration
+- **Preferred Platform:** Big Blue Button (or Jitsi if Fraser recommends)
+- **Approach:** API integration (NOT building from scratch)
+- **Deployment:** Hosted service for MVP, self-hosting option for Phase 2+
+
+- **Core Functionality:**
+  - **Students:** Schedule sessions, receive email notifications, calendar sync (Google/Outlook), join from dashboard or email, browser-based (no downloads)
+  - **Student-Teachers:** Manage availability, schedule with multiple students, access recordings, teaching features (screen share, whiteboard)
+  - **Platform:** Track attendance, store recordings, analytics, progress integration
+
+- **Hypothesis Validation Coverage (4 of 6):**
+  - H5: Peer Teaching Quality (enables 1-on-1 instruction)
+  - H6: Flywheel (enables ST to teach their students)
+  - H2: Completion Rates (accountability via live sessions)
+  - H1: Market Positioning (professional video justifies premium)
+
+- **Budget & Timeline:**
+  - Development: 1-2 weeks, $1,500-3,000 (2-4% of $75K)
+  - Service: $50-200/month (BBB) or $50-150/month (Jitsi)
+  - Total Phase 1: $1,700-3,800
+
+- **Platform Comparison:**
+
+  | Feature | Big Blue Button | Jitsi |
+  |---------|----------------|-------|
+  | Education features | Whiteboard, breakout, polls | Basic |
+  | Recording | Excellent | Good |
+  | Per-session pricing | Yes | Yes |
+  | Open source | Yes | Yes |
+  | Self-host option | Yes (Phase 2+) | Yes |
+
+- **MVP Scope:**
+  - MUST: Calendar/scheduling, session booking, email notifications, calendar sync, API integration, attendance tracking, basic recording
+  - NICE TO HAVE: Embedded video, recurring sessions, in-platform recording library
+  - OUT OF SCOPE: Self-hosted servers, custom features, mobile app
+
+- **Success Metrics (Genesis):**
+  - Session completion rate >80%
+  - 60-80 students using sessions successfully
+  - Video quality acceptable (no major complaints)
+  - Student-Teachers comfortable with platform
+
+**Technical Implications:**
+- BBB or Jitsi API integration (Fraser to evaluate)
+- Calendar/scheduling system in dashboard
+- Email notification system integration
+- Google Calendar/Outlook sync
+- Session attendance tracking
+- Recording storage (service provider handles)
+
+**Relationship to Other Docs:**
+- **Expands** CD-006's BBB mention with full decision rationale
+- **Expands** CD-009's Blindside Networks confirmation
+- **Aligns with** CD-012's 8 MVP features list (Video Conferencing #1)
+- **Clarifies** CD-007's P2P research - BBB preferred for education features
+
+**Goals Referenced:** GO-001 (flywheel), GO-005 (validation metrics), GO-009 (video infrastructure)
+**Stories Referenced:** US-V001-V007 (session stories), US-A013-A018 (session facilitation), US-T007 (video sessions)
+
+---
+
+### CD-015: Decision - Calendar/Scheduling System
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-11-26
+**Summary for SPECS.md:**
+
+MVP decision document for calendar/scheduling system. Automated booking for 1-on-1 sessions between students and Student-Teachers.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE - Automated scheduling/booking system
+- **Status:** Pending Fraser evaluation of Options B, D, or E
+- **Capacity Required:** ~60 sessions/week
+
+- **User Flow:**
+  1. Student navigates to course listing
+  2. Clicks "Schedule Session" button
+  3. Views calendar, selects day
+  4. Sees list of available Student-Teacher time slots
+  5. Clicks on Student-Teacher listing, books time
+  6. Both receive: email notification, in-app message, BBB link
+
+- **Three Options for Fraser:**
+
+  | Option | Platform | Dev Time | Dev Cost | Monthly Cost |
+  |--------|----------|----------|----------|--------------|
+  | B | Cal.com (Open Source) | 1-1.5 weeks | $1,700-2,850 | $12/ST ($720-960/mo) |
+  | D | react-big-calendar + custom | 1.5-2 weeks | $2,550-3,800 | $0 |
+  | E | Google Calendar API + Custom | 2 weeks | $3,400 | $0 |
+
+- **Hypothesis Validation Coverage (5 of 6):**
+  - H1: Market Positioning (professional booking is table stakes)
+  - H2: Completion Rates (easy booking increases participation)
+  - H4: Conversion to Teaching (STs set availability = commitment)
+  - H6: Flywheel (critical marketplace infrastructure)
+  - H3: Indirect (booking data identifies engaged vs passive)
+
+- **Manual Alternative:** FAILS - 60 sessions/week = 10-15 hrs/week manual coordination
+
+- **Budget Impact:**
+  - One-time: $1,700-3,800
+  - Option B recurring: $8,640-11,520/year
+  - Options D/E eliminate recurring cost
+
+- **Success Metrics (Genesis):**
+  - 80%+ students book at least 1 session via calendar
+  - <5% booking errors or failed notifications
+  - <2 minutes from click to confirmed booking
+  - Zero manual intervention required
+
+**Technical Implications:**
+- Integration with email notification system
+- Integration with in-app messaging
+- BBB link generation and delivery
+- Student-Teacher availability management
+- Timezone handling
+- Calendar sync (if using Option E)
+
+**Relationship to Other Docs:**
+- **Depends on** CD-014 (Video Conferencing - BBB links)
+- **Aligns with** CD-006's calendar priority statement
+- **Aligns with** CD-012's MVP features list (#3 Calendar/Scheduling)
+- Provides specific implementation options for Fraser decision
+
+**Goals Referenced:** GO-009 (video/calendar infrastructure), GO-005 (validation metrics)
+**Stories Referenced:** US-P020-P025 (calendar infrastructure), US-C006, US-T001 (availability calendars)
+
+---
+
+### CD-016: Decision - Rebrand from AlphaPeer to PeerLoop
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-11-29
+**Summary for SPECS.md:**
+
+Branding decision document for product name change from AlphaPeer to PeerLoop.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** APPROVED - Rebrand to PeerLoop
+- **Implementation:** Immediate (documentation), Before Launch (domain/email)
+- **Status:** Complete for CD-012 "Rebrand to PeerLoop" item
+
+- **Name Change:**
+  - Product: AlphaPeer → **PeerLoop**
+  - Domain: alphapeer.com → **peerloop.com**
+  - Subdomain: class.alphapeer.com → **class.peerloop.com**
+  - Email: brian@alphapeer.com → **brian@peerloop.com**
+
+- **Reasoning:**
+  - **Trademark Conflict:** Alpha.school is actively trademarking "Alpha" names in education
+  - **Risk Avoidance:** Proactive rebrand avoids potential legal issues
+  - **Brand Identity:** "PeerLoop" maintains peer-to-peer focus + suggests flywheel/cycle
+
+- **Why PeerLoop:**
+  - Maintains peer-to-peer learning focus
+  - "Loop" suggests continuous learning cycle, flywheel effect
+  - Clean, memorable, one-word brand
+  - No existing trademark conflicts in education space
+  - Domain available: peerloop.com
+
+- **Impact Assessment:**
+  - **Zero Impact:** Technical architecture, features, budget/timeline, hypotheses
+  - **Documentation Updates:** All MVP decisions, feature specs, meeting notes
+
+- **Timeline:**
+  - Effective: 2025-11-29
+  - Launch: April 1, 2026 (as PeerLoop)
+  - Domain Acquisition: ASAP
+
+**Technical Implications:**
+- Domain/DNS configuration for peerloop.com
+- Email setup for @peerloop.com
+- class.peerloop.com subdomain configuration
+- All user-facing text, logos, branding updated
+- Cloudflare already configured for peerloop.com (per CD-009)
+
+**Relationship to Other Docs:**
+- **Confirms** CD-009's peerloop.com Cloudflare setup
+- **Aligns with** CD-012's MVP features list (#6 "Rebrand to PeerLoop" = COMPLETE)
+- No impact on technical decisions or feature specs
+
+**Goals Referenced:** (None - branding only, no new goals)
+**Stories Referenced:** (None - branding only, no new user stories)
+
+---
+
+### CD-017: MVP Decision - Creator Profiles
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-11-30
+**Summary for SPECS.md:**
+
+MVP decision document for creator profile functionality. Uses Q-DECIDE framework to scope basic creator profiles within unified profile system.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE (Basic Profile Only)
+- **Budget:** ~$500 incremental (1 day, included in profile system)
+- **Timeline:** 1 day (part of 3-4 week profile system build)
+
+- **Scope - MVP (IN):**
+  - Uses unified profile system (same as Student/ST profiles)
+  - Basic profile: name, @handle, photo, bio, interests/tags
+  - "Creator" role badge (visually distinct)
+  - "Courses Created" label display
+  - Aggregate stats: total students, average rating, course count
+  - Course list linking to all created courses
+  - Follow/unfollow functionality, follower/following counts
+  - Payment system integration (backend creator_id)
+  - Public profile (no privacy toggle - creators must be discoverable)
+
+- **Scope - DEFERRED to Phase 2:**
+  - Revenue tracking dashboard
+  - Per-course analytics
+  - Payout history view
+  - Course creation wizard
+  - Content upload interface
+  - Curriculum builder
+  - Creator achievements/badges
+  - Creator-to-creator messaging
+  - Automated payout system
+
+- **User Flow:**
+  1. Brian invites creator (Gabriel)
+  2. Creator signs up, selects "Creator" role
+  3. Profile auto-created, creator adds photo/bio/interests
+  4. Profile visible at `peerloop.com/@gabriel`
+  5. Students browse → click creator name → view profile → follow → discover courses
+
+- **Success Metrics:**
+  - 100% of 4-5 creators complete profiles
+  - 40%+ students follow at least one creator
+  - 100% enrollments correctly attributed to creators
+
+- **Hypothesis Validation:**
+  - H1 (Indirect): Professional presence builds trust
+  - H3 (Indirect): May attract "Premium Learner-Only" segment
+  - **Not primary validation** - necessary for consistency/payment tracking
+
+**Technical Implications:**
+- Single users table with role field (student, student_teacher, creator)
+- Display logic based on role
+- Aggregate stats query across creator's courses
+- Creator profile links to payment_accounts table
+- Creator ID in enrollments table for revenue attribution
+
+**Relationship to Other Docs:**
+- **Part of** unified profile system (with Student Profile System)
+- **Integrates with** Payment System (creator_id for revenue)
+- **Aligns with** CD-012's MVP features list (#5 Creator Profiles = $500)
+- **Integrates with** Community Feed (creator posts with badge)
+
+**Goals Referenced:** GO-003 (sustainable income - payment attribution), GO-008 (multi-role system)
+**Stories Referenced:** US-C008-C010 (creator profiles), US-S004 (search creators)
+
+---
+
+### CD-018: MVP Decision - Student Profile System
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-11-30
+**Summary for SPECS.md:**
+
+Comprehensive MVP decision document for student profile system. Uses Q-DECIDE framework to approve student profiles as MUST HAVE for validating Brian's top two uncertainties (Hypotheses #4 and #6).
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE for MVP
+- **Budget:** ~$14K-$18.7K (~20% of Phase 1 budget)
+- **Timeline:** ~3-4 weeks (~18-25% of build timeline)
+
+- **Core Profile Features:**
+  - Name, @handle, profile photo
+  - Bio (160 characters visible, expandable)
+  - Interests/topics (3-5 tags)
+  - Privacy toggle (public/private profile)
+
+- **Social Features:**
+  - Follow/unfollow other users (students, Student-Teachers)
+  - Follow/unfollow courses
+  - Display follower/following counts
+  - View lists of followers/following
+
+- **Reputation Display (Read-Only in MVP):**
+  - Average star rating
+  - Number of ratings received
+  - *(Brian manually grants ratings after course completion)*
+
+- **Student-Teacher Signaling:**
+  - "Available as Student-Teacher" toggle
+  - "Teaching" badge display
+  - Basic availability indicator
+  - List of courses certified to teach
+
+- **Profile Discovery:**
+  - Student-Teacher directory
+  - Basic search by name/interests
+  - Profile accessible via direct link
+
+- **Hypothesis Validation:**
+  - **H4 (Primary):** % of students who toggle "Available as ST" - measures conversion to teaching
+  - **H6 (Critical):** Follow relationships, follower→enrollment conversion, organic recruitment tracking - **Brian's #1 uncertainty**
+  - H2, H3 (Secondary): Completion rates, customer segmentation behavior
+
+- **User Flow:**
+  1. Student signs up → profile auto-created
+  2. Onboarding prompts for photo/bio/interests (optional)
+  3. Student browses courses → discovers Student-Teachers
+  4. Clicks ST name → views profile → follows
+  5. Student completes course → earns certificate
+  6. Toggles "Available as Student-Teacher" ON
+  7. Profile visible in ST directory
+  8. Other students discover and follow → organic recruitment
+
+- **Success Metrics (Genesis Cohort):**
+  - Profile completion: 60%+ students, 80%+ Student-Teachers
+  - Social graph: 5+ connections per student, 30%+ follow at least one ST
+  - ST activation: 10%+ toggle "Available as Student-Teacher"
+  - Organic recruitment: 30%+ enrollments from profile connections (vs external)
+
+- **Scope DEFERRED to Phase 2:**
+  - Activity feed on profile page
+  - Mutual connections display
+  - Direct messaging (use WhatsApp/Discord for MVP)
+  - Social recommendations
+  - Goodwill points display
+  - Achievement badges
+  - Leaderboards/gamification
+  - Gender preference filtering
+  - AI-powered ST recommendations
+
+- **Implementation Notes:**
+  - Unified profile system with role-based display
+  - Single profile table with role fields (student, student_teacher, creator)
+  - Display logic based on role flags
+  - 60-80 students = simple DB queries (no graph DB needed at MVP scale)
+
+- **Risks & Mitigations:**
+  - Scope creep → strict scope definition, defer all social/gamification
+  - Privacy concerns → toggle (default TBD), clear opt-in messaging
+  - Empty profiles → onboarding prompts, "profile strength" indicator
+  - Timeline overrun → phased builds (basic → social → ST features)
+
+**Technical Implications:**
+- Photo upload with crop (use Cloudinary/S3)
+- Follow functionality (database social graph)
+- ST directory with basic search
+- Privacy toggle system
+- Profile strength/completion tracking
+- Integration points: Community Feed, Calendar/Scheduling, Video, Payment, Certificates
+
+**Relationship to Other Docs:**
+- **Extends** unified profile system (with CD-017 Creator Profiles)
+- **Integrates with** CD-013 (Community Feed - profile photo/name in posts)
+- **Integrates with** CD-015 (Calendar - ST availability link)
+- **Integrates with** CD-014 (Video - profile photo in sessions)
+- **Aligns with** CD-012's MVP features list (#4 Student Profile System = $14K-18.7K)
+- **Validates** CD-004's success metrics (H4, H6)
+
+**Goals Referenced:** GO-001 (flywheel validation), GO-005 (validation metrics), GO-006 (engagement/growth), GO-008 (multi-role system), GO-014 (combat isolation)
+**Stories Referenced:** US-S004 (student profile), US-S036-S041 (feed interactions), US-T017-T018 (ST signaling)
+
+---
+
+### CD-019: Decision - Course Content Delivery
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-12-02
+**Summary for SPECS.md:**
+
+MVP decision document for course content delivery system. Defines minimal approach using external video/document hosting with self-service progress tracking. Includes comprehensive user journey from enrollment through certification to becoming Student-Teacher.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE (Option A - Minimal)
+- **Budget:** $2,000-4,000
+- **Timeline:** ~1 week
+- **Monthly Recurring:** $0 (external hosting)
+
+- **Scope - MVP (IN):**
+  - Simple course page with organized module structure
+  - Video links (YouTube/Vimeo unlisted)
+  - Document links (Google Drive / Notion)
+  - Student self-marks progress (checkboxes)
+  - Creator monitors completion
+
+- **Scope DEFERRED to Phase 2:**
+  - Video hosting (use external links)
+  - Quiz/assessment engine (peer validates mastery)
+  - Auto-grading
+  - Drip content / time-locked modules
+  - SCORM/xAPI
+  - Advanced analytics
+
+- **Hypothesis Validation:**
+  - **H2 (PRIMARY):** Completion Rates - This IS how students complete the course (75% target)
+  - **H4:** Conversion to Teaching - Path to certification = become Student-Teacher
+  - H1, H5 (Indirect): Market positioning, content consistency
+
+- **Complete User Journey (Critical Documentation):**
+
+  1. **Enrollment & Scheduling:** Student → Pays (Stripe) → Schedules (Calendar) → Auto-notifications
+  2. **Learning:** Student studies content → Attends BBB sessions → Marks progress → Repeats
+  3. **Certification:** Student-Teacher recommends → CREATOR approves → Certificate issued
+  4. **Payout:** CREATOR approves → System processes → 70/15/15 split paid
+  5. **Become ST:** Student applies → CREATOR approves → Can now teach → Flywheel continues
+
+- **Role Clarification (Important!):**
+
+  | Creator (e.g., Guy) | Brian (Platform) |
+  |---------------------|------------------|
+  | Creates course content | Recruits/onboards Creators |
+  | Approves certifications | Platform-level disputes |
+  | Approves payouts | Monitors overall health |
+  | Approves new Student-Teachers | Strategic oversight only |
+  | Day-to-day course ops | ~3-4 hrs/week total |
+
+- **Weekly Learning Rhythm:**
+  - Mon: Student watches videos, reads materials
+  - Tue: 1-on-1 session with ST via BBB
+  - Wed-Thu: Practice, prepare questions
+  - Fri: Community feed check-in
+  - Weekend: Catch up if needed
+
+- **Budget Summary (8 MVP Features):**
+  - Total Allocated: $46K-62K
+  - Remaining: $13K-29K
+
+- **Success Metrics (Genesis):**
+  - Students can access all course content without issues
+  - 75%+ of students complete all modules
+  - Student-Teachers can guide students through content effectively
+  - Creators can monitor student progress
+  - Content delivery doesn't block certification pathway
+
+**Technical Implications:**
+- Simple module-based course pages (no complex LMS)
+- External video embedding (YouTube/Vimeo unlisted links)
+- External document links (Google Drive/Notion)
+- Checkbox-based progress tracking
+- Creator dashboard for monitoring completion
+- Integration with certification workflow
+- Integration with payout approval workflow
+
+**Relationship to Other Docs:**
+- **Aligns with** CD-012's MVP features list (#8 Course Content Delivery = $2K-4K)
+- **Integrates with** CD-014 (Video Conferencing - BBB sessions)
+- **Integrates with** CD-015 (Calendar/Scheduling - session booking)
+- **Integrates with** Payment System (70/15/15 payout flow)
+- **Validates** CD-004's H2 (completion rates) and H4 (conversion)
+- **Clarifies** operational model: Creator-controlled, Brian strategic only
+
+**Goals Referenced:** GO-001 (flywheel), GO-004 (Genesis cohort), GO-005 (validation metrics - 75% completion), GO-011 (learning management)
+**Stories Referenced:** US-C001-C003 (course management), US-S005 (course detail), US-P060-P064 (certification/payout workflows)
+
+---
+
+### CD-020: MVP Decision - Payment & Escrow System
+**Date Uploaded:** 2025-12-04
+**Original Date:** 2025-12-02
+**Summary for SPECS.md:**
+
+Comprehensive MVP decision document for payment and escrow system. Defines semi-automated approach using Stripe for payment collection with manual payout approval.
+
+**Key elements for SPECS.md:**
+
+- **Decision:** MUST HAVE
+- **Payment Processor:** Stripe
+- **Approach:** Semi-Automated (System calculates, Brian clicks to process payouts)
+- **Budget:** $11,000 - $15,000 (15-20% of Phase 1)
+- **Timeline:** 2-3 weeks
+
+- **Scope - MVP (IN):**
+  - Stripe Checkout integration (credit card processing)
+  - Course purchase flow with instant enrollment
+  - Payment confirmation emails and receipt generation
+  - Automatic 70/15/15 split calculation per transaction
+  - Per-transaction tracking in database
+  - Creator earnings dashboard view
+  - Student-Teacher earnings dashboard view
+  - Running balance display
+  - Escrow/holding until milestone completion
+  - Admin payout dashboard (view pending, process button, batch option)
+  - Payout history and audit trail
+  - Monthly summary reports
+
+- **Scope DEFERRED to Phase 2:**
+  - Stripe Connect (fully automated marketplace payouts)
+  - Subscription/recurring billing
+  - Multiple currency support
+  - Automated refund processing
+  - Complex escrow conditions
+  - Payment plans/installments
+  - Tax document generation (1099s)
+
+- **Why Stripe:**
+  - Industry standard for SaaS/EdTech
+  - Excellent React components and documentation
+  - 99.99% uptime, built-in fraud detection
+  - PCI compliance handled
+  - Easy upgrade path to Stripe Connect in Phase 2
+  - Fees: 2.9% + $0.30 per transaction (~$14.80 on $500 course)
+
+- **Why Semi-Automated (vs Fully Automated):**
+  - Saves $5K-$11K vs fully automated (Stripe Connect)
+  - 1-2 hrs/month acceptable for 4-5 creators
+  - Brian maintains cash flow oversight
+  - Upgrade path exists for Phase 2
+
+- **Semi-Automated Workflow:**
+  1. Student pays via Stripe Checkout
+  2. System instantly enrolls student
+  3. System calculates 70/15/15 split
+  4. System tracks amounts owed to each recipient
+  5. Monthly: Brian opens Admin Dashboard
+  6. Brian clicks "Process Payout" for each recipient
+  7. System sends payment via Stripe Transfer or PayPal Payouts API
+  8. Recipients receive funds + confirmation
+
+- **Hypothesis Validation:**
+  - **H1 (PRIMARY):** Market Positioning - Directly tests if students will pay $400-600
+  - **H4:** Conversion to Teaching - 70% payout incentivizes becoming ST
+  - **H6:** Flywheel - Revenue share enables sustainable flywheel
+
+- **Success Metrics:**
+  - 60-80 students successfully pay $400-600
+  - Payment completion rate >90%
+  - No major payment-related complaints
+  - Student-Teachers receive payouts as promised
+  - Recipients receive funds within 2-3 business days
+
+- **Budget Breakdown:**
+  | Component | Estimate |
+  |-----------|----------|
+  | Stripe Integration | $4,000-5,500 |
+  | Split Calculation System | $2,500-3,500 |
+  | Admin Dashboard | $2,500-3,500 |
+  | Payout Processing | $2,000-2,500 |
+  | Monthly Operating | ~$50 |
+  | Stripe Fees (Genesis) | ~$1,000-1,200 |
+
+**Technical Implications:**
+- Stripe Checkout integration (not custom form)
+- Webhook setup for payment confirmations
+- Database schema for tracking splits and pending payouts
+- Admin dashboard for payout management
+- Integration with Creator/ST earnings dashboards
+- Escrow logic with manual release approval
+
+**Relationship to Other Docs:**
+- **Aligns with** CD-012's MVP features list (#7 Payment & Escrow = $11K-15K)
+- **Depends on** CD-017 (Creator Profiles) and CD-018 (Student Profiles) for recipient identification
+- **Integrates with** CD-019 (Course Content) for enrollment triggering
+- **Validates** CD-004's H1 (market positioning/pricing)
+
+**Goals Referenced:** GO-001 (flywheel), GO-003 (sustainable income - 70/15/15 split), GO-005 (validation metrics), GO-012 (payment infrastructure)
+**Stories Referenced:** US-P026-P033 (payment infrastructure), US-T012-T013 (ST earnings), US-C014 (certification → payout trigger)
+
+---
+
 ## Index Statistics
-- **Total Documents:** 11
-- **Next CD Number:** CD-012
-- **Last Updated:** 2025-11-30
+- **Total Documents:** 20
+- **Next CD Number:** CD-021
+- **Last Updated:** 2025-12-04
 
 ## Quick Reference
 
@@ -708,3 +1430,12 @@ Detailed mapping of user drivers (motivations/needs) and corresponding action it
 | CD-009 | Slack - Blindside/Cloudflare | BBB via Blindside Networks, peerloop.com on Cloudflare |
 | CD-010 | Miro - Main Activities by Role | 5 roles mapped, Community Moderator NEW, pain points |
 | CD-011 | Miro - Drivers & Action Items | User motivations, Bluesky confirmed, mastery certificate, opt-out |
+| CD-012 | Meeting Prep - MVP Review | 8 MVP features, $75K budget, 60-80 students, 3 gaps identified |
+| CD-013 | MVP Decision - Community Feed | getstream.io, 5 hypotheses validated, 2-3 weeks dev, role permissions |
+| CD-014 | MVP Decision - Video Conferencing | BBB/Jitsi, 4 hypotheses, 1-2 weeks dev, calendar/scheduling |
+| CD-015 | Decision - Calendar/Scheduling | 3 options (Cal.com/custom/Google), 5 hypotheses, 60 sessions/week |
+| CD-016 | Decision - Rebrand to PeerLoop | AlphaPeer → PeerLoop, trademark avoidance, peerloop.com |
+| CD-017 | MVP Decision - Creator Profiles | Basic only ($500), unified system, deferred dashboard/analytics |
+| CD-018 | MVP Decision - Student Profile System | $14K-18.7K, 3-4 weeks, social graph, ST signaling, H4/H6 validation |
+| CD-019 | Decision - Course Content Delivery | $2K-4K, ~1 week, external video/docs, self-mark progress, user journey |
+| CD-020 | MVP Decision - Payment & Escrow | Stripe, $11K-15K, 2-3 weeks, semi-automated 70/15/15 split, H1 validation |

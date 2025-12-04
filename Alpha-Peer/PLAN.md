@@ -2,7 +2,7 @@
 
 **Goal:** Produce a comprehensive SPECS.md document that can be handed off to Claude Code for Alpha Peer development.
 
-**Last Updated:** 2025-11-30
+**Last Updated:** 2025-12-04
 
 ---
 
@@ -20,9 +20,10 @@
 | Metric | Value |
 |--------|-------|
 | Current Phase | GATHER (Phase 2.5) 🔥 |
-| Client Docs Processed | 11 (CD-001 to CD-011) |
+| Client Docs Processed | 20 (CD-001 to CD-020) |
 | Goals Documented | 21 (GO-001 to GO-020) |
-| User Stories Created | 183 (78 P0, 72 P1, 31 P2, 2 P3) |
+| User Stories Created | 258 (135 P0, 89 P1, 32 P2, 2 P3) |
+| User Roles | 9 (incl. Visitor/Guest) |
 | Tech Docs Created | 6 (tech-001 to tech-005, comp-001) |
 | Directives Created | 6 (DIR-001 to DIR-006) |
 | Scenarios Created | 0 |
@@ -225,6 +226,26 @@
 
 ## 🏁 Latest Completed
 
+**2025-12-04:** MVP Decisions & Visitor Role
+- Processed 9 additional client documents (CD-012 to CD-020)
+  - CD-012: MVP Review - Fraser/Gabriel feature review, Genesis cohort 60-80 students
+  - CD-013: Community Feed - GetStream decision, engagement metrics
+  - CD-014: Video Conferencing - BBB/Jitsi decision, calendar/scheduling
+  - CD-015: Calendar/Scheduling - Cal.com vs react-big-calendar options
+  - CD-016: Rebrand to PeerLoop - branding decision
+  - CD-017: Creator Profiles - unified profile system, $8K-11K
+  - CD-018: Student Profile System - $14K-19K, social graph
+  - CD-019: Course Content Delivery - external LMS, $2K-4K
+  - CD-020: Payment & Escrow - Stripe, semi-automated 70/15/15 split, $11K-15K
+- **Added Visitor/Guest role (US-G prefix)** - 15 new stories for pre-registration experience
+  - Homepage & promotional content (US-G001-G004)
+  - Course discovery (US-G005-G007)
+  - Creator/teacher discovery (US-G008-G010)
+  - Authentication actions (US-G011-G013)
+  - Access restrictions (US-G014-G015)
+- Updated GOALS.md Goal Index for all new documents
+- Total now: 20 docs, 21 goals, 258 stories (135 P0, 89 P1, 32 P2, 2 P3), 9 user roles
+
 **2025-11-30 (Session 3):** Miro Board Processing
 - Processed 2 Miro board screenshots as client documents (CD-010, CD-011)
 - **CD-010: Main Activities by Role**
@@ -316,13 +337,13 @@ Phases may be revisited as new information emerges.
 
 **Key Documents:**
 - `GOALS.md` - 21 goals with source traceability (v1)
-- `USER-STORIES.md` - 183 stories organized by 7 roles (v1)
+- `USER-STORIES.md` - 258 stories organized by 9 roles (v1)
 - `DIRECTIVES.md` - 6 constraints for scenario generation (v1)
 - `CLAUDE.md` - Project guidance and phase definitions (v1)
 - `SPECS.md` - Final technical specifications (populated from selected scenario)
 - `/scenarios/` - SPECS.md variants for comparison (with lineage tracking)
 - `/research/` - Technology research documents
-- `client-docs/client-docs-index.md` - 11 source document summaries
+- `client-docs/client-docs-index.md` - 20 source document summaries
 
 **Commands for Adding Information:**
 - `/r-add-client-doc` - Process new client documents

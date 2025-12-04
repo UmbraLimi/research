@@ -1,8 +1,8 @@
 # Alpha Peer - User Stories
 
 **Version:** v1
-**Last Updated:** 2025-11-30
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5)
+**Last Updated:** 2025-12-04
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling)
 
 > **Version History:** Increment version when substantive changes occur (new stories, priority changes, removed stories). Minor edits (typos, formatting) don't require version bump.
 
@@ -14,7 +14,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 **Story ID Format:** `US-[Role][NNN]` where:
 - `US` = User Story prefix
-- `[Role]` = Single letter for role (A=Admin, C=Creator, S=Student, T=Student-Teacher, E=Employer, V=Video/Session, P=Platform)
+- `[Role]` = Single letter for role (G=Guest/Visitor, A=Admin, C=Creator, S=Student, T=Student-Teacher, E=Employer, V=Video/Session, P=Platform, M=Moderator)
 - `[NNN]` = Zero-padded 3-digit number (001-999)
 
 **Priority levels:**
@@ -29,6 +29,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 | Role | Description |
 |------|-------------|
+| **Visitor/Guest** | Non-logged in user browsing public site |
 | **Student** | Learner progressing through courses |
 | **Student-Teacher** | Graduate who teaches peers (earns 70%) |
 | **Creator-Instructor** | Course creator who may also teach directly |
@@ -36,6 +37,52 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | **Admin (AP Rep)** | Platform operations and oversight |
 | **System** | Automated platform functionality |
 | **Community Moderator** | Course community support staff (appointed by Creator) |
+
+---
+
+## Visitor/Guest Stories
+
+*Note: These stories cover the pre-registration experience for non-logged in users visiting the public site.*
+
+### Homepage & Promotional Content
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-G001 | As a Visitor, I need to view the homepage so that I can understand what PeerLoop offers | P0 | Gap Analysis |
+| US-G002 | As a Visitor, I need to see promotional content (how it works, benefits, pricing info) so that I can decide if PeerLoop is right for me | P0 | Gap Analysis |
+| US-G003 | As a Visitor, I need to see success stories or testimonials so that I can trust the platform | P1 | Gap Analysis |
+| US-G004 | As a Visitor, I need to see the value proposition (Learn, Teach, Earn) so that I understand the unique model | P0 | Gap Analysis |
+
+### Course Discovery
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-G005 | As a Visitor, I need to browse available courses so that I can see what I could learn | P0 | Gap Analysis |
+| US-G006 | As a Visitor, I need to view course details (description, curriculum outline, price) so that I can evaluate courses | P0 | Gap Analysis |
+| US-G007 | As a Visitor, I need to see course pricing without logging in so that I can assess affordability | P0 | Gap Analysis |
+
+### Creator/Teacher Discovery
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-G008 | As a Visitor, I need to view creator profiles (public info) so that I can evaluate their expertise | P0 | Gap Analysis |
+| US-G009 | As a Visitor, I need to see Student-Teacher profiles (public info) so that I can see who might teach me | P1 | Gap Analysis |
+| US-G010 | As a Visitor, I need to see creator credentials and course stats so that I can trust the instructors | P1 | Gap Analysis |
+
+### Authentication Actions
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-G011 | As a Visitor, I need to sign up for an account so that I can enroll in courses | P0 | Gap Analysis |
+| US-G012 | As a Visitor, I need to log in to my existing account so that I can access my enrolled courses | P0 | Gap Analysis |
+| US-G013 | As a Visitor, I need to reset my password if forgotten so that I can recover my account | P0 | Gap Analysis |
+
+### Access Restrictions
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-G014 | As a Visitor, I need to see a prompt to sign up when I try to enroll so that I understand registration is required | P0 | Gap Analysis |
+| US-G015 | As a Visitor, I need to see gated content indicators (e.g., "Sign in to view community") so that I know what requires login | P1 | Gap Analysis |
 
 ---
 
@@ -432,6 +479,16 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-P058 | As a System, I need to track Teacher Student points for activity so that gamification motivates teachers | P2 | CD-011 |
 | US-P059 | As a System, I need to handle bidirectional opt-out for Student-Teacher relationships so that both parties can exit gracefully | P1 | CD-011 |
 
+### MVP Gap Stories (from CD-012)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P060 | As a Student, I need a home/landing page showing enrolled courses, next session, and progress at a glance so that I can quickly see my status | P0 | CD-012 |
+| US-P061 | As a Student-Teacher, I need to recommend a student for certification so that the Creator can approve completion | P0 | CD-012 |
+| US-P062 | As a Creator, I need to see certification requests in my dashboard so that I can approve student completions | P0 | CD-012 |
+| US-P063 | As a Creator, I need to see Student-Teacher applications in my dashboard so that I can approve new teachers for my course | P0 | CD-012 |
+| US-P064 | As a Creator, I need to approve payout requests in my dashboard so that Student-Teachers receive their earnings | P0 | CD-012 |
+
 ---
 
 ## Community Moderator Stories
@@ -445,6 +502,162 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-M003 | As a Community Moderator, I need to moderate course-related chats so that community standards are maintained | P1 | CD-010 |
 | US-M004 | As a Community Moderator, I need to add users to closed/private chats so that access is managed | P2 | CD-010 |
 | US-M005 | As a Community Moderator, I need a support dashboard so that I can see pending questions and issues | P1 | CD-010 |
+| US-M006 | As a Community Moderator, I need to delete inappropriate posts in the community feed so that community standards are maintained | P0 | CD-013 |
+| US-M007 | As a Community Moderator, I need to ban users from posting (temp or permanent) so that repeat offenders are handled | P1 | CD-013 |
+| US-M008 | As a Community Moderator, I need to pin important posts so that key announcements are visible | P1 | CD-013 |
+| US-M009 | As a Community Moderator, I need to see a queue of flagged content so that I can review and act on reports | P0 | CD-013 |
+
+---
+
+## Community Feed Stories (from CD-013)
+
+*Note: These stories detail specific community feed functionality beyond basic feed viewing (US-S025, US-P002)*
+
+### Student Feed Interactions
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S036 | As a Student, I need to create text posts in the community feed so that I can share questions and updates | P0 | CD-013 |
+| US-S037 | As a Student, I need to like posts so that I can show appreciation | P0 | CD-013 |
+| US-S038 | As a Student, I need to bookmark posts so that I can save content for later | P1 | CD-013 |
+| US-S039 | As a Student, I need to reply to posts so that I can engage in discussions | P0 | CD-013 |
+| US-S040 | As a Student, I need to repost content so that I can share valuable posts with my followers | P1 | CD-013 |
+| US-S041 | As a Student, I need to flag inappropriate content so that moderators can review it | P1 | CD-013 |
+
+### Student-Teacher Feed Interactions
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T017 | As a Student-Teacher, I need to post my availability to the community feed so that potential students can find me | P0 | CD-013 |
+| US-T018 | As a Student-Teacher, I need to share teaching tips in the feed so that I can build my reputation | P1 | CD-013 |
+
+### Creator Feed Interactions
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C031 | As a Creator, I need to post course announcements to the feed so that students are informed | P0 | CD-013 |
+| US-C032 | As a Creator, I need to pin posts to my course's feed section so that important content is visible | P1 | CD-013 |
+
+---
+
+## Video Session Stories (from CD-014)
+
+*Note: These stories detail specific video conferencing functionality beyond basic session stories (US-V001-V007)*
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T019 | As a Student-Teacher, I need to access recordings of my teaching sessions so that I can review and improve | P1 | CD-014 |
+| US-S042 | As a Student, I need to join video sessions directly from my dashboard so that I don't need external links | P0 | CD-014 |
+| US-S043 | As a Student, I need to join video sessions from email notification links so that I can connect quickly | P0 | CD-014 |
+
+---
+
+## Calendar/Scheduling Stories (from CD-015)
+
+*Note: These stories detail specific booking flow functionality beyond basic calendar stories (US-P020-P025)*
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S044 | As a Student, I need to click "Schedule Session" from a course listing so that I can book a tutoring session | P0 | CD-015 |
+| US-S045 | As a Student, I need to see a list of available Student-Teacher time slots for a selected day so that I can choose a convenient time | P0 | CD-015 |
+| US-S046 | As a Student, I need to receive both email and in-app notifications when I book a session so that I have confirmation | P0 | CD-015 |
+| US-P065 | As a System, I need to generate and deliver BBB links when sessions are booked so that participants can join | P0 | CD-015 |
+
+---
+
+## Student Profile Stories (from CD-018)
+
+*Note: These stories detail the student profile system for hypothesis validation (H4, H6)*
+
+### Student Profile Features
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S047 | As a Student, I need a privacy toggle (public/private) on my profile so that I control my visibility | P0 | CD-018 |
+| US-S048 | As a Student, I need to follow other users (students, Student-Teachers) so that I can build connections | P0 | CD-018 |
+| US-S049 | As a Student, I need to view my followers and following lists so that I can see my network | P1 | CD-018 |
+| US-S050 | As a Student, I need to browse a Student-Teacher directory so that I can discover who can teach me | P0 | CD-018 |
+| US-S051 | As a Student, I need to search for Student-Teachers by name or interests so that I can find a good match | P1 | CD-018 |
+
+### Student-Teacher Signaling
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T020 | As a Student-Teacher, I need an "Available as Student-Teacher" toggle so that I appear in the ST directory | P0 | CD-018 |
+| US-T021 | As a Student-Teacher, I need a "Teaching" badge displayed on my profile so that my role is visible | P0 | CD-018 |
+| US-T022 | As a Student-Teacher, I need to display my list of courses certified to teach so that students know my qualifications | P0 | CD-018 |
+
+### Profile System Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P066 | As a System, I need a Student-Teacher directory showing all users with ST toggle ON so that discovery is enabled | P0 | CD-018 |
+| US-P067 | As a System, I need to track follow relationships (social graph) so that network effects can be measured | P0 | CD-018 |
+| US-P068 | As a System, I need to display follower/following counts on profiles so that social proof is visible | P0 | CD-018 |
+| US-P069 | As a System, I need to display reputation (average star rating, rating count) on profiles (read-only in MVP) so that quality is visible | P1 | CD-018 |
+| US-P070 | As a System, I need a profile strength/completion indicator so that users are encouraged to complete profiles | P2 | CD-018 |
+
+---
+
+## Course Content Delivery Stories (from CD-019)
+
+*Note: These stories detail the minimal course content delivery system for MVP*
+
+### Student Course Access
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S052 | As a Student, I need a course page with organized module structure so that I can see the full learning path | P0 | CD-019 |
+| US-S053 | As a Student, I need to access video content via external links (YouTube/Vimeo) so that I can watch lessons | P0 | CD-019 |
+| US-S054 | As a Student, I need to access document links (Google Drive/Notion) so that I can read course materials | P0 | CD-019 |
+| US-S055 | As a Student, I need to self-mark module progress (checkboxes) so that I can track my completion | P0 | CD-019 |
+| US-S056 | As a Student, I need to schedule my next session from the course page so that I can continue my learning rhythm | P0 | CD-019 |
+
+### Creator Course Monitoring
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C033 | As a Creator, I need to monitor student completion progress so that I can see how students are advancing | P0 | CD-019 |
+| US-C034 | As a Creator, I need to organize course content into modules so that learning is structured | P0 | CD-019 |
+
+### Course Content Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P071 | As a System, I need to display module-based course pages with video and document links so that content is accessible | P0 | CD-019 |
+| US-P072 | As a System, I need to track student progress checkboxes per module so that completion can be monitored | P0 | CD-019 |
+| US-P073 | As a System, I need to show Creator a dashboard of student progress across their courses so that they can monitor completion | P0 | CD-019 |
+
+---
+
+## Payment & Escrow Stories (from CD-020)
+
+*Note: These stories detail the semi-automated payment system. Extends US-P026-P033 with specific admin dashboard functionality.*
+
+### Admin Payout Dashboard
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-A026 | As an Admin (Brian), I need a payout dashboard showing all pending payouts by recipient so that I can see who needs to be paid | P0 | CD-020 |
+| US-A027 | As an Admin (Brian), I need a "Process Payout" button per recipient so that I can trigger individual payouts | P0 | CD-020 |
+| US-A028 | As an Admin (Brian), I need a batch payout option ("Pay All") so that I can process all pending payouts at once | P1 | CD-020 |
+| US-A029 | As an Admin (Brian), I need payout history and audit trail so that I can track what was paid and when | P0 | CD-020 |
+| US-A030 | As an Admin (Brian), I need monthly summary reports so that I can review platform financial activity | P1 | CD-020 |
+
+### Escrow & Release
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P074 | As a System, I need to hold funds in escrow until milestone completion so that payouts are tied to course completion | P0 | CD-020 |
+| US-P075 | As a System, I need clear release criteria for escrowed funds so that payout triggers are defined | P0 | CD-020 |
+| US-P076 | As an Admin (Brian), I need to approve fund releases from escrow so that payouts require manual verification | P0 | CD-020 |
+
+### Earnings Visibility
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T023 | As a Student-Teacher, I need to see my running balance (pending earnings) so that I know what I will be paid | P0 | CD-020 |
+| US-C035 | As a Creator, I need to see my running balance (pending earnings) so that I know what I will be paid | P0 | CD-020 |
 
 ---
 
@@ -452,15 +665,16 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 | Category | P0 | P1 | P2 | P3 | Total |
 |----------|----|----|----|----|-------|
-| Admin | 12 | 10 | 1 | 0 | 23 |
-| Creator | 8 | 14 | 8 | 1 | 31 |
-| Student | 13 | 14 | 8 | 0 | 35 |
-| Student-Teacher | 7 | 6 | 3 | 0 | 16 |
+| Visitor/Guest | 11 | 4 | 0 | 0 | 15 |
+| Admin | 16 | 12 | 1 | 0 | 29 |
+| Creator | 12 | 15 | 8 | 1 | 36 |
+| Student | 29 | 19 | 8 | 0 | 56 |
+| Student-Teacher | 12 | 8 | 3 | 0 | 23 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
-| Platform/Infrastructure | 34 | 13 | 8 | 1 | 56 |
-| Community Moderator | 0 | 4 | 1 | 0 | 5 |
-| **Total** | **78** | **72** | **31** | **2** | **183** |
+| Platform/Infrastructure | 49 | 14 | 9 | 1 | 73 |
+| Community Moderator | 2 | 6 | 1 | 0 | 9 |
+| **Total** | **135** | **89** | **32** | **2** | **258** |
 
 ### Gap Analysis Stories Added (2025-11-30)
 
@@ -494,6 +708,16 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Gap Analysis | Tech Research Phase 2.5 | US-P007–P050, US-V008–V011 |
 | CD-010 | Miro - Main Activities by Role | US-S029–S031, US-C024–C027, US-P051–P055, US-M001–M005 |
 | CD-011 | Miro - Drivers & Action Items | US-S032–S035, US-T014–T016, US-C028–C030, US-P056–P059 |
+| CD-012 | Meeting Prep - MVP Review | US-P060–P064 (MVP gap workflows: student home, certification, ST application, payout approval) |
+| CD-013 | MVP Decision - Community Feed | US-S036–S041, US-T017–T018, US-C031–C032, US-M006–M009 (feed interactions, moderation) |
+| CD-014 | MVP Decision - Video Conferencing | US-T019, US-S042–S043 (session recordings, join from dashboard/email) |
+| CD-015 | Decision - Calendar/Scheduling | US-S044–S046, US-P065 (booking flow, ST slot visibility, BBB link generation) |
+| CD-016 | Decision - Rebrand to PeerLoop | (None - branding only, no user story impact) |
+| CD-017 | MVP Decision - Creator Profiles | (references existing US-C008–C010, US-S004; unified profile system) |
+| CD-018 | MVP Decision - Student Profile System | US-S047–S051, US-T020–T022, US-P066–P070 (profile features, ST signaling, social graph) |
+| CD-019 | Decision - Course Content Delivery | US-S052–S056, US-C033–C034, US-P071–P073 (course page, progress tracking, creator monitoring) |
+| CD-020 | MVP Decision - Payment & Escrow | US-A026–A030, US-P074–P076, US-T023, US-C035 (admin payout dashboard, escrow, earnings visibility) |
+| Gap Analysis | Visitor Stories | US-G001–G015 (pre-registration experience, homepage, course/creator discovery, authentication) |
 
 ---
 
@@ -501,20 +725,21 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 | Role | Prefix | Next Number |
 |------|--------|-------------|
-| Admin | US-A | US-A026 |
-| Creator | US-C | US-C031 |
-| Student | US-S | US-S036 |
-| Student-Teacher | US-T | US-T017 |
+| Visitor/Guest | US-G | US-G016 |
+| Admin | US-A | US-A031 |
+| Creator | US-C | US-C036 |
+| Student | US-S | US-S057 |
+| Student-Teacher | US-T | US-T024 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P060 |
-| Community Moderator | US-M | US-M006 |
+| Platform/Infrastructure | US-P | US-P077 |
+| Community Moderator | US-M | US-M010 |
 
 ---
 
 ## Notes for Implementation
 
-1. **P0 stories (78 total)** are required for Genesis Cohort launch with 3 founding creators
+1. **P0 stories (135 total)** are required for Genesis Cohort launch with 4-5 founding creators
 2. **Student-to-student messaging (US-S017)** flagged as "tricky" - needs careful design to prevent abuse
 3. **Role switching (US-T005)** is critical UX - single account with multiple role views
 4. **Post-session assessment (US-V006)** enables quality tracking for flywheel validation

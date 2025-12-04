@@ -1,8 +1,8 @@
 # Alpha Peer - Goals & Mission
 
 **Version:** v1
-**Last Updated:** 2025-11-30
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter)
+**Last Updated:** 2025-12-04
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review)
 
 > **Version History:** Increment version when substantive changes occur (new goals, changed metrics, revised mission). Minor edits (typos, formatting) don't require version bump.
 
@@ -48,13 +48,15 @@ Three-sided value creation:
 ## MVP Launch Goals
 
 ### GO-004: Genesis Cohort Launch
-**Source:** CD-001, CD-004
+**Source:** CD-001, CD-004, CD-012
 
-Launch with three founding course creators and their initial cohorts:
+Launch with founding course creators and their initial cohorts:
 - Recruit 10-15 AI educators (Phase 1)
 - Run Genesis cohorts to validate model (Phase 2)
 - Ignite flywheel with proven results (Phase 3)
 - Each creator builds 50+ active Student-Teachers
+- **Genesis Target (refined):** 60-80 students across 4-5 courses (CD-012)
+- **Operational Model:** Creators control their courses (certifications, payouts, new Student-Teachers); Platform = strategic oversight only (~3-4 hrs/week)
 
 ### GO-018: MVP Budget & Timeline Constraint
 **Source:** CD-008
@@ -111,25 +113,49 @@ Support fluid transitions between roles:
 "Switch User" button enables role transitions within single account.
 
 ### GO-009: Video Session Infrastructure
-**Source:** CD-002, CD-003
+**Source:** CD-002, CD-003, CD-014, CD-015
 
 Facilitate peer tutoring sessions with:
-- Video conferencing (Big Blue Button integration)
+- Video conferencing (Big Blue Button preferred, Jitsi alternative)
 - Screen sharing for collaborative learning
 - Session recording with AI-powered summaries & transcripts
 - Time monitoring
 - Post-session mutual assessments
 - In-session messaging and file sharing
+- Calendar/scheduling system in dashboard (Options: Cal.com, react-big-calendar, Google Calendar API)
+- Email notifications with session links
+- Google Calendar/Outlook sync
+- BBB link generation and delivery
+
+**Video Success Metrics (CD-014):**
+- Session completion rate >80%
+- 60-80 students using video sessions successfully
+- Video quality acceptable (no major complaints)
+- Student-Teachers comfortable with platform
+
+**Calendar/Scheduling Success Metrics (CD-015):**
+- 80%+ students book at least 1 session via calendar
+- <5% booking errors or failed notifications
+- <2 minutes from click to confirmed booking
+- Zero manual intervention required
+- Capacity: ~60 sessions/week
 
 ### GO-010: Community & Engagement Features
-**Source:** CD-002, CD-003
+**Source:** CD-002, CD-003, CD-013
 
 Build collaborative atmosphere:
-- X.com-style algorithmic feed for content discovery
+- X.com-style algorithmic feed for content discovery (getstream.io)
 - Creator community hubs with forums
 - Gated communities based on credentials
 - Messaging system (role-based routing)
 - Referral system for organic growth
+
+**Community Feed Success Metrics (CD-013):**
+- 60%+ of students post at least once per week
+- 40%+ of students engage daily (view feed)
+- 3-5 posts per day per course (15-25 total posts/day)
+- Student-Teachers actively recruiting via feed
+- At least 2-3 second-generation students find their ST via feed
 
 ### GO-011: Learning Management
 **Source:** CD-002, CD-003, CD-011
@@ -241,6 +267,15 @@ AI education is strategic beachhead:
 | CD-009 | Slack - Blindside/Cloudflare | GO-009, GO-018 (BBB provider confirmed, speed to market) |
 | CD-010 | Miro - Main Activities by Role | GO-003, GO-008, GO-014, GO-019 (roles, engagement, gamification) |
 | CD-011 | Miro - Drivers & Action Items | GO-002, GO-003, GO-011, GO-014, GO-019, GO-020 (drivers, mastery cert, gamification) |
+| CD-012 | Meeting Prep - MVP Review | GO-001, GO-004, GO-005, GO-018 (consolidates MVP features, refines Genesis cohort) |
+| CD-013 | MVP Decision - Community Feed | GO-001, GO-005, GO-006, GO-010 (getstream.io, engagement metrics, flywheel enabler) |
+| CD-014 | MVP Decision - Video Conferencing | GO-001, GO-005, GO-009 (BBB/Jitsi, video metrics, calendar/scheduling) |
+| CD-015 | Decision - Calendar/Scheduling | GO-005, GO-009 (scheduling options, booking metrics, 60 sessions/week) |
+| CD-016 | Decision - Rebrand to PeerLoop | (None - branding only, no goal impact) |
+| CD-017 | MVP Decision - Creator Profiles | GO-003, GO-008 (payment attribution, multi-role system) |
+| CD-018 | MVP Decision - Student Profile System | GO-001, GO-005, GO-006, GO-008, GO-014 (flywheel validation, H4/H6 metrics, social graph, combat isolation) |
+| CD-019 | Decision - Course Content Delivery | GO-001, GO-004, GO-005, GO-011 (flywheel, Genesis cohort, 75% completion, learning management) |
+| CD-020 | MVP Decision - Payment & Escrow | GO-001, GO-003, GO-005, GO-012 (flywheel, 70/15/15 split, H1 validation, payment infrastructure) |
 
 ---
 
