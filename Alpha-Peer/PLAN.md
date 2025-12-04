@@ -11,7 +11,12 @@
 | Phase | Name | Status | Description |
 |-------|------|--------|-------------|
 | **GATHER** | Information Collection | 🔥 IN PROGRESS | Collect client docs, research services, document user stories |
-| **RUN** | Scenario Generation | ⏳ PENDING | Create SPECS.md scenarios from gathered information |
+| **RUN** | Scenario Generation | ⏳ PENDING | Create PAGES.md, then SPECS.md scenarios from gathered information |
+
+**RUN Phase Breakdown:**
+- Phase 3: Page Architecture (PAGES.md)
+- Phase 4: Scenario Creation
+- Phase 5: Final Selection & Handoff
 
 ---
 
@@ -183,6 +188,36 @@
 
 ---
 
+## Phase 2.8: Preparation Tasks (While Awaiting Final Docs) 🔄 OPTIONAL
+
+**Purpose:** Productive work that can be done before final client documents arrive.
+
+### 2.8.1 - Pre-Research Video Conferencing
+- [ ] Research Daily.co capabilities and pricing
+- [ ] Research Digital Samba capabilities and pricing
+- [ ] Draft comparison framework (1:1 optimization, recording, cost, integration complexity)
+- [ ] Note questions to clarify with client once docs arrive
+
+### 2.8.2 - Draft PAGES.md Template
+- [ ] Create empty PAGES.md with section structure
+- [ ] Define page code naming convention
+- [ ] List obvious pages from existing user stories (dashboards, auth, profiles, courses)
+- [ ] Draft access matrix template with 9 user roles
+
+### 2.8.3 - Review Existing User Stories
+- [ ] Audit P0 stories for completeness and clarity
+- [ ] Identify stories that imply specific pages
+- [ ] Flag stories with unclear acceptance criteria
+- [ ] Note potential story dependencies
+
+### 2.8.4 - Non-Functional Requirements Draft
+- [ ] Draft performance expectations based on video/real-time features
+- [ ] Outline security requirements (payments, user data, video sessions)
+- [ ] Document scalability targets (Genesis cohort 60-80, 50+ Student-Teachers per creator)
+- [ ] List reliability requirements for critical paths (video, payments)
+
+---
+
 # RUN PHASE
 
 *Transform gathered information into actionable SPECS.md scenarios.*
@@ -192,31 +227,87 @@
 - Goal: Minimize custom development by leveraging existing services
 - sc-001 is always the fully-custom baseline (no major SaaS)
 
-## Phase 3: Scenario Creation ⏳ PENDING
+## Phase 3: Page Architecture (PAGES.md) ⏳ PENDING
 
-### 3.1 - Baseline Scenario
+**Purpose:** Create a comprehensive page-by-page blueprint that maps user stories and goals to actual site pages, establishing navigation and access patterns before scenario generation.
+
+**Depends on:** GATHER phase completion (all client docs, user stories, and service research)
+
+### 3.1 - Page Inventory
+- [ ] Identify all pages needed from client docs, goals, and user stories
+- [ ] Assign 3-5 letter codes for easy cross-referencing (e.g., SDASH = Student Dashboard)
+- [ ] Group pages by functional area (Auth, Dashboards, Course, Profile, Admin, etc.)
+
+### 3.2 - Page Documentation
+For each page, document:
+- [ ] **Code**: 3-5 letter unique identifier for cross-referencing
+- [ ] **Content**: Summary of what the page displays and enables users to do
+- [ ] **Purpose**: Which goals (GO-NNN) and user stories (US-*NNN) this page fulfills
+- [ ] **Connections**: Links to other pages (with their codes) and navigation context
+- [ ] **Access**: Which user roles can access, with role-specific behavior notes
+
+### 3.3 - Access Matrix
+- [ ] Create role × page access matrix showing which roles can see each page
+- [ ] Document role-specific variations (e.g., Creator sees "My Students" vs Student sees "My Teachers")
+- [ ] Identify shared pages with conditional content
+- [ ] Note authentication requirements (public, logged-in, role-restricted)
+
+### 3.4 - Navigation Patterns
+- [ ] Map primary navigation paths for each user role
+- [ ] Identify dashboard-centric vs. content-centric flows
+- [ ] Document cross-role touchpoints (where different roles interact on same pages)
+
+### 3.5 - Multi-Role User Handling
+**Critical:** Users can hold multiple roles simultaneously (e.g., Student + Student-Teacher + Creator). Pages must accommodate this.
+
+- [ ] Design unified dashboard that adapts to user's active roles
+  - Sidebar menu sections per role (e.g., "My Learning", "My Teaching", "My Courses")
+  - Or tabbed/sectioned layout within single page
+  - Role-specific widgets/cards that appear conditionally
+- [ ] Identify other pages requiring multi-role awareness
+  - Profile pages (showing teaching credentials + learning progress)
+  - Settings (role-specific preferences)
+  - Notifications (aggregated across roles)
+- [ ] Document role combination patterns
+  - Student only (most users start here)
+  - Student + Student-Teacher (graduated to teaching)
+  - Student + Creator (also offers courses)
+  - Student + Student-Teacher + Creator (full progression)
+  - Admin combinations
+- [ ] Define role-switching vs. role-aggregation UX
+  - Do users "switch" active role, or see everything at once?
+  - How to prevent overwhelm for multi-role users?
+  - Mobile vs. desktop layout considerations
+
+**Output:** `PAGES.md` - Complete page architecture document
+
+---
+
+## Phase 4: Scenario Creation ⏳ PENDING
+
+### 4.1 - Baseline Scenario
 - [ ] Create `sc-001-fully-custom-SPECS.md` (no Stream, no BBB, maximum custom dev)
   - Uses only: Cloudflare services, Vercel services, npm packages
   - Establishes baseline for comparing "dev time saved" by services
 
-### 3.2 - Alternative Scenarios
+### 4.2 - Alternative Scenarios
 - [ ] Create `sc-002-*` with required services (Stream + BBB)
 - [ ] Create additional scenarios as client requests variations
 - [ ] Document trade-offs for each scenario (cost, dev time, flexibility)
 
-### 3.3 - Scenario Comparison
+### 4.3 - Scenario Comparison
 - [ ] Create comparison matrix across scenarios
 - [ ] Estimate relative development effort
 - [ ] Present options to client
 
-## Phase 4: Final Selection & Handoff ⏳ PENDING
+## Phase 5: Final Selection & Handoff ⏳ PENDING
 
-### 4.1 - Client Review
+### 5.1 - Client Review
 - [ ] Present scenarios to client
 - [ ] Gather feedback and preferences
 - [ ] Make adjustments as requested
 
-### 4.2 - Finalize SPECS.md
+### 5.2 - Finalize SPECS.md
 - [ ] Client selects final scenario
 - [ ] Copy selected scenario to root `SPECS.md`
 - [ ] Final review for completeness
