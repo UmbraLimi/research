@@ -526,6 +526,100 @@ This protects Developer from claims of implied promises.
 
 ---
 
+## Exhibit A - Deliverables
+
+**EXHIBIT A**
+
+**DELIVERABLES**
+
+**1. Overall Project Goal**
+
+The ultimate deliverable under this Agreement is a minimum viable product ("MVP") web application for "PeerLoop," an online peer-based educational platform. The MVP will enable course creators to publish educational content and learners to engage with that content in a peer-supported environment.
+
+**2. Iterative Development Approach**
+
+The Parties acknowledge that PeerLoop is in early-stage development and that the specific features, functionality, and technical implementation of the MVP cannot be fully defined at the outset. Accordingly:
+
+**(a)** The Deliverables shall be developed iteratively through a series of prepaid blocks of hours ("Blocks"), each accompanied by a Statement of Work ("SOW").
+
+**(b)** Each SOW shall describe the intended Deliverables for that Block based on the project's status at the time of SOW creation.
+
+**(c)** Upon completion of each Block, the Parties shall evaluate progress and mutually agree on the scope of the next SOW. Features, priorities, and technical approaches may be adjusted based on learnings from prior Blocks.
+
+**(d)** A preliminary Block structure through MVP completion has been outlined by Client and Client's advisor; however, this structure is a planning guide only and will evolve as the project progresses.
+
+**3. MVP Acceptance Criteria**
+
+The MVP shall be deemed complete when the Parties mutually agree in writing that:
+
+**(a)** Core platform functionality has been implemented sufficient for initial user testing and investor demonstration;
+
+**(b)** The application is deployable to a production environment; and
+
+**(c)** Client has accepted the final SOW deliverables in accordance with Section 2 of the Agreement.
+
+**4. Current SOW Reference**
+
+The specific Deliverables currently in progress are set forth in the most recent SOW executed by the Parties, which is incorporated herein by reference.
+
+**Reason:** Establishes a flexible, iterative approach that matches the actual working arrangement. Acknowledges that MVP features cannot be fully defined upfront while providing clear acceptance criteria.
+
+---
+
+## Exhibit B - Services
+
+**EXHIBIT B**
+
+**SERVICES**
+
+**1. Scope of Services**
+
+Developer shall provide the following categories of Services in support of the Deliverables described in Exhibit A:
+
+**(a) Software Development**: Design, coding, testing, and deployment of web application components using the agreed-upon technology stack.
+
+**(b) Technical Consultation**: Advising Client on technology choices, third-party service selection, architecture decisions, and implementation approaches.
+
+**(c) Project Planning**: Collaborating with Client to define SOW scope, estimate effort, prioritize features, and plan Block execution.
+
+**(d) Integration Services**: Connecting third-party services, APIs, and platforms as required for the application's functionality.
+
+**(e) Documentation**: Providing technical documentation reasonably necessary for Client to understand, maintain, and operate the Deliverables.
+
+**2. Block and SOW Structure**
+
+Services shall be performed in sequential Blocks as follows:
+
+**(a)** Prior to each Block, the Parties shall execute a SOW describing the intended Services and Deliverables for that Block.
+
+**(b)** Each SOW represents the Parties' good-faith estimate of what can be accomplished within the Block's prepaid hours. Actual progress may vary based on technical complexity, changing requirements, or unforeseen challenges.
+
+**(c)** Upon execution of a new SOW, such SOW shall supersede all prior SOWs with respect to the scope of Services and Deliverables to be performed, except that all terms of this Agreement shall continue to apply.
+
+**(d)** Work items from prior SOWs not completed may be carried forward into a new SOW by mutual agreement.
+
+**(e)** Either Party may propose adjustments to tasks, priorities, or deliverables during a Block; such adjustments shall be documented in the subsequent SOW.
+
+**3. Preliminary Block Structure**
+
+The Parties have discussed a preliminary Block structure to guide planning through MVP completion. This structure is provided for reference only and shall be refined through successive SOWs:
+
+| Block | Focus Area | Status |
+|-------|------------|--------|
+| 1 | Project setup, tech stack, initial architecture | Completed |
+| 2 | [To be defined in SOW] | Pending |
+| 3+ | [Subsequent Blocks to be defined based on progress] | Future |
+
+*Note: Block count, scope, and sequencing will evolve based on project progress and changing priorities.*
+
+**4. Current SOW Reference**
+
+The specific Services currently being performed are set forth in the most recent SOW executed by the Parties, which is incorporated herein by reference.
+
+**Reason:** Formalizes the Block/SOW structure already in use. Provides flexibility for scope to evolve while maintaining accountability through documented SOWs. Supports agile development approach that benefits both parties.
+
+---
+
 ## Negotiation Priority Guide
 
 ### MUST-HAVE (Dealbreakers)
@@ -616,7 +710,8 @@ Good to have, but won't hurt you significantly if dropped.
 | Changes proposed | 30 |
 | Sections reviewed | 12 of 12 |
 | Missing provisions to add | 4 |
-| **Total modifications** | **34** |
+| Exhibits drafted | 2 |
+| **Total modifications** | **36** |
 | Must-Have | 7 |
 | Important | 11 |
 | Nice-to-Have | 16 |

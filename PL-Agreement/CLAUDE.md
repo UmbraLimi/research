@@ -42,12 +42,52 @@ When working with the agreement PDF:
 3. Offer balanced perspective on what protects each party
 4. Flag standard vs. unusual provisions
 
+## Project Files and Relationships
+
+This project maintains several interconnected files. **When updating any file, check whether related files need updates.**
+
+| File | Purpose | Updates Trigger |
+|------|---------|-----------------|
+| `FACTS.md` | Living document of facts gathered across sessions (parties, timeline, payment terms, concerns) | When new information is learned about the parties, arrangement, or context |
+| `REDLINES.md` | Detailed redline document with proposed changes, rationale, and negotiation guidance | When proposed changes are added, modified, or prioritized |
+| `PROPOSED-CHANGES-YYYY-MM-DD-A.md` | Formal proposed revisions document for sharing with Client | When REDLINES.md changes are finalized for presentation |
+
+### File Dependencies
+
+```
+FACTS.md (source of truth for context)
+    ↓
+REDLINES.md (analysis + proposed changes + negotiation strategy)
+    ↓
+PROPOSED-CHANGES-*.md (clean presentation version)
+```
+
+### Update Triggers
+
+**When FACTS.md changes:**
+- Review REDLINES.md - do any rationales or proposed changes need adjustment?
+- Review PROPOSED-CHANGES - does the formal document reflect current understanding?
+
+**When REDLINES.md changes:**
+- Update PROPOSED-CHANGES to match (they should stay in sync)
+- Consider if FACTS.md needs new information added
+
+**When PROPOSED-CHANGES changes:**
+- Ensure REDLINES.md has the same content (REDLINES is the working copy)
+- Update summary statistics in both files
+
+### Naming Convention
+
+- `PROPOSED-CHANGES-YYYY-MM-DD-A.md` - Date indicates version, letter suffix (A, B, C) for same-day revisions
+- When creating a new version, keep the previous version for history
+
 ## Session Continuity
 
 Maintain `FACTS.md` as a living document of facts and pertinent information gathered across sessions. When new information is learned:
 1. Update FACTS.md with the new information
 2. Consult FACTS.md at the start of sessions to recall context
 3. Keep information organized by category for easy reference
+4. **Check if REDLINES.md or PROPOSED-CHANGES need updates based on new facts**
 
 ## Git Workflow
 
