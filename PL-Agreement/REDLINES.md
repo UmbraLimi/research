@@ -25,13 +25,23 @@ This document tracks suggested changes to the Alpha Peer Engagement Letter.
 
 ## Section 12 - General Provisions (Page 4-5)
 
-### Change 2: Add No Personal Liability clause
+### Change 2: Add No Personal Liability clause + Update Signature Block
 
 **Add new subsection 12(e):**
 
 > **(e) No Personal Liability.** Fraser Gorrie is signing this Agreement solely in his capacity as an officer and employee of The Technifar Corporation. Nothing in this Agreement shall be construed to impose any personal liability on Fraser Gorrie individually, and Client agrees to look solely to The Technifar Corporation for performance of Developer's obligations hereunder.
 
-**Reason:** Belt-and-suspenders protection to make corporate liability limitation explicit.
+**Also update Signature Page:**
+
+Change Developer signature block from:
+> Fraser Gorrie
+> ~~Duly Authorized Representative~~
+
+To:
+> Fraser Gorrie
+> **President**
+
+**Reason:** Belt-and-suspenders protection to make corporate liability limitation explicit. Signature block should match the preamble and 12(e) language identifying Fraser's corporate role.
 
 ---
 
@@ -49,15 +59,15 @@ This document tracks suggested changes to the Alpha Peer Engagement Letter.
 
 ---
 
-### Change 4: Limit revision cycles
+### Change 4: Clarify revisions use block hours
 
 **Current:**
 > If not approved by Client, acting reasonably and in good faith, such Services and Deliverables shall be promptly revised and resubmitted by Developer for Client's review and approval.
 
 **Proposed:**
-> If not approved by Client, acting reasonably and in good faith, such Services and Deliverables shall be promptly revised and resubmitted by Developer for Client's review and approval. **Developer shall provide up to two (2) rounds of revisions at no additional charge; further revisions shall be billed at Developer's standard hourly rate.**
+> If not approved by Client, acting reasonably and in good faith, such Services and Deliverables shall be promptly revised and resubmitted by Developer for Client's review and approval. **All such revisions shall become part of the current SOW and expend its block hours.**
 
-**Reason:** Prevents unlimited free revision cycles.
+**Reason:** Clarifies that revisions use prepaid block hours (no unlimited free revisions). Aligns with the prepaid block model.
 
 ---
 
@@ -204,37 +214,23 @@ This document tracks suggested changes to the Alpha Peer Engagement Letter.
 
 ## Section 7 - Representations and Warranties (Page 3)
 
-### Change 14: Add Client warranties
+### Changes 14-15: Simplify Section 7 warranty structure
 
-**Add new Section 7(c):**
+**Rationale:** The original 24-month free warranty period doesn't fit the prepaid block/SOW model. The MVP is the actual deliverable, and post-MVP defect corrections should be handled as paid work through subsequent blocks. This aligns with how the engagement actually works.
 
-> **(c) Client Representations and Warranties.** Client represents and warrants that: (i) it has full power and authority to enter into this Agreement; (ii) all Client Materials provided to Developer are owned by or properly licensed to Client, and do not infringe any third party's intellectual property rights; and (iii) Client will provide timely feedback, approvals, and decisions as reasonably necessary for Developer to perform the Services.
+**Replace Section 7(b) through 7(d) with:**
 
-**Reason:** Balances warranties. Client should warrant that materials they provide are legitimate.
-
----
-
-### Change 15: Substantially revise 7(b) warranty period and terms
-
-**Current:**
-> For a period of [twenty-four] months following Client's acceptance of the Deliverables, Developer shall, at no additional charge, correct any reproducible defect or nonconformity in the Deliverables reported by Client, provided that such defect or nonconformity is not caused by Client's misuse or unauthorized modification.
-
-**Proposed:**
-> For a period of **sixty (60) days** following **Developer's delivery of each Deliverable (or, if applicable, Client's written acceptance thereof)**, Developer shall, at no additional charge, correct any reproducible defect or nonconformity in the Deliverables reported by Client, **subject to the following conditions:**
+> **(b)** Following Developer's delivery of the final Deliverable (or, if applicable, Client's written acceptance thereof), Developer shall correct any reproducible defect or nonconformity in the Deliverable reported by Client through a subsequent block of hours with an appropriate SOW.
 >
-> **(i)** The defect or nonconformity must exist in the Deliverable as delivered by Developer and must not result from: (A) Client's misuse, unauthorized modification, or combination with other software or services not provided by Developer; (B) changes to third-party platforms, APIs, libraries, or services outside Developer's control; (C) modifications made by anyone other than Developer after delivery; or (D) use of the Deliverable in an environment other than that specified by Developer.
+> **(c)** Developer shall have no warranty obligations with respect to any Deliverable that Client has modified or permitted others to modify without Developer's written consent.
 >
-> **(ii) Client bears the burden of demonstrating** that the reported defect existed in the Deliverable as originally delivered.
->
-> **(iii)** Developer's warranty correction obligations under this Section 7(b) shall not exceed **twenty (20) hours** in the aggregate per SOW. Additional correction work beyond this limit shall be billed at Developer's standard hourly rate.
->
-> **(iv)** Developer shall have no warranty obligations with respect to any Deliverable that Client has modified or permitted others to modify without Developer's written consent.
+> **(d)** Client represents and warrants that: (i) it has full power and authority to enter into this Agreement; (ii) all Client Materials provided to Developer are owned by or properly licensed to Client, and do not infringe any third party's intellectual property rights; and (iii) Client will provide timely feedback, approvals, and decisions as reasonably necessary for Developer to perform the Services.
 
-**Reason:**
-- 24 months is excessive; 60 days is reasonable for software
-- Shifts burden of proof to Client (who controls the environment)
-- Caps free warranty work at 20 hours
-- Excludes issues from third-party changes and Client modifications
+**What this does:**
+- Removes 24-month free warranty period entirely
+- Post-MVP defect fixes become paid work under new block/SOW (aligns with prepaid block model)
+- Retains protection against warranty claims for Client-modified code
+- Adds Client warranties for balance
 
 ---
 
@@ -312,13 +308,15 @@ This protects Developer from claims of implied promises.
 
 ## Section 10 - Limitation on Liability (Page 4)
 
-### Change 21: Narrow the exceptions to the liability cap
+### Change 21: Narrow the exceptions to the liability cap (BOTH 10(a) and 10(b))
 
-**Current exceptions:**
+**Current exceptions (in both 10(a) and 10(b)):**
 > Except for liability arising from (a) Developer's intellectual property indemnity obligations, (b) Developer's breach of its confidentiality obligations, or (c) Developer's gross negligence or willful misconduct
 
-**Proposed:**
+**Proposed (apply to BOTH 10(a) and 10(b)):**
 > Except for liability arising from ~~(a) Developer's intellectual property indemnity obligations, (b) Developer's breach of its confidentiality obligations, or (c)~~ Developer's gross negligence or willful misconduct
+
+**Important:** This change must be applied to BOTH Section 10(a) (liability cap) AND Section 10(b) (consequential damages waiver) to maintain internal consistency.
 
 **Reason:**
 - IP indemnity is already capped separately in Change 16 (2x contract value)
@@ -333,9 +331,9 @@ This protects Developer from claims of implied promises.
 
 **Add to Section 10:**
 
-> **(c) Mutual Application.** The limitations of liability set forth in this Section 10 shall apply equally to both Parties. In no event shall either Party's aggregate liability to the other Party exceed the total amounts paid or payable by Client to Developer under this Agreement.
+> **(c) Mutual Application.** Except as specifically provided in Section 8 with respect to intellectual property indemnification, the limitations of liability set forth in this Section 10 shall apply equally to both Parties. In no event shall either Party's aggregate liability to the other Party exceed the total amounts paid or payable by Client to Developer under this Agreement.
 
-**Reason:** If your liability is capped, Client's should be too. Fairness.
+**Reason:** If your liability is capped, Client's should be too. Fairness. The carve-out for Section 8 clarifies that the IP indemnity cap (2x) is a specific exception to this general cap (1x).
 
 ---
 
@@ -477,8 +475,7 @@ This protects Developer from claims of implied promises.
 > **If to Developer:**
 > The Technifar Corporation
 > Attn: Fraser Gorrie
-> [Address]
-> Email: [email address]
+> Email: fraser@meristics.com
 >
 > Notices sent by email shall be deemed received upon confirmation of receipt by reply email, read receipt, or other reasonable evidence of delivery. Either Party may update its notice address by providing written notice to the other Party.
 
@@ -607,8 +604,8 @@ The Parties have discussed a preliminary Block structure to guide planning throu
 | Block | Focus Area | Status |
 |-------|------------|--------|
 | 1 | Project setup, tech stack, initial architecture | Completed |
-| 2 | [To be defined in SOW] | Pending |
-| 3+ | [Subsequent Blocks to be defined based on progress] | Future |
+| 2 | As defined in SOW of invoice 437-002 | Work-In-Progress |
+| 3+ | Subsequent Blocks to be defined based on progress | Future |
 
 *Note: Block count, scope, and sequencing will evolve based on project progress and changing priorities.*
 
@@ -631,7 +628,7 @@ These protect you from serious risk. Do not sign without them.
 | 2 | No personal liability clause | Without this, your personal assets could be at risk |
 | 6 | Compensation terms | The entire payment structure - without it, nothing is defined |
 | 8 | Payment on termination | Ensures you get paid for work done if project ends |
-| 15 | Warranty 24 months → 60 days | 24 months of free bug fixes is untenable; burden of proof shifted to Client |
+| 14-15 | Simplified warranty (no free period) | Post-MVP fixes are paid work via block/SOW; eliminates 24-month free bug fix exposure |
 | 21 | Narrow liability cap exceptions | Without this, the liability cap is meaningless (unlimited exposure) |
 | 24 | Arbitration instead of Louisiana courts | You cannot practically litigate in a foreign jurisdiction |
 | Missing 1 | Notices section | Agreement requires written notice but has no addresses |
@@ -650,7 +647,6 @@ These provide significant protection. Fight for them, but could negotiate specif
 | 5 | SOW superseding structure | Formalizes your working model | Could simplify language |
 | 7 | Mutual termination | You can exit, not just Brian | Could extend notice period (30 days?) |
 | 12 | Confidentiality limited to 3 years | Not bound forever | Could go to 5 years if pushed |
-| 14 | Client warranties | Brian warrants his materials are legit | Standard, should be easy |
 | 16 | Cap indemnity at 2x | Limits IP claim exposure | Could negotiate to 1x or 3x |
 | 17 | Exclude open source | Not liable for React/Next.js IP issues | Critical - don't concede |
 | 18 | Indemnity survival 3 years | Not liable for claims 10 years later | Could go to 5 years |
@@ -681,7 +677,7 @@ Good to have, but won't hurt you significantly if dropped.
 
 ### Negotiation Strategy
 
-**Opening position:** Present all 34 changes as your proposed revisions.
+**Opening position:** Present all 35 modifications as your proposed revisions.
 
 **If Brian pushes back:**
 1. First, explain the reasoning (REDLINES.md has rationale for each)
@@ -707,11 +703,11 @@ Good to have, but won't hurt you significantly if dropped.
 
 | Category | Count |
 |----------|-------|
-| Changes proposed | 30 |
+| Changes proposed | 29 |
 | Sections reviewed | 12 of 12 |
 | Missing provisions to add | 4 |
 | Exhibits drafted | 2 |
-| **Total modifications** | **36** |
+| **Total modifications** | **35** |
 | Must-Have | 7 |
-| Important | 11 |
+| Important | 10 |
 | Nice-to-Have | 16 |
