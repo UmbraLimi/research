@@ -1,8 +1,8 @@
 # Alpha Peer - User Stories
 
-**Version:** v6
+**Version:** v8
 **Last Updated:** 2025-12-24
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec), CD-024 (Brian Walkthrough), CD-025 (Intro to Claude Code Course), CD-029 (Block Sequence)
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec), CD-024 (Brian Walkthrough), CD-025 (Intro to Claude Code Course), CD-029 (Block Sequence), CD-030 (Block 1 Actor Stories), CD-031 (User Journeys Summary), CD-032 (Fraser Meeting Notes), CD-033 (S-T Pricing Clarification)
 
 > **Version History:** Increment version when substantive changes occur (new stories, priority changes, removed stories). Minor edits (typos, formatting) don't require version bump.
 
@@ -232,6 +232,10 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-S005 | As a Student, I need to view course detail pages with curriculum outline and time estimates so that I understand the commitment | P0 | CD-002 |
 | US-S006 | As a Student, I need action buttons (Enroll, Explore Teaching, Follow Course, Join Community) so that I can take next steps | P0 | CD-002 |
 | US-S007 | As a Student, I need related courses suggestions so that I can continue learning | P2 | CD-002 |
+| US-S083 | As a Student, I need to see S-T availability calendar (with dots on available dates) during enrollment so that I know when tutoring is available before purchasing | P0 | CD-033 |
+| US-S084 | As a Student, I need to see a list of available S-Ts with their times during enrollment so that I can choose who to book | P0 | CD-033 |
+| US-S085 | As a Student, I need a "Schedule Later" option during enrollment so that I can purchase without immediately booking a session | P0 | CD-033 |
+| US-S086 | As a Student, I need to be able to request a refund at any time so that I can exit if the tutoring doesn't meet my needs | P0 | CD-033 |
 
 ### Profile & Account
 
@@ -704,15 +708,15 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Category | P0 | P1 | P2 | P3 | Total |
 |----------|----|----|----|----|-------|
 | Visitor/Guest | 11 | 4 | 0 | 0 | 15 |
-| Admin | 16 | 12 | 1 | 0 | 29 |
-| Creator | 12 | 19 | 11 | 1 | 43 |
-| Student | 32 | 26 | 16 | 1 | 75 |
-| Student-Teacher | 12 | 8 | 9 | 0 | 29 |
+| Admin | 16 | 12 | 4 | 0 | 32 |
+| Creator | 12 | 20 | 14 | 1 | 47 |
+| Student | 36 | 27 | 21 | 2 | 86 |
+| Student-Teacher | 12 | 8 | 10 | 0 | 30 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
-| Platform/Infrastructure | 50 | 15 | 14 | 3 | 82 |
+| Platform/Infrastructure | 51 | 18 | 19 | 5 | 93 |
 | Community Moderator | 2 | 6 | 1 | 0 | 9 |
-| **Total** | **139** | **101** | **54** | **5** | **299** |
+| **Total** | **144** | **106** | **71** | **8** | **329** |
 
 ### Gap Analysis Stories Added (2025-11-30)
 
@@ -759,6 +763,10 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-023 | Goodwill Points Spec | US-S062–S068, US-T024–T029, US-P077–P082 (summon help, goodwill points, anti-gaming, availability) |
 | CD-024 | Meeting Notes - Brian Walkthrough | US-S069–S071, US-C037–C038, US-P083–P085 (feed access states, instructor feed, feed promotion) |
 | CD-025 | Sample Course - Intro to Claude Code | US-S072–S075, US-C039–C042 (prerequisites, target audience, testimonials, course format) |
+| CD-030 | Block 1 Actor Stories | (Consolidates existing stories by actor capability - no new stories) |
+| CD-031 | User Journeys Summary | (Consolidates 258 stories into journey narratives - no new stories) |
+| CD-032 | Fraser Meeting Notes | US-A031–A033 (creator fees), US-C045–C048 (subscription, promotion), US-S076–S082 (feed companion, onboarding, sub-communities), US-T033 (coaching), US-P091–P101 (feed UI, feature flags, unified dashboard) |
+| CD-033 | Slack - S-T Pricing | US-S083–S086 (enrollment flow: S-T calendar, S-T list, schedule later, any-time refund) |
 | Gap Analysis | Visitor Stories | US-G001–G015 (pre-registration experience, homepage, course/creator discovery, authentication) |
 
 ---
@@ -884,25 +892,97 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 ---
 
+## Fraser Meeting Notes Stories (from CD-032)
+
+*Note: Stories derived from developer meeting notes (Nov 9 - Dec 24, 2025). Contains creator pricing, feed enhancements, onboarding, and platform features.*
+
+### Creator Pricing & Subscription
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-A031 | As an Admin (Brian), I need to set monthly subscription fees for creators so that the platform generates recurring revenue | P2 | CD-032 |
+| US-A032 | As an Admin (Brian), I need to set per-course publishing fees so that course creation generates revenue | P2 | CD-032 |
+| US-A033 | As an Admin (Brian), I need to grant lifetime memberships to the first 10-20 creators so that early adopters are incentivized | P2 | CD-032 |
+| US-C045 | As a Creator, I need to pay a monthly subscription to maintain my creator account so that I can publish and manage courses | P2 | CD-032 |
+| US-C046 | As a Creator, I need to pay a per-course fee when publishing a new course so that my course becomes available on the platform | P2 | CD-032 |
+
+### Feed Companion & Noise Reduction
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S076 | As a Student, I need to pin posts/authors in a feed companion UI so that I can track specific content without losing it in the scroll | P2 | CD-032 |
+| US-S077 | As a Student, I need to see the original pinned post plus only the latest thread comment so that I can stay updated without noise | P2 | CD-032 |
+| US-S078 | As a Student, I need to see a "recent posters" panel showing the 10 most recent users with 24hr post counts so that I can quickly find active discussions | P2 | CD-032 |
+| US-S079 | As a Student, I need an AI Chat component in the feed so that I can ask for what I want to see | P3 | CD-032 |
+| US-P091 | As a System, I need to maintain a feed companion UI for pinned posts/authors so that users can track specific content | P2 | CD-032 |
+| US-P092 | As a System, I need to display original post + latest thread comment for pinned items so that noise is reduced | P2 | CD-032 |
+| US-P093 | As a System, I need to show a "recent posters" panel with 24hr counts so that activity is visible | P2 | CD-032 |
+
+### Onboarding & Personalization
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S080 | As a Student, I need an onboarding flow to capture my interests so that my feed is personalized from day one | P1 | CD-032 |
+| US-P094 | As a System, I need to collect user interests during onboarding so that feeds can be personalized | P1 | CD-032 |
+| US-P095 | As a System, I need to use interests (not private discussions) for AI suggestions so that privacy is respected | P1 | CD-032 |
+
+### Course Promotion
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C047 | As a Creator, I need to pay for promoted placement of my courses in feeds so that I can increase visibility | P2 | CD-032 |
+| US-C048 | As a Creator, I need basic free promotion options so that I can promote without paying | P1 | CD-032 |
+| US-P096 | As a System, I need to process paid course promotion requests so that promoted courses appear in more feeds | P2 | CD-032 |
+
+### Sub-Communities
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S081 | As a Student, I need to create a sub-community and invite specific users so that I can form study groups or interest clusters | P3 | CD-032 |
+| US-P097 | As a System, I need to support user-created sub-communities with invite functionality so that users can organize privately | P3 | CD-032 |
+
+### Additional Coaching/Mentoring
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S082 | As a Student, I need to request additional tutoring sessions beyond my course allocation so that I can get extra help if needed | P2 | CD-032 |
+| US-T033 | As a Student-Teacher, I need to offer custom coaching/mentoring sessions so that I can earn additional income from students needing extra help | P2 | CD-032 |
+| US-P098 | As a System, I need to process payments for additional coaching sessions so that extra tutoring generates revenue | P2 | CD-032 |
+
+### Platform Features
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P099 | As a System, I need a Changelog page so that users can see what features have been added or changed | P2 | CD-032 |
+| US-P100 | As a System, I need feature flags to hide/show features so that incomplete features can be deployed but hidden | P1 | CD-032 |
+
+### Unified Dashboard
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P101 | As a System, I need a unified dashboard that shows all user roles so that users don't need separate logins per role | P0 | CD-032 |
+
+---
+
 ## Current State
 
 | Role | Prefix | Next Number |
 |------|--------|-------------|
 | Visitor/Guest | US-G | US-G019 |
-| Admin | US-A | US-A031 |
-| Creator | US-C | US-C045 |
-| Student | US-S | US-S076 |
-| Student-Teacher | US-T | US-T033 |
+| Admin | US-A | US-A034 |
+| Creator | US-C | US-C049 |
+| Student | US-S | US-S087 |
+| Student-Teacher | US-T | US-T034 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P091 |
+| Platform/Infrastructure | US-P | US-P102 |
 | Community Moderator | US-M | US-M010 |
 
 ---
 
 ## Notes for Implementation
 
-1. **P0 stories (135 total)** are required for Genesis Cohort launch with 4-5 founding creators
+1. **P0 stories (144 total)** are required for Genesis Cohort launch with 4-5 founding creators
 2. **Student-to-student messaging (US-S017)** flagged as "tricky" - needs careful design to prevent abuse
 3. **Role switching (US-T005)** is critical UX - single account with multiple role views
 4. **Post-session assessment (US-V006)** enables quality tracking for flywheel validation

@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**Version:** v2
-**Last Updated:** 2025-12-23
+**Version:** v3
+**Last Updated:** 2025-12-24
 
 > **Version History:** Increment version when substantive changes occur (new phases, changed workflows, new commands). Minor edits (typos, formatting) don't require version bump.
 
@@ -27,7 +27,8 @@ MyResearch/
 │   ├── API.md            # Backend API operations surface
 │   ├── client-docs/      # Client-provided materials (don't modify originals)
 │   ├── research/         # Technology research (tech-NNN-*.md, comp-NNN-*.md)
-│   ├── scenarios/        # SPECS.md variants (sc-NNN-*-SPECS.md)
+│   ├── scenarios/        # SPECS.md variants (sc-NNN-*-SPECS.md) - legacy
+│   ├── runs/             # RUN phase execution tracking (run-NNN/)
 │   ├── user-stories/     # Detailed story files (story-NNN-*.md)
 │   ├── docs/sessions/    # Session logs by month (YYYY-MM/)
 │   ├── prompts/          # Commands and prompt templates
@@ -154,61 +155,89 @@ The Gather phase collects all information needed to create comprehensive technic
 
 ### Phase: RUN
 
-The Run phase transforms gathered information into actionable technical specifications by creating scenario variants.
+The Run phase transforms gathered information into actionable technical specifications through a collaborative, checkpoint-based process.
 
-**Run process:**
-1. **Input:** All Gather phase information (client docs, user stories, goals, research, **DIRECTIVES.md**, architecture docs)
-2. **Specify:** Choose a base scenario and define changes, restrictions, preferences
-3. **Generate:** Fill out SPECS.md for that scenario, honoring all directives
-4. **Finalize Architecture:** Update DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md for the selected scenario
+**Run Structure:**
 
-**Architecture documents in RUN phase:**
-- Each scenario may have variations in schema (e.g., different fields for different integrations)
-- Each scenario may have different pages (e.g., custom video UI vs embedded BBB)
-- Each scenario may specify different component implementations
-- Each scenario may have different API patterns (REST vs GraphQL, third-party SDKs)
+Each run is tracked in `/runs/run-NNN/` with:
+- `run-NNN.md` - Inputs, parameters, decisions, rationale
+- `scenario.md` - Generated SPECS.md for this run
+- `review-notes.md` - Client feedback and discussion
+- `assets/` - Run-specific decision documents
 
-**Key principles:**
+**Run Lifecycle (Checkpoint-Based):**
+
+```
+Phase 1: INPUTS      → Create run folder, specify parameters
+    ↓
+● Checkpoint ●       → "Ready to generate?"
+    ↓
+Phase 2: GENERATE    → Produce scenario.md
+    ↓
+● Checkpoint ●       → "Review this section?"
+    ↓
+Phase 3: REVIEW      → Client reviews, provides feedback
+    ↓
+● Checkpoint ●       → "Approve or revise?"
+    ↓
+Phase 4: DECIDE      → Approve, reject, or iterate
+```
+
+**Two-Tier Knowledge System:**
+
+| Location | Contains | Example |
+|----------|----------|---------|
+| `research/tech-*.md` | **Global knowledge** - Features, pricing, limitations | "BBB needs 16GB RAM" |
+| `run-NNN/assets/*.md` | **Run-specific** - How that knowledge applies to this run | "Using BBB because of timeline" |
+
+- New learnings during a run should update global research files
+- Run-specific decisions and trade-offs go in assets folder
+
+**Run Workflow:**
+1. Create run folder with `run-NNN.md` specifying inputs
+2. **Consult research files** in `/research/tech-*.md` for technologies in scope
+3. **Snapshot questions state** - Document all open questions and assumptions
+4. Generate `scenario.md` based on inputs + GATHER materials + research
+5. **Create run-specific assets** in `assets/` documenting key decisions
+6. Review with client, document feedback in `review-notes.md`
+7. Record decisions and rationale in run file
+8. Update status in `runs/RUN-INDEX.md`
+9. If approved: copy scenario to `/runs/approved/SPECS.md` then to root `SPECS.md`
+
+**Questions State Tracking:**
+
+Each run captures the state of all open questions at run time:
+- Which questions are Open, Deferred, or Resolved
+- What assumption is made for each open question
+- Impact of each assumption on the generated scenario
+
+This enables future runs to compare what changed when questions get answered.
+
+**Key Principles:**
+- Runs are **collaborative** - pause at checkpoints for discussion
+- Runs are **traceable** - every decision linked to inputs and rationale
+- Runs are **iterative** - create new runs when assumptions change
 - Later client docs override earlier ones when information contradicts
-- Goal is to **minimize custom development time** by leveraging existing software/services
-- Every scenario will have custom development; the question is how much
+- Goal is to **minimize custom development time** by leveraging existing services
 
-**Conflict resolution (document precedence):**
+**Conflict Resolution (Document Precedence):**
 - CD-004 overrides CD-003 overrides CD-002 overrides CD-001
 - More recent documents reflect more current client thinking
 - When in doubt, note the conflict and ask for clarification
 
-**Scenario structure:**
+**Run Scenarios:**
 
 | Scenario | Description | Custom Dev | Third-Party Services |
 |----------|-------------|------------|---------------------|
-| `sc-001-fully-custom` | **Baseline** - No major SaaS (no Stream, no BBB) | Maximum | Cloudflare, Vercel, npm packages only |
-| `sc-002-*` | Variations with different service combinations | Varies | Mix of required + optional services |
+| `sc-001-fully-custom` | **Baseline** - No major SaaS | Maximum | Cloudflare, npm packages only |
+| `sc-002-*` | Required services (Stream + BBB) | Medium | Mix of required + optional |
 | `sc-NNN-*` | Additional scenarios as needed | Varies | Different trade-offs |
 
-**sc-001 (Fully Custom) is always the baseline:**
-- No Stream, no BigBlueButton, no major SaaS platforms
-- Heavy use of infrastructure: Cloudflare services, Vercel services
-- Relies on npm packages for functionality
-- Represents maximum custom development effort
-- Used as comparison point: "How much dev time does Service X save?"
-
-**Run workflow:**
-1. User specifies: base scenario + changes/restrictions/desires
-2. Claude consults all Gather materials + **DIRECTIVES.md**
-3. Claude fills out `/scenarios/sc-NNN-[description]-SPECS.md`, honoring directives
-4. User reviews, requests adjustments
-5. Final scenario becomes root `SPECS.md` for handoff
-
-**Run is complete when:**
-- Client has reviewed scenario options
-- Client has selected final scenario
-- Selected scenario copied to root `SPECS.md`
-- Architecture documents finalized for selected scenario:
-  - DB-SCHEMA.md reflects final technology choices
-  - PAGES.md reflects final page inventory
-  - COMPONENTS.md reflects final component specifications
-  - API.md reflects final backend design
+**Run is Complete When:**
+- Client has reviewed scenario
+- Client has approved or requested new run
+- If approved: scenario copied to root `SPECS.md`
+- Architecture documents finalized for selected scenario
 - Ready for implementation handoff
 
 ---

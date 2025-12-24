@@ -1,6 +1,6 @@
 # Alpha Peer - Folder Structure & Conventions
 
-**Last Updated:** 2025-11-29
+**Last Updated:** 2025-12-24
 
 ## Project Overview
 Alpha Peer is a web application being developed through iterative research and planning. This structure supports opportunistic exploration while maintaining organization for eventual handoff to Claude Code.
@@ -48,8 +48,18 @@ Alpha-Peer/
 ├── /decisions/                         # Decision log
 │   └── decision-NNN-[topic].md        # Why we chose X over Y
 │
-└── /scenarios/                         # SPECS.md variants for client comparison
-    └── sc-NNN-[description]-SPECS.md  # Named scenario variants
+├── /scenarios/                         # SPECS.md variants for client comparison
+│   └── sc-NNN-[description]-SPECS.md  # Named scenario variants
+│
+└── /runs/                              # RUN phase execution tracking
+    ├── RUN-INDEX.md                   # Quick reference to all runs
+    ├── /run-NNN/                      # One folder per run
+    │   ├── run-NNN.md                # Run spec, inputs, decisions, rationale
+    │   ├── scenario.md               # Generated SPECS.md for this run
+    │   ├── review-notes.md           # Client feedback, discussion
+    │   └── /assets/                  # Supporting files (comparisons, diagrams)
+    └── /approved/                     # Approved scenario for handoff
+        └── SPECS.md                  # Final approved specs
 ```
 
 ## Naming Conventions
@@ -257,6 +267,34 @@ Quick reference showing:
 - Gotchas discovered
 - Patterns emerging
 
+### Runs (/runs/)
+RUN phase execution tracking with full traceability:
+- **RUN-INDEX.md** - Quick reference to all runs with status
+- **run-NNN/** - One folder per run containing:
+  - `run-NNN.md` - Run specification (inputs, parameters, decisions, rationale)
+  - `scenario.md` - Generated SPECS.md for this run
+  - `review-notes.md` - Client feedback and discussion
+  - `assets/` - Supporting files (comparisons, diagrams, etc.)
+- **approved/** - Final approved scenario for handoff
+
+**Run Workflow:**
+1. Create new run folder with `run-NNN.md` specifying inputs
+2. **Consult research files** in `/research/tech-*.md` for technologies in scope
+3. Generate `scenario.md` based on inputs + GATHER materials + research
+4. **Create run-specific assets** in `assets/` documenting how research applies to this run
+5. Review with client, document feedback in `review-notes.md`
+6. Record decisions and rationale in run file
+7. Update status in RUN-INDEX.md
+8. If approved: copy scenario to `/approved/SPECS.md` then to root `SPECS.md`
+
+**Research & Assets:**
+- **Global research** (`research/tech-*.md`) - Broadly useful info about technologies (features, pricing, limitations)
+- **Run-specific assets** (`run-NNN/assets/`) - How that knowledge applies to THIS run's constraints
+- New learnings during a run should update global research files
+- Run-specific decisions go in assets folder
+
+**Run Naming:** `run-NNN` where NNN is zero-padded (run-001, run-002, etc.)
+
 ## Workflow Principles
 
 1. **Opportunistic:** Follow interesting leads as they emerge
@@ -272,10 +310,10 @@ Quick reference showing:
 ### Document Versions (for scenario lineage)
 | Document | Current Version | Last Updated |
 |----------|-----------------|--------------|
-| GOALS.md | v2 | 2025-12-24 |
-| USER-STORIES.md | v6 | 2025-12-24 |
+| GOALS.md | v3 | 2025-12-24 |
+| USER-STORIES.md | v8 | 2025-12-24 |
 | DIRECTIVES.md | v1 | 2025-11-30 |
-| CLAUDE.md | v2 | 2025-12-23 |
+| CLAUDE.md | v3 | 2025-12-24 |
 | DB-SCHEMA.md | v1 | 2025-12-24 |
 | PAGES.md | v1 | 2025-12-23 |
 | COMPONENTS.md | v1 | 2025-12-23 |
@@ -284,8 +322,8 @@ Quick reference showing:
 ### Numbering State
 | Category | Next Number |
 |----------|-------------|
-| Client Documents | CD-030 |
-| Goals | GO-024 |
+| Client Documents | CD-034 |
+| Goals | GO-028 |
 | Technologies | tech-007 |
 | Story files | story-001 |
 | Comparisons | comp-002 |
@@ -293,6 +331,7 @@ Quick reference showing:
 | Decisions | decision-001 |
 | Scenarios | sc-001 |
 | Directives | DIR-007 |
+| Runs | run-002 |
 
 ### Research Files Created
 | File | Description | Date |
@@ -331,3 +370,7 @@ Track significant changes to structure:
 - 2025-11-30: Added document versioning system (v1, v2, etc.) to GOALS.md, USER-STORIES.md, DIRECTIVES.md, CLAUDE.md for scenario lineage tracking
 - 2025-12-23: Added DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md for architecture documentation during GATHER phase
 - 2025-12-24: Processed CD-029 (Block Sequence v2.1); added GO-021 through GO-023; added 13 user stories (trust-building, intro sessions); added visitor_inquiries and intro_sessions DB entities
+- 2025-12-24: Processed CD-030 (Block 1 Actor Stories) and CD-031 (User Journeys Summary) from Brian Dec 7, 2025; consolidation documents organizing existing functionality by actor
+- 2025-12-24: Processed CD-032 (Fraser Meeting Notes Nov 9 - Dec 24); added GO-024 through GO-027 (creator pricing, invitation-only launch, onboarding, feed companion); added 26 user stories; added 4 questions for Brian
+- 2025-12-24: Processed CD-033 (Slack S-T Pricing Clarification); resolved Question #23 (unified pricing model); added 4 user stories (US-S083-S086: enrollment flow with S-T calendar, schedule later, any-time refund); USER-STORIES.md v7→v8
+- 2025-12-24: Added /runs/ folder for RUN phase execution tracking; created RUN-INDEX.md and run-001/ with full traceability structure

@@ -701,6 +701,126 @@ Submit post-session assessment.
 
 ---
 
+## Video Platform Interface Contract
+
+> **Architectural Decision:** The video platform is abstracted behind an interface contract. Any video solution (BBB, PlugNmeet, Daily.co, etc.) must implement these operations. This allows platform flexibility without changing core application code.
+
+### Required Capabilities
+
+| Capability | Description | User Stories |
+|------------|-------------|--------------|
+| **Room Creation** | Create a video room with unique ID | US-P065, US-P088 |
+| **Join URL Generation** | Generate participant-specific join URLs | US-S042, US-S043 |
+| **Screen Sharing** | Must support screen sharing | US-A017, US-T007 |
+| **Recording** | Record sessions, retrieve recording URL | US-V005, US-P042 |
+| **Participant Limit** | Minimum 2 (1:1), ideally configurable for groups | US-V002 |
+| **Webhooks** | Session started/ended/participant events | Monitoring |
+
+### Interface: VideoProvider
+
+```typescript
+interface VideoProvider {
+  // Room lifecycle
+  createRoom(options: CreateRoomOptions): Promise<Room>;
+  deleteRoom(roomId: string): Promise<void>;
+
+  // Participant access
+  getJoinUrl(roomId: string, participant: Participant): Promise<string>;
+
+  // Recording
+  startRecording(roomId: string): Promise<RecordingId>;
+  stopRecording(recordingId: string): Promise<RecordingUrl>;
+  getRecording(recordingId: string): Promise<RecordingUrl>;
+
+  // Status
+  getRoomStatus(roomId: string): Promise<RoomStatus>;
+}
+
+interface CreateRoomOptions {
+  sessionId: string;           // Our internal session ID
+  scheduledStart: Date;
+  scheduledEnd: Date;
+  maxParticipants?: number;    // Default 2 for 1:1
+  enableRecording?: boolean;
+  enableScreenShare?: boolean; // Default true
+  moderatorId: string;         // Teacher/S-T user ID
+}
+
+interface Room {
+  roomId: string;              // Provider's room ID
+  meetingUrl: string;          // Generic meeting URL
+  moderatorUrl: string;        // URL with moderator privileges
+  expiresAt?: Date;
+}
+
+interface Participant {
+  userId: string;
+  name: string;
+  role: 'moderator' | 'attendee';
+  avatarUrl?: string;
+}
+
+interface RoomStatus {
+  isActive: boolean;
+  participantCount: number;
+  recordingActive: boolean;
+  startedAt?: Date;
+}
+```
+
+### Provider Implementations
+
+| Provider | Implementation Status | Notes |
+|----------|----------------------|-------|
+| **BigBlueButton** | Evaluated (tech-001) | Established, Blindside Networks managed |
+| **PlugNmeet** | Evaluated (tech-006) | Modern BBB alternative, self-hosted |
+| **Daily.co** | Not yet evaluated | P2P for 1:1, cost-efficient |
+| **Digital Samba** | Not yet evaluated | Low-code iframe embed |
+
+### Integration Points with Core System
+
+| Core System Component | Video Platform Interaction |
+|-----------------------|---------------------------|
+| **Session Booking (POST /sessions)** | Calls `createRoom()` → stores `roomId`, `meetingUrl` |
+| **Join Session (POST /sessions/:id/join)** | Calls `getJoinUrl()` → returns participant URL |
+| **Session End (webhook)** | Receives webhook → updates session status |
+| **Recording Access** | Calls `getRecording()` → stores/serves URL |
+| **Session Cancel (PATCH /sessions/:id)** | Calls `deleteRoom()` if scheduled |
+
+### Webhook Events (Inbound)
+
+```
+POST /webhooks/video-platform
+
+Events:
+- session.started    → Update session status to 'in_progress'
+- session.ended      → Update session status to 'completed', trigger assessment
+- participant.joined → Log for analytics
+- participant.left   → Log for analytics
+- recording.ready    → Store recording URL, notify participants
+```
+
+### Evaluation Criteria for Provider Selection
+
+| Criteria | Weight | BBB | PlugNmeet | Daily.co |
+|----------|--------|-----|-----------|----------|
+| 1:1 Session Cost | HIGH | Per-session fee | Flat $5-10/mo | Per-minute |
+| Recording Storage | HIGH | Provider cloud | Self-hosted | Provider cloud |
+| Screen Sharing | REQUIRED | ✅ | ✅ | ✅ |
+| Integration Complexity | MEDIUM | API + webhooks | API + webhooks | SDK |
+| UI Customization | LOW | Limited | Good | Excellent |
+| Managed Hosting | MEDIUM | Blindside | Self-host | Managed |
+
+### Decision Status
+
+**Current Directive:** DIR-001 specifies MUST-USE BigBlueButton
+
+**Recommendation:** Evaluate PlugNmeet against this interface. If it implements all required capabilities, update DIR-001 to allow either BBB or PlugNmeet as compliant providers.
+
+**Questions #2 and #3 are now non-blocking** - the interface is defined; provider selection can happen during implementation.
+
+---
+
 ## Payments
 
 ### POST /checkout/create

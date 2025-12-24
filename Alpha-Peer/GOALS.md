@@ -1,8 +1,8 @@
 # Alpha Peer - Goals & Mission
 
-**Version:** v2
+**Version:** v3
 **Last Updated:** 2025-12-24
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review), CD-029 (Block Sequence)
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review), CD-029 (Block Sequence), CD-032 (Fraser Meeting Notes)
 
 > **Version History:** Increment version when substantive changes occur (new goals, changed metrics, revised mission). Minor edits (typos, formatting) don't require version bump.
 
@@ -372,9 +372,56 @@ Grant immediate community feed access upon course payment (changed from previous
 | CD-020 | MVP Decision - Payment & Escrow | GO-001, GO-003, GO-005, GO-012 (flywheel, 70/15/15 split, H1 validation, payment infrastructure) |
 | CD-024 | Meeting Notes - Brian Walkthrough | GO-001 (flywheel testing with 4 courses), GO-019 (feed promotion gamification) |
 | CD-029 | Block Sequence v2.1 | GO-001, GO-002, GO-004, GO-005, GO-006, GO-014, GO-018, GO-021 (trust-building), GO-022 (video lynchpin), GO-023 (access upon payment) |
+| CD-030 | Block 1 Actor Stories | GO-001, GO-004, GO-008 (consolidates actor capabilities for Block 1) |
+| CD-031 | User Journeys Summary | GO-001, GO-004, GO-018 (consolidates 258 stories, 14-18 week timeline) |
+| CD-032 | Fraser Meeting Notes | GO-003 (creator pricing), GO-010 (feeds), GO-024 (creator subscription), GO-025 (invitation-only launch), GO-026 (onboarding), GO-027 (feed companion) |
+
+---
+
+## Creator & Platform Revenue Goals
+
+### GO-024: Creator Subscription Revenue Model
+**Source:** CD-032 (Fraser Meeting Notes - Nov 21)
+
+Implement creator monetization beyond transaction fees:
+
+- **Monthly subscription fee** for creators to use platform
+- **Per-course fee** for each course published
+- **Lifetime membership** for first 10-20 creators (early adopter incentive)
+- AppSumo launch consideration for bootstrapping creator community
+
+**Relationship to GO-003:** This adds B2B revenue stream alongside the 15% transaction fee.
+
+### GO-025: Invitation-Only Launch Strategy
+**Source:** CD-032 (Fraser Meeting Notes - Nov 24)
+
+Launch with controlled access:
+- Invitation-only to control reception and loading
+- Create buzz through exclusivity
+- Validate model before public launch
+- Aligns with Genesis Cohort approach (GO-004)
+
+### GO-026: Onboarding & Personalization
+**Source:** CD-032 (Fraser Meeting Notes - Nov 26)
+
+Capture user interests for personalized experience:
+- Onboarding process to get initial interests from users
+- AI-powered suggestions for courses, teachers, students over time
+- **Privacy-first:** Clear policy, NOT mining user discussions
+- Enables algorithmic feed personalization (GO-010)
+
+### GO-027: Feed Companion & Noise Reduction
+**Source:** CD-032 (Fraser Meeting Notes - Nov 26, Dec 24)
+
+Address feed noise with companion UI:
+- **Pinnable posts/authors** in persistent UI element
+- Show original post + latest thread comment only
+- User feed showing 10 most recent posters with 24hr count
+- **AI Chat component** in feed - users can ask for what they want to see
+- Reduces information overload while maintaining engagement
 
 ---
 
 ## Current State
 
-**Next Goal Number:** GO-024
+**Next Goal Number:** GO-028

@@ -1945,9 +1945,332 @@ Comprehensive block sequence planning document from Gabriel (project manager) br
 
 ---
 
+### CD-030: PeerLoop Block 1 Actor Stories (Dec 7, 2025)
+**Date Uploaded:** 2025-12-24
+**Original Date:** 2025-12-07
+**Author:** Gabriel Rymberg (with Claude), Corrections by Brian LeBlanc
+**Status:** APPROVED
+**Summary for SPECS.md:**
+
+Actor-organized view of Block 1 capabilities. Describes what each type of person can DO with PeerLoop, organized by actor rather than by feature. Essential for validating "Can we put this person in front of the system and let them do their job?"
+
+**Key elements for SPECS.md:**
+
+- **Four Actors Defined:**
+  | Actor | Example | Role |
+  |-------|---------|------|
+  | Student | Sarah | Pays for course, learns from Student-Teacher |
+  | Student-Teacher | Marcus | Certified former student who now teaches others |
+  | Creator | Guy | Expert who created the course content, manages their course |
+  | Platform Owner | Brian | Runs PeerLoop, handles platform-level operations |
+
+- **Student (Sarah) Block 1 Capabilities:**
+  - Discover and evaluate courses (browse, view details, pricing, creator info)
+  - Create account and pay (Stripe Checkout)
+  - Schedule first session (view S-T availability, book time slot)
+  - Access course content (modules, video links, document links, progress checkboxes)
+  - Attend video sessions (BBB)
+  - Track progress
+  - **CANNOT:** Apply to become S-T (button exists, Creator approves), see certificate in portal (email only), rate S-T, access community feed (Discord instead), cancel/reschedule via system, pay in installments, request refund via system
+
+- **Student-Teacher (Marcus) Block 1 Capabilities:**
+  - Set availability (calendar with time slots)
+  - View assigned students with progress
+  - View upcoming sessions
+  - Conduct teaching sessions (BBB, screen share)
+  - Recommend students for certification
+  - Receive booking notifications (email + calendar invite)
+  - Receive payouts (Stripe, after Creator approval)
+  - **CANNOT:** Approve certifications, view session recordings, add session notes in system, cancel/reschedule sessions via system
+
+- **Creator (Guy) Block 1 Capabilities:**
+  - Monitor course performance (enrollments, active students, completion rate, revenue)
+  - View enrolled students with progress
+  - View upcoming sessions
+  - View Student-Teachers list
+  - **Approve certifications** (click button → certificate issued via email)
+  - **Approve payouts** (click button → Stripe processes 70/15/15)
+  - **Approve Student-Teacher applications** (click button → student becomes S-T)
+  - **CANNOT:** Edit course content in system (ask Brian), upload new content, message students directly (use Discord), see advanced analytics
+
+- **Platform Owner (Brian) Block 1 Capabilities:**
+  - Onboard Creators (manual vetting + database setup)
+  - Monitor platform health (admin access to all dashboards + Stripe)
+  - Handle platform-level exceptions (refunds, disputes, technical issues)
+  - Creator support (1-2 hrs/week check-ins)
+  - **Does NOT:** Approve certifications, approve payouts, approve S-T applications, day-to-day course operations
+  - **Weekly time commitment:** ~3-4 hrs/week
+
+- **Automated vs Manual Summary:**
+  | Automated (System) | Creator Dashboard | Brian (Manual) |
+  |-------------------|-------------------|----------------|
+  | Payment collection | Approve certifications | Creator onboarding |
+  | Account creation | Approve payouts | Course creation in DB |
+  | Course enrollment | Approve S-T applications | Refunds |
+  | Content access | Monitor students/S-Ts | Platform exceptions |
+  | Scheduling/booking | | Creator support |
+  | Video sessions (BBB) | | |
+  | Progress tracking | | |
+  | Email notifications | | |
+  | Payout processing | | |
+
+- **Open Questions (7 total):**
+  1. Certification format (PDF? Email? Badge?)
+  2. Communication channels (S-T and Creator)
+  3. Cancellation/rescheduling process
+  4. S-T assignment permanence (can student switch?)
+  5. Payout timing (per completion? weekly batch?)
+  6. Content update requests
+  7. Progress verification
+
+**Technical Implications:**
+- Block 1 Creator Dashboard is ACTIVE - not just monitoring, but action buttons for approval workflows
+- Key correction from original: Creator (not Brian) manages course operations
+- Brian's time reduced from earlier 6-10 hrs to 3-4 hrs/week
+- Payouts via Stripe (not PayPal/Venmo manual)
+- No ratings on S-T cards in Block 1 (Block 2 feature)
+
+**Relationship to Other Docs:**
+- **Organizes** CD-012's 8 MVP features by actor
+- **Confirms** CD-019's creator-controlled operational model
+- **Confirms** CD-020's Stripe-based payout workflow
+- **Clarifies** Block 1 scope vs later blocks
+
+**Goals Referenced:** GO-001 (flywheel), GO-004 (Genesis cohort), GO-008 (multi-role system)
+**Stories Referenced:** Consolidates existing stories by actor capability
+
+---
+
+### CD-031: PeerLoop User Journeys & Summary (Dec 7, 2025)
+**Date Uploaded:** 2025-12-24
+**Original Date:** 2025-12-07
+**Author:** Brian + Claude (Q-Command System)
+**Status:** APPROVED
+**Summary for SPECS.md:**
+
+Quick reference document with user journey narratives and one-page story summary. Provides high-level view of all actors' journeys and story counts by category.
+
+**Key elements for SPECS.md:**
+
+- **User Journey Narratives for 7 Actor Types:**
+  1. **Student (Sarah):** Browse → enroll ($450) → schedule → learn (BBB sessions + content) → complete → certify → apply to become S-T → teach others
+  2. **Student-Teacher (Marcus):** Set availability → receive bookings → conduct sessions → guide students → recommend for certification → receive 70% payout
+  3. **Creator (Guy):** Work with Brian to set up course → monitor dashboard → approve certifications/payouts/S-T apps → earn 15% royalty
+  4. **Admin (Brian):** Onboard creators → monitor platform → handle exceptions → 3-4 hrs/week strategic oversight
+  5. **Visitor:** View value proposition → browse courses/creators without login → sign up when enrolling
+  6. **Community Moderator:** Monitor feed → answer questions → delete/ban → pin announcements → manage flagged queue
+  7. **Employer/Funder:** Pay for employee enrollment → receive progress updates → get certification copy
+
+- **One-Page Story Summary:**
+  | Actor | Stories | Notes |
+  |-------|---------|-------|
+  | Visitor (Pre-Login) | 15 | Homepage, courses, auth |
+  | Student | 56 | P0: pay, content, sessions, dashboard; P0 Block 2: S-T application, certificates |
+  | Student-Teacher | 23 | P0: availability, students, sessions, payouts |
+  | Creator | 36 | P0: students, S-Ts, sessions, approvals |
+  | Admin (Brian) | 29 | P0: onboard, refunds, Stripe |
+  | System/Platform | 84 | Auth, payments, video, email, calendar, progress, messaging, feed |
+  | Community Moderator | 9 | Delete posts, flagged queue |
+  | Employer/Funder | 6 | All P1 |
+  | **TOTAL** | **258** | **135 P0 (MVP Critical)** |
+
+- **Timeline (Full 135 P0 Scope):**
+  | Phase | Weeks | What's Done |
+  |-------|-------|-------------|
+  | Block 1 | 4-5 | Core flow + basic messaging |
+  | Block 2 | 4-5 | Community feed + profiles |
+  | Block 3 | 4-6 | Full features + polish |
+  | Buffer | 2 | Testing |
+  | **TOTAL** | **14-18** | **Launch: April-May 2026** |
+
+- **Key Decisions (Dec 7, 2025) - Updated:**
+  - ✅ Build messaging system (full in-platform)
+  - ✅ Build community feed (posts, likes, replies, follows)
+  - ✅ Build follow system (social graph)
+  - ✅ Build file uploads (profiles, course materials)
+
+- **Flywheel Summary:**
+  ```
+  Student enrolls ($450) → Learns from S-T → Completes → S-T recommends → Creator certifies
+  → Creator approves payout → 70/15/15 split via Stripe → Student becomes S-T → Teaches new students → Cycle repeats
+  ```
+
+**Timeline Note:**
+- CD-031 shows 14-18 weeks / April-May 2026 launch
+- CD-029 shows 21-24 weeks / May-June 2026 launch
+- Difference: CD-031 covers P0 scope only; CD-029 includes community and polish blocks
+
+**Story Count Note:**
+- CD-031 shows 258 total / 135 P0
+- USER-STORIES.md shows 299 total / 139 P0
+- Difference likely due to stories added after Dec 7 (CD-023 Goodwill, CD-024 Feed Access, CD-025/CD-026 Course Display, CD-029 Trust-Building)
+
+**Relationship to Other Docs:**
+- **Consolidates** CD-030's actor capabilities into journey narratives
+- **Provides** story summary aligned with CD-029's block structure
+- **Confirms** timeline and key decisions from Dec 7
+
+**Goals Referenced:** GO-001 (flywheel), GO-004 (Genesis cohort), GO-018 (timeline)
+
+---
+
+### CD-032: Fraser's Meeting Notes (Nov 9 - Dec 24, 2025)
+**Date Uploaded:** 2025-12-24
+**Original Date:** 2025-11-09 to 2025-12-24
+**Author:** Fraser (Developer)
+**Type:** Compiled Meeting Notes
+**Summary for SPECS.md:**
+
+Developer's personal notes from meetings and observations over the project timeline. Contains valuable context, decisions, and open questions not fully captured in formal documents.
+
+**Key elements for SPECS.md:**
+
+- **Creator Pricing Model (Nov 21) - NEW:**
+  - Monthly subscription fee for creators
+  - Per-course fee for each course
+  - **Lifetime membership for first 10-20 creators** (early adopter incentive)
+  - AppSumo launch consideration for bootstrapping community
+
+- **Platform Philosophy (Nov 20):**
+  - 80% focus on education/giving to public, 20% on monetization
+  - Not worried about going viral - will be a good business regardless
+
+- **Product Naming (Dec 22) - NEW:**
+  - Brian doesn't like "tutoring" - prefers "skills taught from people just ahead of you"
+  - Teaching moves learner from 70% to 80% mastery
+  - Gabriel: Call it a "platform" not an "app"
+  - Fraser's suggestion: "Personalized transfer of skills platform"
+  - **Learning split:** 50% non-expert tutoring, 50% social interaction through feeds/challenges
+
+- **Architecture Decisions (Nov 24):**
+  - BBB and Stream as **backend services** to custom frontend
+  - Create as little new stuff as possible while looking professional
+  - Keep costs down until site pays for itself, then go fully custom
+  - Eventually may have 3 developers working for Fraser
+  - Invitation-only launch to control reception and create buzz
+
+- **Feed Companion UI (Nov 26 + Dec 24) - NEW:**
+  - User feed showing 10 most recent posters with 24hr count
+  - Pinnable authors/posts to track specific content
+  - AI Chat component in feed - users can ask for what they want to see
+  - **Feed noise solution:** Pin a post → show original + latest thread comment only
+  - Privacy: Clear policy, NOT using AI to mine user discussions
+
+- **Onboarding Process (Nov 26) - NEW:**
+  - Need onboarding to get initial interests from users
+  - AI can suggest courses/teachers/students over time (with privacy in mind)
+
+- **Timeline Reality (Dec 10) - CONFLICTS:**
+  - Fraser believes 6 months more realistic than 4 months
+  - Budget ($75K) OK at present
+
+- **Page Architecture (Dec 22) - NEW:**
+  - 3 basic page types:
+    1. **Public-facing:** Predictable layout, CTAs to get signups
+    2. **User-facing:** After login
+    3. **Admin pages:** Just for Brian
+  - Could be subdomains or folders under main domain
+
+- **Additional Features Mentioned:**
+  - **Changelog page** (Dec 5) - add to site
+  - **Feature flags** (Dec 24) - hide features behind flags
+  - **ICS export** (Dec 10) - export calendar to Google/Outlook/Apple via email
+  - **Course promotion** (Dec 24) - paid promotion into feeds, basic promotion free
+  - **Sub-communities** (Dec 24) - users may want to create and invite others
+  - **Custom coaching/mentoring** (Dec 24) - revenue stream for students needing extra help
+
+- **Unified Dashboard (Dec 24) - CLARIFICATION:**
+  - User can have multiple roles simultaneously (student, guest, student-teacher, teacher)
+  - Dashboard should show all roles on common dashboard
+  - NOT separate logins per role
+  - Roles isolated and interconnected as needed
+
+- **Open Questions (Dec 24):**
+  1. **S-T Pricing Visibility:** How do new students see S-T prices before buying course?
+     - Students buy course from Teacher but S-Ts have cheaper rates they never see
+     - Need to resolve: how do students find/evaluate S-Ts before buying?
+  2. **Course Passing:** How do students "pass" a course? What are the criteria?
+  3. **Moderator Invites:** Moderators need login + invite from Teacher to moderate feeds
+
+**Technical Implications:**
+- Feature flag system needed for hiding features
+- Onboarding flow for interest collection
+- Feed companion/pinning UI component
+- AI chat integration in feed
+- Sub-community creation capability
+- Changelog page
+- 3-tier page architecture (public/user/admin)
+
+**Relationship to Other Docs:**
+- **Reinforces** CD-005, CD-008 (Stream for feeds, BBB for video)
+- **Adds** creator pricing model not in other docs
+- **Adds** feed companion UI concept
+- **Adds** onboarding process requirement
+- **Clarifies** unified dashboard vs separate role logins
+- **Raises** timeline concern (6 months vs 4 months)
+
+**Goals Referenced:** GO-003 (sustainable income - creator pricing), GO-010 (community features - feed companion), GO-019 (gamification - noted)
+**Goals Implied:** Creator subscription model, feature flag system, onboarding process
+**Stories Implied:** 15+ new stories (feed companion, onboarding, changelog, sub-communities, extra coaching, course promotion, feature flags)
+
+---
+
+### CD-033: Slack - S-T Pricing Clarification
+**Date Uploaded:** 2025-12-24
+**Source:** Slack conversation between Fraser Gorrie and Brian LeBlanc
+**Type:** Clarification / Decision
+**Summary for SPECS.md:**
+
+Real-time Slack conversation resolving Question #23 about Student-Teacher pricing visibility. Contains critical pricing model decisions.
+
+**Key elements for SPECS.md:**
+
+- **Unified Pricing Model (CONFIRMED) - CRITICAL:**
+  - **Course price IS the S-T price** - no separate Teacher premium
+  - Creator prices course as if they're NOT the primary teacher
+  - "Too complicated for the creator to charge premium. Too confusing."
+  - Question #23 resolved: no hidden pricing because displayed price already reflects S-T level
+
+- **Revenue Split (CONFIRMED):**
+  - **85/15 split** (platform takes 15%)
+  - Example: $450 course → $67.50 site, $67.50 creator, $315 adjustable (S-T share)
+  - When creator teaches: creator earns full amount (minus platform fee)
+
+- **Enrollment Flow (CLARIFIED):**
+  1. Student finds course, clicks for detail
+  2. Clicks Enroll button
+  3. Sees **calendar with dots** showing S-T availability
+  4. **S-T list with times** displayed below calendar
+  5. Click S-T for detail OR click time to purchase
+  6. **"Schedule Later" button** available
+  7. After purchase: access to course feed + booking rights
+
+- **Creator Teaching Role (CLARIFIED):**
+  - Creator can teach but will reduce as network grows
+  - Creator charges **same fee as S-Ts** (no premium)
+  - Creator's job: "prime the pump" - teach initially, certify S-Ts
+  - Community takes over teaching over time
+
+- **Refund Policy (NEW):**
+  - Students can bail at **any time** and get a refund
+  - "The pressure is on the student teacher to earn his pay"
+
+- **S-T Discount Option (POSTPONED):**
+  - Initially discussed: S-Ts could teach at discount/free to gain experience
+  - Concern: "bidding war" might "cheapen the experience"
+  - Decision: Defer for MVP, see if quality S-T experience holds up
+
+**Technical Implications:**
+- Course detail page needs S-T availability calendar view
+- Single price point per course simplifies payment logic
+- Refund system required with any-time cancellation
+- No need for price comparison UI (single price)
+
+---
+
 ## Index Statistics
-- **Total Documents:** 29
-- **Next CD Number:** CD-030
+- **Total Documents:** 33
+- **Next CD Number:** CD-034
 - **Last Updated:** 2025-12-24
 
 ## Quick Reference
@@ -1983,3 +2306,7 @@ Comprehensive block sequence planning document from Gabriel (project manager) br
 | CD-027 | Prototype Walkthrough - Complete | All 5 personas, 20+ pages, 31 keepers, gaps & UX issues, 12 questions for Brian |
 | CD-028 | Slack - PlugNmeet | Modern BBB replacement, microservices, Zoom-like UI, flat pricing |
 | CD-029 | Block Sequence v2.1 | Gabriel's management doc, 6 hypotheses (H1-H6), block sequence 0.x-2.x, Brian's trust-building comments, Dec 15 access model change, Dec 19 UX "video lynchpin" |
+| CD-030 | Block 1 Actor Stories | 4 actors (Student, S-T, Creator, Brian), Block 1 capabilities/limitations, automated vs manual, open questions |
+| CD-031 | User Journeys Summary | 7 actor journeys, 258 stories / 135 P0, 14-18 week timeline, April-May 2026 launch, Dec 7 decisions |
+| CD-032 | Fraser Meeting Notes | Creator pricing model, feed companion UI, onboarding, 6-month timeline, unified dashboard, open questions |
+| CD-033 | Slack - S-T Pricing | Unified pricing (course price = S-T price), 85/15 split, enrollment flow, refund policy, S-T discounts deferred |

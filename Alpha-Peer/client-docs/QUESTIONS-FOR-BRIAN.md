@@ -14,14 +14,13 @@
 
 ## From CD-007 & CD-028: Video Platform Decision
 
-2. **Video platform final decision** - Originally three options (Daily.co, Digital Samba, BBB). CD-009 confirmed Blindside Networks for BBB. BUT CD-028 introduces **PlugNmeet** as modern BBB replacement. What is the final choice?
-   - **PlugNmeet:** Modern UI, microservices architecture, flat pricing ($5-10/mo self-hosted), same classroom features as BBB
-   - **BBB:** Established but "old and dated", monolithic architecture, per-session fees via Blindside
-   - **Daily.co/Digital Samba:** P2P options for 1:1 cost savings
+> **UPDATE (2025-12-24):** Questions #2-4 are now **non-blocking** due to architectural decision. See `API.md` → "Video Platform Interface Contract". The video platform is abstracted behind an interface - any compliant provider (BBB, PlugNmeet, Daily.co) can be selected during implementation without affecting core architecture.
 
-3. **PlugNmeet evaluation status** - Brian mentioned needing to "look deeper" at PlugNmeet. What's the verdict? Should DIR-001 (MUST-USE BigBlueButton) be updated?
+2. ~~**Video platform final decision**~~ → **DEFERRED TO IMPLEMENTATION** - Interface contract defined in API.md. Provider selection can happen later based on cost/hosting preferences.
 
-4. **Single platform or hybrid?** - Should we use one video solution for everything, or different solutions for different use cases (1:1 vs group)?
+3. ~~**PlugNmeet evaluation status**~~ → **DEFERRED TO IMPLEMENTATION** - PlugNmeet can be evaluated against the VideoProvider interface during implementation. DIR-001 may be updated to "MUST-USE VideoProvider-compliant platform".
+
+4. **Single platform or hybrid?** - Interface allows for multiple providers if needed. Decision can be made during implementation based on cost analysis.
 
 ---
 
@@ -82,17 +81,49 @@
 
 ---
 
+## From CD-032: Fraser Meeting Notes (Dec 24 Observations)
+
+### Student-Teacher Pricing Visibility
+23. ~~**S-T Pricing Before Purchase**~~ → **RESOLVED (CD-033)** - The course price **IS** the S-T price. Creators price courses as if they're NOT the primary teacher. There is no separate Teacher premium pricing. This eliminates the "hidden pricing" concern entirely.
+
+> **Key clarifications from CD-033:**
+> - Unified pricing model: single price point per course
+> - Creator charges same as S-Ts (no premium)
+> - 85/15 revenue split (platform/creator+S-T)
+> - Enrollment flow shows S-T availability calendar before purchase
+> - "Schedule Later" option available after purchase
+> - Students can refund at any time
+
+### Course Completion Criteria
+24. **How do students "pass" a course?** - What are the criteria for completing/passing a course?
+    - Is it self-reported progress (checkboxes)?
+    - Is it S-T recommendation + Creator approval (as documented)?
+    - Is there a minimum number of sessions?
+    - What happens if a student can't pass in allotted sessions?
+
+### Moderator Mechanics
+25. **Moderator Invite System** - How does a Teacher invite a Moderator?
+    - Is there an invite link/code?
+    - Can a Moderator be assigned to specific feeds (Teacher feed, course feed, or both)?
+    - What is the onboarding flow for Moderators?
+
+### Timeline Concern
+26. ~~**6 Months vs 4 Months**~~ → **RESOLVED** - Brian confirms **4 months is the goal**. Strategy: Practice feature removal if scope doesn't fit. Timeline is fixed; features are flexible.
+
+---
+
 ## Summary
 
-| Source | Questions |
-|--------|-----------|
-| CD-005 | 1 |
-| CD-007 & CD-028 | 3 |
-| CD-010 | 1 |
-| CD-011 | 4 |
-| CD-018 | 1 |
-| CD-027 | 12 |
-| **Total** | **22** |
+| Source | Questions | Status |
+|--------|-----------|--------|
+| CD-005 | 1 | Open |
+| CD-007 & CD-028 | 3 | **#2-4 Deferred** (interface abstraction) |
+| CD-010 | 1 | Open |
+| CD-011 | 4 | Open |
+| CD-018 | 1 | Open |
+| CD-027 | 12 | Open |
+| CD-032 | 4 | **#23, #26 Resolved** |
+| **Total** | **26** | **21 Open, 3 Deferred, 2 Resolved** |
 
 ---
 
@@ -111,4 +142,5 @@
 
 | Question | Answer | Date | Updated In |
 |----------|--------|------|------------|
-| - | - | - | - |
+| #23: S-T Pricing Visibility | Course price IS S-T price. Unified pricing, no Teacher premium. 85/15 split. | 2025-12-24 | CD-033, API.md |
+| #26: Timeline (6 vs 4 months) | 4 months confirmed. Feature removal strategy if scope doesn't fit. | 2025-12-24 | PLAN.md |

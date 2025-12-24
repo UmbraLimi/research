@@ -22,22 +22,42 @@
 
 ## Current Status
 
+### 🎯 Next Step: Review RUN-001 Scenario
+
+**Your task:** Review `runs/run-001/scenario.md` and provide feedback.
+
+**When you resume:**
+1. Open `runs/run-001/scenario.md` in your IDE
+2. Review the 14 sections (especially: Tech Stack, Scope, Architecture)
+3. Note any questions, concerns, or changes needed
+4. We'll document your feedback in `runs/run-001/review-notes.md`
+5. Then decide: Approve, revise, or create RUN-002
+
+**Quick review checklist:**
+- [ ] Technology stack appropriate?
+- [ ] Scope (144 P0 stories) achievable in 4 months?
+- [ ] Assumptions acceptable for open questions?
+- [ ] Block sequence makes sense?
+- [ ] Any missing requirements?
+
+---
+
 | Metric | Value |
 |--------|-------|
-| Current Phase | GATHER (Phase 2.5) 🔥 |
-| Client Docs Processed | 29 (CD-001 to CD-029) |
-| Goals Documented | 24 (GO-001 to GO-023) |
-| User Stories Created | 312 (139 P0, 103 P1, 67 P2, 3 P3) |
+| Current Phase | **RUN Phase** - RUN-001 Under Review |
+| Client Docs Processed | 33 (CD-001 to CD-033) |
+| Goals Documented | 27 (GO-001 to GO-027) |
+| User Stories Created | 329 (144 P0, 106 P1, 71 P2, 8 P3) |
 | User Roles | 9 (incl. Visitor/Guest) |
 | Tech Docs Created | 7 (tech-001 to tech-006, comp-001) |
 | Directives Created | 6 (DIR-001 to DIR-006) |
 | Architecture Docs | 4 (DB-SCHEMA, PAGES, COMPONENTS, API) |
-| Scenarios Created | 0 |
-| Doc Versions | GOALS v2, USER-STORIES v6, DIRECTIVES v1, CLAUDE v2 |
+| **Runs Created** | **1 (RUN-001 - Under Review)** |
+| Doc Versions | GOALS v3, USER-STORIES v8, DIRECTIVES v1, CLAUDE v3 |
 | Budget | $75,000 (from CD-008) |
-| Timeline | 4 months (from CD-008) |
+| Timeline | **4 months** (fixed; feature removal if scope exceeds) |
 | Domain | peerloop.com (live on Cloudflare) |
-| Open Questions | 22 (see `QUESTIONS-FOR-BRIAN.md`) |
+| Open Questions | 21 open, 3 deferred, 2 resolved (see `QUESTIONS-FOR-BRIAN.md`) |
 
 ---
 
@@ -181,12 +201,50 @@
 
 ## GATHER Completion Criteria
 
-- [ ] All client documents processed
-- [ ] All required services researched (BBB, Stream)
-- [ ] All optional service categories researched (payment, auth, email, etc.)
-- [ ] User stories mapped to technologies
-- [ ] Gaps identified and documented
-- [ ] Comparison docs created for key decisions
+- [x] All client documents processed (32 docs - CD-001 to CD-032)
+- [x] All required services researched (BBB, Stream) → tech-001, tech-002
+- [ ] All optional service categories researched (payment, auth, email, etc.) → **PARTIALLY DONE**
+- [x] User stories mapped to technologies (325 stories with source traceability)
+- [x] Gaps identified and documented (26 questions in QUESTIONS-FOR-BRIAN.md)
+- [ ] Comparison docs created for key decisions → **PARTIALLY DONE** (only comp-001)
+
+### GATHER Status: **NEARLY COMPLETE**
+
+**What's done:**
+- All 32 client documents processed and indexed
+- 27 goals extracted with source traceability
+- 325 user stories with priority and source
+- 4 architecture docs (DB-SCHEMA, PAGES, COMPONENTS, API)
+- 7 tech/comparison research docs
+- 6 directives for scenario constraints
+- 26 open questions documented for Brian
+
+**What's incomplete (but not blocking for RUN phase):**
+- Optional service research (payment, auth, email, calendar, AI transcription, analytics, database, storage)
+  - These can be decided during scenario creation based on cost/complexity trade-offs
+- Comparison docs for pending decisions (video platform BBB vs PlugNmeet, etc.)
+  - Question #2/#3 in QUESTIONS-FOR-BRIAN.md covers this
+
+### RUN Phase Readiness Assessment
+
+**Can we start RUN phase?** Yes, with caveats.
+
+**Critical items to resolve before/during RUN:**
+1. ~~**Video Platform Decision** (Q#2, Q#3)~~ → **RESOLVED via interface abstraction** (see API.md "Video Platform Interface Contract")
+2. ~~**Timeline Clarification** (Q#26)~~ → **RESOLVED: 4 months is fixed**, feature removal if scope doesn't fit
+3. **S-T Pricing Visibility** (Q#23) - Affects enrollment funnel design
+
+**Items that can be decided during scenario creation:**
+- Payment processor (Stripe assumed, but alternatives exist)
+- Authentication (Clerk, Auth.js, Supabase Auth)
+- Email service (Resend, SendGrid)
+- Calendar integration (Cal.com, Calendly API)
+- Database (Supabase, PlanetScale, Neon)
+
+**Recommendation:**
+- Get Brian's answers to critical questions (#2, #3, #23, #26)
+- Proceed to RUN Phase 3 (Architecture Finalization) in parallel
+- Create scenarios with noted decision points for optional services
 
 ---
 
@@ -300,22 +358,35 @@ For each page, complete documentation:
 
 ---
 
-## Phase 4: Scenario Creation ⏳ PENDING
+## Phase 4: Scenario Creation 🔥 IN PROGRESS
 
-### 4.1 - Baseline Scenario
-- [ ] Create `sc-001-fully-custom-SPECS.md` (no Stream, no BBB, maximum custom dev)
-  - Uses only: Cloudflare services, Vercel services, npm packages
-  - Establishes baseline for comparing "dev time saved" by services
+**New RUN Structure:** Scenarios are now created through the `/runs/` system with full traceability.
 
-### 4.2 - Alternative Scenarios
-- [ ] Create `sc-002-*` with required services (Stream + BBB)
-- [ ] Create additional scenarios as client requests variations
-- [ ] Document trade-offs for each scenario (cost, dev time, flexibility)
+### 4.1 - RUN-001: Stream + VideoProvider (sc-002) 🔥 UNDER REVIEW
+- [x] Created run folder structure (`runs/run-001/`)
+- [x] Documented inputs and parameters (`run-001.md`)
+- [x] Snapshotted questions state (21 open, 3 deferred, 2 resolved)
+- [x] Consulted research files (tech-001 through tech-006, comp-001)
+- [x] Generated `scenario.md` - 14-section technical specification
+- [x] Created run-specific assets:
+  - `assets/video-platform-decisions.md` - VideoProvider interface, BBB vs PlugNmeet
+  - `assets/stream-usage.md` - Stream.io feeds-only, 5 feed types
+  - `assets/hosting-decisions.md` - Cloudflare stack (Pages, Workers, D1, R2)
+  - `assets/payment-decisions.md` - Stripe Connect, 85/15 split
+- [ ] Client review of scenario.md
+- [ ] Document feedback in `review-notes.md`
+- [ ] Decide: Approve, revise, or create RUN-002
 
-### 4.3 - Scenario Comparison
-- [ ] Create comparison matrix across scenarios
-- [ ] Estimate relative development effort
-- [ ] Present options to client
+### 4.2 - Future Runs (As Needed)
+- [ ] RUN-002: If RUN-001 rejected or needs major changes
+- [ ] RUN-003: Alternative scenarios as requested
+- [ ] Compare runs using `runs/RUN-INDEX.md`
+
+### 4.3 - Run Index
+See `runs/RUN-INDEX.md` for status of all runs:
+| Run | Status | Key Decisions |
+|-----|--------|---------------|
+| RUN-001 | Under Review | Stream + VideoProvider, Cloudflare stack, 144 P0 stories |
 
 ## Phase 5: Final Selection & Handoff ⏳ PENDING
 
@@ -333,6 +404,57 @@ For each page, complete documentation:
 ---
 
 ## 🏁 Latest Completed
+
+**2025-12-24 (Session 4):** RUN Phase Launch & RUN-001 Generation
+- **Processed CD-033:** Slack conversation with Brian clarifying S-T pricing model
+  - Resolved Question #23: Course price = S-T price (unified pricing, no Teacher premium)
+  - Confirmed 85/15 revenue split
+  - Clarified enrollment flow with S-T calendar and "Schedule Later" option
+  - Added 4 new user stories (US-S083-S086)
+- **Created `/runs/` folder structure:**
+  - `RUN-INDEX.md` - Quick reference to all runs
+  - `run-NNN/` folder pattern with run file, scenario, assets
+  - Formalized checkpoint-based workflow
+- **Generated RUN-001 (sc-002: Stream + VideoProvider):**
+  - Created `run-001.md` with full input documentation
+  - Snapshotted questions state (21 open, 3 deferred, 2 resolved)
+  - Generated `scenario.md` - 14-section technical specification
+  - Created 4 run-specific assets:
+    - `video-platform-decisions.md` - VideoProvider interface abstraction
+    - `stream-usage.md` - Feeds-only usage, 5 feed types
+    - `hosting-decisions.md` - Cloudflare stack decisions
+    - `payment-decisions.md` - Stripe Connect, 85/15 split
+- **Established Two-Tier Knowledge System:**
+  - Global research (`research/tech-*.md`) for broadly useful info
+  - Run-specific assets (`run-NNN/assets/`) for run context
+  - Updated STRUCTURE.md and CLAUDE.md (v2→v3) with new workflow
+- **Status:** RUN-001 Under Review, awaiting client feedback
+
+**2025-12-24 (Session 3):** Final Client Document Batch & GATHER Assessment
+- **Processed 3 client documents:**
+  - CD-030: Block 1 Actor Stories (Brian Dec 7) - Actor-organized view of Block 1 capabilities
+  - CD-031: User Journeys Summary (Brian Dec 7) - 7 user journeys, 258 stories summary
+  - CD-032: Fraser Meeting Notes (Nov 9 - Dec 24) - Developer's meeting notes and observations
+- **Added 4 new goals (GO-024 to GO-027):**
+  - GO-024: Creator Subscription Revenue Model (monthly + per-course fees)
+  - GO-025: Invitation-Only Launch Strategy
+  - GO-026: Onboarding & Personalization
+  - GO-027: Feed Companion & Noise Reduction
+- **Added 26 new user stories:**
+  - Creator pricing: US-A031-A033, US-C045-C046
+  - Feed companion: US-S076-S079, US-P091-P093
+  - Onboarding: US-S080, US-P094-P095
+  - Course promotion: US-C047-C048, US-P096
+  - Sub-communities: US-S081, US-P097
+  - Extra coaching: US-S082, US-T033, US-P098
+  - Platform: US-P099-P101 (changelog, feature flags, unified dashboard)
+- **Added 4 new questions for Brian** (#23-26):
+  - S-T pricing visibility before purchase
+  - Course completion/passing criteria
+  - Moderator invite mechanics
+  - Timeline clarification (4 vs 6 months)
+- **GATHER Phase Assessment:** Client documents complete, service research partially complete
+- Total now: 32 docs, 27 goals, 325 stories, 26 open questions
 
 **2025-12-24 (Session 2):** Block Sequence Management Document
 - **Processed CD-029:** PeerLoop Block Sequence v2.1 - Gabriel's comprehensive management document
@@ -505,19 +627,19 @@ This plan follows a two-phase approach:
 Phases may be revisited as new information emerges.
 
 **Key Documents:**
-- `GOALS.md` - 24 goals with source traceability (v2)
-- `USER-STORIES.md` - 312 stories organized by 9 roles (v6)
+- `GOALS.md` - 27 goals with source traceability (v3)
+- `USER-STORIES.md` - 329 stories organized by 9 roles (v8)
 - `DIRECTIVES.md` - 6 constraints for scenario generation (v1)
-- `CLAUDE.md` - Project guidance and phase definitions (v2)
+- `CLAUDE.md` - Project guidance and phase definitions (v3)
 - `DB-SCHEMA.md` - 37+ database tables with fields and relationships (v1)
 - `PAGES.md` - 27 pages with data requirements (v1)
 - `COMPONENTS.md` - 41 reusable UI components (v1)
 - `API.md` - 65 API endpoints with request/response formats (v1)
-- `SPECS.md` - Final technical specifications (populated from selected scenario)
-- `/scenarios/` - SPECS.md variants for comparison (with lineage tracking)
-- `/research/` - Technology research documents
-- `client-docs/client-docs-index.md` - 29 source document summaries
-- `client-docs/QUESTIONS-FOR-BRIAN.md` - 21 open questions requiring clarification
+- `SPECS.md` - Final technical specifications (populated from approved run)
+- `/runs/` - RUN phase execution tracking (run-NNN folders with scenarios and assets)
+- `/research/` - Technology research documents (7 docs - global knowledge)
+- `client-docs/client-docs-index.md` - 33 source document summaries
+- `client-docs/QUESTIONS-FOR-BRIAN.md` - 26 questions (21 open, 3 deferred, 2 resolved)
 
 **Commands for Adding Information:**
 - `/r-add-client-doc` - Process new client documents (now updates 7 docs including architecture)
