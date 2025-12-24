@@ -1,8 +1,8 @@
 # Alpha Peer - User Stories
 
-**Version:** v1
-**Last Updated:** 2025-12-04
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling)
+**Version:** v3
+**Last Updated:** 2025-12-23
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec)
 
 > **Version History:** Increment version when substantive changes occur (new stories, priority changes, removed stories). Minor edits (typos, formatting) don't require version bump.
 
@@ -613,6 +613,18 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-S055 | As a Student, I need to self-mark module progress (checkboxes) so that I can track my completion | P0 | CD-019 |
 | US-S056 | As a Student, I need to schedule my next session from the course page so that I can continue my learning rhythm | P0 | CD-019 |
 
+### Course Discovery & Detail (from CD-021)
+
+*Note: These stories were identified from database schema analysis showing course attributes for filtering and display.*
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S057 | As a Student, I need to filter courses by difficulty level (Beginner/Intermediate/Advanced) so that I can find courses appropriate for my skill level | P1 | CD-021 |
+| US-S058 | As a Student, I need to browse/filter courses by category so that I can find courses in my area of interest | P1 | CD-021 |
+| US-S059 | As a Student, I need to see learning objectives on the course detail page so that I understand what I'll learn | P1 | CD-021 |
+| US-S060 | As a Student, I need to see what's included with a course (materials, sessions, certificates) so that I understand the value | P0 | CD-021 |
+| US-S061 | As a Student, I need to see available Student-Teachers for a specific course so that I can choose who to learn from | P1 | CD-021 |
+
 ### Creator Course Monitoring
 
 | ID | Story | Priority | Source |
@@ -659,6 +671,14 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | US-T023 | As a Student-Teacher, I need to see my running balance (pending earnings) so that I know what I will be paid | P0 | CD-020 |
 | US-C035 | As a Creator, I need to see my running balance (pending earnings) so that I know what I will be paid | P0 | CD-020 |
 
+### Profile Discovery (from CD-021)
+
+*Note: This story was identified from database schema analysis showing creator expertise/specialty tags.*
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C036 | As a Creator, I need to display my expertise/specialty tags on my profile so that students can find me by topic | P1 | CD-021 |
+
 ---
 
 ## Story Statistics
@@ -667,14 +687,14 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |----------|----|----|----|----|-------|
 | Visitor/Guest | 11 | 4 | 0 | 0 | 15 |
 | Admin | 16 | 12 | 1 | 0 | 29 |
-| Creator | 12 | 15 | 8 | 1 | 36 |
-| Student | 29 | 19 | 8 | 0 | 56 |
-| Student-Teacher | 12 | 8 | 3 | 0 | 23 |
+| Creator | 12 | 16 | 8 | 1 | 37 |
+| Student | 30 | 23 | 15 | 0 | 68 |
+| Student-Teacher | 12 | 8 | 9 | 0 | 29 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
-| Platform/Infrastructure | 49 | 14 | 9 | 1 | 73 |
+| Platform/Infrastructure | 49 | 14 | 14 | 2 | 79 |
 | Community Moderator | 2 | 6 | 1 | 0 | 9 |
-| **Total** | **135** | **89** | **32** | **2** | **258** |
+| **Total** | **136** | **94** | **50** | **3** | **283** |
 
 ### Gap Analysis Stories Added (2025-11-30)
 
@@ -717,7 +737,49 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-018 | MVP Decision - Student Profile System | US-S047–S051, US-T020–T022, US-P066–P070 (profile features, ST signaling, social graph) |
 | CD-019 | Decision - Course Content Delivery | US-S052–S056, US-C033–C034, US-P071–P073 (course page, progress tracking, creator monitoring) |
 | CD-020 | MVP Decision - Payment & Escrow | US-A026–A030, US-P074–P076, US-T023, US-C035 (admin payout dashboard, escrow, earnings visibility) |
+| CD-021 | Database Schema Sample | US-S057–S061, US-C036 (course filtering, learning objectives, includes list, per-course STs, creator expertise) |
+| CD-023 | Goodwill Points Spec | US-S062–S068, US-T024–T029, US-P077–P082 (summon help, goodwill points, anti-gaming, availability) |
 | Gap Analysis | Visitor Stories | US-G001–G015 (pre-registration experience, homepage, course/creator discovery, authentication) |
+
+---
+
+## Goodwill Points System (from CD-023)
+
+*Note: Block 2+ feature - NOT included in MVP. Community currency replacing 5-star reviews.*
+
+### Student Goodwill Stories
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S062 | As a Student, I need to summon help from certified peers when I'm stuck so that I can get assistance on course content | P2 | CD-023 |
+| US-S063 | As a Student, I need to see how many helpers are available on my course page so that I know if help is accessible | P2 | CD-023 |
+| US-S064 | As a Student, I need to award goodwill points (10-25 slider) to helpers after a summon session so that I can recognize their contribution | P2 | CD-023 |
+| US-S065 | As a Student, I need to mark messages as questions in course chat so that helpers can identify where help is needed | P2 | CD-023 |
+| US-S066 | As a Student, I need to award "This Helped" points (5) to helpful answers in chat so that I can thank helpers | P2 | CD-023 |
+| US-S067 | As a Student, I need to see my goodwill balance and history (private view) so that I can track my community participation | P2 | CD-023 |
+| US-S068 | As a Student, I need to see my total earned goodwill points on my public profile so that my credibility is visible | P2 | CD-023 |
+
+### Student-Teacher Goodwill Stories
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T024 | As a Student-Teacher, I need to toggle my "Available to Help" status so that I can receive summon requests when I'm ready | P2 | CD-023 |
+| US-T025 | As a Student-Teacher, I need to receive notifications for summon requests so that I can respond to students needing help | P2 | CD-023 |
+| US-T026 | As a Student-Teacher, I need to respond to summon requests and join chat/video so that I can help students | P2 | CD-023 |
+| US-T027 | As a Student-Teacher, I need to earn goodwill points (10-25) for helping via Summon so that my contributions are recognized | P2 | CD-023 |
+| US-T028 | As a Student-Teacher, I need to earn goodwill points (5) for answering chat questions so that helpful answers are rewarded | P2 | CD-023 |
+| US-T029 | As a Student-Teacher, I need to earn availability bonus points (5/day) for being available so that I'm incentivized to help | P2 | CD-023 |
+
+### Goodwill System Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P077 | As a System, I need to track goodwill point transactions so that points are accurately recorded | P2 | CD-023 |
+| US-P078 | As a System, I need to enforce anti-gaming rules (daily caps, cooldowns, 5-min minimums) so that the system isn't abused | P2 | CD-023 |
+| US-P079 | As a System, I need to auto-award points for certain actions (availability, first mentoring, referrals) so that consistent behavior is rewarded | P2 | CD-023 |
+| US-P080 | As a System, I need to display available helpers count per course so that students know help is accessible | P2 | CD-023 |
+| US-P081 | As a System, I need to track summon help requests (create, respond, complete) so that help sessions are managed | P2 | CD-023 |
+| US-P082 | As a System, I need to unlock rewards at point thresholds (500, 1000, 2500, 5000) so that goodwill points have tangible value | P3 | CD-023 |
 
 ---
 
@@ -727,12 +789,12 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |------|--------|-------------|
 | Visitor/Guest | US-G | US-G016 |
 | Admin | US-A | US-A031 |
-| Creator | US-C | US-C036 |
-| Student | US-S | US-S057 |
-| Student-Teacher | US-T | US-T024 |
+| Creator | US-C | US-C037 |
+| Student | US-S | US-S069 |
+| Student-Teacher | US-T | US-T030 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P077 |
+| Platform/Infrastructure | US-P | US-P083 |
 | Community Moderator | US-M | US-M010 |
 
 ---

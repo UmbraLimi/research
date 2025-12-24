@@ -1410,10 +1410,155 @@ Comprehensive MVP decision document for payment and escrow system. Defines semi-
 
 ---
 
+### CD-021: PeerLoop Database Sample (Dec 12, 2025)
+**Date Uploaded:** 2025-12-23
+**Original Date:** 2025-12-12
+**Summary for SPECS.md:**
+
+JavaScript mock database file containing sample data structures for PeerLoop's core entities: Creators (instructors) and Courses. Provides concrete schema definitions and sample data.
+
+**Key elements for SPECS.md:**
+
+- **Two Core Entities Defined:**
+  - **Instructors (Creators):** id, name, title, avatar, bio, qualifications[], website, expertise[], stats{}, courses[]
+  - **Courses:** id, title, description, duration, level, rating, students, price, thumbnail, instructorId, category, tags[], learningObjectives[], curriculum[]
+
+- **PeerLoop Model Confirmation:**
+  - Learn → Certify → Teach → Earn (70/15/15 split)
+  - Price Range: $300-600 (1-on-1 tutoring pricing)
+
+- **Course 15 as Reference Implementation:**
+  - Shows `peerloopFeatures` block (oneOnOneTeaching, certifiedTeachers, earnWhileTeaching, teacherCommission)
+  - Shows `studentTeachers` array with name, studentsTaught, certifiedDate
+  - Shows `includes` list (what's included with course)
+  - Extended curriculum with videos/readings/assessments per module
+
+- **New Fields to Consider:**
+  | Field | Recommendation |
+  |-------|----------------|
+  | Course `level` | Add (Beginner/Intermediate/Advanced) |
+  | Course `category` | Formalize taxonomy |
+  | `learningObjectives` | Add to course detail page |
+  | `includes` list | Add to course detail page |
+  | `peerloopFeatures` block | Make explicit in UI |
+
+- **Sample Data Stats:**
+  - 8 creators, 15 courses
+  - Price range: $299-$499
+  - Duration: 4-12 weeks
+  - 15 categories observed
+
+- **Search Index Pattern:** Pre-computed searchable text combining title, description, tags, objectives, curriculum for full-text search
+
+**Technical Implications:**
+- Database schema for users, qualifications, expertise, courses, curriculum, student_teachers
+- Level/category fields needed for browse/filter
+- Learning objectives and includes list improve course detail pages
+- Consider storing price as cents (integer) not string
+
+**Relationship to Other Docs:**
+- **Confirms** CD-001 revenue model (70/15/15)
+- **Confirms** CD-017/CD-018 profile structures
+- **Confirms** CD-019 course content approach
+- **Adds** concrete schema definitions for database design
+
+**Goals Referenced:** GO-001, GO-003, GO-011
+**Stories Referenced:** US-C001-C003, US-S005, US-C008-C010
+**Stories Added:** US-S057-S061, US-C036 (course filtering, learning objectives, includes list, per-course STs, creator expertise)
+
+---
+
+### CD-022: PeerLoop Data Structures Documentation (Dec 23, 2025)
+**Date Uploaded:** 2025-12-23
+**Original Date:** 2025-12-23
+**Summary for SPECS.md:**
+
+Formal documentation of data structures from the PeerLoop prototype. Complements CD-021 with cleaner formatting and adds two new fields.
+
+**Key elements for SPECS.md:**
+
+- **Live Prototype URL:** https://brianpeerloop.github.io/Peerloop-v2/
+
+- **New Fields (not in CD-021):**
+  | Field | Type | Description |
+  |-------|------|-------------|
+  | `ratingCount` | number | Per-course review count (distinct from creator totalReviews) |
+  | `badge` | string/null | Promotional badge: "Popular", "New", "Bestseller", "Featured", null |
+
+- **Confirms CD-021 structures** for Instructor/Creator and Course entities
+
+- **Source Code Locations:**
+  - Database: `src/data/database.js`
+  - Course Listing UI: `src/components/MainContent.js`
+  - Course Detail UI: `src/components/CourseListing.js`
+  - Instructor Profile: `src/components/MainContent.js`
+
+**Relationship to Other Docs:**
+- **Complements** CD-021 (database sample)
+- **Updates** DB-SCHEMA.md with rating_count and badge fields
+- **Updates** COMPONENTS.md with CourseBadge component
+
+**Goals Referenced:** GO-001, GO-003
+
+---
+
+### CD-023: Goodwill Points System Specification (Dec 12, 2025)
+**Date Uploaded:** 2025-12-23
+**Original Date:** 2025-12-12
+**Author:** Brian LeBlanc
+**Summary for SPECS.md:**
+
+Comprehensive specification for community currency system called "Goodwill Points" that replaces 5-star reviews. Includes Summon Help feature, anti-gaming safeguards, and future reward thresholds.
+
+**Key elements for SPECS.md:**
+
+- **Core Concept:**
+  - Total Earned (public credibility) / Balance (private) / Spent (private)
+  - Formula: Balance = Total Earned - Spent
+
+- **How Points Are Earned:**
+  | Action | Points | Limits |
+  |--------|--------|--------|
+  | Answer Summon help request | 10-25 | Must be certified |
+  | Answer chat question | 5 | Max 3/day to same person |
+  | Help S-T first session | 50 | One-time |
+  | Referral | 100 | One-time |
+  | Availability bonus | 5/day | While available |
+
+- **Summon Help Feature:**
+  - Students click "Summon Help" on course content
+  - Available S-Ts get notification, first responder joins
+  - After 5+ min, student awards 10-25 points
+
+- **Anti-Gaming Safeguards:**
+  - Must be certified in course to earn points
+  - Daily caps on points given TO/BY any user
+  - 5-min minimum session before points
+  - 24-48 hour cooldown between awarding same person
+
+- **Future Rewards (Block 4+):**
+  - 500 pts → "Community Helper" badge
+  - 1,000 pts → 10% discount
+  - 2,500 pts → Free session with Creator
+  - 5,000 pts → Extra 5% revenue share
+
+- **Block Roadmap:** NOT MVP - Block 2+
+
+**Architecture Updates:**
+- **DB-SCHEMA.md:** user_goodwill, goodwill_transactions, help_summons, user_availability, goodwill_rewards, user_reward_unlocks
+- **PAGES.md:** Course Chat Room, Summon Help Modal, Profile goodwill sections
+- **COMPONENTS.md:** 9 new components (SummonHelpButton, GoodwillPointsDisplay, etc.)
+- **API.md:** 9 new endpoints (summons, goodwill, availability)
+
+**Goals Updated:** GO-019 (Gamification & Engagement)
+**Stories Added:** US-S062-S068, US-T024-T029, US-P077-P082 (19 stories)
+
+---
+
 ## Index Statistics
-- **Total Documents:** 20
-- **Next CD Number:** CD-021
-- **Last Updated:** 2025-12-04
+- **Total Documents:** 23
+- **Next CD Number:** CD-024
+- **Last Updated:** 2025-12-23
 
 ## Quick Reference
 
@@ -1439,3 +1584,6 @@ Comprehensive MVP decision document for payment and escrow system. Defines semi-
 | CD-018 | MVP Decision - Student Profile System | $14K-18.7K, 3-4 weeks, social graph, ST signaling, H4/H6 validation |
 | CD-019 | Decision - Course Content Delivery | $2K-4K, ~1 week, external video/docs, self-mark progress, user journey |
 | CD-020 | MVP Decision - Payment & Escrow | Stripe, $11K-15K, 2-3 weeks, semi-automated 70/15/15 split, H1 validation |
+| CD-021 | Database Schema Sample | JS mock data, Creator/Course entities, schema definitions, new fields to add |
+| CD-022 | Data Structures Doc | Formal docs, prototype URL, ratingCount, badge fields |
+| CD-023 | Goodwill Points Spec | Summon Help, community currency, anti-gaming, Block 2+ |

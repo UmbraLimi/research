@@ -39,14 +39,36 @@ argument-hint: '[--overwrite]'
      2. Implied functionality from goals/features described
      3. Specific mockups, UI elements, or wording that implies user needs
    - Add new stories with `US-[Role]NNN` numbering (check "Current State" table per role)
-     - Role codes: A=Admin, C=Creator, S=Student, T=Student-Teacher, E=Employer, V=Video/Session, P=Platform
+     - Role codes: A=Admin, C=Creator, S=Student, T=Student-Teacher, E=Employer, V=Video/Session, P=Platform, M=Moderator
    - Reference source as `CD-NNN` in Source column
    - Assign priority (P0=MVP critical, P1=high, P2=medium, P3=nice-to-have)
    - Update "Story Statistics" table counts
    - Update "Story Index by Source Document" table
    - Update "Current State" table with next numbers per role
    - Update "Last Updated" date
-6. **Update STRUCTURE.md** "Current State" table:
+6. **Scan for Architecture Implications** - Update the 4 architecture documents:
+   - **DB-SCHEMA.md** - Check if document implies:
+     - New database tables or entities
+     - New fields on existing tables
+     - New relationships between entities
+     - New enum values or data types
+     - If changes found: Add entities/fields with `CD-NNN` source, update Document Lineage
+   - **PAGES.md** - Check if document implies:
+     - New pages or screens
+     - New sections on existing pages
+     - New data requirements for pages
+     - If changes found: Add pages/sections, update Page Count and Document Lineage
+   - **COMPONENTS.md** - Check if document implies:
+     - New reusable UI components
+     - New props or fields on existing components
+     - New component categories
+     - If changes found: Add components, update Component Count and Document Lineage
+   - **API.md** - Check if document implies:
+     - New API endpoints
+     - New request/response fields
+     - New webhook integrations
+     - If changes found: Add endpoints, update API Summary and Document Lineage
+7. **Update STRUCTURE.md** "Current State" table:
    - Update "Client Documents" row with next available CD-NNN
    - Update "Goals" row if new goals were added
-7. Update session file with all documents processed
+8. Update session file with all documents processed

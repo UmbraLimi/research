@@ -15,6 +15,10 @@ Alpha-Peer/
 ├── USER-STORIES.md                     # All user stories (from client docs)
 ├── DIRECTIVES.md                       # Constraints & restrictions for RUN phase
 ├── SPECS.md                            # Technical specs (final selected scenario)
+├── DB-SCHEMA.md                        # Database entities, fields, relationships
+├── PAGES.md                            # Page inventory with data requirements
+├── COMPONENTS.md                       # Reusable UI component library
+├── API.md                              # Backend API operations surface
 │
 ├── /client-docs/                       # Client-provided context & materials
 │   └── README.md                      # Guide for organizing client materials
@@ -144,6 +148,42 @@ The evolving technical specifications document that will be handed to Claude Cod
 - Integration requirements
 - Non-functional requirements
 
+### DB-SCHEMA.md
+Database schema accumulating during GATHER phase. Contains:
+- Entity definitions with fields and types
+- Relationships between entities
+- Source document traceability for each field
+- Notes for implementation
+
+Updated via analysis of client documents (e.g., CD-021 database sample). During RUN phase, scenarios may have schema variations.
+
+### PAGES.md
+Page inventory accumulating during GATHER phase. Contains:
+- All application pages/screens
+- Data sources for each page
+- User stories satisfied by each page
+- Key elements and actions per page
+
+Updated via analysis of client documents and user stories. During RUN phase, scenarios may add/remove pages.
+
+### COMPONENTS.md
+Reusable UI component library accumulating during GATHER phase. Contains:
+- Component definitions with props
+- Pages where each component is used
+- Data sources for each component
+- Display fields and actions
+
+Updated via analysis of client documents and pages. During RUN phase, scenarios may specify different implementations.
+
+### API.md
+Backend API operations surface accumulating during GATHER phase. Contains:
+- Endpoint definitions with request/response formats
+- User stories satisfied by each endpoint
+- Access control requirements
+- Webhook integrations
+
+Updated via analysis of user stories and data requirements. During RUN phase, scenarios may specify REST vs GraphQL, etc.
+
 ### DIRECTIVES.md
 Constraints, restrictions, and preferences that must be consulted during RUN phase:
 - **MUST-USE:** Required software/services (client-specified or technically necessary)
@@ -227,20 +267,24 @@ Quick reference showing:
 
 ## Current State
 
-**Last updated:** 2025-12-04
+**Last updated:** 2025-12-23
 
 ### Document Versions (for scenario lineage)
 | Document | Current Version | Last Updated |
 |----------|-----------------|--------------|
 | GOALS.md | v1 | 2025-12-04 |
-| USER-STORIES.md | v1 | 2025-12-04 |
+| USER-STORIES.md | v3 | 2025-12-23 |
 | DIRECTIVES.md | v1 | 2025-11-30 |
-| CLAUDE.md | v1 | 2025-11-30 |
+| CLAUDE.md | v2 | 2025-12-23 |
+| DB-SCHEMA.md | v1 | 2025-12-23 |
+| PAGES.md | v1 | 2025-12-23 |
+| COMPONENTS.md | v1 | 2025-12-23 |
+| API.md | v1 | 2025-12-23 |
 
 ### Numbering State
 | Category | Next Number |
 |----------|-------------|
-| Client Documents | CD-021 |
+| Client Documents | CD-024 |
 | Goals | GO-021 |
 | Technologies | tech-006 |
 | Story files | story-001 |
@@ -284,3 +328,4 @@ Track significant changes to structure:
 - 2025-11-30: Added /scenarios/ folder for SPECS.md variants; added scenario naming convention (sc-NNN-[description]-SPECS.md)
 - 2025-11-30: Added DIRECTIVES.md for constraints/restrictions; added DIR-NNN numbering and /r-add-directive command
 - 2025-11-30: Added document versioning system (v1, v2, etc.) to GOALS.md, USER-STORIES.md, DIRECTIVES.md, CLAUDE.md for scenario lineage tracking
+- 2025-12-23: Added DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md for architecture documentation during GATHER phase

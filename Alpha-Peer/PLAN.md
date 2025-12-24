@@ -2,7 +2,7 @@
 
 **Goal:** Produce a comprehensive SPECS.md document that can be handed off to Claude Code for Alpha Peer development.
 
-**Last Updated:** 2025-12-04
+**Last Updated:** 2025-12-23
 
 ---
 
@@ -10,11 +10,11 @@
 
 | Phase | Name | Status | Description |
 |-------|------|--------|-------------|
-| **GATHER** | Information Collection | 🔥 IN PROGRESS | Collect client docs, research services, document user stories |
-| **RUN** | Scenario Generation | ⏳ PENDING | Create PAGES.md, then SPECS.md scenarios from gathered information |
+| **GATHER** | Information Collection | 🔥 IN PROGRESS | Collect client docs, research services, document user stories, build architecture docs |
+| **RUN** | Scenario Generation | ⏳ PENDING | Finalize architecture docs, create SPECS.md scenarios from gathered information |
 
 **RUN Phase Breakdown:**
-- Phase 3: Page Architecture (PAGES.md)
+- Phase 3: Architecture Finalization (DB-SCHEMA, PAGES, COMPONENTS, API)
 - Phase 4: Scenario Creation
 - Phase 5: Final Selection & Handoff
 
@@ -25,14 +25,15 @@
 | Metric | Value |
 |--------|-------|
 | Current Phase | GATHER (Phase 2.5) 🔥 |
-| Client Docs Processed | 20 (CD-001 to CD-020) |
-| Goals Documented | 21 (GO-001 to GO-020) |
-| User Stories Created | 258 (135 P0, 89 P1, 32 P2, 2 P3) |
+| Client Docs Processed | 23 (CD-001 to CD-023) |
+| Goals Documented | 21 (GO-001 to GO-020, GO-019 updated) |
+| User Stories Created | 283 (136 P0, 94 P1, 50 P2, 3 P3) |
 | User Roles | 9 (incl. Visitor/Guest) |
 | Tech Docs Created | 6 (tech-001 to tech-005, comp-001) |
 | Directives Created | 6 (DIR-001 to DIR-006) |
+| Architecture Docs | 4 (DB-SCHEMA, PAGES, COMPONENTS, API) |
 | Scenarios Created | 0 |
-| Doc Versions | GOALS v1, USER-STORIES v1, DIRECTIVES v1, CLAUDE v1 |
+| Doc Versions | GOALS v1, USER-STORIES v3, DIRECTIVES v1, CLAUDE v2 |
 | Budget | $75,000 (from CD-008) |
 | Timeline | 4 months (from CD-008) |
 | Domain | peerloop.com (live on Cloudflare) |
@@ -227,37 +228,49 @@
 - Goal: Minimize custom development by leveraging existing services
 - sc-001 is always the fully-custom baseline (no major SaaS)
 
-## Phase 3: Page Architecture (PAGES.md) ⏳ PENDING
+## Phase 3: Architecture Documentation 🔄 PARTIALLY COMPLETE
 
-**Purpose:** Create a comprehensive page-by-page blueprint that maps user stories and goals to actual site pages, establishing navigation and access patterns before scenario generation.
+**Purpose:** Create comprehensive architecture documents that map user stories and goals to database schema, pages, components, and API endpoints.
 
-**Depends on:** GATHER phase completion (all client docs, user stories, and service research)
+**Depends on:** Client docs processing (ongoing during GATHER)
 
-### 3.1 - Page Inventory
-- [ ] Identify all pages needed from client docs, goals, and user stories
+### 3.1 - Architecture Documents Created ✅
+- [x] **DB-SCHEMA.md** - Database entities, fields, relationships (30+ tables)
+- [x] **PAGES.md** - Page inventory with data requirements (26 pages)
+- [x] **COMPONENTS.md** - Reusable UI component library (39 components)
+- [x] **API.md** - Backend API operations surface (60 endpoints)
+
+### 3.2 - Ongoing Updates During GATHER
+Architecture docs are now updated via `/r-add-client-doc`:
+- [x] CD-021: Database Schema Sample → seeded all 4 docs
+- [x] CD-022: Data Structures Doc → added ratingCount, badge fields + CourseBadge component
+- [x] CD-023: Goodwill Points Spec → +6 tables, +2 pages, +9 components, +9 endpoints
+
+### 3.3 - Page Inventory ✅ COMPLETE (Basic)
+- [x] Identify all pages needed from client docs, goals, and user stories (26 pages)
+- [x] Group pages by functional area (Public, Authenticated, Role-Specific)
+- [x] Document data sources and user stories per page
 - [ ] Assign 3-5 letter codes for easy cross-referencing (e.g., SDASH = Student Dashboard)
-- [ ] Group pages by functional area (Auth, Dashboards, Course, Profile, Admin, etc.)
 
-### 3.2 - Page Documentation
-For each page, document:
+### 3.4 - Page Documentation ⏳ PENDING
+For each page, complete documentation:
+- [x] **Data Sources**: Which DB tables/entities feed this page
+- [x] **Purpose**: Which user stories (US-*NNN) this page fulfills
 - [ ] **Code**: 3-5 letter unique identifier for cross-referencing
-- [ ] **Content**: Summary of what the page displays and enables users to do
-- [ ] **Purpose**: Which goals (GO-NNN) and user stories (US-*NNN) this page fulfills
 - [ ] **Connections**: Links to other pages (with their codes) and navigation context
-- [ ] **Access**: Which user roles can access, with role-specific behavior notes
 
-### 3.3 - Access Matrix
+### 3.5 - Access Matrix ⏳ PENDING
 - [ ] Create role × page access matrix showing which roles can see each page
 - [ ] Document role-specific variations (e.g., Creator sees "My Students" vs Student sees "My Teachers")
 - [ ] Identify shared pages with conditional content
 - [ ] Note authentication requirements (public, logged-in, role-restricted)
 
-### 3.4 - Navigation Patterns
+### 3.6 - Navigation Patterns ⏳ PENDING
 - [ ] Map primary navigation paths for each user role
 - [ ] Identify dashboard-centric vs. content-centric flows
 - [ ] Document cross-role touchpoints (where different roles interact on same pages)
 
-### 3.5 - Multi-Role User Handling
+### 3.7 - Multi-Role User Handling ⏳ PENDING
 **Critical:** Users can hold multiple roles simultaneously (e.g., Student + Student-Teacher + Creator). Pages must accommodate this.
 
 - [ ] Design unified dashboard that adapts to user's active roles
@@ -279,7 +292,10 @@ For each page, document:
   - How to prevent overwhelm for multi-role users?
   - Mobile vs. desktop layout considerations
 
-**Output:** `PAGES.md` - Complete page architecture document
+### 3.8 - Finalize for Scenario ⏳ PENDING (RUN Phase)
+- [ ] Finalize architecture for selected scenario (may vary by tech choices)
+
+**Output:** Complete architecture documents ready for scenario generation
 
 ---
 
@@ -316,6 +332,25 @@ For each page, document:
 ---
 
 ## 🏁 Latest Completed
+
+**2025-12-23:** Architecture Documents & Goodwill System
+- **Created 4 new architecture documents** (seeded from CD-021):
+  - `DB-SCHEMA.md` - 30+ database tables with field definitions and sources
+  - `PAGES.md` - 26 pages with data requirements and user story mappings
+  - `COMPONENTS.md` - 39 reusable UI components with props
+  - `API.md` - 60 API endpoints with request/response formats
+- **Processed 3 new client documents:**
+  - CD-021: Database Schema Sample (JS mock data, Creator/Course entities)
+  - CD-022: Data Structures Doc (ratingCount, badge fields, prototype URL)
+  - CD-023: Goodwill Points Spec (community currency, Summon Help, anti-gaming)
+- **Added 25 new user stories** (USER-STORIES v2→v3):
+  - 6 stories from CD-021 (course filtering, learning objectives, includes)
+  - 19 stories from CD-023 (goodwill system, all P2/P3 Block 2+)
+- **Updated GO-019** (Gamification) with detailed goodwill points spec
+- **Updated `/r-add-client-doc` command** - now scans for architecture implications (7 docs updated)
+- **Updated CLAUDE.md** (v1→v2) - added architecture docs to GATHER/RUN phases
+- Architecture doc stats: 30+ tables, 26 pages, 39 components, 60 endpoints
+- Total now: 23 docs, 21 goals, 283 stories (136 P0, 94 P1, 50 P2, 3 P3)
 
 **2025-12-04:** MVP Decisions & Visitor Role
 - Processed 9 additional client documents (CD-012 to CD-020)
@@ -428,16 +463,20 @@ Phases may be revisited as new information emerges.
 
 **Key Documents:**
 - `GOALS.md` - 21 goals with source traceability (v1)
-- `USER-STORIES.md` - 258 stories organized by 9 roles (v1)
+- `USER-STORIES.md` - 283 stories organized by 9 roles (v3)
 - `DIRECTIVES.md` - 6 constraints for scenario generation (v1)
-- `CLAUDE.md` - Project guidance and phase definitions (v1)
+- `CLAUDE.md` - Project guidance and phase definitions (v2)
+- `DB-SCHEMA.md` - 30+ database tables with fields and relationships (v1)
+- `PAGES.md` - 26 pages with data requirements (v1)
+- `COMPONENTS.md` - 39 reusable UI components (v1)
+- `API.md` - 60 API endpoints with request/response formats (v1)
 - `SPECS.md` - Final technical specifications (populated from selected scenario)
 - `/scenarios/` - SPECS.md variants for comparison (with lineage tracking)
 - `/research/` - Technology research documents
-- `client-docs/client-docs-index.md` - 20 source document summaries
+- `client-docs/client-docs-index.md` - 23 source document summaries
 
 **Commands for Adding Information:**
-- `/r-add-client-doc` - Process new client documents
+- `/r-add-client-doc` - Process new client documents (now updates 7 docs including architecture)
 - `/r-add-software <url>` - Research and document a software/service
 - `/r-add-user-story` - Add individual user stories
 - `/r-add-directive` - Add constraints/restrictions for scenarios

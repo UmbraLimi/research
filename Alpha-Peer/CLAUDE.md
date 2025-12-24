@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**Version:** v1
-**Last Updated:** 2025-11-30
+**Version:** v2
+**Last Updated:** 2025-12-23
 
 > **Version History:** Increment version when substantive changes occur (new phases, changed workflows, new commands). Minor edits (typos, formatting) don't require version bump.
 
@@ -21,6 +21,10 @@ MyResearch/
 │   ├── USER-STORIES.md   # All user stories (from client docs)
 │   ├── DIRECTIVES.md     # Constraints & restrictions for RUN phase
 │   ├── SPECS.md          # Technical specs for handoff (final scenario)
+│   ├── DB-SCHEMA.md      # Database entities, fields, relationships
+│   ├── PAGES.md          # Page inventory with data requirements
+│   ├── COMPONENTS.md     # Reusable UI component library
+│   ├── API.md            # Backend API operations surface
 │   ├── client-docs/      # Client-provided materials (don't modify originals)
 │   ├── research/         # Technology research (tech-NNN-*.md, comp-NNN-*.md)
 │   ├── scenarios/        # SPECS.md variants (sc-NNN-*-SPECS.md)
@@ -110,15 +114,19 @@ The Gather phase collects all information needed to create comprehensive technic
 **Inputs during Gather:**
 | Input Type | Command | Updates |
 |------------|---------|---------|
-| Client documents | `/r-add-client-doc` | GOALS.md, USER-STORIES.md, client-docs-index.md |
+| Client documents | `/r-add-client-doc` | GOALS.md, USER-STORIES.md, client-docs-index.md, DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md |
 | Software/services | `/r-add-software <url>` | PLAN.md, research/tech-NNN-*.md |
 | User stories | `/r-add-user-story` | USER-STORIES.md |
 | Directives | `/r-add-directive` | DIRECTIVES.md |
 
 **Key files that grow during Gather:**
 - `GOALS.md` - Mission, goals, success metrics (from client docs)
-- `USER-STORIES.md` - All user stories with priorities (150+ stories)
+- `USER-STORIES.md` - All user stories with priorities (250+ stories)
 - `DIRECTIVES.md` - Constraints and restrictions for RUN phase
+- `DB-SCHEMA.md` - Database entities, fields, relationships (from client docs with data samples)
+- `PAGES.md` - Page inventory with data requirements (from user stories and mockups)
+- `COMPONENTS.md` - Reusable UI components (from pages and data structures)
+- `API.md` - Backend API operations (from user stories and data requirements)
 - `PLAN.md` - Phases, tasks, technology inventory
 - `/research/` - Tech docs for each software/service evaluated
 - `/client-docs/` - Original client materials with index
@@ -128,11 +136,19 @@ The Gather phase collects all information needed to create comprehensive technic
 2. Add software/services → creates research docs, maps to user stories
 3. Add individual user stories → as gaps are discovered
 4. Research fills gaps → identifies what services are needed for which stories
+5. Analyze documents for architecture implications → updates DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md
+
+**Architecture document updates during Gather:**
+- When processing client docs with data samples (like database schemas), update DB-SCHEMA.md
+- When identifying new pages from user stories or mockups, update PAGES.md
+- When pages reveal reusable UI patterns, update COMPONENTS.md
+- When user stories imply backend operations, update API.md
 
 **Gather is complete when:**
 - All client documents processed
 - All required/optional services researched
 - User stories mapped to technologies
+- Architecture documents (DB-SCHEMA, PAGES, COMPONENTS, API) populated
 - Gaps identified and addressed
 - Ready to create SPECS.md scenarios
 
@@ -141,9 +157,16 @@ The Gather phase collects all information needed to create comprehensive technic
 The Run phase transforms gathered information into actionable technical specifications by creating scenario variants.
 
 **Run process:**
-1. **Input:** All Gather phase information (client docs, user stories, goals, research, **DIRECTIVES.md**)
+1. **Input:** All Gather phase information (client docs, user stories, goals, research, **DIRECTIVES.md**, architecture docs)
 2. **Specify:** Choose a base scenario and define changes, restrictions, preferences
 3. **Generate:** Fill out SPECS.md for that scenario, honoring all directives
+4. **Finalize Architecture:** Update DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md for the selected scenario
+
+**Architecture documents in RUN phase:**
+- Each scenario may have variations in schema (e.g., different fields for different integrations)
+- Each scenario may have different pages (e.g., custom video UI vs embedded BBB)
+- Each scenario may specify different component implementations
+- Each scenario may have different API patterns (REST vs GraphQL, third-party SDKs)
 
 **Key principles:**
 - Later client docs override earlier ones when information contradicts
@@ -181,6 +204,11 @@ The Run phase transforms gathered information into actionable technical specific
 - Client has reviewed scenario options
 - Client has selected final scenario
 - Selected scenario copied to root `SPECS.md`
+- Architecture documents finalized for selected scenario:
+  - DB-SCHEMA.md reflects final technology choices
+  - PAGES.md reflects final page inventory
+  - COMPONENTS.md reflects final component specifications
+  - API.md reflects final backend design
 - Ready for implementation handoff
 
 ---
@@ -189,6 +217,7 @@ The Run phase transforms gathered information into actionable technical specific
 
 - **Client docs are read-only** - Reference them but don't modify originals
 - **SPECS.md is the handoff document** - Update it as decisions are made
+- **Architecture docs accumulate** - DB-SCHEMA, PAGES, COMPONENTS, API grow during GATHER, finalize during RUN
 - **Trace decisions to sources** - Link back to research, client docs, or learnings
 - **file_holding/ is temporary** - Files staged here get processed and moved
 - **Scenarios for comparison** - `/scenarios/` holds SPECS.md variants for client review

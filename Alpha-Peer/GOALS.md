@@ -198,14 +198,20 @@ Track all success metrics:
 - Session monitoring (status, cancel, complete)
 
 ### GO-019: Gamification & Engagement System
-**Source:** CD-010, CD-011
+**Source:** CD-010, CD-011, CD-023
 
 Drive engagement through gamification:
-- **Goodwill points system** - Students earn points through participation
+- **Goodwill points system** - Community currency replacing 5-star reviews (CD-023)
+  - Total Earned (public credibility), Balance (private), Spent (private)
+  - Earned via: Summon help (10-25), chat answers (5), referrals (100), mentoring (50)
+  - Anti-gaming: course certification required, daily caps, cooldowns
+- **Summon Help feature** - Enrolled students can summon certified S-Ts for help (CD-023)
 - **Power user progression** - Levels/tiers based on engagement
 - **Discussion participation tracking** - Reward community involvement
 - **Teacher Student points** - Motivate Teacher Students to be more active (CD-011)
+- **Future rewards** (Block 4+): Badges, discounts, free sessions, revenue bonus (CD-023)
 - Purpose: Combat isolation by incentivizing ongoing engagement beyond course completion
+- **Roadmap:** Not MVP - Block 2+ feature
 
 ---
 
@@ -267,6 +273,7 @@ AI education is strategic beachhead:
 | CD-009 | Slack - Blindside/Cloudflare | GO-009, GO-018 (BBB provider confirmed, speed to market) |
 | CD-010 | Miro - Main Activities by Role | GO-003, GO-008, GO-014, GO-019 (roles, engagement, gamification) |
 | CD-011 | Miro - Drivers & Action Items | GO-002, GO-003, GO-011, GO-014, GO-019, GO-020 (drivers, mastery cert, gamification) |
+| CD-023 | Goodwill Points Spec | GO-019 (detailed gamification spec, Summon feature, anti-gaming) |
 | CD-012 | Meeting Prep - MVP Review | GO-001, GO-004, GO-005, GO-018 (consolidates MVP features, refines Genesis cohort) |
 | CD-013 | MVP Decision - Community Feed | GO-001, GO-005, GO-006, GO-010 (getstream.io, engagement metrics, flywheel enabler) |
 | CD-014 | MVP Decision - Video Conferencing | GO-001, GO-005, GO-009 (BBB/Jitsi, video metrics, calendar/scheduling) |
