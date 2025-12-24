@@ -1,8 +1,8 @@
 # Alpha Peer - Goals & Mission
 
-**Version:** v1
-**Last Updated:** 2025-12-04
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review)
+**Version:** v2
+**Last Updated:** 2025-12-24
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review), CD-029 (Block Sequence)
 
 > **Version History:** Increment version when substantive changes occur (new goals, changed metrics, revised mission). Minor edits (typos, formatting) don't require version bump.
 
@@ -48,7 +48,7 @@ Three-sided value creation:
 ## MVP Launch Goals
 
 ### GO-004: Genesis Cohort Launch
-**Source:** CD-001, CD-004, CD-012
+**Source:** CD-001, CD-004, CD-012, CD-029
 
 Launch with founding course creators and their initial cohorts:
 - Recruit 10-15 AI educators (Phase 1)
@@ -57,6 +57,21 @@ Launch with founding course creators and their initial cohorts:
 - Each creator builds 50+ active Student-Teachers
 - **Genesis Target (refined):** 60-80 students across 4-5 courses (CD-012)
 - **Operational Model:** Creators control their courses (certifications, payouts, new Student-Teachers); Platform = strategic oversight only (~3-4 hrs/week)
+
+**Four Starter Courses Confirmed (Dec 15 Meeting - CD-029):**
+| Course | Format | Creator | Purpose |
+|--------|--------|---------|---------|
+| Intro to GitHub | 1-2 sessions | Gabriel/Guy | Entry-level, broad appeal |
+| Intro to Claude Code | 1-2 sessions | Gabriel/Guy | Entry-level, broad appeal |
+| Intro to n8n | 1-2 sessions | Gabriel/Guy | Entry-level, n8n has "infinite funding" |
+| AI Tools Overview | 1-2 sessions | Gabriel/Guy | Entry-level, broad appeal |
+
+**Design Principles:**
+- Quick flip courses (1-2 sessions max)
+- Beginners only—no prior experience required
+- Test the flywheel quickly
+- Course materials in Markdown format
+- Brian's YouTube Analogy: "These little beginner courses, if they had broad appeal, can build and show us the network effects."
 
 ### GO-018: MVP Budget & Timeline Constraint
 **Source:** CD-008
@@ -261,6 +276,75 @@ AI education is strategic beachhead:
 
 ---
 
+## Trust & Conversion Goals
+
+### GO-021: Trust-Building Before Purchase
+**Source:** CD-029 (Brian's Review Comments)
+
+Enable visitors to build trust before committing to high-ticket purchases on an unproven platform:
+
+**The Problem:**
+- New platform with no reviews or track record
+- Asking visitors to pay $300-600 with zero human interaction is a significant barrier
+- Platform sells live human interaction—visitors need to experience that BEFORE committing
+
+**Brian's Suggested Solutions:**
+1. **Pre-enrollment communication:** Basic "Contact Creator" or "Ask a Question" feature in Block 0.1
+2. **Tiered pricing:** $150×3 courses instead of $450 single payment (lower entry barrier, faster H1 validation)
+3. **Free intro sessions:** Free 15-minute intro session with Student-Teacher before payment
+   - Visitor meets potential S-T
+   - Discusses goals, sees how platform works
+   - S-T answers questions, qualifies student
+   - Demonstrates differentiation (live humans, not videos)
+   - Reduces refund risk
+
+**Success Metrics:**
+- Conversion rate from visitor → enrolled student
+- Free intro session → paid enrollment conversion rate
+- Pre-enrollment inquiry → enrollment correlation
+- Refund rate reduction
+
+**Impact on Block Sequence:**
+- Block 0.1 needs basic inquiry/contact feature (not full messaging)
+- Free intro sessions may need simplified scheduling/BBB in Block 0.2
+- Full messaging system can remain in Block 1.x
+
+### GO-022: One-on-One Video as Core Value Proposition
+**Source:** CD-029 (Dec 19 UX Meeting - Matt McCloskey)
+
+Prioritize 1-on-1 live video instruction as the "lynchpin" of the concept:
+
+**Matt McCloskey's Insight:**
+- "The one-on-one live video instruction is the core value proposition and lynchpin of the concept, without which the idea loses coherence."
+- Social media component depends on courses existing first
+- Community risks becoming "random noise" without foundational course concepts
+
+**Design Principles:**
+- Define core concepts first: Creator, Instructor, Course, 1-on-1 video call
+- Build features that cannot be removed without destroying entire concept
+- Community features should be secondary in development order
+
+**Validation:**
+- Current block sequence (0.x = flywheel, 1.x = community) is correct priority
+- Course-first for MVP, community-first for vision
+- Mobile-first design critical for growth
+
+### GO-023: Course Access Upon Payment
+**Source:** CD-029 (Dec 15 Meeting)
+
+Grant immediate community feed access upon course payment (changed from previous "after graduation" model):
+
+**Fraser's Insight:** "You're doing session one of two. You need help after session one, but before session two, who do you turn to?"
+
+**Brian's Response:** "I didn't understand until yesterday... having paid access to it makes perfect sense."
+
+**Implementation:**
+- Course community feed access granted immediately upon enrollment (not after certification)
+- Students can seek help from community during learning journey
+- Addresses isolation problem from day one
+
+---
+
 ## Goal Index by Source Document
 
 | ID | Document | Goals Referenced |
@@ -287,9 +371,10 @@ AI education is strategic beachhead:
 | CD-019 | Decision - Course Content Delivery | GO-001, GO-004, GO-005, GO-011 (flywheel, Genesis cohort, 75% completion, learning management) |
 | CD-020 | MVP Decision - Payment & Escrow | GO-001, GO-003, GO-005, GO-012 (flywheel, 70/15/15 split, H1 validation, payment infrastructure) |
 | CD-024 | Meeting Notes - Brian Walkthrough | GO-001 (flywheel testing with 4 courses), GO-019 (feed promotion gamification) |
+| CD-029 | Block Sequence v2.1 | GO-001, GO-002, GO-004, GO-005, GO-006, GO-014, GO-018, GO-021 (trust-building), GO-022 (video lynchpin), GO-023 (access upon payment) |
 
 ---
 
 ## Current State
 
-**Next Goal Number:** GO-021
+**Next Goal Number:** GO-024

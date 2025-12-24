@@ -25,15 +25,15 @@
 | Metric | Value |
 |--------|-------|
 | Current Phase | GATHER (Phase 2.5) 🔥 |
-| Client Docs Processed | 28 (CD-001 to CD-028) |
-| Goals Documented | 21 (GO-001 to GO-020, GO-019 updated) |
-| User Stories Created | 299 (136 P0, 94 P1, 66 P2, 3 P3) |
+| Client Docs Processed | 29 (CD-001 to CD-029) |
+| Goals Documented | 24 (GO-001 to GO-023) |
+| User Stories Created | 312 (139 P0, 103 P1, 67 P2, 3 P3) |
 | User Roles | 9 (incl. Visitor/Guest) |
 | Tech Docs Created | 7 (tech-001 to tech-006, comp-001) |
 | Directives Created | 6 (DIR-001 to DIR-006) |
 | Architecture Docs | 4 (DB-SCHEMA, PAGES, COMPONENTS, API) |
 | Scenarios Created | 0 |
-| Doc Versions | GOALS v1, USER-STORIES v5, DIRECTIVES v1, CLAUDE v2 |
+| Doc Versions | GOALS v2, USER-STORIES v6, DIRECTIVES v1, CLAUDE v2 |
 | Budget | $75,000 (from CD-008) |
 | Timeline | 4 months (from CD-008) |
 | Domain | peerloop.com (live on Cloudflare) |
@@ -334,7 +334,34 @@ For each page, complete documentation:
 
 ## 🏁 Latest Completed
 
-**2025-12-24:** Prototype Walkthrough & Questions Consolidation
+**2025-12-24 (Session 2):** Block Sequence Management Document
+- **Processed CD-029:** PeerLoop Block Sequence v2.1 - Gabriel's comprehensive management document
+  - 33-page HTML document with tabs covering user journeys, hypotheses, block sequence, Brian's review
+  - Breaks MVP into hypothesis-driven blocks (0.0-0.7 flywheel, 1.x community)
+- **Key insights captured from Brian's Review:**
+  - **Trust-building before payment is critical** - new platform needs pre-enrollment communication
+  - Suggested tiered pricing ($150×3 instead of $450 single payment)
+  - Recommended free 15-minute intro sessions before enrollment
+  - Basic inquiry/contact feature needed in Block 0.1 (not deferred to 1.x)
+- **Dec 15 Meeting updates:**
+  - **Course access model CHANGED:** Students get community feed access upon payment (not after graduation)
+  - 4 starter courses confirmed: GitHub, Claude Code, n8n, AI Tools Overview (1-2 sessions each)
+- **Dec 19 UX Meeting (Matt McCloskey):**
+  - "One-on-one video is the lynchpin" - validates video-first priority
+  - Current block sequence (flywheel before community) is correct
+- **Added 3 new goals:**
+  - GO-021: Trust-Building Before Purchase
+  - GO-022: One-on-One Video as Core Value Proposition
+  - GO-023: Course Access Upon Payment
+- **Added 13 new user stories:**
+  - Trust-building: US-G016-G018 (visitor inquiry, free intro sessions, tiered pricing)
+  - S-T intro sessions: US-T030-T032 (conduct, mark availability, notifications)
+  - Platform infrastructure: US-P086-P090 (inquiry delivery, conversion tracking, BBB rooms)
+  - Creator inquiry: US-C043-C044 (receive/respond, analytics)
+- **Updated DB-SCHEMA.md:** Added visitor_inquiries and intro_sessions tables
+- Total now: 29 docs, 24 goals, 312 stories, 2 new DB tables
+
+**2025-12-24 (Session 1):** Prototype Walkthrough & Questions Consolidation
 - **Processed 4 new client documents:**
   - CD-024: Meeting Notes - Brian PeerLoopApp walkthrough (user access states, instructor feeds, Genesis Cohort 4 courses)
   - CD-025: Sample Course - Intro to Claude Code (real course data, schema validation, 12 new fields)
@@ -478,18 +505,18 @@ This plan follows a two-phase approach:
 Phases may be revisited as new information emerges.
 
 **Key Documents:**
-- `GOALS.md` - 21 goals with source traceability (v1)
-- `USER-STORIES.md` - 299 stories organized by 9 roles (v5)
+- `GOALS.md` - 24 goals with source traceability (v2)
+- `USER-STORIES.md` - 312 stories organized by 9 roles (v6)
 - `DIRECTIVES.md` - 6 constraints for scenario generation (v1)
 - `CLAUDE.md` - Project guidance and phase definitions (v2)
-- `DB-SCHEMA.md` - 35+ database tables with fields and relationships (v1)
+- `DB-SCHEMA.md` - 37+ database tables with fields and relationships (v1)
 - `PAGES.md` - 27 pages with data requirements (v1)
 - `COMPONENTS.md` - 41 reusable UI components (v1)
 - `API.md` - 65 API endpoints with request/response formats (v1)
 - `SPECS.md` - Final technical specifications (populated from selected scenario)
 - `/scenarios/` - SPECS.md variants for comparison (with lineage tracking)
 - `/research/` - Technology research documents
-- `client-docs/client-docs-index.md` - 27 source document summaries
+- `client-docs/client-docs-index.md` - 29 source document summaries
 - `client-docs/QUESTIONS-FOR-BRIAN.md` - 21 open questions requiring clarification
 
 **Commands for Adding Information:**

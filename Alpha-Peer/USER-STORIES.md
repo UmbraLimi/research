@@ -1,8 +1,8 @@
 # Alpha Peer - User Stories
 
-**Version:** v5
-**Last Updated:** 2025-12-23
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec), CD-024 (Brian Walkthrough), CD-025 (Intro to Claude Code Course)
+**Version:** v6
+**Last Updated:** 2025-12-24
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec), CD-024 (Brian Walkthrough), CD-025 (Intro to Claude Code Course), CD-029 (Block Sequence)
 
 > **Version History:** Increment version when substantive changes occur (new stories, priority changes, removed stories). Minor edits (typos, formatting) don't require version bump.
 
@@ -83,6 +83,16 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |----|-------|----------|--------|
 | US-G014 | As a Visitor, I need to see a prompt to sign up when I try to enroll so that I understand registration is required | P0 | Gap Analysis |
 | US-G015 | As a Visitor, I need to see gated content indicators (e.g., "Sign in to view community") so that I know what requires login | P1 | Gap Analysis |
+
+### Trust-Building Before Purchase (from CD-029)
+
+*Note: Brian identified that new platforms need trust-building mechanisms before asking for high-ticket purchases ($300-600).*
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-G016 | As a Visitor, I need to send an inquiry/question to a Creator before enrolling so that I can build trust before committing to payment | P0 | CD-029 |
+| US-G017 | As a Visitor, I need to book a free 15-minute intro session with a Student-Teacher so that I can experience the platform's live 1-on-1 format before paying | P1 | CD-029 |
+| US-G018 | As a Visitor, I need to view course pricing as tiered options (e.g., $150 per course level) so that I can start with a lower commitment and upgrade if satisfied | P1 | CD-029 |
 
 ---
 
@@ -286,6 +296,14 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |----|-------|----------|--------|
 | US-T001 | As a Student-Teacher, I need to offer times for tutoring via a calendar of availability so that students can book me | P0 | CD-003 |
 | US-T002 | As a Student-Teacher, I need to cancel a particular scheduled session with a student so that I can handle conflicts | P1 | CD-003 |
+
+### Trust-Building / Free Intro Sessions (from CD-029)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T030 | As a Student-Teacher, I need to conduct free 15-minute intro sessions with potential students so that visitors can experience the platform before enrolling | P1 | CD-029 |
+| US-T031 | As a Student-Teacher, I need to mark specific availability slots as "free intro available" so that potential students can find intro session times | P1 | CD-029 |
+| US-T032 | As a Student-Teacher, I need to receive notifications for booked intro sessions so that I can prepare for them | P1 | CD-029 |
 
 ### Profile & Presence
 
@@ -838,18 +856,46 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 ---
 
+## Trust-Building Infrastructure Stories (from CD-029)
+
+*Note: Brian's review identified trust-building before payment as critical for new platforms. These stories support pre-enrollment communication and free intro sessions.*
+
+### Inquiry System
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P086 | As a System, I need to deliver visitor inquiries to Creators via email so that Creators can respond to potential students | P0 | CD-029 |
+| US-P087 | As a System, I need to track inquiry → enrollment conversion so that trust-building effectiveness can be measured | P1 | CD-029 |
+
+### Free Intro Session Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P088 | As a System, I need to create BBB rooms for free intro sessions (limited to 15 min) so that visitors can meet Student-Teachers before enrolling | P1 | CD-029 |
+| US-P089 | As a System, I need to track free intro session → enrollment conversion so that flywheel funnel can be measured | P1 | CD-029 |
+| US-P090 | As a System, I need to send reminders for upcoming free intro sessions so that both parties attend | P1 | CD-029 |
+
+### Creator Inquiry Response
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C043 | As a Creator, I need to receive and respond to visitor inquiries so that I can build trust with potential students | P0 | CD-029 |
+| US-C044 | As a Creator, I need to see inquiry analytics (questions asked, response time, conversion) so that I can optimize my pre-enrollment communication | P2 | CD-029 |
+
+---
+
 ## Current State
 
 | Role | Prefix | Next Number |
 |------|--------|-------------|
-| Visitor/Guest | US-G | US-G016 |
+| Visitor/Guest | US-G | US-G019 |
 | Admin | US-A | US-A031 |
-| Creator | US-C | US-C043 |
+| Creator | US-C | US-C045 |
 | Student | US-S | US-S076 |
-| Student-Teacher | US-T | US-T030 |
+| Student-Teacher | US-T | US-T033 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P086 |
+| Platform/Infrastructure | US-P | US-P091 |
 | Community Moderator | US-M | US-M010 |
 
 ---

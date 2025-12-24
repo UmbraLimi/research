@@ -1853,9 +1853,101 @@ Brian researched modern alternatives to BigBlueButton after hearing feedback tha
 
 ---
 
+### CD-029: PeerLoop Block Sequence v2.1 - From Zero to Flywheel (Dec 19, 2025)
+**Date Uploaded:** 2025-12-24
+**Original Date:** 2025-12-19 (v2.2, incorporating Dec 19 UX meeting)
+**Author:** Gabriel Rymberg (with Claude)
+**Type:** Management Planning Document (HTML with tabs)
+**Summary for SPECS.md:**
+
+Comprehensive block sequence planning document from Gabriel (project manager) breaking MVP into small, testable, deployable increments while tracking hypothesis validation. Includes user journey narratives, hypothesis definitions, Brian's review comments, Dec 15 meeting updates, and Dec 19 UX meeting insights.
+
+**Key elements for SPECS.md:**
+
+- **Six Core Hypotheses (H1-H6):**
+  | ID | Hypothesis | Success Criteria | Uncertainty |
+  |-----|------------|-----------------|-------------|
+  | H1 | Market Positioning: Students pay $300-600 | Complete purchase | Medium-High |
+  | H2 | Completion Rates: 75%+ (vs 10-20% MOOCs) | ≥75% completion | Medium |
+  | H3 | Customer Segmentation: Both "Earn-While-Learn" and "Premium Learner-Only" | See both segments | Low |
+  | H4 | Conversion to Teaching: 10%+ become S-Ts | ≥10% certified apply | Medium-High |
+  | H5 | Peer Teaching Quality: Match expert outcomes | Creator approves quality | Medium |
+  | H6 | Flywheel Validation: Second generation emerges | S-Ts teach new students | **HIGHEST** |
+
+- **Brian's Top 3 Uncertainties (ranked):**
+  1. Will Student-Teachers recruit 2+ students? (MOST uncertain)
+  2. Will second-generation emerge?
+  3. Will students pay $400-600?
+
+- **Block Sequence Overview (0.x = Flywheel Validation):**
+  | Block | Name | Duration | Hypotheses |
+  |-------|------|----------|------------|
+  | 0.0 | Foundation | 1 week | (Enables all) |
+  | 0.1 | Discovery & Payment | 1 week | H1 |
+  | 0.2 | Content Access | 1 week | (Enables H2, H5) |
+  | 0.3 | Scheduling & Sessions | 1-2 weeks | H5 |
+  | 0.4 | Progress & Completion | 1 week | H2 |
+  | 0.5 | Certification | 1 week | H2, H5 |
+  | 0.6 | Become Student-Teacher | 1 week | H3, H4 |
+  | 0.7 | Flywheel & Payouts | 1-2 weeks | H3, H6 |
+
+- **Brian's Review Comments (Critical Insights):**
+  1. **Trust-building before payment:** New platform with no reviews needs pre-enrollment communication
+  2. **Tiered pricing suggestion:** $150×3 courses vs $450 single payment (lower entry barrier)
+  3. **Free 15-minute intro sessions:** Let visitors experience differentiation before committing
+  4. **Basic "Contact Creator" feature:** Needed in Block 0.1, not deferred to Block 1.x
+
+- **Dec 15 Meeting Updates:**
+  1. **Course access model CHANGED:** Students get community feed access upon PAYMENT, not after graduation
+     - Fraser's insight: "You need help after session one, but before session two"
+     - Brian: "Having paid access to it makes perfect sense"
+  2. **Four starter courses confirmed:** GitHub, Claude Code, n8n, AI Tools Overview (1-2 sessions each)
+  3. **States/roles matrix required:** Fraser to create systematic tracking of course-role-state combinations
+  4. **Designer trial test:** $500 budget, 10 hours max, 2-day turnaround
+
+- **Dec 19 UX Meeting (Matt McCloskey):**
+  1. **"The one-on-one live video instruction is the core value proposition and lynchpin"**
+  2. Course-first for MVP, community features secondary
+  3. Mobile-first design critical for growth
+  4. Validates current block sequence: 0.x (flywheel) before 1.x (community)
+
+- **Actor-Block Matrix:** Maps when each actor gets functionality across blocks
+  - 258 total user stories, 135 P0 (MVP critical), ~72 in Block 0.x
+
+- **Timeline:**
+  - Block 0.x (Flywheel): ~11 weeks
+  - Block 1.x (Community): 4-5 weeks
+  - Block 2.x (Polish): 4-6 weeks
+  - **Total: 21-24 weeks → Launch May-June 2026**
+
+- **Key Decisions Retained:**
+  - Creator approves certs/payouts/S-T apps (not Brian)
+  - S-T recommends → Creator approves certification workflow
+  - Stripe automated payouts (after Creator approval)
+  - Brian's time: 3-4 hrs/week (strategic only)
+
+**Technical Implications:**
+- Pre-enrollment communication feature needed earlier than planned (Block 0.1 or 0.2)
+- Course community feed access upon payment requires enrollment-triggered access control
+- States/roles matrix informs permission system design
+- Mobile-first responsive design requirement
+
+**Relationship to Other Docs:**
+- **Consolidates** CD-001 through CD-028 into actionable development sequence
+- **Validates** architecture decisions from MVP decision docs (CD-013 through CD-020)
+- **Confirms** 4 starter courses (complements CD-025, CD-026)
+- **Adds** Brian's critical feedback on trust-building gap
+- **Adds** Matt McCloskey's UX validation of video-first approach
+
+**Goals Referenced:** GO-001 (flywheel), GO-002 (2 Sigma), GO-004 (Genesis cohort), GO-005 (validation metrics), GO-006 (engagement), GO-014 (combat isolation), GO-018 (budget/timeline)
+**Goals Added:** GO-021 (Trust-Building Before Purchase)
+**Stories Implied:** Trust-building stories, tiered pricing stories, free intro session stories
+
+---
+
 ## Index Statistics
-- **Total Documents:** 28
-- **Next CD Number:** CD-029
+- **Total Documents:** 29
+- **Next CD Number:** CD-030
 - **Last Updated:** 2025-12-24
 
 ## Quick Reference
@@ -1890,3 +1982,4 @@ Brian researched modern alternatives to BigBlueButton after hearing feedback tha
 | CD-026 | Genesis Cohort Course Package | 3 more courses (n8n, Vibe Coding, AI Tools), same format, course sequencing |
 | CD-027 | Prototype Walkthrough - Complete | All 5 personas, 20+ pages, 31 keepers, gaps & UX issues, 12 questions for Brian |
 | CD-028 | Slack - PlugNmeet | Modern BBB replacement, microservices, Zoom-like UI, flat pricing |
+| CD-029 | Block Sequence v2.1 | Gabriel's management doc, 6 hypotheses (H1-H6), block sequence 0.x-2.x, Brian's trust-building comments, Dec 15 access model change, Dec 19 UX "video lynchpin" |

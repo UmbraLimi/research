@@ -272,11 +272,11 @@ Quick reference showing:
 ### Document Versions (for scenario lineage)
 | Document | Current Version | Last Updated |
 |----------|-----------------|--------------|
-| GOALS.md | v1 | 2025-12-23 |
-| USER-STORIES.md | v5 | 2025-12-23 |
+| GOALS.md | v2 | 2025-12-24 |
+| USER-STORIES.md | v6 | 2025-12-24 |
 | DIRECTIVES.md | v1 | 2025-11-30 |
 | CLAUDE.md | v2 | 2025-12-23 |
-| DB-SCHEMA.md | v1 | 2025-12-23 |
+| DB-SCHEMA.md | v1 | 2025-12-24 |
 | PAGES.md | v1 | 2025-12-23 |
 | COMPONENTS.md | v1 | 2025-12-23 |
 | API.md | v1 | 2025-12-23 |
@@ -284,8 +284,8 @@ Quick reference showing:
 ### Numbering State
 | Category | Next Number |
 |----------|-------------|
-| Client Documents | CD-029 |
-| Goals | GO-021 |
+| Client Documents | CD-030 |
+| Goals | GO-024 |
 | Technologies | tech-007 |
 | Story files | story-001 |
 | Comparisons | comp-002 |
@@ -330,3 +330,4 @@ Track significant changes to structure:
 - 2025-11-30: Added DIRECTIVES.md for constraints/restrictions; added DIR-NNN numbering and /r-add-directive command
 - 2025-11-30: Added document versioning system (v1, v2, etc.) to GOALS.md, USER-STORIES.md, DIRECTIVES.md, CLAUDE.md for scenario lineage tracking
 - 2025-12-23: Added DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md for architecture documentation during GATHER phase
+- 2025-12-24: Processed CD-029 (Block Sequence v2.1); added GO-021 through GO-023; added 13 user stories (trust-building, intro sessions); added visitor_inquiries and intro_sessions DB entities

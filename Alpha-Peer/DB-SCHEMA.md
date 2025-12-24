@@ -893,6 +893,53 @@ Track which users have unlocked which rewards.
 
 ---
 
+## Trust-Building Entities (from CD-029)
+
+*Brian's review identified that new platforms need trust-building mechanisms before asking for high-ticket purchases.*
+
+### visitor_inquiries
+
+Track pre-enrollment questions from visitors to creators.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| visitor_email | string | Yes | CD-029 | Visitor's email (may not have account yet) |
+| visitor_name | string | No | CD-029 | Visitor's name if provided |
+| course_id | uuid | No | CD-029 | FK to courses (if course-specific inquiry) |
+| creator_id | uuid | Yes | CD-029 | FK to users (creator receiving inquiry) |
+| message | text | Yes | CD-029 | The inquiry/question |
+| status | enum | Yes | CD-029 | pending, responded, converted |
+| responded_at | timestamp | No | - | When creator responded |
+| converted_to_enrollment | boolean | No | CD-029 | True if inquiry led to enrollment |
+| created_at | timestamp | Yes | - | When inquiry was submitted |
+
+**Source:** CD-029
+
+---
+
+### intro_sessions
+
+Track free 15-minute intro sessions between visitors and Student-Teachers.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| visitor_email | string | Yes | CD-029 | Visitor's email |
+| visitor_name | string | No | CD-029 | Visitor's name if provided |
+| student_teacher_id | uuid | Yes | CD-029 | FK to users (S-T conducting intro) |
+| course_id | uuid | No | CD-029 | Course being discussed |
+| scheduled_at | timestamp | Yes | CD-029 | When intro session is scheduled |
+| bbb_room_url | string | No | - | BigBlueButton (or PlugNmeet) room URL |
+| status | enum | Yes | CD-029 | scheduled, completed, cancelled, no_show |
+| duration_minutes | integer | No | CD-029 | Actual duration (max 15) |
+| converted_to_enrollment | boolean | No | CD-029 | True if intro led to enrollment |
+| created_at | timestamp | Yes | - | When booked |
+
+**Source:** CD-029
+
+---
+
 ## Document Lineage
 
 | Source Document | Entities Derived |
@@ -910,6 +957,7 @@ Track which users have unlocked which rewards.
 | CD-013 | posts, post_interactions, content_flags |
 | CD-003 | enrollments, certificates, messages, employer_sponsorships |
 | CD-011 | certificate types (mastery vs completion) |
+| CD-029 | visitor_inquiries, intro_sessions |
 
 ---
 
