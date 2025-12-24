@@ -53,6 +53,7 @@ Primary user table supporting multiple roles (Student, Student-Teacher, Creator,
 | avatar_url | string | No | CD-021 | Profile image URL |
 | bio | text | No | CD-021 | Extended biography |
 | bio_short | string(160) | No | CD-018 | Short bio for cards |
+| teaching_philosophy | text | No | CD-025 | Instructor's teaching approach (for creators) |
 | website | string | No | CD-021 | External website URL |
 | role | enum | Yes | CD-003 | primary role: student, student_teacher, creator, admin, moderator |
 | is_creator | boolean | Yes | CD-017 | Can create courses |
@@ -179,25 +180,36 @@ Core course information.
 | id | uuid | Yes | CD-021 | Primary key |
 | creator_id | uuid | Yes | CD-021 | FK to users (instructorId) |
 | title | string | Yes | CD-021 | Course title |
+| slug | string | Yes | CD-025 | URL-friendly identifier (e.g., "intro-to-claude-code") |
+| tagline | string(150) | No | CD-025 | Short marketing text (e.g., "Master AI-powered coding...") |
 | description | text | Yes | CD-021 | Extended description |
 | duration | string | Yes | CD-021 | Human-readable (e.g., "6 weeks") |
 | duration_weeks | int | No | CD-021 | Numeric weeks for filtering |
+| total_duration | string | No | CD-025 | Total time (e.g., "3 hours") for short courses |
+| session_count | int | No | CD-025 | Number of live sessions (e.g., 2) |
+| module_count | int | No | CD-025 | Number of modules |
+| lesson_count | int | No | CD-025 | Number of lessons |
+| format | string | No | CD-025 | Delivery format (e.g., "Live 1-on-1 sessions") |
 | level | enum | Yes | CD-021 | beginner, intermediate, advanced |
 | price_cents | int | Yes | CD-021 | Price in cents (e.g., 39900 = $399) |
+| currency | string(3) | Yes | CD-025 | Currency code (e.g., "USD") - default "USD" |
 | thumbnail_url | string | No | CD-021 | Course image URL |
 | category_id | uuid | Yes | CD-021 | FK to categories |
 | rating | decimal | No | CD-021 | Average rating (4.5-5.0) |
 | rating_count | int | No | CD-022 | Number of reviews for this course |
 | student_count | int | Yes | CD-021 | Enrollment count |
 | badge | enum | No | CD-022 | Promotional badge: popular, new, bestseller, featured, null |
+| lifetime_access | boolean | Yes | CD-025 | Lifetime access to materials (default true) |
+| has_certificate | boolean | Yes | CD-025 | Awards certificate on completion |
+| certificate_name | string | No | CD-025 | Certificate title (e.g., "Certificate of Completion") |
 | is_active | boolean | Yes | CD-004 | Course available for enrollment |
 | is_retired | boolean | Yes | US-C004 | Course retired by creator |
 | created_at | timestamp | Yes | - | Record creation |
 | updated_at | timestamp | Yes | - | Last update |
 
-**Indexes:** creator_id, category_id, level, is_active
+**Indexes:** creator_id, category_id, level, is_active, slug (unique)
 
-**Source:** CD-021 (coursesDatabase)
+**Source:** CD-021 (coursesDatabase), CD-025 (real course data)
 
 ---
 
@@ -264,6 +276,70 @@ What's included with the course.
 
 ---
 
+### course_prerequisites
+
+Course prerequisites with tiered categorization (from CD-025).
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| course_id | uuid | Yes | CD-025 | FK to courses |
+| type | enum | Yes | CD-025 | required, nice_to_have, not_required |
+| content | string | Yes | CD-025 | Prerequisite statement |
+| display_order | int | Yes | - | Sort order within type |
+
+**Sample data from CD-025 (Intro to Claude Code):**
+- **required:** "Computer with terminal (Windows or Mac)", "Claude account (Pro or Max plan)"
+- **nice_to_have:** "Basic computer navigation skills"
+- **not_required:** "No coding experience needed", "No command-line knowledge required"
+
+**Source:** CD-025 (prerequisites section)
+
+---
+
+### course_target_audience
+
+Who the course is designed for.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| course_id | uuid | Yes | CD-025 | FK to courses |
+| description | string | Yes | CD-025 | Target audience description |
+| display_order | int | Yes | - | Sort order |
+
+**Sample data from CD-025:**
+- "Non-coders wanting to use AI for development"
+- "Vibe coders looking to enhance productivity"
+- "Professionals wanting to automate tasks with AI"
+- "Beginners curious about AI coding tools"
+
+**Source:** CD-025 (target_audience section)
+
+---
+
+### course_testimonials
+
+Student testimonials for courses.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| course_id | uuid | Yes | CD-025 | FK to courses |
+| quote | text | Yes | CD-025 | Testimonial quote |
+| student_name | string | Yes | CD-025 | Student first name |
+| student_role | string | No | CD-025 | Student role/title (e.g., "Course Graduate", "Entrepreneur") |
+| is_featured | boolean | Yes | - | Show on course page |
+| created_at | timestamp | Yes | - | When submitted |
+
+**Sample data from CD-025:**
+- "I went from knowing nothing about coding to building my first web app in just two sessions." - Sarah, Course Graduate
+- "The hands-on approach is perfect. You're not just watching - you're building real things from day one." - Marcus, Now a Student-Teacher
+
+**Source:** CD-025 (curriculum.md testimonials section)
+
+---
+
 ### course_curriculum
 
 Course modules/lessons structure.
@@ -272,17 +348,23 @@ Course modules/lessons structure.
 |-------|------|----------|--------|-------|
 | id | uuid | Yes | - | Primary key |
 | course_id | uuid | Yes | CD-021 | FK to courses |
+| session_number | int | No | CD-025 | Live session grouping (e.g., 1, 2) |
 | title | string | Yes | CD-021 | Module title |
 | description | text | Yes | CD-021 | Module description |
-| duration | string | Yes | CD-021 | Duration (e.g., "2h 30min", "Week 1") |
+| duration | string | Yes | CD-021 | Duration (e.g., "2h 30min", "Week 1", "20 min") |
+| learning_objectives | text | No | CD-025 | Module-level objectives (bullet points or JSON array) |
+| topics_covered | text | No | CD-025 | Topics covered in module (bullet points or JSON array) |
+| hands_on_exercise | text | No | CD-025 | Description of hands-on exercise |
 | video_count | int | No | CD-021 | Number of videos |
 | reading_count | int | No | CD-021 | Number of readings |
 | has_assessment | boolean | No | CD-021 | Module has assessment |
-| module_order | int | Yes | - | Sort order |
+| module_order | int | Yes | - | Sort order within course |
 | video_url | string | No | CD-019 | External video link (YouTube/Vimeo) |
 | document_url | string | No | CD-019 | External doc link (Google Drive/Notion) |
 
-**Source:** CD-021 (curriculum array), CD-019 (Course Content Delivery)
+**Note:** `session_number` groups modules for live session courses (e.g., Session 1 contains modules 1-4, Session 2 contains modules 5-7).
+
+**Source:** CD-021 (curriculum array), CD-019 (Course Content Delivery), CD-025 (real course data)
 
 ---
 
@@ -497,6 +579,45 @@ Issued certificates.
 | certificate_url | string | No | - | Generated certificate file |
 
 **Source:** CD-011 (dual certificate system), CD-012, US-S021, US-S022, US-S032
+
+---
+
+## Feed Access (from CD-024)
+
+### instructor_followers
+
+Track users who have ever purchased any course from an instructor (grants instructor feed access).
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| instructor_id | uuid | Yes | CD-024 | FK to users (creator) |
+| follower_id | uuid | Yes | CD-024 | FK to users (student) |
+| first_enrollment_at | timestamp | Yes | CD-024 | When first course was purchased |
+| created_at | timestamp | Yes | - | Record creation |
+
+**Note:** Created automatically when a user enrolls in any course from an instructor. Used to determine instructor feed access.
+
+**Indexes:** instructor_id, follower_id (unique together)
+
+**Source:** CD-024, US-P084
+
+---
+
+### promoted_posts
+
+Posts promoted from course feeds to the main Peer Loop feed (using goodwill points).
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| post_id | uuid | Yes | CD-024 | FK to posts |
+| promoted_by | uuid | Yes | CD-024 | FK to users |
+| points_spent | int | Yes | CD-024 | Goodwill points used for promotion |
+| promoted_at | timestamp | Yes | - | When promoted |
+| expires_at | timestamp | No | - | When promotion ends (optional) |
+
+**Source:** CD-024, US-P085
 
 ---
 
@@ -779,6 +900,8 @@ Track which users have unlocked which rewards.
 | CD-021 | users, user_qualifications, user_expertise, user_stats, courses, categories, course_tags, course_objectives, course_includes, course_curriculum, peerloop_features, student_teachers |
 | CD-022 | courses.rating_count, courses.badge (new fields) |
 | CD-023 | user_goodwill, goodwill_transactions, help_summons, user_availability, goodwill_rewards, user_reward_unlocks |
+| CD-024 | instructor_followers, promoted_posts (feed access states, feed promotion) |
+| CD-025 | courses (12 new fields: slug, tagline, currency, format, etc.), course_prerequisites, course_target_audience, course_testimonials, course_curriculum (session_number, learning_objectives, etc.), users.teaching_philosophy |
 | CD-018 | user_interests, follows, course_follows, privacy fields |
 | CD-019 | module_progress, external video/doc URLs |
 | CD-020 | transactions, payment_splits, payouts |

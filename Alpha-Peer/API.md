@@ -893,6 +893,128 @@ Flag post for moderation.
 
 ---
 
+### POST /posts/:id/promote
+Promote a post to the main Peer Loop feed.
+
+| Attribute | Value |
+|-----------|-------|
+| **User Stories** | US-S071, US-P085 |
+| **Access** | Authenticated (post author) |
+| **Data Source** | promoted_posts, user_goodwill |
+| **Source** | CD-024 |
+
+**Request:**
+```json
+{
+  "points_to_spend": "number"
+}
+```
+
+**Validation:**
+- User must have sufficient goodwill balance
+- Post must be course-specific (not already in main feed)
+
+**Response:** `201 Created`
+```json
+{
+  "promotion": {
+    "id": "uuid",
+    "post_id": "uuid",
+    "points_spent": "number",
+    "expires_at": "timestamp"
+  }
+}
+```
+
+---
+
+### GET /instructors/:id/feed
+Get instructor-level feed (for students who have purchased any course from this instructor).
+
+| Attribute | Value |
+|-----------|-------|
+| **User Stories** | US-S070, US-C037 |
+| **Access** | Authenticated (users in instructor_followers) |
+| **Data Source** | posts (filtered by instructor), instructor_followers |
+| **Source** | CD-024 |
+
+**Query Params:**
+- `page`, `limit` - Pagination
+
+**Access Control:**
+- Checks if user has purchased any course from this instructor
+- Returns 403 if not a follower
+
+**Response:** `200 OK`
+```json
+{
+  "instructor": { "id": "uuid", "name": "string", "avatar_url": "string" },
+  "posts": [
+    {
+      "id": "uuid",
+      "author": { ... },
+      "content": "string",
+      "course": { "id": "uuid", "title": "string" },
+      "created_at": "timestamp"
+    }
+  ],
+  "total": "number"
+}
+```
+
+---
+
+### GET /users/:id/instructor-followers
+Get list of students who have access to instructor's feed.
+
+| Attribute | Value |
+|-----------|-------|
+| **User Stories** | US-C038 |
+| **Access** | Authenticated (instructor viewing own followers) |
+| **Data Source** | instructor_followers |
+| **Source** | CD-024 |
+
+**Response:** `200 OK`
+```json
+{
+  "followers": [
+    {
+      "user": { "id": "uuid", "name": "string", "avatar_url": "string" },
+      "first_enrollment_at": "timestamp",
+      "courses_enrolled": ["string"]
+    }
+  ],
+  "total": "number"
+}
+```
+
+---
+
+### GET /feed/access
+Get user's feed access levels.
+
+| Attribute | Value |
+|-----------|-------|
+| **User Stories** | US-S069, US-P083 |
+| **Access** | Authenticated |
+| **Data Source** | enrollments, instructor_followers |
+| **Source** | CD-024 |
+
+**Response:** `200 OK`
+```json
+{
+  "course_feeds": [
+    { "course_id": "uuid", "course_title": "string" }
+  ],
+  "instructor_feeds": [
+    { "instructor_id": "uuid", "instructor_name": "string" }
+  ],
+  "main_feed": true
+}
+```
+
+---
+
 ## Messages
 
 ### GET /conversations
@@ -1276,18 +1398,18 @@ Get count of available helpers for a course.
 | Category | Endpoints |
 |----------|-----------|
 | Authentication | 5 |
-| Users | 8 |
+| Users | 9 |
 | Courses | 5 |
 | Enrollments | 5 |
 | Sessions | 6 |
 | Payments | 3 |
 | Certificates | 3 |
-| Feed | 6 |
+| Feed | 10 |
 | Messages | 4 |
 | Admin | 4 |
 | Webhooks | 2 |
 | Goodwill | 9 |
-| **Total** | **60** |
+| **Total** | **65** |
 
 ---
 
@@ -1303,6 +1425,7 @@ Get count of available helpers for a course.
 | CD-013 | Feed endpoints |
 | CD-018 | Follow endpoints, profile updates |
 | CD-023 | Summons CRUD, goodwill points, availability toggle, available helpers |
+| CD-024 | Instructor feed, post promotion, feed access levels, instructor followers |
 
 ---
 

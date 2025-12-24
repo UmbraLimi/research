@@ -267,13 +267,13 @@ Quick reference showing:
 
 ## Current State
 
-**Last updated:** 2025-12-23
+**Last updated:** 2025-12-24
 
 ### Document Versions (for scenario lineage)
 | Document | Current Version | Last Updated |
 |----------|-----------------|--------------|
-| GOALS.md | v1 | 2025-12-04 |
-| USER-STORIES.md | v3 | 2025-12-23 |
+| GOALS.md | v1 | 2025-12-23 |
+| USER-STORIES.md | v5 | 2025-12-23 |
 | DIRECTIVES.md | v1 | 2025-11-30 |
 | CLAUDE.md | v2 | 2025-12-23 |
 | DB-SCHEMA.md | v1 | 2025-12-23 |
@@ -284,9 +284,9 @@ Quick reference showing:
 ### Numbering State
 | Category | Next Number |
 |----------|-------------|
-| Client Documents | CD-024 |
+| Client Documents | CD-029 |
 | Goals | GO-021 |
-| Technologies | tech-006 |
+| Technologies | tech-007 |
 | Story files | story-001 |
 | Comparisons | comp-002 |
 | Learnings | learning-001 |
@@ -294,15 +294,16 @@ Quick reference showing:
 | Scenarios | sc-001 |
 | Directives | DIR-007 |
 
-### Research Files Created (2025-11-30)
-| File | Description |
-|------|-------------|
-| `tech-001-bigbluebutton.md` | Video conferencing (REQUIRED) |
-| `tech-002-stream.md` | Chat & activity feeds (REQUIRED) |
-| `tech-003-astrojs.md` | Meta-framework (PREFERRED) |
-| `tech-004-reactjs.md` | UI library (CONFIRMED) |
-| `tech-005-tailwindcss.md` | CSS framework (CONFIRMED) |
-| `comp-001-cloudflare-vs-vercel.md` | Deployment comparison |
+### Research Files Created
+| File | Description | Date |
+|------|-------------|------|
+| `tech-001-bigbluebutton.md` | Video conferencing (EVALUATING - see tech-006) | 2025-11-30 |
+| `tech-002-stream.md` | Chat & activity feeds (REQUIRED) | 2025-11-30 |
+| `tech-003-astrojs.md` | Meta-framework (PREFERRED) | 2025-11-30 |
+| `tech-004-reactjs.md` | UI library (CONFIRMED) | 2025-11-30 |
+| `tech-005-tailwindcss.md` | CSS framework (CONFIRMED) | 2025-11-30 |
+| `tech-006-plugnmeet.md` | Modern BBB replacement (EVALUATING) | 2025-12-24 |
+| `comp-001-cloudflare-vs-vercel.md` | Deployment comparison | 2025-11-30 |
 
 **Note:** User Story numbers (US-XNNN) are tracked in USER-STORIES.md "Current State" section by role.
 

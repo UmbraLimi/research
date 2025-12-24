@@ -2,7 +2,7 @@
 
 **Goal:** Produce a comprehensive SPECS.md document that can be handed off to Claude Code for Alpha Peer development.
 
-**Last Updated:** 2025-12-23
+**Last Updated:** 2025-12-24
 
 ---
 
@@ -25,18 +25,19 @@
 | Metric | Value |
 |--------|-------|
 | Current Phase | GATHER (Phase 2.5) 🔥 |
-| Client Docs Processed | 23 (CD-001 to CD-023) |
+| Client Docs Processed | 28 (CD-001 to CD-028) |
 | Goals Documented | 21 (GO-001 to GO-020, GO-019 updated) |
-| User Stories Created | 283 (136 P0, 94 P1, 50 P2, 3 P3) |
+| User Stories Created | 299 (136 P0, 94 P1, 66 P2, 3 P3) |
 | User Roles | 9 (incl. Visitor/Guest) |
-| Tech Docs Created | 6 (tech-001 to tech-005, comp-001) |
+| Tech Docs Created | 7 (tech-001 to tech-006, comp-001) |
 | Directives Created | 6 (DIR-001 to DIR-006) |
 | Architecture Docs | 4 (DB-SCHEMA, PAGES, COMPONENTS, API) |
 | Scenarios Created | 0 |
-| Doc Versions | GOALS v1, USER-STORIES v3, DIRECTIVES v1, CLAUDE v2 |
+| Doc Versions | GOALS v1, USER-STORIES v5, DIRECTIVES v1, CLAUDE v2 |
 | Budget | $75,000 (from CD-008) |
 | Timeline | 4 months (from CD-008) |
 | Domain | peerloop.com (live on Cloudflare) |
+| Open Questions | 22 (see `QUESTIONS-FOR-BRIAN.md`) |
 
 ---
 
@@ -333,6 +334,23 @@ For each page, complete documentation:
 
 ## 🏁 Latest Completed
 
+**2025-12-24:** Prototype Walkthrough & Questions Consolidation
+- **Processed 4 new client documents:**
+  - CD-024: Meeting Notes - Brian PeerLoopApp walkthrough (user access states, instructor feeds, Genesis Cohort 4 courses)
+  - CD-025: Sample Course - Intro to Claude Code (real course data, schema validation, 12 new fields)
+  - CD-026: Genesis Cohort Course Package (3 more courses: n8n, Vibe Coding 101, AI Tools Overview)
+  - CD-027: Prototype Walkthrough - Complete (all 5 personas, 20+ pages, 31 keepers)
+- **Comprehensive prototype analysis** from https://peerloopllc.github.io/Peerloop-v2/:
+  - Walked through all 5 personas (New User, Student, Student & Teacher, Creator, Admin)
+  - Documented 20+ pages with detailed structure and data requirements
+  - Identified 31 "keepers" (features to document)
+  - Found critical gaps: Admin not implemented, Creator same as Student-Teacher, no user menu
+  - Discovered new features: homework tracking, session resources, group sessions, earnings dashboard
+- **Created QUESTIONS-FOR-BRIAN.md** - consolidated 21 open questions from all source documents
+- **Updated USER-STORIES.md** (v3→v5) - added 16 new stories from CD-024 and CD-025
+- **Updated schema** - added instructor_followers, promoted_posts, course_prerequisites, course_target_audience, course_testimonials tables
+- Total now: 27 docs, 21 goals, 299 stories, 21 open questions for Brian
+
 **2025-12-23:** Architecture Documents & Goodwill System
 - **Created 4 new architecture documents** (seeded from CD-021):
   - `DB-SCHEMA.md` - 30+ database tables with field definitions and sources
@@ -439,17 +457,15 @@ Completed 2025-11-29. All client documents processed, goals and user stories ext
 - ~~Stream scope?~~ → **Feeds only** (not video, chat is low priority) (CD-008)
 - ~~Community feed prototype?~~ → **Skool.com** as reference design (CD-008)
 
-## Open Questions (New)
+## Open Questions (21 Total)
 
-- **Video conferencing decision:** BBB vs Daily.co vs Digital Samba for 1:1 sessions? (CD-006, CD-007)
-  - BBB: Full-featured, per-session pricing, group support (via Blindside Networks)
-  - Daily.co: P2P for 1:1 (cost-effective), auto-switching, SDK
-  - Digital Samba: Low-code iframe, quick integration
-  - Hybrid option: BBB for groups, P2P for 1:1?
-- **Feed technology:** GetStream (CD-005) vs Bluesky protocol (CD-002)?
-- Which payment processor best supports the 15/15/70 split model?
-- How to handle student-to-student messaging safely ("tricky" per CD-003)?
-- AI integration depth: fabric-level vs feature add-on?
+**See `/client-docs/QUESTIONS-FOR-BRIAN.md` for full list with source traceability.**
+
+Key categories:
+- **Technology decisions:** GetStream vs Bluesky, BBB vs P2P for 1:1 (6 questions)
+- **Feature scope:** AI Assistant, Newsletters, homework system, group sessions (5 questions)
+- **Architecture:** Community structure, profile defaults, certificates (4 questions)
+- **Prototype gaps:** Creator dashboard, Admin features, user menu (6 questions)
 
 ---
 
@@ -463,17 +479,18 @@ Phases may be revisited as new information emerges.
 
 **Key Documents:**
 - `GOALS.md` - 21 goals with source traceability (v1)
-- `USER-STORIES.md` - 283 stories organized by 9 roles (v3)
+- `USER-STORIES.md` - 299 stories organized by 9 roles (v5)
 - `DIRECTIVES.md` - 6 constraints for scenario generation (v1)
 - `CLAUDE.md` - Project guidance and phase definitions (v2)
-- `DB-SCHEMA.md` - 30+ database tables with fields and relationships (v1)
-- `PAGES.md` - 26 pages with data requirements (v1)
-- `COMPONENTS.md` - 39 reusable UI components (v1)
-- `API.md` - 60 API endpoints with request/response formats (v1)
+- `DB-SCHEMA.md` - 35+ database tables with fields and relationships (v1)
+- `PAGES.md` - 27 pages with data requirements (v1)
+- `COMPONENTS.md` - 41 reusable UI components (v1)
+- `API.md` - 65 API endpoints with request/response formats (v1)
 - `SPECS.md` - Final technical specifications (populated from selected scenario)
 - `/scenarios/` - SPECS.md variants for comparison (with lineage tracking)
 - `/research/` - Technology research documents
-- `client-docs/client-docs-index.md` - 23 source document summaries
+- `client-docs/client-docs-index.md` - 27 source document summaries
+- `client-docs/QUESTIONS-FOR-BRIAN.md` - 21 open questions requiring clarification
 
 **Commands for Adding Information:**
 - `/r-add-client-doc` - Process new client documents (now updates 7 docs including architecture)

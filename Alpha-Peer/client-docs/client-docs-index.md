@@ -1555,10 +1555,308 @@ Comprehensive specification for community currency system called "Goodwill Point
 
 ---
 
+### CD-024: Meeting Notes - Brian Walkthrough & Flywheel Testing (Dec 15, 2025)
+**Date Uploaded:** 2025-12-23
+**Original Date:** 2025-12-15
+**Summary for SPECS.md:**
+
+Meeting notes from Brian's walkthrough of PeerLoopApp prototype, discussing user access states, instructor feeds, and initial flywheel testing plan.
+
+**Key elements for SPECS.md:**
+
+- **User Access States (State Machine):**
+  - Registered user → can view instructor and their courses
+  - Paid for course → access to that course's feed
+  - Paid for ANY instructor's course → access to Instructor's public feed
+  - Implies tiered access control based on enrollment relationships
+
+- **Instructor Feed (NEW):**
+  - Instructors should have a feed for current and former students
+  - Distinct from course-specific feeds
+  - Provides ongoing community connection after course completion
+
+- **Flywheel Testing Plan:**
+  - Gabriel and Guy will create 4 entry-level courses: n8n, GitHub, Claude Code, AI tools
+  - Each course: 1-2 sessions with homework
+  - Purpose: Test the learn-teach-earn flywheel with real users
+
+- **Onboarding Flow:**
+  - Needed for full product
+  - NOT for MVP (deferred)
+
+- **Enhanced Gamification (Gabriel's Suggestion):**
+  - Point system rewarding participation
+  - Points can lead to:
+    - Promotions for purchasing courses (discounts)
+    - Deals for promoting a message from current feed to the Peer Loop main feed
+  - Feed promotion feature: Users can spend points to boost their posts to wider audience
+
+**Technical Implications:**
+- User access state machine needed (not just roles, but enrollment-based access levels)
+- Instructor-level feeds distinct from course-level feeds
+- Feed promotion mechanism (spend points to boost posts)
+- Need to track "ever enrolled with instructor" for instructor feed access
+
+**Relationship to Other Docs:**
+- **Expands** CD-023's Goodwill Points with feed promotion use case
+- **Adds** instructor feed concept (not just course feeds)
+- **Confirms** 4 courses for Genesis testing (complements CD-012's 4-5 courses estimate)
+- **Clarifies** MVP scope: onboarding flow is deferred
+
+**Goals Referenced:** GO-001 (flywheel testing), GO-019 (gamification)
+**Stories Added:** US-S069-S071, US-C037-C038, US-P083
+
+---
+
+### CD-025: Sample Course - Intro to Claude Code 101 (Dec 2025)
+**Date Uploaded:** 2025-12-23
+**Type:** Real Course Data (4 files)
+**Summary for SPECS.md:**
+
+Complete course package for "Intro to Claude Code" by Guy Rymberg - used to validate schema against real course content. This course will be offered on PeerLoop.
+
+**Files Included:**
+1. `intro-to-claude-code/course-info.yaml` - Course metadata, pricing, prerequisites, target audience
+2. `intro-to-claude-code/curriculum.md` - Detailed 2-session curriculum with 7 modules
+3. `intro-to-claude-code/instructor.md` - Instructor profile and teaching philosophy
+4. `intro-to-claude-code/overview.md` - Marketing overview and course description
+
+**Course Details:**
+- **Title:** Intro to Claude Code
+- **Instructor:** Guy Rymberg (AI & Automation Expert)
+- **Price:** $249 USD
+- **Format:** 2 live 1-on-1 sessions (90 min each, 3 hours total)
+- **Modules:** 7 (12 lessons)
+- **Level:** Beginner (no coding experience required)
+- **Certificate:** Certificate of Completion
+
+**Schema Validation & Gaps Identified:**
+
+| Field/Entity | Status | Notes |
+|--------------|--------|-------|
+| `courses.title` | ✅ Exists | |
+| `courses.slug` | ✅ Exists | |
+| `courses.tagline` | ❌ **NEW** | Short marketing text (e.g., "Master AI-powered coding...") |
+| `courses.price_cents` | ✅ Exists | 24900 cents |
+| `courses.currency` | ❌ **NEW** | "USD" - needed for international support |
+| `courses.format` | ❌ **NEW** | "Live 1-on-1 sessions" |
+| `courses.lifetime_access` | ❌ **NEW** | boolean |
+| `courses.total_duration` | ❌ **NEW** | "3 hours" |
+| `courses.session_count` | ❌ **NEW** | 2 |
+| `course_objectives` | ✅ Exists | Maps to course_outcomes |
+| `course_includes` | ✅ Exists | |
+| `course_curriculum` | ✅ Exists | Needs enhancement |
+
+**New Tables Needed:**
+
+1. **course_prerequisites**
+   - `course_id`, `type` (required/nice_to_have/not_required), `content`
+   - Examples: "Computer with terminal", "Claude Pro account", "No coding experience needed"
+
+2. **course_target_audience**
+   - `course_id`, `order`, `description`
+   - Examples: "Non-coders wanting to use AI for development"
+
+3. **course_testimonials**
+   - `course_id`, `quote`, `student_name`, `student_role`
+   - Example: "I went from knowing nothing..." - Sarah, Course Graduate
+
+**Curriculum Enhancement Needed:**
+
+Current `course_curriculum` has: title, description, duration, video_count, etc.
+Real data shows need for:
+- `learning_objectives` per module (array)
+- `topics_covered` per module (array)
+- `hands_on_exercise` per module (text)
+- `session_number` to group modules into sessions
+
+**Instructor Profile Enhancement:**
+
+Current `users` has: bio, title, qualifications
+Real data shows need for:
+- `teaching_philosophy` (text)
+- `experience_highlights` (array)
+- `why_learn_from` (array)
+
+**Technical Implications:**
+- Course structure is session-based (Session 1, Session 2) with modules grouped under sessions
+- Homework exists between sessions (async component)
+- Prerequisites have 3 tiers: required, nice-to-have, not-required
+- Testimonials are course-specific, not just instructor reviews
+
+**Relationship to Other Docs:**
+- **Validates** CD-021 schema (courses, curriculum structure)
+- **Extends** schema with real-world fields not in prototype
+- **Confirms** CD-024's 4 courses for flywheel testing (this is one of them)
+
+**Stories Implied:** US-S072-S075, US-C039-C040
+
+---
+
+### CD-026: Genesis Cohort Course Package (Dec 2025)
+**Date Uploaded:** 2025-12-23
+**Type:** Course Data Bundle (3 additional courses)
+**Summary for SPECS.md:**
+
+Three additional courses following the identical CD-025 format. Together with CD-025, these form the **4 Genesis Cohort courses** for flywheel testing (as planned in CD-024).
+
+**Courses Included:**
+
+| Course | Slug | Instructor | Price | Modules |
+|--------|------|------------|-------|---------|
+| Intro to n8n | `intro-to-n8n` | Guy Rymberg | $249 | 8 |
+| Vibe Coding 101 | `vibe-coding-101` | Guy or Gabriel Rymberg | $249 | 8 |
+| AI Tools Overview | `ai-tools-overview` | Guy Rymberg | $249 | 8 |
+
+**Files per course (identical structure to CD-025):**
+- `course-info.yaml` - Metadata, pricing, prerequisites, target audience
+- `curriculum.md` - Session-based modules with exercises
+- `instructor.md` - Instructor profile and teaching philosophy
+- `overview.md` - Marketing description and outcomes
+
+**Course Sequencing Discovered:**
+- **Vibe Coding 101** requires completion of "Intro to Claude Code" as prerequisite
+- Implies course dependency/progression tracking needed
+
+**Complete Genesis Cohort (4 courses):**
+
+| # | Course | Topic | Prerequisite |
+|---|--------|-------|--------------|
+| 1 | Intro to Claude Code (CD-025) | AI Coding | None |
+| 2 | Intro to n8n | Workflow Automation | None |
+| 3 | AI Tools Overview | AI Landscape | None |
+| 4 | Vibe Coding 101 | Web Development | Intro to Claude Code |
+
+**Schema Validation:**
+- All courses use identical YAML structure
+- CD-025 schema additions support all 4 courses
+- No additional schema changes needed
+
+**Relationship to Other Docs:**
+- **Confirms** CD-024's plan for 4 entry-level courses for flywheel testing
+- **Uses** CD-025 schema (prerequisites, target_audience, testimonials tables)
+- **Validates** course format fields (session_count, format, lifetime_access)
+
+**No new stories needed** - CD-025 user stories cover all course display requirements.
+
+---
+
+### CD-027: PeerLoop Prototype Walkthrough - Complete Analysis (Dec 24, 2025)
+**Date Uploaded:** 2025-12-24
+**Type:** Prototype Analysis (All 5 Personas)
+**Source:** https://peerloopllc.github.io/Peerloop-v2/
+**Summary for SPECS.md:**
+
+Comprehensive walkthrough of Brian's vibe-coded prototype through ALL personas. Captures page structure, navigation patterns, new features, gaps, and UX issues.
+
+**Key elements for SPECS.md:**
+
+- **5 Personas Reviewed:** New User, Sarah Miller (Student), Alex Sanders (Student & Teacher), Jamie Chen (Creator), Marcus Johnson (Admin)
+- **20+ Pages Documented** including Course Progress (richest page), Teaching Dashboard, all Profile tabs
+- **31 Keepers (Features) Identified**
+
+- **Critical Gaps Identified:**
+  1. Admin not implemented (shows Teacher view)
+  2. Creator Dashboard same as Student-Teacher (no course management)
+  3. No user menu in header (no logout, no user indicator)
+
+- **UX Issues:**
+  - No user avatar/indicator in header
+  - No logout visible
+  - Settings buried in Profile tabs
+  - Global Edit toggle (should be per-section)
+  - Mentions tab non-functional
+
+- **Major Features Discovered:**
+  - Session-based course structure (8 sessions)
+  - Homework tracking with due dates and scores
+  - Per-session resources (Recording, Slides, Code Files)
+  - Group sessions (not just 1:1)
+  - Earnings dashboard with 70% payout display
+  - "Recommend" button for certification workflow
+  - Browse Student-Teachers CTA for extra help
+
+- **Schema Implications:**
+  - 15+ new tables implied
+  - 25+ new fields on existing tables
+
+- **12 Questions for Brian** covering community structure, group sessions, homework system, Creator Studio needs
+
+**Technical Implications:**
+- Course Progress page is central learning experience
+- Teaching Dashboard validates CD-019/CD-020 workflows
+- Group sessions extend beyond 1:1 model
+- Homework/grading system needs scope clarification
+
+**Relationship to Other Docs:**
+- **Extends** CD-022's prototype URL with detailed page analysis
+- **Validates** CD-013 (Community Feed), CD-014 (Video/Sessions), CD-018 (Profiles), CD-019 (Course Content), CD-020 (Payment)
+- **Identifies gaps** requiring clarification before implementation
+
+**Goals Referenced:** GO-001, GO-006, GO-010, GO-014, GO-019
+**Stories Implied:** 50+ user stories across all features discovered
+
+**Full Document:** `/client-docs/CD-027-prototype-walkthrough-complete.md`
+
+---
+
+### CD-028: Slack - PlugNmeet as BBB Alternative (Dec 24, 2025)
+**Date Uploaded:** 2025-12-24
+**Type:** Slack Conversation
+**Source:** Brian LeBlanc messages after Fraser raised concerns about BBB being "old and dated"
+**Summary for SPECS.md:**
+
+Brian researched modern alternatives to BigBlueButton after hearing feedback that BBB is outdated. Found **PlugNmeet** as the "Best Modern BBB Replacement."
+
+**Key elements for SPECS.md:**
+
+- **PlugNmeet Overview:**
+  - Open-source, built on Go + LiveKit (modern WebRTC)
+  - Positions itself as "modern BigBlueButton replacement"
+  - Zoom-like interface (vs BBB's clunky UI)
+  - Same classroom features as BBB
+
+- **Pricing:**
+  - Self-Hosted: Free (just VPS cost $5-10/month) - flat rate
+  - Cloud Flex Plan: Flat monthly fee based on concurrent capacity (not per-user)
+
+- **Key Features:**
+  - HD video, screen sharing, breakout rooms, waiting rooms
+  - Whiteboard (upload PDFs/Office docs)
+  - Polls & Voting, Shared Notepad
+  - Moderator Controls (lock mics/webcams/chat)
+  - AI "Meeting Agent" for live speech-to-text and translations
+  - LMS plugins (Moodle, WordPress, Joomla)
+
+- **Scalability Advantages over BBB:**
+  - BBB is "monolithic" - heavy, difficult to split across servers
+  - PlugNmeet uses microservices architecture
+  - Small: Single server handles hundreds of concurrent users
+  - Large: Can separate heavy components (recording on separate server)
+  - Massive: Cluster media servers for 1,000+ students
+
+- **Status:** Brian to "look deeper" before final decision
+
+**Technical Implications:**
+- May replace BBB (DIR-001: MUST-USE BigBlueButton) if evaluation is positive
+- Better scalability for growth
+- Lower/predictable costs vs per-session fees
+- Modern UX aligns with Zoom-like expectations
+
+**Relationship to Other Docs:**
+- **May supersede** CD-006, CD-007, CD-009, CD-014's BBB decisions
+- **Research doc:** `research/tech-006-plugnmeet.md`
+- **Updates** QUESTIONS-FOR-BRIAN.md - video platform question now includes PlugNmeet
+
+**Goals Referenced:** GO-009 (Video Session Infrastructure)
+**Stories Covered:** US-V001-V007, US-A013-A018, US-T007
+
+---
+
 ## Index Statistics
-- **Total Documents:** 23
-- **Next CD Number:** CD-024
-- **Last Updated:** 2025-12-23
+- **Total Documents:** 28
+- **Next CD Number:** CD-029
+- **Last Updated:** 2025-12-24
 
 ## Quick Reference
 
@@ -1587,3 +1885,8 @@ Comprehensive specification for community currency system called "Goodwill Point
 | CD-021 | Database Schema Sample | JS mock data, Creator/Course entities, schema definitions, new fields to add |
 | CD-022 | Data Structures Doc | Formal docs, prototype URL, ratingCount, badge fields |
 | CD-023 | Goodwill Points Spec | Summon Help, community currency, anti-gaming, Block 2+ |
+| CD-024 | Meeting Notes - Brian Walkthrough | User access states, instructor feed, flywheel testing (4 courses), feed promotion |
+| CD-025 | Sample Course - Intro to Claude Code | Real course data (4 files), schema validation, Guy Rymberg, $249, 2 sessions |
+| CD-026 | Genesis Cohort Course Package | 3 more courses (n8n, Vibe Coding, AI Tools), same format, course sequencing |
+| CD-027 | Prototype Walkthrough - Complete | All 5 personas, 20+ pages, 31 keepers, gaps & UX issues, 12 questions for Brian |
+| CD-028 | Slack - PlugNmeet | Modern BBB replacement, microservices, Zoom-like UI, flat pricing |

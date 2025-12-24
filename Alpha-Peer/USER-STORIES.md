@@ -1,8 +1,8 @@
 # Alpha Peer - User Stories
 
-**Version:** v3
+**Version:** v5
 **Last Updated:** 2025-12-23
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec)
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), Gap Analysis (Phase 2.5), CD-012 (MVP Review), CD-013 (Community Feed), CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling), CD-021 (Database Schema Sample), CD-023 (Goodwill Points Spec), CD-024 (Brian Walkthrough), CD-025 (Intro to Claude Code Course)
 
 > **Version History:** Increment version when substantive changes occur (new stories, priority changes, removed stories). Minor edits (typos, formatting) don't require version bump.
 
@@ -687,14 +687,14 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 |----------|----|----|----|----|-------|
 | Visitor/Guest | 11 | 4 | 0 | 0 | 15 |
 | Admin | 16 | 12 | 1 | 0 | 29 |
-| Creator | 12 | 16 | 8 | 1 | 37 |
-| Student | 30 | 23 | 15 | 0 | 68 |
+| Creator | 12 | 19 | 11 | 1 | 43 |
+| Student | 32 | 26 | 16 | 1 | 75 |
 | Student-Teacher | 12 | 8 | 9 | 0 | 29 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
-| Platform/Infrastructure | 49 | 14 | 14 | 2 | 79 |
+| Platform/Infrastructure | 50 | 15 | 14 | 3 | 82 |
 | Community Moderator | 2 | 6 | 1 | 0 | 9 |
-| **Total** | **136** | **94** | **50** | **3** | **283** |
+| **Total** | **139** | **101** | **54** | **5** | **299** |
 
 ### Gap Analysis Stories Added (2025-11-30)
 
@@ -739,6 +739,8 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-020 | MVP Decision - Payment & Escrow | US-A026–A030, US-P074–P076, US-T023, US-C035 (admin payout dashboard, escrow, earnings visibility) |
 | CD-021 | Database Schema Sample | US-S057–S061, US-C036 (course filtering, learning objectives, includes list, per-course STs, creator expertise) |
 | CD-023 | Goodwill Points Spec | US-S062–S068, US-T024–T029, US-P077–P082 (summon help, goodwill points, anti-gaming, availability) |
+| CD-024 | Meeting Notes - Brian Walkthrough | US-S069–S071, US-C037–C038, US-P083–P085 (feed access states, instructor feed, feed promotion) |
+| CD-025 | Sample Course - Intro to Claude Code | US-S072–S075, US-C039–C042 (prerequisites, target audience, testimonials, course format) |
 | Gap Analysis | Visitor Stories | US-G001–G015 (pre-registration experience, homepage, course/creator discovery, authentication) |
 
 ---
@@ -783,18 +785,71 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 
 ---
 
+## Feed Access & Promotion Stories (from CD-024)
+
+*Note: These stories implement the tiered feed access system and feed promotion feature.*
+
+### Student Feed Access
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S069 | As a Student, I need to access a course's community feed after paying for the course so that I can see posts from other students and S-Ts in that course | P0 | CD-024 |
+| US-S070 | As a Student, I need to access an Instructor's public feed after paying for ANY of their courses so that I can stay connected with the instructor's broader community | P1 | CD-024 |
+| US-S071 | As a Student, I need to spend goodwill points to promote my post to the main Peer Loop feed so that my helpful content reaches a wider audience | P3 | CD-024 |
+
+### Creator/Instructor Feed
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C037 | As a Creator, I need an instructor-level feed for my current and former students so that I can maintain ongoing community with all my students across courses | P1 | CD-024 |
+| US-C038 | As a Creator, I need to see which students have access to my instructor feed so that I know my audience | P2 | CD-024 |
+
+### Feed Access Infrastructure
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P083 | As a System, I need to track enrollment-based feed access levels so that users only see feeds they're entitled to | P0 | CD-024 |
+| US-P084 | As a System, I need to grant instructor feed access when a user purchases any course from that instructor so that the access upgrade happens automatically | P1 | CD-024 |
+| US-P085 | As a System, I need to process feed promotion requests (spend points to boost post) so that users can increase their visibility | P3 | CD-024 |
+
+---
+
+## Course Display Enhancement Stories (from CD-025)
+
+*Note: Stories derived from real course data validation. Support enhanced course information display.*
+
+### Student Course Discovery
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S072 | As a Student, I need to see course prerequisites (required, nice-to-have, not-required) so that I know what I need before enrolling | P1 | CD-025 |
+| US-S073 | As a Student, I need to see target audience descriptions so that I know if the course is right for me | P1 | CD-025 |
+| US-S074 | As a Student, I need to see course testimonials from past students so that I can gauge course quality and satisfaction | P2 | CD-025 |
+| US-S075 | As a Student, I need to see the course format (e.g., "Live 1-on-1 sessions", session count, duration) so that I understand how the course is delivered | P0 | CD-025 |
+
+### Creator Course Setup
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C039 | As a Creator, I need to add prerequisites with different priority levels (required, nice-to-have, not-required) so that students understand requirements clearly | P1 | CD-025 |
+| US-C040 | As a Creator, I need to add my teaching philosophy to my profile so that students understand my approach and style | P2 | CD-025 |
+| US-C041 | As a Creator, I need to define target audience segments for my course so that the right students find my course | P1 | CD-025 |
+| US-C042 | As a Creator, I need to manage course testimonials (add, feature, remove) so that I can showcase student success | P2 | CD-025 |
+
+---
+
 ## Current State
 
 | Role | Prefix | Next Number |
 |------|--------|-------------|
 | Visitor/Guest | US-G | US-G016 |
 | Admin | US-A | US-A031 |
-| Creator | US-C | US-C037 |
-| Student | US-S | US-S069 |
+| Creator | US-C | US-C043 |
+| Student | US-S | US-S076 |
 | Student-Teacher | US-T | US-T030 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P083 |
+| Platform/Infrastructure | US-P | US-P086 |
 | Community Moderator | US-M | US-M010 |
 
 ---

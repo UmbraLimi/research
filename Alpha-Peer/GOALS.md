@@ -198,7 +198,7 @@ Track all success metrics:
 - Session monitoring (status, cancel, complete)
 
 ### GO-019: Gamification & Engagement System
-**Source:** CD-010, CD-011, CD-023
+**Source:** CD-010, CD-011, CD-023, CD-024
 
 Drive engagement through gamification:
 - **Goodwill points system** - Community currency replacing 5-star reviews (CD-023)
@@ -210,6 +210,9 @@ Drive engagement through gamification:
 - **Discussion participation tracking** - Reward community involvement
 - **Teacher Student points** - Motivate Teacher Students to be more active (CD-011)
 - **Future rewards** (Block 4+): Badges, discounts, free sessions, revenue bonus (CD-023)
+- **Feed promotion** (CD-024) - Spend points to promote posts from course feed to main Peer Loop feed
+  - Increases visibility of helpful content
+  - Creates spending outlet for accumulated points
 - Purpose: Combat isolation by incentivizing ongoing engagement beyond course completion
 - **Roadmap:** Not MVP - Block 2+ feature
 
@@ -283,6 +286,7 @@ AI education is strategic beachhead:
 | CD-018 | MVP Decision - Student Profile System | GO-001, GO-005, GO-006, GO-008, GO-014 (flywheel validation, H4/H6 metrics, social graph, combat isolation) |
 | CD-019 | Decision - Course Content Delivery | GO-001, GO-004, GO-005, GO-011 (flywheel, Genesis cohort, 75% completion, learning management) |
 | CD-020 | MVP Decision - Payment & Escrow | GO-001, GO-003, GO-005, GO-012 (flywheel, 70/15/15 split, H1 validation, payment infrastructure) |
+| CD-024 | Meeting Notes - Brian Walkthrough | GO-001 (flywheel testing with 4 courses), GO-019 (feed promotion gamification) |
 
 ---
 

@@ -529,6 +529,38 @@ Password Reset                Notifications
 
 ---
 
+### Instructor Feed
+| Attribute | Value |
+|-----------|-------|
+| **URL** | `/instructors/:handle/feed` or `/@:handle/feed` |
+| **Purpose** | Feed for current and former students of an instructor (across all courses) |
+| **Data Sources** | posts (instructor-filtered), instructor_followers, users |
+| **User Stories** | US-S070, US-C037, US-C038 |
+| **Access** | Authenticated (users who have purchased any course from this instructor) |
+| **Source** | CD-024 |
+| **Key Elements** | |
+
+**Section: Feed**
+- Posts from the instructor
+- Posts from any of the instructor's courses
+- Algorithmic sorting
+
+**Section: Post Composer** (if authorized)
+- Create post to instructor feed
+- Promote to main feed option (using points)
+
+**Section: Sidebar**
+- Instructor profile summary
+- List of instructor's courses
+- Current students count
+
+**Access Control:**
+- Must have purchased at least one course from this instructor
+- Access granted automatically on first enrollment
+- Persists even after course completion
+
+---
+
 ## Role-Specific Pages
 
 ### Creator Studio
@@ -588,9 +620,9 @@ Password Reset                Notifications
 | Category | Count |
 |----------|-------|
 | Public Pages | 10 |
-| Authenticated Pages | 13 |
+| Authenticated Pages | 14 |
 | Role-Specific Pages | 3 |
-| **Total** | **26** |
+| **Total** | **27** |
 
 ---
 
@@ -607,6 +639,7 @@ Password Reset                Notifications
 | CD-020 | Admin Dashboard (payout section) |
 | CD-012 | Dashboard approval workflows |
 | CD-023 | Course Chat Room, Summon Help Modal, Profile (goodwill sections), Course Content (summon button) |
+| CD-024 | Instructor Feed (access-controlled feed for instructor's students) |
 
 ---
 

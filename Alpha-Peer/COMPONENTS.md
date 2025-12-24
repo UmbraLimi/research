@@ -608,6 +608,60 @@ Community feed post.
 
 ---
 
+### FeedPromotionButton
+
+Button to promote a post to the main Peer Loop feed (using goodwill points).
+
+| Attribute | Value |
+|-----------|-------|
+| **Used On** | PostCard, PostComposer |
+| **Data Source** | user_goodwill, promoted_posts |
+| **Source** | CD-024 |
+
+**Props:**
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| postId | string | Yes | Post to promote |
+| pointsCost | number | Yes | Points required |
+| userBalance | number | Yes | User's available points |
+| onPromote | function | Yes | Promotion handler |
+
+**Display:**
+- "Promote to Peer Loop" button with points cost
+- Disabled if insufficient balance
+- Confirmation modal before spending
+
+**Access Control:**
+- Only visible on course-specific posts
+- Requires goodwill points balance
+
+---
+
+### InstructorFeedHeader
+
+Header for instructor-level feed.
+
+| Attribute | Value |
+|-----------|-------|
+| **Used On** | Instructor Feed |
+| **Data Source** | users, instructor_followers, courses |
+| **Source** | CD-024 |
+
+**Props:**
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| instructor | User | Yes | Instructor user object |
+| coursesCount | number | Yes | Number of courses |
+| followersCount | number | Yes | Feed followers |
+
+**Display:**
+- Instructor avatar and name
+- "Instructor Feed" label
+- Student count across all courses
+- List of courses by this instructor
+
+---
+
 ### PostComposer
 
 Create new post.
@@ -962,10 +1016,10 @@ Notification for S-Ts when a student summons help.
 | Course | 8 |
 | Form | 3 |
 | Navigation | 2 |
-| Feed | 2 |
+| Feed | 4 |
 | Common | 6 |
 | Goodwill | 9 |
-| **Total** | **39** |
+| **Total** | **41** |
 
 ---
 
@@ -978,6 +1032,7 @@ Notification for S-Ts when a student summons help.
 | CD-023 | SummonHelpButton, GoodwillPointsDisplay, GoodwillBalanceCard, PointsSlider, MarkAsQuestionButton, ThisHelpedButton, AvailableToHelpToggle, GoodwillBadge, SummonNotification |
 | CD-002 | MainNav, RoleSwitcher |
 | CD-013 | PostCard, PostComposer |
+| CD-024 | FeedPromotionButton, InstructorFeedHeader |
 | CD-015 | AvailabilityPicker, SessionCard |
 | CD-018 | ProfileHeader, FollowButton |
 | CD-019 | EnrolledCourseCard, ProgressBar |
