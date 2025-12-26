@@ -1,0 +1,226 @@
+# Page: Creator Studio
+
+**Code:** STUD
+**URL:** `/studio` or `/studio/:course_id`
+**Access:** Authenticated (Creator role)
+**Priority:** P0
+**Status:** In Scope
+
+---
+
+## Purpose
+
+Course creation and management interface for Creators to build, edit, publish, and manage their courses and curriculum.
+
+---
+
+## Connections
+
+### Incoming (users arrive from)
+
+| Source | Trigger | Notes |
+|--------|---------|-------|
+| CDSH | "Creator Studio" / "Manage Courses" | From dashboard |
+| CDSH | "Create New Course" | Direct to new course |
+| Nav | "Studio" link (Creators) | Global navigation |
+| CDET | "Edit Course" (own course) | Edit specific course |
+
+### Outgoing (users navigate to)
+
+| Target | Trigger | Notes |
+|--------|---------|-------|
+| CDSH | "Dashboard" / back | Return to dashboard |
+| CDET | "Preview Course" | View public course page |
+| CPRO | "View Profile" | See creator profile |
+
+---
+
+## Data Requirements
+
+| Entity | Fields Used | Purpose |
+|--------|-------------|---------|
+| courses | All fields | Course creation/editing |
+| course_curriculum | All fields | Module management |
+| course_objectives | objective, display_order | Learning objectives |
+| course_includes | item, display_order | Included items |
+| course_prerequisites | type, content, display_order | Prerequisites |
+| course_target_audience | description, display_order | Target audience |
+| course_tags | tag | Course tags |
+| categories | id, name | Category selection |
+| peerloop_features | All fields | Feature toggles |
+
+---
+
+## Sections
+
+### Studio Header
+- "Creator Studio" title
+- "New Course" button
+- "Dashboard" link → CDSH
+
+### Course List (Main View: `/studio`)
+- Grid/list of creator's courses
+- Each shows:
+  - Thumbnail
+  - Title
+  - Status badge (Draft, Published, Retired)
+  - Student count
+  - "Edit" button → `/studio/:course_id`
+  - Quick actions: Publish/Unpublish, View, Delete
+- "Create New Course" CTA
+
+### Course Editor (Edit View: `/studio/:course_id`)
+
+#### Left Sidebar - Navigation
+- Course Settings
+- Basic Info
+- Curriculum
+- Objectives & Includes
+- Prerequisites
+- Pricing
+- Student-Teachers
+- Publishing
+
+#### Section: Basic Info
+- **Title:** Text input
+- **Slug:** Auto-generated, editable
+- **Tagline:** Short description (150 chars)
+- **Description:** Rich text editor
+- **Thumbnail:** Image upload
+- **Category:** Dropdown
+- **Level:** Beginner/Intermediate/Advanced
+- **Tags:** Tag input (multiple)
+
+#### Section: Curriculum
+- **Module List:**
+  - Drag-to-reorder
+  - Add/remove modules
+- **Per Module:**
+  - Title
+  - Description
+  - Duration
+  - Session number (for grouping)
+  - Video URL (external link)
+  - Document URL (external link)
+  - Learning objectives (this module)
+  - Topics covered
+  - Hands-on exercise
+- "Add Module" button
+- Bulk import (future)
+
+#### Section: Objectives & Includes
+- **Learning Objectives:**
+  - List of objectives
+  - Add/remove/reorder
+- **What's Included:**
+  - List of included items
+  - Add/remove/reorder
+
+#### Section: Prerequisites
+- **Required:**
+  - List of required prerequisites
+- **Nice to Have:**
+  - Optional recommendations
+- **Not Required:**
+  - Things students don't need
+
+#### Section: Target Audience
+- List of audience descriptions
+- Who is this course for?
+
+#### Section: Pricing
+- **Price:** Currency input (cents → dollars display)
+- **Currency:** Dropdown (default USD)
+- **Lifetime Access:** Toggle
+- **Certificate:** Toggle + certificate name
+
+#### Section: PeerLoop Features
+- **1-on-1 Teaching:** Toggle
+- **Certified Teachers:** Toggle
+- **Earn While Teaching:** Toggle
+- **Teacher Commission:** Percentage input
+
+#### Section: Student-Teachers
+- List of certified STs for this course
+- Pending applications
+- Approve/revoke certification
+- Link to TDSH for each ST
+
+#### Section: Publishing
+- **Status:** Draft / Published / Retired
+- **Publish** button (if draft)
+- **Unpublish** button (if published)
+- **Preview** → CDET
+- Publishing checklist:
+  - [ ] Title set
+  - [ ] Description added
+  - [ ] At least 1 module
+  - [ ] Thumbnail uploaded
+  - [ ] Price set
+
+---
+
+## User Stories Fulfilled
+
+- US-C001: Create new course
+- US-C002: Edit course details
+- US-C003: Manage course content/curriculum
+- US-C010: Set course pricing
+- US-C034: Publish/unpublish courses
+
+---
+
+## States & Variations
+
+| State | Description |
+|-------|-------------|
+| Course List | Viewing all courses |
+| New Course | Creating new course (empty form) |
+| Editing Draft | Editing unpublished course |
+| Editing Published | Editing live course (with warnings) |
+| Publishing | Publishing flow with checklist |
+| No Courses | Empty state, "Create your first course" |
+
+---
+
+## Mobile Considerations
+
+- Course list is primary on mobile
+- Editor sections become full-screen views
+- Simplified drag-and-drop for curriculum
+- Critical actions (save, publish) always visible
+
+---
+
+## Error Handling
+
+| Error | Display |
+|-------|---------|
+| Save fails | "Unable to save. Please try again." |
+| Publish fails | "Unable to publish. Check required fields." |
+| Image upload fails | "Unable to upload image. Try again." |
+| Slug conflict | "This URL is already taken. Choose another." |
+
+---
+
+## Analytics Events
+
+| Event | Trigger | Data |
+|-------|---------|------|
+| `page_view` | Page load | view (list/edit), course_id |
+| `course_created` | New course started | - |
+| `course_updated` | Changes saved | course_id, fields_changed |
+| `course_published` | Published | course_id |
+| `course_unpublished` | Unpublished | course_id |
+| `module_added` | Module created | course_id |
+| `module_reordered` | Modules reordered | course_id |
+
+---
+
+## Notes
+
+- CD-019: Content is external (YouTube/Vimeo, Google Docs)
+- Consider auto-save for forms
+- Version history for course changes (future)
+- Duplicate course feature (future)
+- Analytics dashboard integration

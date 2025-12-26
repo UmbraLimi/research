@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**Version:** v3
-**Last Updated:** 2025-12-24
+**Version:** v4
+**Last Updated:** 2025-12-25
 
 > **Version History:** Increment version when substantive changes occur (new phases, changed workflows, new commands). Minor edits (typos, formatting) don't require version bump.
 
@@ -239,6 +239,121 @@ This enables future runs to compare what changed when questions get answered.
 - If approved: scenario copied to root `SPECS.md`
 - Architecture documents finalized for selected scenario
 - Ready for implementation handoff
+
+### Page Flow Documentation (Added in RUN-001)
+
+During RUN-001, we discovered the need for detailed page-by-page documentation to properly evaluate the scenario. This led to creating comprehensive page flow documents.
+
+**Page Documentation Structure:**
+
+```
+runs/run-NNN/pages/
+├── PAGES-INDEX.md           # Schema definition + page registry
+├── page-CODE-name.md        # Individual page documentation
+└── ...
+```
+
+**Page Codes:** Each page has a 3-4 letter code (e.g., HOME, CBRO, CDET) for:
+- Concise cross-referencing between pages
+- Compact Mermaid diagrams
+- Quick reference in discussions
+
+**Page File Schema:** Each page file documents:
+- Purpose, URL, Access level, Priority
+- Connections (incoming + outgoing navigation)
+- Data requirements (DB entities and fields)
+- UI sections with elements
+- User stories fulfilled
+- States & variations
+- Mobile considerations
+- Error handling
+- Analytics events
+
+**Page Categories:**
+- Public pages (10): Visitor-accessible
+- Authenticated pages (18): Logged-in users
+- Role-specific pages (3): Creator, Admin, Moderator
+- Admin SPA screens (7): CRUD interfaces within Admin SPA
+
+### Baseline/Overlay Model for Pages
+
+To handle page variations across runs, we use a layered approach:
+
+**Problem Solved:** Pages might differ between scenarios (some pages removed, sections changed, tech-specific details). Copying everything to each run creates duplication; keeping everything shared prevents run-specific variations.
+
+**Solution: Base + Overlay**
+
+```
+Alpha-Peer/
+├── baseline/                    # Created AFTER first run approval
+│   ├── PAGES-CATALOG.md         # All possible pages with codes
+│   ├── pages/                   # Stable parts only
+│   └── DB-SCHEMA.md             # Full logical schema
+│
+├── runs/
+│   └── run-NNN/
+│       ├── pages/               # FULL detail for this run
+│       └── schema-scope.md      # Which tables are in scope
+│
+└── output/                      # Composite for handoff (generated)
+```
+
+**Workflow:**
+1. **RUN-001:** Create full page documentation in `runs/run-001/pages/`
+2. **After approval:** Extract stable parts to `baseline/` folder
+3. **Future runs:** Start with baseline, add overlay for differences
+4. **Final output:** Merge baseline + approved run overlay
+
+**What Goes Where:**
+
+| Location | Contains |
+|----------|----------|
+| Baseline | Stable: page codes, names, URLs, core purpose, core data entities |
+| Run Overlay | Variable: which pages in scope, sections included, tech-specific details |
+| Output | Composite: complete documentation for implementation |
+
+---
+
+## Evolution of GATHER/RUN Approach
+
+This section documents how the project methodology evolved, for context in future sessions.
+
+### Why GATHER/RUN?
+
+The project started with client documents containing requirements, mockups, and decisions. Rather than immediately writing SPECS.md, we needed a structured way to:
+1. **Accumulate** information from multiple sources (33+ client documents)
+2. **Research** technology options and trade-offs
+3. **Generate** different scenarios based on technology choices
+4. **Iterate** when assumptions change or new information arrives
+
+This led to the two-phase approach:
+- **GATHER:** Collect and organize all inputs
+- **RUN:** Transform inputs into actionable specifications
+
+### Why RUNs Instead of Direct SPECS.md?
+
+Early attempts to write SPECS.md directly revealed problems:
+- Open questions blocked progress
+- Technology decisions affected multiple sections
+- Client feedback required significant rewrites
+- No way to compare alternatives
+
+The RUN concept solves these by:
+- **Snapshotting state:** Each run captures the questions state at that moment
+- **Isolating decisions:** Run-specific assets document trade-offs
+- **Enabling comparison:** Multiple runs can be compared
+- **Supporting iteration:** Bad runs don't pollute good work
+
+### How RUN-001 Shaped the Approach
+
+RUN-001 (the first run) was used to:
+1. Generate `scenario.md` - 14-section technical specification
+2. Create run-specific assets for key decisions
+3. **Establish the page flow documentation pattern** - 38 pages/screens
+4. Define the page schema and code system
+5. Plan the baseline/overlay model for future runs
+
+This first run became the template for how runs work and what they produce.
 
 ---
 
