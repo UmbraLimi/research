@@ -47,6 +47,7 @@ Platform administration hub for managing users, processing payouts, reviewing co
 | certificates | All fields | Certificate vetting |
 | sessions | All fields | Session monitoring |
 | content_flags | All fields | Moderation queue |
+| moderator_invites | All fields | Moderator invitation management |
 
 ---
 
@@ -60,6 +61,7 @@ Platform administration hub for managing users, processing payouts, reviewing co
   - Payouts
   - Enrollments
   - Certificates
+  - Moderators
   - Analytics
   - Settings
   - Moderation → MODQ
@@ -145,6 +147,30 @@ Platform administration hub for managing users, processing payouts, reviewing co
 - **Issued Certificates:**
   - History of all certificates
   - Revoke if needed
+
+### Moderators Section
+- **Current Moderators:**
+  - List of users with `is_moderator = true`
+  - Each shows: name, email, assigned date
+  - "Remove Moderator" action
+- **Pending Invites:**
+  - Invites sent but not yet accepted
+  - Each shows: email, sent date, expires date, status
+  - "Resend" / "Cancel" actions
+- **Invite New Moderator:**
+  - "Invite Moderator" button
+  - Email input + optional message
+  - Sends invite email via Resend
+  - Creates record in `moderator_invites`
+- **Invite History:**
+  - All past invites (accepted, declined, expired)
+  - Filter by status
+- **Two-Step Flow:**
+  1. Admin sends invite to email
+  2. Invitee receives email with unique link
+  3. Invitee clicks link → MINV page to accept/decline
+  4. If accepted: user's `is_moderator` flag set to true
+- **Source:** Brian Review 2025-12-26
 
 ### Analytics Section
 - **Platform Metrics:**
@@ -236,6 +262,11 @@ Platform administration hub for managing users, processing payouts, reviewing co
 | `GET /api/admin/certificates/pending` | Certificates section | Pending certificates |
 | `GET /api/admin/analytics` | Analytics section | Platform metrics |
 | `GET /api/admin/flags/count` | Alerts | Flagged content count |
+| `GET /api/admin/moderator-invites` | Moderators section | List invites |
+| `POST /api/admin/moderator-invites` | Send invite | Create and send invite |
+| `DELETE /api/admin/moderator-invites/:id` | Cancel invite | Revoke pending invite |
+| `POST /api/admin/moderator-invites/:id/resend` | Resend invite | Resend invite email |
+| `DELETE /api/admin/users/:id/moderator` | Remove moderator | Remove moderator role |
 
 **Dashboard Response:**
 ```typescript

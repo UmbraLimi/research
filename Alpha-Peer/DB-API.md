@@ -1,6 +1,6 @@
 # PeerLoop - Database API (Internal Endpoints)
 
-**Version:** v1
+**Version:** v2
 **Last Updated:** 2025-12-26
 **Primary Source:** Page documentation, API.md v2
 
@@ -1156,6 +1156,193 @@ All endpoints follow REST conventions:
 
 ---
 
+## Homework
+
+### GET /api/courses/:id/homework
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | List homework assignments for course |
+| **Auth** | Authenticated (enrolled or creator/ST) |
+| **Tables** | `homework_assignments`, `course_curriculum` |
+| **DB-SCHEMA** | [homework_assignments](DB-SCHEMA.md#homework_assignments) |
+
+---
+
+### GET /api/homework/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Get homework assignment detail |
+| **Auth** | Authenticated (enrolled or creator/ST) |
+| **Tables** | `homework_assignments`, `homework_submissions` |
+| **DB-SCHEMA** | [homework_assignments](DB-SCHEMA.md#homework_assignments) |
+
+---
+
+### POST /api/courses/:id/homework
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Create homework assignment |
+| **Auth** | Authenticated (creator or ST for course) |
+| **Tables** | `homework_assignments` |
+| **DB-SCHEMA** | [homework_assignments](DB-SCHEMA.md#homework_assignments) |
+
+---
+
+### PUT /api/homework/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Update homework assignment |
+| **Auth** | Authenticated (assignment creator) |
+| **Tables** | `homework_assignments` |
+| **DB-SCHEMA** | [homework_assignments](DB-SCHEMA.md#homework_assignments) |
+
+---
+
+### DELETE /api/homework/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Delete homework assignment |
+| **Auth** | Authenticated (assignment creator or course owner) |
+| **Tables** | `homework_assignments`, `homework_submissions` |
+| **DB-SCHEMA** | [homework_assignments](DB-SCHEMA.md#homework_assignments) |
+
+---
+
+### GET /api/homework/:id/submissions
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | List submissions for assignment |
+| **Auth** | Authenticated (creator or ST for course) |
+| **Tables** | `homework_submissions`, `users` |
+| **Query** | `status`, `page`, `limit` |
+| **DB-SCHEMA** | [homework_submissions](DB-SCHEMA.md#homework_submissions) |
+
+---
+
+### GET /api/homework/:id/submissions/me
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Get my submission for assignment |
+| **Auth** | Authenticated (enrolled student) |
+| **Tables** | `homework_submissions` |
+| **DB-SCHEMA** | [homework_submissions](DB-SCHEMA.md#homework_submissions) |
+
+---
+
+### POST /api/homework/:id/submit
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Submit homework |
+| **Auth** | Authenticated (enrolled student) |
+| **Tables** | `homework_submissions` |
+| **Storage** | Cloudflare R2 (if file attached) |
+| **DB-SCHEMA** | [homework_submissions](DB-SCHEMA.md#homework_submissions) |
+
+---
+
+### PUT /api/submissions/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Update submission (before reviewed) |
+| **Auth** | Authenticated (submission owner) |
+| **Tables** | `homework_submissions` |
+| **DB-SCHEMA** | [homework_submissions](DB-SCHEMA.md#homework_submissions) |
+
+---
+
+### POST /api/submissions/:id/review
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Review submission |
+| **Auth** | Authenticated (creator or ST for course) |
+| **Tables** | `homework_submissions` |
+| **DB-SCHEMA** | [homework_submissions](DB-SCHEMA.md#homework_submissions) |
+
+---
+
+## Session Resources
+
+### GET /api/sessions/:id/resources
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Get session resources (recordings, files) |
+| **Auth** | Authenticated (session participant or creator) |
+| **Tables** | `session_resources` |
+| **DB-SCHEMA** | [session_resources](DB-SCHEMA.md#session_resources) |
+
+---
+
+### GET /api/courses/:id/resources
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Get course-level resources |
+| **Auth** | Authenticated (enrolled or creator/ST) |
+| **Tables** | `session_resources` |
+| **Query** | `type`, `page`, `limit` |
+| **DB-SCHEMA** | [session_resources](DB-SCHEMA.md#session_resources) |
+
+---
+
+### POST /api/sessions/:id/resources
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Upload session resource |
+| **Auth** | Authenticated (session teacher or creator) |
+| **Tables** | `session_resources` |
+| **Storage** | Cloudflare R2 |
+| **DB-SCHEMA** | [session_resources](DB-SCHEMA.md#session_resources) |
+
+---
+
+### POST /api/courses/:id/resources
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Upload course resource |
+| **Auth** | Authenticated (creator or ST) |
+| **Tables** | `session_resources` |
+| **Storage** | Cloudflare R2 |
+| **DB-SCHEMA** | [session_resources](DB-SCHEMA.md#session_resources) |
+
+---
+
+### GET /api/resources/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Get resource download URL |
+| **Auth** | Authenticated (enrolled or creator/ST) |
+| **Tables** | `session_resources` |
+| **Storage** | Cloudflare R2 (signed URL) |
+| **DB-SCHEMA** | [session_resources](DB-SCHEMA.md#session_resources) |
+
+---
+
+### DELETE /api/resources/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Delete resource |
+| **Auth** | Authenticated (resource creator or course owner) |
+| **Tables** | `session_resources` |
+| **Storage** | Cloudflare R2 |
+| **DB-SCHEMA** | [session_resources](DB-SCHEMA.md#session_resources) |
+
+---
+
 ## Help Requests (Block 2+)
 
 ### POST /api/help/request
@@ -2156,6 +2343,96 @@ All endpoints follow REST conventions:
 
 ---
 
+## Moderator Invites
+
+### GET /api/admin/moderator-invites
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | List moderator invites |
+| **Auth** | Admin |
+| **Tables** | `moderator_invites`, `users` |
+| **Query** | `status`, `page`, `limit` |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites) |
+
+---
+
+### POST /api/admin/moderator-invites
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Send moderator invite (Step 1) |
+| **Auth** | Admin |
+| **Tables** | `moderator_invites` |
+| **External** | Resend (invite email) |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites) |
+
+**Note:** Creates pending invite, generates unique token, sends email with invite link.
+
+---
+
+### GET /api/moderator-invites/:token
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Validate invite token (public) |
+| **Auth** | Public |
+| **Tables** | `moderator_invites` |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites) |
+
+**Note:** Returns invite status and basic info (email masked). Used to show accept/decline UI.
+
+---
+
+### POST /api/moderator-invites/:token/accept
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Accept moderator invite (Step 2) |
+| **Auth** | Public (with valid token) or Authenticated |
+| **Tables** | `moderator_invites`, `users` |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites), [users](DB-SCHEMA.md#users) |
+
+**Note:**
+- If authenticated user: sets `is_moderator=true` on existing account
+- If not authenticated: redirects to signup flow with token preserved, then sets `is_moderator=true` on new account
+
+---
+
+### POST /api/moderator-invites/:token/decline
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Decline moderator invite |
+| **Auth** | Public (with valid token) |
+| **Tables** | `moderator_invites` |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites) |
+
+---
+
+### DELETE /api/admin/moderator-invites/:id
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Revoke/cancel invite |
+| **Auth** | Admin |
+| **Tables** | `moderator_invites` |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites) |
+
+---
+
+### POST /api/admin/moderator-invites/:id/resend
+
+| Field | Value |
+|-------|-------|
+| **Purpose** | Resend invite email |
+| **Auth** | Admin |
+| **Tables** | `moderator_invites` |
+| **External** | Resend (invite email) |
+| **DB-SCHEMA** | [moderator_invites](DB-SCHEMA.md#moderator_invites) |
+
+---
+
 ## Moderation Endpoints
 
 ### GET /api/moderation/queue
@@ -2249,3 +2526,4 @@ All endpoints follow REST conventions:
 | Version | Date | Changes |
 |---------|------|---------|
 | v1 | 2025-12-26 | Split from API.md - internal database endpoints with DB-SCHEMA references |
+| v2 | 2025-12-26 | Brian Review updates: Homework endpoints (11), Session Resources endpoints (6), Moderator Invites endpoints (7) |

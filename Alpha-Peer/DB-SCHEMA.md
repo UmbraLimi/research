@@ -1,8 +1,8 @@
 # PeerLoop - Database Schema
 
-**Version:** v2
+**Version:** v3
 **Last Updated:** 2025-12-26
-**Status:** RUN-001 Amendment - Service Integration Fields Added
+**Status:** Brian Review Updates - Homework, Session Resources, Privacy Default
 **Primary Source:** CD-021 (Database Schema Sample), Service Research Docs
 
 > This document defines database schema requirements. Updated during RUN-001 Amendment to include fields for external service integrations (PlugNmeet, Stripe Connect, Resend).
@@ -60,7 +60,7 @@ Primary user table supporting multiple roles (Student, Student-Teacher, Creator,
 | is_student_teacher | boolean | Yes | CD-018 | Available to teach |
 | is_admin | boolean | Yes | CD-003 | Platform admin |
 | is_moderator | boolean | Yes | CD-010 | Community moderator |
-| privacy_public | boolean | Yes | CD-018 | Profile visibility toggle |
+| privacy_public | boolean | Yes | CD-018 | Profile visibility toggle (default: false = Private) |
 | email_verified | boolean | Yes | US-P013 | Email verification status |
 | email_status | enum | No | tech-004 | valid, bounced (from Resend webhooks) |
 | marketing_opt_out | boolean | No | tech-004 | Opted out via spam complaint |
@@ -139,6 +139,36 @@ Student interest tags for content matching.
 | tag | string | Yes | CD-018 | Interest tag |
 
 **Source:** CD-018 (3-5 interest tags per student)
+
+---
+
+### moderator_invites
+
+Two-step moderator invite flow: Admin invites by email → invitee accepts/declines.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| email | string | Yes | Brian Review | Invitee email address |
+| invited_by | uuid | Yes | Brian Review | FK to users (admin who sent invite) |
+| token | string | Yes | Brian Review | Unique invite token for URL |
+| status | enum | Yes | Brian Review | pending, accepted, declined, expired |
+| accepted_by | uuid | No | Brian Review | FK to users (when accepted) |
+| sent_at | timestamp | Yes | Brian Review | When invite was sent |
+| accepted_at | timestamp | No | Brian Review | When invite was accepted |
+| expires_at | timestamp | Yes | Brian Review | Token expiration (e.g., 7 days) |
+| created_at | timestamp | Yes | - | Record creation |
+
+**Indexes:** email, token (unique), status
+
+**Flow:**
+1. Admin creates invite → record created with status=pending, email sent via Resend
+2. Invitee clicks link → token validated, shown accept/decline UI
+3. If user exists: account linked as moderator
+4. If new user: signup flow → account created with is_moderator=true
+5. Status updated to accepted/declined
+
+**Source:** Brian Review 2025-12-26
 
 ---
 
@@ -529,6 +559,90 @@ Participant attendance tracking from PlugNmeet webhooks.
 **Note:** Created via `participant_joined` webhook, updated via `participant_left` webhook. A user may have multiple attendance records if they leave and rejoin.
 
 **Source:** tech-006 (PlugNmeet webhooks)
+
+---
+
+### session_resources
+
+Resources attached to sessions or courses (recordings, slides, files) stored in R2.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| session_id | uuid | No | Brian Review | FK to sessions (null for course-level) |
+| course_id | uuid | Yes | Brian Review | FK to courses |
+| created_by | uuid | Yes | - | FK to users (uploader) |
+| type | enum | Yes | Brian Review | recording, slide, document, other |
+| name | string | Yes | - | Display file name |
+| r2_key | string | Yes | Brian Review | Cloudflare R2 object key |
+| size_bytes | bigint | No | - | File size in bytes |
+| mime_type | string | No | - | MIME type (video/webm, application/pdf) |
+| duration_seconds | int | No | Brian Review | For recordings only |
+| is_public | boolean | Yes | - | Visible to all enrolled students |
+| created_at | timestamp | Yes | - | Upload time |
+
+**Indexes:** session_id, course_id, type
+
+**Note:** Recordings from PlugNmeet are replicated to R2 and tracked here. Session recordings link to specific sessions; course-level slides/docs have null session_id.
+
+**Source:** Brian Review 2025-12-26
+
+---
+
+## Homework
+
+### homework_assignments
+
+Homework/practice assignments created by creators or Student-Teachers.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| course_id | uuid | Yes | Brian Review | FK to courses |
+| module_id | uuid | No | Brian Review | FK to course_curriculum (optional) |
+| created_by | uuid | Yes | Brian Review | FK to users (creator or ST) |
+| title | string | Yes | Brian Review | Assignment title |
+| description | text | No | Brian Review | Brief description |
+| instructions | text | Yes | Brian Review | Detailed instructions |
+| due_within_days | int | No | Brian Review | Days after assigned (null = no due date) |
+| is_required | boolean | Yes | Brian Review | Required for course completion |
+| max_points | int | No | Brian Review | Maximum points (null = no grading) |
+| is_active | boolean | Yes | - | Currently accepting submissions |
+| created_at | timestamp | Yes | - | Record creation |
+| updated_at | timestamp | Yes | - | Last update |
+
+**Indexes:** course_id, module_id, created_by
+
+**Source:** Brian Review 2025-12-26
+
+---
+
+### homework_submissions
+
+Student submissions for homework assignments.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| assignment_id | uuid | Yes | Brian Review | FK to homework_assignments |
+| student_id | uuid | Yes | Brian Review | FK to users |
+| enrollment_id | uuid | Yes | Brian Review | FK to enrollments |
+| content | text | No | Brian Review | Text submission/notes |
+| file_url | string | No | Brian Review | R2 file attachment URL |
+| status | enum | Yes | Brian Review | submitted, reviewed, resubmit_requested |
+| submitted_at | timestamp | Yes | Brian Review | When submitted |
+| reviewed_by | uuid | No | Brian Review | FK to users (ST or creator) |
+| reviewed_at | timestamp | No | Brian Review | When reviewed |
+| feedback | text | No | Brian Review | Review feedback |
+| points | int | No | Brian Review | Awarded points |
+| created_at | timestamp | Yes | - | Record creation |
+| updated_at | timestamp | Yes | - | Last update |
+
+**Indexes:** assignment_id, student_id, enrollment_id, status
+
+**Unique:** assignment_id + student_id (one submission per student per assignment, can be updated)
+
+**Source:** Brian Review 2025-12-26
 
 ---
 
@@ -1201,6 +1315,7 @@ Membership in sub-communities.
 | tech-003 | users.stripe_*, transactions.transfer_group, payment_splits.stripe_transfer_id |
 | tech-004 | users.email_status, users.marketing_opt_out |
 | tech-006 | sessions.plugnmeet_*, session_attendance (new table) |
+| Brian Review | homework_assignments, homework_submissions, session_resources, moderator_invites, users.privacy_public default |
 
 ---
 
@@ -1221,3 +1336,4 @@ Membership in sub-communities.
 |---------|------|---------|
 | v1 | 2025-12-23 | Initial schema from CD-021 analysis |
 | v2 | 2025-12-26 | Added service integration fields (RUN-001 Amendment Step 4): users (Stripe + email fields), sessions (PlugNmeet fields), session_attendance (new), transactions (transfer_group), payment_splits (stripe_transfer_id) |
+| v3 | 2025-12-26 | Brian Review updates: homework_assignments, homework_submissions, session_resources, moderator_invites tables; users.privacy_public default = false |

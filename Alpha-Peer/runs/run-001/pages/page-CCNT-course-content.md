@@ -50,6 +50,9 @@ Deliver course content to enrolled students, track module progress, enable self-
 | sessions | scheduled_start | Upcoming session reminder |
 | users (ST) | name, avatar | Assigned teacher |
 | user_availability | is_available | Helpers online (Block 2+) |
+| homework_assignments | id, title, instructions, due_within_days, is_required | Homework display |
+| homework_submissions | id, status, submitted_at, feedback | Student submissions |
+| session_resources | id, name, type, r2_key | Course resources |
 
 ---
 
@@ -62,7 +65,11 @@ Deliver course content to enrolled students, track module progress, enable self-
 - "Schedule Session" → SBOK
 
 ### Sidebar / Navigation Panel
-- **Module List:**
+- **Tab Navigation:**
+  - "Modules" tab (default)
+  - "Homework" tab
+  - "Resources" tab
+- **Module List (Modules tab):**
   - All modules in order
   - Completion checkboxes
   - Current module highlighted
@@ -106,6 +113,46 @@ Deliver course content to enrolled students, track module progress, enable self-
 - Opens HELP modal when clicked
 - Source: CD-023
 
+### Homework Tab
+- **Assignment List:**
+  - All homework assignments for course
+  - Each shows:
+    - Title
+    - Required/Optional badge
+    - Due date (if applicable)
+    - Status: Not Started, In Progress, Submitted, Reviewed
+    - Points (if graded)
+  - Click to expand assignment details
+- **Assignment Detail (Expanded):**
+  - Full instructions
+  - Module reference (if module-specific)
+  - File attachment option
+  - Text submission area
+  - "Submit" button
+- **Submitted Work:**
+  - View past submissions
+  - See feedback from ST/Creator
+  - Resubmit if requested
+- **Empty State:** "No homework assignments yet"
+- **Source:** Brian Review 2025-12-26
+
+### Resources Tab
+- **Resource List:**
+  - Course-level resources (slides, docs, files)
+  - Grouped by type: Videos, Documents, Other
+  - Each shows:
+    - Icon (by type)
+    - Name
+    - File size
+    - Upload date
+  - "Download" button for each
+- **Session Recordings:**
+  - Past session recordings (if available)
+  - Each shows session date, duration
+  - "Watch Recording" → opens player or downloads
+- **Empty State:** "No resources available yet"
+- **Source:** Brian Review 2025-12-26
+
 ### Progress Summary (Bottom/Footer)
 - Overall progress: X of Y modules complete
 - "Continue to Next Module" or "You've completed all modules!"
@@ -122,6 +169,13 @@ Deliver course content to enrolled students, track module progress, enable self-
 - US-S056: Navigate between modules
 - US-S062: Access "Summon Help" feature (Block 2+)
 - US-S063: See helpers available (Block 2+)
+- US-S087: View homework assignments for enrolled courses
+- US-S088: Submit homework with text and/or file attachments
+- US-S089: See feedback on submitted homework
+- US-S090: Resubmit homework if reviewer requests changes
+- US-S091: Access recordings of sessions attended
+- US-S092: Download materials shared by ST
+- US-S093: Access course-level resources
 
 ---
 
@@ -184,6 +238,13 @@ Deliver course content to enrolled students, track module progress, enable self-
 | `POST /api/enrollments/:enrollment_id/progress` | Mark complete | Update module progress |
 | `GET /api/sessions?course_id=:course_id&upcoming=true&limit=1` | Page load | Next session reminder |
 | `GET /api/helpers/available?course_id=:course_id` | Page load (Block 2+) | Available helper count |
+| `GET /api/courses/:course_id/homework` | Homework tab | List homework assignments |
+| `GET /api/homework/:id` | Assignment clicked | Assignment details |
+| `GET /api/homework/:id/submissions/me` | Assignment clicked | My submission status |
+| `POST /api/homework/:id/submit` | Submit button | Submit homework |
+| `PUT /api/submissions/:id` | Update submission | Update before reviewed |
+| `GET /api/courses/:course_id/resources` | Resources tab | Course resources list |
+| `GET /api/resources/:id` | Download clicked | Get download URL |
 
 **Curriculum Response:**
 ```typescript

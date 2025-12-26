@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Version:** v6
+**Version:** v7
 **Last Updated:** 2025-12-26
 
 > **Version History:** Increment version when substantive changes occur (new phases, changed workflows, new commands). Minor edits (typos, formatting) don't require version bump.
@@ -124,7 +124,7 @@ The Gather phase collects all information needed to create comprehensive technic
 
 **Key files that grow during Gather:**
 - `GOALS.md` - Mission, goals, success metrics (from client docs)
-- `USER-STORIES.md` - All user stories with priorities (250+ stories)
+- `USER-STORIES.md` - All user stories with priorities (370+ stories)
 - `DIRECTIVES.md` - Constraints and restrictions for RUN phase
 - `DB-SCHEMA.md` - Database entities, fields, relationships (from client docs with data samples)
 - `PAGES.md` - Page inventory with data requirements (from user stories and mockups)
@@ -275,8 +275,8 @@ runs/run-NNN/pages/
 - **Server Integration** (for pages calling external services)
 
 **Page Categories:**
-- Public pages (10): Visitor-accessible
-- Authenticated pages (18): Logged-in users
+- Public pages (11): Visitor-accessible
+- Authenticated pages (21): Logged-in users
 - Role-specific pages (3): Creator, Admin, Moderator
 - Admin SPA screens (7): CRUD interfaces within Admin SPA
 
@@ -308,7 +308,7 @@ function canAccess(featureId: string): boolean {
 ```
 
 **Key Documents:**
-- `runs/run-001/FEATURE-FLAGS.md` - All 20 feature flags with dependencies
+- `runs/run-001/FEATURE-FLAGS.md` - All 21 feature flags with dependencies
 - `DB-SCHEMA.md` - Features table and related tables
 
 **Technology Decisions:**
@@ -364,7 +364,7 @@ This section documents how the project methodology evolved, for context in futur
 ### Why GATHER/RUN?
 
 The project started with client documents containing requirements, mockups, and decisions. Rather than immediately writing SPECS.md, we needed a structured way to:
-1. **Accumulate** information from multiple sources (33+ client documents)
+1. **Accumulate** information from multiple sources (34+ client documents)
 2. **Research** technology options and trade-offs
 3. **Generate** different scenarios based on technology choices
 4. **Iterate** when assumptions change or new information arrives
@@ -392,7 +392,7 @@ The RUN concept solves these by:
 RUN-001 (the first run) was used to:
 1. Generate `scenario.md` - 14-section technical specification
 2. Create run-specific assets for key decisions
-3. **Establish the page flow documentation pattern** - 38 pages/screens
+3. **Establish the page flow documentation pattern** - 42 pages/screens
 4. Define the page schema and code system
 5. Plan the baseline/overlay model for future runs
 
@@ -408,3 +408,15 @@ This first run became the template for how runs work and what they produce.
 - **Trace decisions to sources** - Link back to research, client docs, or learnings
 - **file_holding/ is temporary** - Files staged here get processed and moved
 - **Scenarios for comparison** - `/scenarios/` holds SPECS.md variants for client review
+
+### Capturing Review Decisions (Added 2025-12-26)
+
+When client decisions are made during review sessions (not via formal documents), they should still be captured for traceability:
+
+1. **Create a virtual CD document** (e.g., CD-034) summarizing all decisions
+2. **Extract goals** from implied requirements → GOALS.md
+3. **Extract user stories** from user interactions → role-specific story files
+4. **Update technical docs** (DB-SCHEMA, DB-API, pages, etc.)
+5. **Cross-check** to ensure nothing was missed
+
+This ensures all features can be traced back to a source document, even when decisions bypass the normal `/r-add-client-doc` workflow.

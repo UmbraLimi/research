@@ -2268,10 +2268,55 @@ Real-time Slack conversation resolving Question #23 about Student-Teacher pricin
 
 ---
 
+### CD-034: Brian Review Decisions
+**Date Uploaded:** 2025-12-26
+**Source:** Brian Review Session - RUN-001 Final Review
+**Type:** Scope Changes & Clarifications
+**Summary for SPECS.md:**
+
+Consolidated decisions from Brian's review session that changed scope or clarified requirements. Applied directly to technical docs; requires extraction to GOALS.md and USER-STORIES.md.
+
+**Key elements for SPECS.md:**
+
+- **Homework System → MVP (SCOPE CHANGE):**
+  - Changed from "Excluding from MVP" to Block 4 MVP feature
+  - Creators/STs create assignments linked to courses/modules
+  - Students submit homework with text and/or file uploads
+  - Reviewers provide feedback, approve, or request resubmit
+  - Optional grading with points
+
+- **Session Resources → R2 Storage (SCOPE CHANGE):**
+  - Changed from "External links" to full R2 storage
+  - PlugNmeet recordings replicated to R2
+  - STs upload session materials post-session
+  - Creators upload course-level resources
+  - Students access recordings and downloads
+
+- **Moderator Invites → Two-Step Flow (SCOPE CHANGE):**
+  - Changed from "Post-MVP" to included
+  - Admin sends invite email with token
+  - Invitee clicks link to accept/decline
+  - New users create account during acceptance
+  - Accepting sets `is_moderator = true`
+
+- **Privacy Default → Private (CLARIFICATION):**
+  - Changed from "Assuming Public default" to Private
+  - `privacy_public = false` by default
+  - Users opt-in to public visibility
+
+**Technical Implications:**
+- 4 new DB tables: homework_assignments, homework_submissions, session_resources, moderator_invites
+- 24 new API endpoints across homework, resources, and invites
+- HOMEWORK feature flag added (MVP, Block 4)
+- 7 pages updated, 1 new page (MINV)
+- Requires extraction to GOALS.md and USER-STORIES.md
+
+---
+
 ## Index Statistics
-- **Total Documents:** 33
-- **Next CD Number:** CD-034
-- **Last Updated:** 2025-12-24
+- **Total Documents:** 34
+- **Next CD Number:** CD-035
+- **Last Updated:** 2025-12-26
 
 ## Quick Reference
 
@@ -2310,3 +2355,4 @@ Real-time Slack conversation resolving Question #23 about Student-Teacher pricin
 | CD-031 | User Journeys Summary | 7 actor journeys, 258 stories / 135 P0, 14-18 week timeline, April-May 2026 launch, Dec 7 decisions |
 | CD-032 | Fraser Meeting Notes | Creator pricing model, feed companion UI, onboarding, 6-month timeline, unified dashboard, open questions |
 | CD-033 | Slack - S-T Pricing | Unified pricing (course price = S-T price), 85/15 split, enrollment flow, refund policy, S-T discounts deferred |
+| CD-034 | Brian Review Decisions | Homework → MVP, Session Resources → R2, Moderator Invites → two-step, Privacy → Private default |

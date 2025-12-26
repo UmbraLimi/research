@@ -2,8 +2,8 @@
 
 **Role:** Admin (AP Rep)
 **Description:** Platform operations and oversight
-**Story Count:** 33
-**Priority Breakdown:** P0: 16, P1: 12, P2: 4, P3: 0
+**Story Count:** 39
+**Priority Breakdown:** P0: 17, P1: 16, P2: 5, P3: 0
 
 ---
 
@@ -74,3 +74,14 @@
 | US-A031 | As an Admin (Brian), I need to set monthly subscription fees for creators so that the platform generates recurring revenue | P2 | CD-032 |
 | US-A032 | As an Admin (Brian), I need to set per-course publishing fees so that course creation generates revenue | P2 | CD-032 |
 | US-A033 | As an Admin (Brian), I need to grant lifetime memberships to the first 10-20 creators so that early adopters are incentivized | P2 | CD-032 |
+
+## Moderator Management (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-A034 | As an Admin, I need to invite users to become moderators via email so that I can control who moderates | P0 | CD-034 |
+| US-A035 | As an Admin, I need to see pending moderator invites so that I can track invitation status | P1 | CD-034 |
+| US-A036 | As an Admin, I need to resend moderator invite emails so that I can remind invitees | P1 | CD-034 |
+| US-A037 | As an Admin, I need to cancel pending moderator invites so that I can revoke access before acceptance | P1 | CD-034 |
+| US-A038 | As an Admin, I need to see moderator invite history so that I can audit past invitations | P2 | CD-034 |
+| US-A039 | As an Admin, I need to remove moderator status from users so that I can revoke access when needed | P1 | CD-034 |

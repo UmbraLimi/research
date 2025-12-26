@@ -1,8 +1,8 @@
 # Alpha Peer - User Stories Index
 
-**Version:** v9
+**Version:** v10
 **Last Updated:** 2025-12-26
-**Sources:** CD-001 through CD-033 (see individual story files for details)
+**Sources:** CD-001 through CD-034 (see individual story files for details)
 
 > **Version History:** v9 - Split into role-based files for easier navigation. Increment version when substantive changes occur (new stories, priority changes, removed stories).
 
@@ -15,13 +15,13 @@ Stories are split by role for easier navigation:
 | File | Role | Description | Stories | P0 | P1 | P2 | P3 |
 |------|------|-------------|---------|----|----|----|----|
 | [stories-G-visitor.md](user-stories/stories-G-visitor.md) | Visitor/Guest | Non-logged in user browsing public site | 18 | 11 | 7 | 0 | 0 |
-| [stories-A-admin.md](user-stories/stories-A-admin.md) | Admin (AP Rep) | Platform operations and oversight | 33 | 16 | 12 | 4 | 0 |
-| [stories-C-creator.md](user-stories/stories-C-creator.md) | Creator-Instructor | Course creator who may also teach directly | 48 | 12 | 20 | 14 | 1 |
-| [stories-S-student.md](user-stories/stories-S-student.md) | Student | Learner progressing through courses | 86 | 36 | 27 | 21 | 2 |
-| [stories-T-st.md](user-stories/stories-T-st.md) | Student-Teacher | Graduate who teaches peers (earns 70%) | 30 | 12 | 8 | 10 | 0 |
+| [stories-A-admin.md](user-stories/stories-A-admin.md) | Admin (AP Rep) | Platform operations and oversight | 39 | 17 | 16 | 5 | 0 |
+| [stories-C-creator.md](user-stories/stories-C-creator.md) | Creator-Instructor | Course creator who may also teach directly | 57 | 16 | 25 | 14 | 1 |
+| [stories-S-student.md](user-stories/stories-S-student.md) | Student | Learner progressing through courses | 95 | 43 | 29 | 21 | 2 |
+| [stories-T-st.md](user-stories/stories-T-st.md) | Student-Teacher | Graduate who teaches peers (earns 70%) | 35 | 16 | 9 | 10 | 0 |
 | [stories-E-employer.md](user-stories/stories-E-employer.md) | Employer/Funder | Third party paying for student enrollment | 6 | 0 | 5 | 1 | 0 |
 | [stories-V-video.md](user-stories/stories-V-video.md) | System (Video) | Automated video session functionality | 11 | 4 | 6 | 1 | 0 |
-| [stories-P-platform.md](user-stories/stories-P-platform.md) | Platform/System | Platform infrastructure and automation | 93 | 51 | 18 | 19 | 5 |
+| [stories-P-platform.md](user-stories/stories-P-platform.md) | Platform/System | Platform infrastructure and automation | 100 | 57 | 19 | 19 | 5 |
 | [stories-M-moderator.md](user-stories/stories-M-moderator.md) | Community Moderator | Course community support staff | 9 | 2 | 6 | 1 | 0 |
 
 ---
@@ -31,15 +31,15 @@ Stories are split by role for easier navigation:
 | Category | P0 | P1 | P2 | P3 | Total |
 |----------|----|----|----|----|-------|
 | Visitor/Guest | 11 | 7 | 0 | 0 | 18 |
-| Admin | 16 | 12 | 4 | 0 | 33 |
-| Creator | 12 | 20 | 14 | 1 | 48 |
-| Student | 36 | 27 | 21 | 2 | 86 |
-| Student-Teacher | 12 | 8 | 10 | 0 | 30 |
+| Admin | 17 | 16 | 5 | 0 | 39 |
+| Creator | 16 | 25 | 14 | 1 | 57 |
+| Student | 43 | 29 | 21 | 2 | 95 |
+| Student-Teacher | 16 | 9 | 10 | 0 | 35 |
 | Employer/Funder | 0 | 5 | 1 | 0 | 6 |
 | Session (System) | 4 | 6 | 1 | 0 | 11 |
-| Platform/Infrastructure | 51 | 18 | 19 | 5 | 93 |
+| Platform/Infrastructure | 57 | 19 | 19 | 5 | 100 |
 | Community Moderator | 2 | 6 | 1 | 0 | 9 |
-| **Total** | **144** | **109** | **71** | **8** | **334** |
+| **Total** | **166** | **122** | **72** | **8** | **370** |
 
 ---
 
@@ -81,13 +81,13 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | Role | Prefix | Next Number |
 |------|--------|-------------|
 | Visitor/Guest | US-G | US-G019 |
-| Admin | US-A | US-A034 |
-| Creator | US-C | US-C049 |
-| Student | US-S | US-S087 |
-| Student-Teacher | US-T | US-T034 |
+| Admin | US-A | US-A040 |
+| Creator | US-C | US-C058 |
+| Student | US-S | US-S096 |
+| Student-Teacher | US-T | US-T039 |
 | Employer/Funder | US-E | US-E007 |
 | Session (System) | US-V | US-V012 |
-| Platform/Infrastructure | US-P | US-P102 |
+| Platform/Infrastructure | US-P | US-P109 |
 | Community Moderator | US-M | US-M010 |
 
 ---
@@ -117,6 +117,7 @@ Stories follow the format: **As a [role], I need to [action] so that [benefit].*
 | CD-029 | Block Sequence | US-G016–G018, US-T030–T032, US-C043–C044, US-P086–P090 |
 | CD-032 | Fraser Meeting Notes | US-A031–A033, US-C045–C048, US-S076–S082, US-T033, US-P091–P101 |
 | CD-033 | S-T Pricing | US-S083–S086 |
+| CD-034 | Brian Review Decisions | US-A034–A039, US-C049–C057, US-S087–S095, US-T034–T038, US-P102–P108 |
 | Gap Analysis | Tech Research | US-G001–G015, US-P007–P050, US-V008–V011 |
 
 ---

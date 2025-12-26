@@ -2,8 +2,8 @@
 
 **Role:** Student-Teacher
 **Description:** Graduate who teaches peers (earns 70%)
-**Story Count:** 30
-**Priority Breakdown:** P0: 12, P1: 8, P2: 10
+**Story Count:** 35
+**Priority Breakdown:** P0: 16, P1: 9, P2: 10
 
 ---
 
@@ -96,3 +96,18 @@
 | ID | Story | Priority | Source |
 |----|-------|----------|--------|
 | US-T033 | As a Student-Teacher, I need to offer custom coaching/mentoring sessions so that I can earn additional income from students needing extra help | P2 | CD-032 |
+
+## Homework Review (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T034 | As a Student-Teacher, I need to see pending homework submissions from students I teach so that I can review their work | P0 | CD-034 |
+| US-T035 | As a Student-Teacher, I need to review and provide feedback on homework submissions so that students learn from the review | P0 | CD-034 |
+| US-T036 | As a Student-Teacher, I need to approve submissions or request resubmission so that I can ensure work quality | P0 | CD-034 |
+
+## Session Resources (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-T037 | As a Student-Teacher, I need to upload materials after a session so that students have follow-up resources | P0 | CD-034 |
+| US-T038 | As a Student-Teacher, I need to share slides and notes with students I taught so that they can reference the session | P1 | CD-034 |

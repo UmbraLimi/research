@@ -1,8 +1,8 @@
 # Alpha Peer - Goals & Mission
 
-**Version:** v3
-**Last Updated:** 2025-12-24
-**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review), CD-029 (Block Sequence), CD-032 (Fraser Meeting Notes)
+**Version:** v4
+**Last Updated:** 2025-12-26
+**Sources:** CD-001 (Business Plan), CD-002 (Feature Summary), CD-003 (User Stories), CD-004 (Impact Filter), CD-012 (MVP Review), CD-029 (Block Sequence), CD-032 (Fraser Meeting Notes), CD-034 (Brian Review Decisions)
 
 > **Version History:** Increment version when substantive changes occur (new goals, changed metrics, revised mission). Minor edits (typos, formatting) don't require version bump.
 
@@ -422,6 +422,49 @@ Address feed noise with companion UI:
 
 ---
 
+## Brian Review Goals (CD-034)
+
+### GO-028: Homework Supports Learning Verification
+**Source:** CD-034 (Brian Review 2025-12-26)
+
+Homework helps verify student understanding beyond watching content:
+- Creators and STs can create assignments for courses
+- Students submit work and receive feedback
+- Supports mastery verification before certification
+- Complements 1-on-1 sessions for deeper engagement
+- **MVP Scope:** Block 4 feature
+
+### GO-029: Session Resources Enable Async Learning
+**Source:** CD-034 (Brian Review 2025-12-26)
+
+Session recordings and materials support async learning:
+- Session recordings stored in R2 for future access
+- STs can share materials (slides, notes) with students
+- Creators can upload course-level resources
+- Enables review and reference after live sessions
+- **Technical:** PlugNmeet recordings replicated to Cloudflare R2
+
+### GO-030: Controlled Moderator Onboarding
+**Source:** CD-034 (Brian Review 2025-12-26)
+
+Moderators are invited, not self-selected:
+- Admin sends invite via email
+- Two-step flow: invite → accept
+- Ensures quality control over community moderation
+- New users can create account during acceptance
+- Maintains trust in moderation team
+
+### GO-031: Privacy by Default
+**Source:** CD-034 (Brian Review 2025-12-26)
+
+Users control their visibility, building trust:
+- New profiles are private by default
+- Users opt-in to public visibility
+- Supports GO-026 (privacy-first approach)
+- Private users can still participate fully
+
+---
+
 ## Current State
 
-**Next Goal Number:** GO-028
+**Next Goal Number:** GO-032

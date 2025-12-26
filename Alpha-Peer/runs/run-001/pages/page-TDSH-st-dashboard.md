@@ -51,6 +51,8 @@ Central hub for Student-Teachers to manage their teaching schedule, track earnin
 | users (students) | name, avatar | Student display |
 | courses | id, title | Course info |
 | certificates | user_id, course_id, type, recommended_by | Pending recommendations |
+| homework_submissions | id, status, student_id, assignment_id | Pending homework reviews |
+| homework_assignments | id, title, course_id | Assignment context |
 
 ---
 
@@ -95,6 +97,13 @@ Central hub for Student-Teachers to manage their teaching schedule, track earnin
 - **Intro Session Requests** (per CD-029):
   - Pending free intro sessions
   - Accept/decline options
+- **Homework Reviews:**
+  - Student homework submissions awaiting review
+  - Each shows: student name, assignment title, course, submitted date
+  - "Review" button → expands to show submission + feedback form
+  - Quick actions: "Approve", "Request Resubmit"
+  - Feedback text field + optional points
+  - Source: Brian Review 2025-12-26
 - Empty state: "No pending actions"
 
 ### Availability Quick View
@@ -171,6 +180,8 @@ Central hub for Student-Teachers to manage their teaching schedule, track earnin
 | `POST /api/certificates/recommend` | Recommend cert | Recommend student for certification |
 | `POST /api/sessions/:id/accept` | Accept intro | Accept intro session request |
 | `POST /api/payouts/request` | Request payout | Initiate payout |
+| `GET /api/homework/:id/submissions` | Review homework | Get submission details |
+| `POST /api/submissions/:id/review` | Submit review | Review homework submission |
 
 ### Dashboard Data Aggregation
 

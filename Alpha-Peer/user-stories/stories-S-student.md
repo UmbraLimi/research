@@ -2,8 +2,8 @@
 
 **Role:** Student
 **Description:** Learner progressing through courses
-**Story Count:** 86
-**Priority Breakdown:** P0: 36, P1: 27, P2: 21, P3: 2
+**Story Count:** 95
+**Priority Breakdown:** P0: 43, P1: 29, P2: 21, P3: 2
 
 ---
 
@@ -169,3 +169,27 @@
 | US-S080 | As a Student, I need an onboarding flow to capture my interests so that my feed is personalized from day one | P1 | CD-032 |
 | US-S081 | As a Student, I need to create a sub-community and invite specific users so that I can form study groups or interest clusters | P3 | CD-032 |
 | US-S082 | As a Student, I need to request additional tutoring sessions beyond my course allocation so that I can get extra help if needed | P2 | CD-032 |
+
+## Homework (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S087 | As a Student, I need to view homework assignments for my enrolled courses so that I know what work is expected | P0 | CD-034 |
+| US-S088 | As a Student, I need to submit homework with text and/or file attachments so that I can complete assignments | P0 | CD-034 |
+| US-S089 | As a Student, I need to see feedback on my submitted homework so that I can learn from the review | P0 | CD-034 |
+| US-S090 | As a Student, I need to resubmit homework if the reviewer requests changes so that I can improve my work | P1 | CD-034 |
+
+## Session Resources (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S091 | As a Student, I need to access recordings of sessions I attended so that I can review the material | P0 | CD-034 |
+| US-S092 | As a Student, I need to download materials shared by my ST so that I can reference them later | P0 | CD-034 |
+| US-S093 | As a Student, I need to access course-level resources (slides, docs) so that I have additional learning materials | P0 | CD-034 |
+
+## Privacy (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-S094 | As a Student, I need my profile to be private by default so that I control who sees my information | P0 | CD-034 |
+| US-S095 | As a Student, I need to choose to make my profile public so that I can be discovered by others when ready | P1 | CD-034 |

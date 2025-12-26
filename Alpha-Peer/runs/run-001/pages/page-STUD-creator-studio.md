@@ -48,6 +48,8 @@ Course creation and management interface for Creators to build, edit, publish, a
 | course_tags | tag | Course tags |
 | categories | id, name | Category selection |
 | peerloop_features | All fields | Feature toggles |
+| homework_assignments | All fields | Homework management |
+| session_resources | All fields | Course resources |
 
 ---
 
@@ -75,6 +77,8 @@ Course creation and management interface for Creators to build, edit, publish, a
 - Course Settings
 - Basic Info
 - Curriculum
+- Homework
+- Resources
 - Objectives & Includes
 - Prerequisites
 - Pricing
@@ -107,6 +111,44 @@ Course creation and management interface for Creators to build, edit, publish, a
   - Hands-on exercise
 - "Add Module" button
 - Bulk import (future)
+
+#### Section: Homework
+- **Assignment List:**
+  - All homework assignments for course
+  - Each shows: title, required/optional, linked module (if any)
+  - Drag-to-reorder
+- **Per Assignment (Edit):**
+  - Title
+  - Description
+  - Instructions (rich text)
+  - Module link (optional - assign to specific module)
+  - Due within X days (optional)
+  - Required for completion toggle
+  - Max points (optional, for graded assignments)
+  - Active toggle
+- **Actions:**
+  - "Add Assignment" button
+  - Delete assignment
+  - Preview assignment
+- **Source:** Brian Review 2025-12-26
+
+#### Section: Resources
+- **Resource List:**
+  - Course-level resources (slides, docs, files)
+  - Each shows: name, type, size, upload date
+  - Delete option
+- **Upload:**
+  - "Upload Resource" button
+  - Drag-and-drop area
+  - File types: PDF, DOC, PPT, images, videos
+  - Max file size (e.g., 100MB)
+- **Resource Types:**
+  - Slides/presentations
+  - Documents
+  - Videos (uploaded, not YouTube links)
+  - Other files
+- **Note:** Session recordings appear automatically after sessions
+- **Source:** Brian Review 2025-12-26
 
 #### Section: Objectives & Includes
 - **Learning Objectives:**
@@ -235,6 +277,13 @@ Course creation and management interface for Creators to build, edit, publish, a
 | `PUT /api/courses/:id/unpublish` | Unpublish | Set status draft |
 | `POST /api/courses/:id/thumbnail` | Upload | Upload thumbnail |
 | `GET /api/categories` | Edit view | Category dropdown |
+| `GET /api/courses/:id/homework` | Homework section | List assignments |
+| `POST /api/courses/:id/homework` | Add assignment | Create homework |
+| `PUT /api/homework/:id` | Edit assignment | Update homework |
+| `DELETE /api/homework/:id` | Delete assignment | Remove homework |
+| `GET /api/courses/:id/resources` | Resources section | List resources |
+| `POST /api/courses/:id/resources` | Upload resource | Upload file to R2 |
+| `DELETE /api/resources/:id` | Delete resource | Remove resource |
 
 **Courses List Response:**
 ```typescript

@@ -2,8 +2,8 @@
 
 **Role:** Platform/System
 **Description:** Automated platform functionality and infrastructure
-**Story Count:** 93
-**Priority Breakdown:** P0: 51, P1: 18, P2: 19, P3: 5
+**Story Count:** 100
+**Priority Breakdown:** P0: 57, P1: 19, P2: 19, P3: 5
 
 ---
 
@@ -222,3 +222,20 @@
 | ID | Story | Priority | Source |
 |----|-------|----------|--------|
 | US-P101 | As a System, I need a unified dashboard that shows all user roles so that users don't need separate logins per role | P0 | CD-032 |
+
+## Moderator Invites (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P102 | As a System, I need to send moderator invite emails with unique tokens so that invitees can accept securely | P0 | CD-034 |
+| US-P103 | As a System, I need to validate invite tokens and check expiration so that only valid invites are accepted | P0 | CD-034 |
+| US-P104 | As an invite recipient, I need to accept a moderator invitation so that I become a moderator | P0 | CD-034 |
+| US-P105 | As an invite recipient, I need to decline a moderator invitation so that I can refuse the role | P1 | CD-034 |
+| US-P106 | As a new user, I need to create an account while accepting a moderator invite so that I can join as a moderator | P0 | CD-034 |
+
+## Privacy Settings (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-P107 | As a System, I need to set new user profiles to private by default so that privacy is protected from signup | P0 | CD-034 |
+| US-P108 | As a System, I need to exclude private profiles from public directories so that user privacy is respected | P0 | CD-034 |

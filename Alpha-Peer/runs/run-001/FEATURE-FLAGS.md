@@ -128,8 +128,21 @@ These are foundational features that cannot be disabled.
 | **Description** | Book and join 1-on-1 video sessions with Student-Teachers |
 | **Pages** | SBOK, SROM, SDSH (upcoming), TDSH (upcoming) |
 | **Services** | PlugNmeet, Resend (reminders) |
-| **DB Tables** | sessions, session_attendance, availability |
+| **DB Tables** | sessions, session_attendance, availability, session_resources |
 | **Roles** | `['student', 'student_teacher']` |
+| **Requires** | `enrollment` |
+| **Block** | 4 |
+
+### HOMEWORK
+| Field | Value |
+|-------|-------|
+| **ID** | `homework` |
+| **Name** | Homework & Assignments |
+| **Description** | Create, assign, submit, and review homework assignments |
+| **Pages** | CCNT (homework tab), CDET (homework section), CDSH (pending reviews) |
+| **Services** | Cloudflare R2 (file attachments) |
+| **DB Tables** | homework_assignments, homework_submissions |
+| **Roles** | `['student', 'student_teacher', 'creator']` |
 | **Requires** | `enrollment` |
 | **Block** | 4 |
 
@@ -358,6 +371,7 @@ auth
 │       ├── video_sessions
 │       │   ├── st_system
 │       │   └── intro_sessions
+│       ├── homework
 │       └── course_chat
 │           └── summon_help
 ├── community_feed
@@ -388,6 +402,7 @@ UPDATE features SET enabled = true WHERE id IN (
   'courses_browse',
   'enrollment',
   'video_sessions',
+  'homework',
   'community_feed',
   'messaging',
   'st_system',
@@ -435,3 +450,4 @@ ADMN page could include a Feature Flags management screen:
 | Date | Changes |
 |------|---------|
 | 2025-12-26 | Initial creation with 20 feature flags |
+| 2025-12-26 | Brian Review: Added HOMEWORK feature flag (MVP), updated VIDEO_SESSIONS to include session_resources |

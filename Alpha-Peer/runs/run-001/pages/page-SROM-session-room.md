@@ -45,6 +45,7 @@ Video conferencing interface for 1-on-1 tutoring sessions between students and S
 | users (teacher) | name, avatar | Participant display |
 | courses | title | Context display |
 | enrollments | course_id | Course context |
+| session_resources | id, name, type, r2_key, duration_seconds | Session resources |
 
 ---
 
@@ -104,9 +105,19 @@ Video conferencing interface for 1-on-1 tutoring sessions between students and S
   - "Back to Dashboard" → SDSH/TDSH
   - "Book Next Session" → SBOK
   - "View Course Content" → CCNT
-- **Recording Access (if enabled):**
-  - "Recording will be available shortly"
-  - Link when ready
+- **Session Resources:**
+  - Recording (when available):
+    - "Recording processing..." initially
+    - "Watch Recording" when ready
+    - Duration display
+  - Files shared during session (if any)
+  - "Download" button for each resource
+  - ST can upload additional resources post-session
+- **Upload Resources (ST only):**
+  - "Upload Session Materials" button
+  - Share slides, notes, or follow-up materials
+  - Files stored in R2, linked to session
+  - Source: Brian Review 2025-12-26
 
 ---
 
@@ -180,6 +191,9 @@ Video conferencing interface for 1-on-1 tutoring sessions between students and S
 | `GET /api/sessions/:id` | Page load | Verify session exists, user authorized, get status |
 | `POST /api/video/token` | "Join Session" clicked | Get PlugNmeet join token |
 | `POST /api/sessions/:id/feedback` | Feedback submitted | Record rating and comments |
+| `GET /api/sessions/:id/resources` | Post-session screen | Get session resources |
+| `POST /api/sessions/:id/resources` | Upload resources (ST) | Upload session materials |
+| `GET /api/resources/:id` | Download clicked | Get download URL |
 
 ### PlugNmeet Integration Flow
 

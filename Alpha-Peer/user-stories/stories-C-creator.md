@@ -2,8 +2,8 @@
 
 **Role:** Creator-Instructor
 **Description:** Course creator who may also teach directly
-**Story Count:** 48
-**Priority Breakdown:** P0: 12, P1: 20, P2: 14, P3: 1
+**Story Count:** 57
+**Priority Breakdown:** P0: 16, P1: 25, P2: 14, P3: 1
 
 ---
 
@@ -129,3 +129,22 @@
 | US-C046 | As a Creator, I need to pay a per-course fee when publishing a new course so that my course becomes available on the platform | P2 | CD-032 |
 | US-C047 | As a Creator, I need to pay for promoted placement of my courses in feeds so that I can increase visibility | P2 | CD-032 |
 | US-C048 | As a Creator, I need basic free promotion options so that I can promote without paying | P1 | CD-032 |
+
+## Homework Management (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C049 | As a Creator, I need to create homework assignments for my courses so that students can practice and demonstrate understanding | P0 | CD-034 |
+| US-C050 | As a Creator, I need to link homework assignments to specific modules so that assignments align with course structure | P1 | CD-034 |
+| US-C051 | As a Creator, I need to set assignments as required or optional for course completion so that I control certification requirements | P1 | CD-034 |
+| US-C052 | As a Creator, I need to set due dates for homework assignments so that students have clear deadlines | P1 | CD-034 |
+| US-C053 | As a Creator, I need to grade assignments with points so that I can assess student work | P1 | CD-034 |
+| US-C054 | As a Creator, I need to review student homework submissions so that I can evaluate their work | P0 | CD-034 |
+| US-C055 | As a Creator, I need to provide feedback on homework submissions so that students learn from reviews | P0 | CD-034 |
+
+## Course Resources (from CD-034)
+
+| ID | Story | Priority | Source |
+|----|-------|----------|--------|
+| US-C056 | As a Creator, I need to upload course-level resources (slides, docs, videos) so that students have additional materials | P0 | CD-034 |
+| US-C057 | As a Creator, I need to manage course resources (view, delete, organize) so that I can maintain the resource library | P1 | CD-034 |

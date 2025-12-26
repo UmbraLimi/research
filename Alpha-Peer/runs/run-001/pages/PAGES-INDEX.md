@@ -2,7 +2,7 @@
 
 **Run:** RUN-001 (Stream + VideoProvider)
 **Created:** 2025-12-25
-**Total Pages:** 41 (10 public, 21 authenticated, 3 role-specific, 7 admin screens)
+**Total Pages:** 42 (11 public, 21 authenticated, 3 role-specific, 7 admin screens)
 
 ---
 
@@ -112,6 +112,7 @@ Each page file (`page-CODE-name.md`) follows this standard schema:
 | LGIN | Login | `/login` | Public | P0 | [page-LGIN-login.md](page-LGIN-login.md) |
 | SGUP | Sign Up | `/signup` | Public | P0 | [page-SGUP-signup.md](page-SGUP-signup.md) |
 | PWRS | Password Reset | `/reset-password` | Public | P0 | [page-PWRS-password-reset.md](page-PWRS-password-reset.md) |
+| MINV | Moderator Invite | `/invite/moderator/:token` | Public (token) | P1 | [page-MINV-moderator-invite.md](page-MINV-moderator-invite.md) |
 | **Authenticated Pages** |||||
 | SDSH | Student Dashboard | `/dashboard` | Auth (Student) | P0 | [page-SDSH-student-dashboard.md](page-SDSH-student-dashboard.md) |
 | TDSH | ST Dashboard | `/dashboard` | Auth (ST) | P0 | [page-TDSH-st-dashboard.md](page-TDSH-st-dashboard.md) |
@@ -187,7 +188,7 @@ Each page file (`page-CODE-name.md`) follows this standard schema:
 | ACRT | Admin Certificates |
 | APAY | Admin Payouts |
 
-### P1 - Important (5 pages/screens)
+### P1 - Important (6 pages/screens)
 | Code | Page Name |
 |------|-----------|
 | STDR | ST Directory |
@@ -195,6 +196,7 @@ Each page file (`page-CODE-name.md`) follows this standard schema:
 | MODQ | Moderator Queue |
 | CANA | Creator Analytics |
 | ACAT | Admin Categories |
+| MINV | Moderator Invite |
 
 ### P2 - Block 2+ (2 pages)
 | Code | Page Name |

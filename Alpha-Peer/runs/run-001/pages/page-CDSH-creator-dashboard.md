@@ -50,6 +50,8 @@ Central hub for Creators to manage their courses, track earnings, approve Studen
 | payment_splits | amount_cents, status (where creator) | Earnings |
 | payouts | amount_cents, status, paid_at | Payout history |
 | users (students) | count | Total students |
+| homework_submissions | id, status, student_id, assignment_id | Pending homework reviews |
+| homework_assignments | id, title, course_id | Assignment context |
 
 ---
 
@@ -78,6 +80,13 @@ Central hub for Creators to manage their courses, track earnings, approve Studen
   - Each shows: student name, course, recommended by
   - "Issue Certificate" / "Decline" buttons
   - Source: US-P062
+- **Homework Reviews:**
+  - Student homework submissions awaiting review
+  - Each shows: student name, assignment title, course, submitted date
+  - "Review" button → expands to show submission + feedback form
+  - Quick actions: "Approve", "Request Resubmit"
+  - Feedback text field + optional points
+  - Source: Brian Review 2025-12-26
 - Empty state: "No pending approvals"
 
 ### Course Performance
@@ -179,10 +188,12 @@ Central hub for Creators to manage their courses, track earnings, approve Studen
 | `GET /api/creators/me/dashboard` | Page load | Aggregated dashboard data |
 | `GET /api/creators/me/earnings` | Earnings section | Detailed earnings breakdown |
 | `GET /api/creators/me/courses` | Course list | Creator's courses with stats |
-| `GET /api/creators/me/pending-approvals` | Pending section | ST apps + cert requests |
+| `GET /api/creators/me/pending-approvals` | Pending section | ST apps + cert requests + homework |
 | `POST /api/student-teachers/:id/approve` | Approve ST | Approve ST application |
 | `POST /api/certificates/:id/issue` | Issue cert | Issue certification |
 | `POST /api/payouts/request` | Request payout | Initiate payout |
+| `GET /api/homework/:id/submissions` | Review homework | Get submission details |
+| `POST /api/submissions/:id/review` | Submit review | Review homework submission |
 
 ### Dashboard Data Aggregation
 

@@ -27,15 +27,24 @@
 - Each endpoint now links to relevant tables in DB-SCHEMA.md
 - Developer workflow: Page → API endpoint → DB tables is now traceable
 
-**🎯 NEXT:** Apply Brian's decisions from review session (2025-12-26)
+**✅ COMPLETED:** Brian Review Updates Applied (2025-12-26)
 
-**Pending Updates from Brian Review:**
-- [ ] Add homework tables to DB-SCHEMA.md (homework_assignments, homework_submissions)
-- [ ] Add homework endpoints to DB-API.md
-- [ ] Add session_resources table to DB-SCHEMA.md (R2 storage for recordings/slides/files)
-- [ ] Update FEATURE-FLAGS.md - homework = MVP
-- [ ] Update DB-SCHEMA.md - users.privacy_public default = false (Private)
-- [ ] Document moderator two-step invite flow
+**Completed Updates from Brian Review:**
+- [x] Add homework tables to DB-SCHEMA.md (homework_assignments, homework_submissions)
+- [x] Add homework endpoints to DB-API.md (11 endpoints)
+- [x] Add session_resources table to DB-SCHEMA.md (R2 storage for recordings/slides/files)
+- [x] Add session resources endpoints to DB-API.md (6 endpoints)
+- [x] Update FEATURE-FLAGS.md - homework = MVP (Block 4)
+- [x] Update DB-SCHEMA.md - users.privacy_public default = false (Private)
+- [x] Document moderator two-step invite flow (moderator_invites table + 7 endpoints)
+- [x] Update page documentation for new features:
+  - CCNT: Homework tab, Resources tab
+  - CDSH: Pending Homework Reviews section
+  - TDSH: Homework review capability
+  - STUD: Homework management, Resources upload
+  - SROM: Post-session resources section
+  - ADMN: Moderators section with invite management
+  - MINV: New page for moderator invite acceptance (42 total pages)
 
 **Questions Resolved:** 22 of 26 (3 deferred to implementation, 1 unclear)
 
@@ -55,13 +64,13 @@
 
 | Metric | Value |
 |--------|-------|
-| Client Docs Processed | 33 (CD-001 to CD-033) |
-| Goals Documented | 27 (GO-001 to GO-027) |
-| User Stories | 334 (144 P0, 109 P1, 71 P2, 8 P3) |
+| Client Docs Processed | 34 (CD-001 to CD-034) |
+| Goals Documented | 31 (GO-001 to GO-031) |
+| User Stories | 370 (166 P0, 122 P1, 72 P2, 8 P3) |
 | User Roles | 9 |
 | Tech Research Docs | 8 (incl. Stripe Connect) |
 | Directives | 6 (DIR-001 to DIR-006) |
-| Page Flow Docs | 41 pages/screens |
+| Page Flow Docs | 42 pages/screens |
 | Feature Registry | ~286 features (~554 hours) |
 | Budget | $75,000 |
 | Timeline | 4 months (fixed) |
