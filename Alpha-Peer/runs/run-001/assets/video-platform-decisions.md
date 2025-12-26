@@ -1,24 +1,33 @@
 # Video Platform Decisions - RUN-001
 
 **Created:** 2025-12-24
+**Updated:** 2025-12-26
 **Related Global Research:**
 - `research/tech-001-bigbluebutton.md`
 - `research/tech-006-plugnmeet.md`
 
 ---
 
-## Decision: VideoProvider Interface
+## Decision: PlugNmeet ✅ RESOLVED
 
-RUN-001 uses an **interface abstraction** rather than committing to a specific platform.
+RUN-001 will use **PlugNmeet** as the video platform, implementing the VideoProvider interface.
 
-### Rationale
+### Final Decision (2025-12-26)
+
+| Factor | Value |
+|--------|-------|
+| Platform | **PlugNmeet** |
+| Decided by | Brian (via user) |
+| Rationale | Lower cost, modern UX, lighter infrastructure requirements |
+
+### Original Considerations
 
 | Factor | Consideration |
 |--------|---------------|
 | Timeline | 4 months - can't afford wrong choice |
 | Options | BBB (established) vs PlugNmeet (modern, unproven) |
-| Brian's Status | "Looking deeper" at PlugNmeet (CD-028) |
-| Risk Mitigation | Interface allows swap without architecture change |
+| Brian's Status | Completed PlugNmeet evaluation |
+| Risk Mitigation | Interface still allows swap if needed |
 
 ### Interface Contract (from API.md)
 
@@ -75,16 +84,15 @@ interface VideoProvider {
 ## Run-001 Approach
 
 1. **Build to interface** - All code targets `VideoProvider` interface
-2. **Start with BBB** - More proven, matches DIR-001
-3. **Evaluate PlugNmeet** - Brian to complete deeper review
-4. **Switch if warranted** - Interface allows seamless swap
+2. **Use PlugNmeet** - Brian's chosen platform after evaluation
+3. **Keep interface abstraction** - Allows future swap if needed
 
 ### Implementation Order
 
 ```
-Week 1-2: Build VideoProvider interface + BBB adapter
+Week 1-2: Build VideoProvider interface + PlugNmeet adapter
 Week 3-4: Test with real sessions
-Week 5+:  If PlugNmeet proven, build adapter and evaluate
+Week 5+:  Production refinement
 ```
 
 ---
@@ -95,23 +103,21 @@ Week 5+:  If PlugNmeet proven, build adapter and evaluate
 |----------|-------|-------------------|-------|
 | BBB (self-hosted) | VM | $80-150 | Need ops capacity |
 | BBB (Blindside) | Per-session | Variable | Depends on volume |
-| PlugNmeet (self-hosted) | VPS | $5-10 | Lower but unproven |
-| PlugNmeet (Cloud Flex) | Capacity | TBD | Need quote |
+| **PlugNmeet (self-hosted)** | VPS | **$5-10** | ✅ Selected |
+| PlugNmeet (Cloud Flex) | Capacity | TBD | Alternative if self-host is difficult |
 
-**Recommendation:** Start with BBB self-hosted or Blindside managed, budget $150/mo for video infrastructure.
+**Decision:** PlugNmeet self-hosted, budget ~$10/mo for video infrastructure.
 
 ---
 
-## Questions Still Open
+## Questions Resolved ✅
 
-These should be resolved before finalizing video platform:
-
-| # | Question | Impact | Source |
-|---|----------|--------|--------|
-| 1 | PlugNmeet production stability | Risk assessment | tech-006 |
-| 2 | PlugNmeet API vs our interface | Compatibility | tech-006 |
-| 3 | Self-host vs managed preference | Cost/ops | Both |
-| 4 | Recording storage location | Infrastructure | tech-001 |
+| # | Question | Resolution | Date |
+|---|----------|------------|------|
+| 1 | PlugNmeet production stability | Brian approved after evaluation | 2025-12-26 |
+| 2 | PlugNmeet API vs our interface | Will implement PlugNmeet adapter | 2025-12-26 |
+| 3 | Self-host vs managed preference | Self-hosted (cost priority) | 2025-12-26 |
+| 4 | Recording storage location | Both: PlugNmeet + replicate to R2 | 2025-12-26 |
 
 ---
 

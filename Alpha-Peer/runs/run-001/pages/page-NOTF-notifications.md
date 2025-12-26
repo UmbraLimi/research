@@ -138,6 +138,59 @@ Display all user notifications in one place, allowing users to view, mark as rea
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/notifications` | Page load | List notifications |
+| `GET /api/notifications?unread=true` | Filter | Unread only |
+| `GET /api/notifications?type=...` | Filter | By notification type |
+| `PUT /api/notifications/:id/read` | Click notification | Mark single as read |
+| `PUT /api/notifications/read-all` | Mark all clicked | Mark all as read |
+| `DELETE /api/notifications/:id` | Delete/swipe | Remove notification |
+| `GET /api/notifications/count` | Nav badge | Unread count |
+
+**Notifications Response:**
+```typescript
+GET /api/notifications
+{
+  notifications: [{
+    id, type, title, body,
+    action_url: string,  // Where to navigate on click
+    is_read: boolean,
+    created_at: string,
+    related_user?: { id, name, avatar }  // For social notifications
+  }],
+  pagination: { page, limit, total, has_more }
+}
+```
+
+**Notification Types:**
+- `session_reminder` - Upcoming session
+- `session_booked` - New booking (for STs)
+- `new_message` - New DM received
+- `course_update` - Course content changed
+- `certificate_earned` - Certificate granted
+- `st_application` - ST application received
+- `cert_request` - Certification recommendation
+- `new_follower` - Someone followed you
+- `payment` - Payout processed
+- `system` - Platform announcement
+
+**Mark Read Response:**
+```typescript
+PUT /api/notifications/:id/read
+// Returns { success: true }
+```
+
+**Count Response:**
+```typescript
+GET /api/notifications/count
+{ unread: number }
+```
+
+---
+
 ## Notes
 
 - Real-time updates: New notifications appear without refresh

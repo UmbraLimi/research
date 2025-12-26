@@ -1,8 +1,8 @@
 # tech-002: Stream
 
 **Type:** Chat, Activity Feeds, Video Platform
-**Status:** REQUIRED (Client-Specified)
-**Research Date:** 2025-11-30
+**Status:** ✅ SELECTED - Feeds Only (2025-12-26)
+**Research Date:** 2025-11-30, Updated 2025-12-26
 **Source:** https://getstream.io/
 
 ---
@@ -219,15 +219,337 @@ export default function ChatWrapper({ apiKey, userToken, userId }) {
 
 ## Open Questions
 
-- [ ] What's the expected MAU for chat at Genesis Cohort launch?
-- [ ] Will all 6 user roles need chat access?
-- [ ] Should student-to-student chat be gated (e.g., only after course enrollment)?
-- [ ] How should community feeds be organized (per Creator? Platform-wide?)
+- [x] What's the expected MAU for chat at Genesis Cohort launch? → ~100-150 (free tier)
+- [x] Will all 6 user roles need chat access? → Yes, all authenticated users
+- [x] Should student-to-student chat be gated? → Yes, within course feeds only
+- [x] How should community feeds be organized? → Per course + per instructor + platform-wide
+
+---
+
+## API Reference (Activity Feeds)
+
+### Server-Side SDK Setup
+
+**Package:** `@stream-io/node-sdk`
+
+```typescript
+import { StreamClient } from "@stream-io/node-sdk";
+
+const client = new StreamClient(
+  process.env.STREAM_API_KEY,
+  process.env.STREAM_API_SECRET
+);
+```
+
+### Token Generation ✅ RESOLVED
+
+Tokens are JWT-based, generated server-side, passed to client.
+
+```typescript
+// Generate user token (server-side only)
+const token = client.generateUserToken({
+  user_id: "user_123",           // Required: your user's ID
+  validity_in_seconds: 3600      // Optional: 1 hour default
+});
+
+// Token includes automatically:
+// - user_id: the authenticated user
+// - iat: issued-at timestamp
+// - exp: expiration time
+```
+
+**Token Provider Pattern (for PeerLoop):**
+```typescript
+// POST /api/stream/token
+export async function POST(request: Request) {
+  // 1. Verify PeerLoop JWT from request
+  const user = await verifyAuth(request);
+
+  // 2. Generate Stream token for this user
+  const streamToken = client.generateUserToken({
+    user_id: user.id,
+    validity_in_seconds: 24 * 60 * 60  // 24 hours
+  });
+
+  // 3. Return to client
+  return Response.json({ token: streamToken });
+}
+```
+
+**Token Revocation:**
+```typescript
+// Revoke all tokens for a user (e.g., on logout, password change)
+await client.updateUsersPartial({
+  users: [{
+    id: "user_123",
+    set: { revoke_tokens_issued_before: new Date() }
+  }]
+});
+
+// Revoke all tokens app-wide (emergency)
+await client.updateApp({ revoke_tokens_issued_before: new Date() });
+```
+
+### Client-Side SDK Setup
+
+**Package:** `@stream-io/feeds-react-sdk`
+
+```typescript
+import { FeedsClient } from "@stream-io/feeds-react-sdk";
+
+const client = new FeedsClient(process.env.NEXT_PUBLIC_STREAM_API_KEY);
+await client.connectUser(
+  { id: "user_123", name: "John Doe", image: "avatar.jpg" },
+  userToken  // from your /api/stream/token endpoint
+);
+```
+
+### Feed Types & Groups
+
+| Feed Group | Purpose | PeerLoop Usage |
+|------------|---------|----------------|
+| `user` | User-created content | Personal posts |
+| `timeline` | Following aggregation | Personalized feed |
+| `notification` | User alerts (max 100) | Mentions, replies |
+| `foryou` | Popular content prioritized | Discovery feed |
+
+**PeerLoop Feed Groups:**
+| Group | Feed ID Pattern | Access |
+|-------|-----------------|--------|
+| `townhall` | `townhall:main` | All users (global read) |
+| `course` | `course:{courseId}` | Enrolled users only |
+| `instructor` | `instructor:{creatorId}` | Course purchasers |
+| `user` | `user:{userId}` | Owner + followers |
+| `notification` | `notification:{userId}` | Owner only |
+
+### Core API Operations
+
+#### Create/Access Feed
+```typescript
+const feed = client.feeds.feed("course", courseId);
+await feed.getOrCreate({
+  user_id: userId,
+  data: {
+    name: "Course Discussion",
+    visibility: "private"
+  }
+});
+```
+
+#### Add Activity
+```typescript
+await feed.addActivity({
+  type: "post",                    // Activity type
+  text: "Welcome to the course!",  // Content
+  user_id: userId,                 // Author
+  // Custom fields:
+  attachments: ["https://..."],
+  course_id: courseId
+});
+```
+
+#### Read Activities
+```typescript
+const response = await feed.getOrCreate({
+  user_id: userId,
+  limit: 20
+});
+const activities = response.activities;
+
+// Pagination
+const nextPage = await feed.getOrCreate({
+  user_id: userId,
+  next: response.next,
+  limit: 20
+});
+```
+
+#### Target to Multiple Feeds (TO field)
+```typescript
+// Post to course feed AND notify instructor
+await courseFeed.addActivity({
+  type: "question",
+  text: "How do I...?",
+  user_id: studentId,
+  to: [`notification:${instructorId}`]  // Also sends notification
+});
+```
+
+#### Reactions & Comments
+```typescript
+// Add reaction
+await client.addReaction({
+  activity_id: activityId,
+  type: "like"  // or "love", "celebrate", etc.
+});
+
+// Add comment
+await client.addComment({
+  object_id: activityId,
+  comment: "Great question!"
+});
+```
+
+### Following System
+
+```typescript
+// User's timeline follows a course feed
+const timeline = client.feeds.feed("timeline", userId);
+await timeline.follow("course", courseId);
+
+// Unfollow
+await timeline.unfollow("course", courseId);
+```
+
+**Permission Rules:**
+- Users can follow any feed
+- Users can only create follows FROM their own feeds
+- Example: `timeline:john` can follow `course:123`, but can't make `course:123` follow anything
+
+### Permissions & Access Control
+
+**Default Permission Behaviors:**
+
+| Permission Type | Behavior |
+|-----------------|----------|
+| Owner access | User can read/write feeds matching their ID |
+| Global read | Any user can read (e.g., `user` group default) |
+| Global write | Any user can write (requires explicit config) |
+| Follow-based read | Can read feeds you follow |
+
+**PeerLoop Permission Strategy:**
+
+| Feed Group | Read | Write | Config Needed |
+|------------|------|-------|---------------|
+| `townhall` | Global | Admins only | Request global read from Stream |
+| `course` | Enrolled only | Enrolled users | **Server-side gating** |
+| `instructor` | Purchasers only | Creator only | **Server-side gating** |
+| `notification` | Owner only | System only | Default |
+
+**Important:** Stream cannot enforce "only enrolled users" - we must gate this server-side:
+
+```typescript
+// POST /api/feeds/course/:courseId/activities
+export async function POST(request: Request, { params }) {
+  const user = await verifyAuth(request);
+
+  // Check enrollment in OUR database
+  const enrolled = await db.enrollments.findFirst({
+    where: { userId: user.id, courseId: params.courseId }
+  });
+
+  if (!enrolled) {
+    return Response.json({ error: "Not enrolled" }, { status: 403 });
+  }
+
+  // User is enrolled - proxy to Stream
+  const feed = serverClient.feeds.feed("course", params.courseId);
+  await feed.addActivity({ ...body, user_id: user.id });
+}
+```
+
+### Real-Time Updates
+
+**Client-side subscription:**
+```typescript
+const feed = client.feed("course", courseId);
+await feed.getOrCreate({ watch: true });  // Enable real-time
+
+feed.state.subscribe((state) => {
+  // Called when activities change
+  console.log("New activities:", state.activities);
+});
+```
+
+**Server-side webhooks:**
+Configure in Stream Dashboard to receive all feed events:
+```json
+{
+  "feed": "course:123",
+  "app_id": "your_app",
+  "new": [{ "id": "...", "type": "post", ... }],
+  "deleted": [],
+  "published_at": "2025-12-26T10:00:00Z"
+}
+```
+
+### React Components
+
+```jsx
+import { FeedsProvider, FlatFeed, NotificationFeed } from "@stream-io/feeds-react-sdk";
+
+function App() {
+  return (
+    <FeedsProvider client={client}>
+      {/* Course feed */}
+      <FlatFeed feedGroup="course" feedId={courseId} />
+
+      {/* Notifications dropdown */}
+      <NotificationFeed />
+    </FeedsProvider>
+  );
+}
+```
+
+---
+
+## PeerLoop Integration Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   React Client  │────▶│  Stream Cloud   │     │   PeerLoop API  │
+│   (Astro)       │     │   (Feeds)       │     │   (Workers)     │
+└────────┬────────┘     └─────────────────┘     └────────┬────────┘
+         │                       ▲                        │
+         │                       │                        │
+         └───────────────────────┼────────────────────────┘
+                                 │
+                    Token generation & access control
+```
+
+**Flow:**
+1. User logs in → PeerLoop issues JWT
+2. Client calls `/api/stream/token` with PeerLoop JWT
+3. Backend verifies JWT, generates Stream token
+4. Client connects to Stream with token
+5. For gated feeds (course/instructor): client calls our API, we verify access, proxy to Stream
+
+---
+
+## Database Sync Requirements
+
+We need to sync these relationships to our DB:
+
+| Event | Stream Action | PeerLoop DB Update |
+|-------|---------------|-------------------|
+| User enrolls in course | Follow `course:{id}` | Create enrollment record |
+| User drops course | Unfollow `course:{id}` | Update enrollment status |
+| User buys from Creator | Follow `instructor:{id}` | Already tracked via purchase |
+| New post in course | Activity created | Optional: cache for search |
 
 ---
 
 ## References
 
+### Official Documentation
+- [Stream Activity Feeds Overview](https://getstream.io/activity-feeds/)
+- [Activity Feeds Documentation](https://getstream.io/activity-feeds/docs/)
+- [Node.js Quick Start](https://getstream.io/activity-feeds/docs/node/)
+- [Feeds API - Node.js](https://getstream.io/activity-feeds/docs/node/feeds/)
+- [Tokens & Authentication (JavaScript)](https://getstream.io/activity-feeds/docs/javascript/tokens-and-authentication/)
+- [Targeting with TO Field](https://getstream.io/activity-feeds/docs/node/targeting/)
+
+### Permissions & Security
+- [Feeds Permission Policies and JWT tokens](https://support.getstream.io/hc/en-us/articles/360042760574-Feeds-Permission-Policies-and-JWT-tokens)
+- [How to create Private and Public content](https://support.getstream.io/hc/en-us/articles/4404428844183-How-to-create-Private-and-Public-content-with-Stream-Feeds)
+- [How to set up private Feed Groups](https://support.getstream.io/hc/en-us/articles/1500006211181-How-to-set-up-private-Feed-Groups-with-Stream-Feeds)
+- [Stream Security](https://getstream.io/security/)
+
+### React SDK
+- [React Activity Feeds SDK](https://getstream.io/activity-feeds/docs/react/)
 - [Stream Chat React Docs](https://getstream.io/chat/docs/react/)
-- [Stream Activity Feeds Docs](https://getstream.io/activity-feeds/docs/)
+
+### Other Resources
 - [Stream Pricing](https://getstream.io/pricing/)
+- [Feeds V3 Architecture Blog](https://getstream.io/blog/feeds-v3-architecture/)
+- [Real-time Notification Feed API](https://getstream.io/activity-feeds/notification-feeds/)

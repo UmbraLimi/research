@@ -125,6 +125,21 @@ Allow visitors to discover and browse course creators, building trust and enabli
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators` | Page load | Creator list with stats |
+| `GET /api/creators?q=...&expertise=...` | Filter/search | Filtered results |
+
+**Query Parameters:**
+- `q` - Search by name or expertise
+- `expertise` - Filter by expertise tag
+- `sort` - students, rating, newest, name
+- `page`, `limit` - Pagination
+
+---
+
 ## Notes
 
 - Genesis Cohort: Only 3 creators initially (per CD-008)

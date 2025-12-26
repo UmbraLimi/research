@@ -140,9 +140,43 @@ Authenticate returning users and provide access to their account.
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `POST /api/auth/login` | Form submitted | Authenticate user |
+| `GET /api/users/me` | After login success | Get user profile/roles |
+
+**Login Request:**
+```typescript
+POST /api/auth/login
+{
+  email: string,
+  password: string,
+  remember_me?: boolean
+}
+```
+
+**Login Response:**
+```typescript
+{
+  success: true,
+  user: { id, name, email, role, roles: [] },
+  redirect_url: '/dashboard'  // Based on role
+}
+// Sets httpOnly session cookie
+```
+
+**Error Responses:**
+- 401: Invalid credentials
+- 429: Rate limited (too many attempts)
+- 423: Account locked
+
+---
+
 ## Notes
 
-- Security: Rate limit login attempts
+- Security: Rate limit login attempts (5 per minute per IP)
 - Security: Use secure, httpOnly cookies
 - Consider "Stay logged in" duration options
 - Future: Add SSO/social login (Google, GitHub)

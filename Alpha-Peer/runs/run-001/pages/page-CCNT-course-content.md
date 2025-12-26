@@ -173,6 +173,51 @@ Deliver course content to enrolled students, track module progress, enable self-
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/courses/:course_id` | Page load | Course info |
+| `GET /api/courses/:course_id/curriculum` | Page load | All modules |
+| `GET /api/enrollments?course_id=:course_id` | Page load | Enrollment + ST info |
+| `GET /api/enrollments/:enrollment_id/progress` | Page load | Module progress |
+| `POST /api/enrollments/:enrollment_id/progress` | Mark complete | Update module progress |
+| `GET /api/sessions?course_id=:course_id&upcoming=true&limit=1` | Page load | Next session reminder |
+| `GET /api/helpers/available?course_id=:course_id` | Page load (Block 2+) | Available helper count |
+
+**Curriculum Response:**
+```typescript
+GET /api/courses/:course_id/curriculum
+{
+  modules: [{
+    id, title, description, duration,
+    video_url, document_url,
+    module_order, session_number
+  }]
+}
+```
+
+**Progress Update:**
+```typescript
+POST /api/enrollments/:enrollment_id/progress
+{
+  module_id: string,
+  is_complete: boolean
+}
+// Returns updated progress summary
+```
+
+**Progress Response:**
+```typescript
+GET /api/enrollments/:enrollment_id/progress
+{
+  modules: [{ module_id, is_complete }],
+  summary: { completed: number, total: number, percent: number }
+}
+```
+
+---
+
 ## Notes
 
 - CD-019: External LMS content (videos/docs hosted externally)

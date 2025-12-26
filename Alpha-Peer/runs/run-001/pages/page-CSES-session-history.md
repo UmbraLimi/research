@@ -151,6 +151,90 @@ When clicking a session:
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators/me/sessions` | Page load | Session list |
+| `GET /api/creators/me/sessions/:id` | Detail open | Session detail |
+| `GET /api/creators/me/sessions/upcoming` | Calendar tab | Upcoming sessions |
+| `GET /api/creators/me/sessions/stats` | Metrics | Aggregate stats |
+| `GET /api/sessions/:id/recording` | Play recording | Signed URL |
+| `GET /api/creators/me/courses` | Filter dropdown | Course options |
+| `GET /api/creators/me/student-teachers` | Filter dropdown | ST options |
+
+**Query Parameters:**
+- `course_id` - Filter by course
+- `st_id` - Filter by Student-Teacher
+- `student_q` - Search student name
+- `status` - completed, scheduled, cancelled, no_show
+- `from`, `to` - Date range
+- `page`, `limit` - Pagination
+
+**Sessions Response:**
+```typescript
+GET /api/creators/me/sessions
+{
+  sessions: [{
+    id, scheduled_start, actual_duration, status,
+    course: { id, title },
+    student: { id, name, avatar },
+    st: { id, name, avatar },
+    rating: number | null,
+    has_recording: boolean
+  }],
+  pagination: { page, limit, total, has_more }
+}
+```
+
+**Session Detail Response:**
+```typescript
+GET /api/creators/me/sessions/:id
+{
+  id, scheduled_start, scheduled_end,
+  actual_start, actual_end, status,
+  course: { id, title },
+  student: { id, name, avatar },
+  st: { id, name, avatar },
+  student_feedback: { rating, comment } | null,
+  st_feedback: { rating, comment } | null,
+  notes: string,
+  has_recording: boolean,
+  recording_url: string | null,  // Signed URL if available
+  dispute: { status, reason } | null
+}
+```
+
+**Stats Response:**
+```typescript
+GET /api/creators/me/sessions/stats?from=...&to=...
+{
+  total_sessions: number,
+  completed: number,
+  cancelled: number,
+  no_show: number,
+  avg_duration: number,      // minutes
+  avg_rating: number,
+  completion_rate: number,   // percent
+  by_st: [{
+    st: { id, name },
+    sessions: number,
+    avg_rating: number
+  }]
+}
+```
+
+**Recording URL:**
+```typescript
+GET /api/sessions/:id/recording
+{
+  url: string,  // Signed R2 URL, expires in 1 hour
+  expires_at: string
+}
+```
+
+---
+
 ## Notes
 
 - Recordings stored in R2, streamed via signed URLs

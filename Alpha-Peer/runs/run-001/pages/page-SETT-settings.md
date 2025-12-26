@@ -178,9 +178,164 @@ Central location for account management, notification preferences, payment setti
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/users/me/settings` | Page load | Get all settings |
+| `PATCH /api/users/me/settings` | Save changes | Update settings |
+| `GET /api/users/me/availability` | Availability tab | Get availability pattern |
+| `PUT /api/users/me/availability` | Save availability | Update availability |
+| `POST /api/payments/connect/onboard` | "Connect Stripe" | Start Stripe Connect |
+| `GET /api/payments/connect/status` | Payment tab | Check account status |
+| `POST /api/payments/connect/dashboard` | "Manage" | Get Stripe Express dashboard link |
+| `GET /api/users/me/payouts` | Payout history | List past payouts |
+
+### Stripe Connect Onboarding Flow
+
+```
+Initial State (No Stripe Account):
+  1. User sees "Connect Stripe Account" button
+  2. Status: stripe_account_id = null
+
+Start Onboarding:
+  1. POST /api/payments/connect/onboard
+  2. Backend:
+     - Creates Stripe Express account
+     - Stores stripe_account_id in users table
+     - Creates Account Link with return/refresh URLs
+  3. Response: { onboarding_url: "https://connect.stripe.com/..." }
+  4. Client redirects to Stripe
+
+Stripe Onboarding:
+  - User completes identity verification
+  - User adds bank account / debit card
+  - User accepts Stripe terms
+
+Return to PeerLoop:
+  - Success: /settings/payment?success=true
+  - Refresh: /settings/payment?refresh=true (incomplete, link expired)
+
+Webhook Processing:
+  account.updated event:
+    - Update stripe_account_status
+    - Update stripe_payouts_enabled
+    - If enabled: show "Connected" badge
+
+Express Dashboard Access:
+  POST /api/payments/connect/dashboard
+  → Returns: { dashboard_url: "https://connect.stripe.com/..." }
+  → User can view/update their Stripe settings
+```
+
+### Stripe Connect States
+
+| State | DB Values | UI Display |
+|-------|-----------|------------|
+| Not Connected | `stripe_account_id = null` | "Connect Stripe" button |
+| Onboarding Incomplete | `status = 'pending'` | "Complete Setup" warning |
+| Connected (No Payouts) | `status = 'active', payouts = false` | "Connected - Payouts Disabled" |
+| Fully Active | `status = 'active', payouts = true` | "Connected ✓" + "Manage" link |
+
+### Availability Management
+
+```typescript
+// GET /api/users/me/availability
+{
+  slots: [
+    { day_of_week: 1, start_time: "09:00", end_time: "12:00" },
+    { day_of_week: 1, start_time: "14:00", end_time: "17:00" },
+    { day_of_week: 2, start_time: "09:00", end_time: "17:00" },
+    // ...
+  ],
+  timezone: "America/New_York",
+  buffer_minutes: 15
+}
+
+// PUT /api/users/me/availability
+// Same format - replaces entire availability pattern
+// Stored in DB with times in user's timezone (not UTC)
+```
+
+### Email Verification Flow
+
+```
+Change Email:
+  1. PATCH /api/users/me/settings { email: "new@example.com" }
+  2. Backend:
+     - Validates new email not taken
+     - Sends verification email via Resend
+     - Sets email_pending = "new@example.com"
+     - Current email remains active
+  3. User clicks verification link
+  4. POST /api/auth/verify-email?token=xxx
+  5. Backend updates email, clears email_pending
+```
+
+### Data Flow: Stripe Connect
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   SETT      │      │  PeerLoop   │      │   Stripe    │
+│   (Client)  │      │  (Server)   │      │  (Connect)  │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ POST /connect/     │                    │
+       │   onboard          │                    │
+       │───────────────────>│                    │
+       │                    │ Create Express     │
+       │                    │ account            │
+       │                    │───────────────────>│
+       │                    │ account_id         │
+       │                    │<───────────────────│
+       │                    │                    │
+       │                    │ Create Account     │
+       │                    │ Link               │
+       │                    │───────────────────>│
+       │                    │ onboarding_url     │
+       │                    │<───────────────────│
+       │ { onboarding_url } │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ redirect ────────────────────────────────>
+       │                    │                    │
+       │ (user completes KYC on Stripe)          │
+       │                    │                    │
+       │ <──────────────────────── return URL    │
+       │                    │                    │
+       │                    │ Webhook:           │
+       │                    │ account.updated    │
+       │                    │<───────────────────│
+       │                    │ Update DB          │
+       │                    │                    │
+       │ GET /connect/status│                    │
+       │───────────────────>│                    │
+       │ { connected, enabled }                  │
+       │<───────────────────│                    │
+```
+
+### Webhook: account.updated
+
+```typescript
+// Webhook handler updates:
+users.stripe_account_status = event.data.charges_enabled ? 'active' : 'pending'
+users.stripe_payouts_enabled = event.data.payouts_enabled
+
+// If newly enabled, send notification:
+if (event.data.payouts_enabled && !previous.payouts_enabled) {
+  // Send "Payouts Enabled" email via Resend
+}
+```
+
+---
+
 ## Notes
 
 - Security-sensitive changes should require password confirmation
-- Email change should trigger verification email
+- Email change triggers verification email via Resend
 - Consider in-app notification preview
-- Stripe Connect for marketplace payouts (CD-020)
+- Stripe Connect: Express accounts for STs/Creators (per CD-020)
+- Availability stored in user's timezone, converted for display to students
+- Webhook `account.updated` is the source of truth for Stripe status

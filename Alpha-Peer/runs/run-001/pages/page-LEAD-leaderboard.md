@@ -122,10 +122,146 @@ Display community rankings based on goodwill points, helping users see their sta
 
 ---
 
+## Server Integration
+
+### Feature Flag
+```typescript
+// Requires: canAccess('leaderboard')
+// Depends on: goodwill_points
+```
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/leaderboard` | Page load | Get rankings |
+| `GET /api/leaderboard/me` | Page load | User's rank |
+| `GET /api/users/me/rewards` | Rewards section | User's unlocked rewards |
+
+### Leaderboard Data
+
+```typescript
+// GET /api/leaderboard?category=overall&period=month
+{
+  period: 'month',
+  category: 'overall',
+  rankings: [
+    {
+      rank: 1,
+      user: { id, name, avatar },
+      points: 2500,
+      badges: ['top_helper', 'certified_st'],
+      change: +2  // rank change since last period
+    }
+  ],
+  user_rank: {
+    rank: 47,
+    points: 150,
+    change: -3,
+    percentile: 85  // top 15%
+  }
+}
+```
+
+### Categories
+
+```typescript
+// Different leaderboard views:
+overall:     SUM(all goodwill_transactions)
+helpers:     SUM(transactions WHERE reason IN ('chat_help', 'summon_help'))
+teachers:    AVG(session_ratings) * session_count
+contributors: SUM(transactions WHERE reason = 'content_contribution')
+```
+
+### Period Filtering
+
+```typescript
+// Periods supported:
+week:     WHERE created_at > NOW() - 7 days
+month:    WHERE created_at > NOW() - 30 days
+all_time: No date filter
+
+// Data stored in leaderboard_entries for performance
+// Updated by cron job (hourly)
+```
+
+### Rewards/Tiers
+
+```typescript
+// GET /api/users/me/rewards
+{
+  current_points: 750,
+  current_tier: { name: 'Helper', threshold: 500 },
+  next_tier: { name: 'Champion', threshold: 1000, points_needed: 250 },
+  unlocked_rewards: [
+    { id, name: 'Custom Avatar Frame', unlocked_at }
+  ],
+  available_rewards: [
+    { id, name: 'Profile Badge', threshold: 1000 }
+  ]
+}
+
+// Tier thresholds (CD-023):
+// 500   - Helper
+// 1000  - Champion
+// 2500  - Expert
+// 5000  - Legend
+```
+
+### Caching Strategy
+
+```typescript
+// Leaderboard computed hourly, stored in KV:
+KV: leaderboard:{category}:{period} → JSON rankings
+
+// User rank computed on-demand but cached:
+KV: user_rank:{user_id}:{category}:{period} → rank data (TTL: 5 min)
+
+// Cron job (Cloudflare Scheduled Worker):
+// Every hour: recalculate all leaderboards, update KV
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   LEAD      │      │  PeerLoop   │      │   KV Cache  │
+│   (Client)  │      │  (Server)   │      │             │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ GET /leaderboard   │                    │
+       │───────────────────>│                    │
+       │                    │ Check KV cache     │
+       │                    │───────────────────>│
+       │                    │ cached rankings    │
+       │                    │<───────────────────│
+       │ { rankings }       │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ GET /leaderboard/me│                    │
+       │───────────────────>│                    │
+       │                    │ Calculate rank     │
+       │ { user_rank }      │ (or from cache)    │
+       │<───────────────────│                    │
+
+Hourly Cron Job:
+  Scheduled Worker
+       │
+       │ Query goodwill_transactions
+       │ Aggregate by user
+       │ Sort and rank
+       │ Store in leaderboard_entries (D1)
+       │ Update KV cache
+```
+
+---
+
 ## Notes
 
-- P3 feature - future consideration
-- Anti-gaming measures needed (prevent point manipulation)
-- Consider privacy option to opt-out of leaderboard
-- Cache rankings (update hourly, not real-time)
+- **Feature Flag:** `leaderboard` - check with `canAccess('leaderboard')`
+- **Dependencies:** Requires `goodwill_points` feature enabled
+- Anti-gaming: Rate limits on point awards, monitoring for suspicious patterns
+- Privacy: Users can opt-out (excluded from rankings)
+- Cache rankings hourly (not real-time) for performance
 - CD-023 defines point thresholds: 500, 1000, 2500, 5000
+- Rankings stored in leaderboard_entries table for historical tracking

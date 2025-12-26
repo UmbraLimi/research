@@ -145,6 +145,24 @@ Allow visitors and users to discover courses through browsing, filtering, and se
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/courses` | Page load | Course list with pagination |
+| `GET /api/courses?q=...&level=...&category=...` | Filter/search | Filtered results |
+| `GET /api/categories` | Page load | Filter options |
+
+**Query Parameters:**
+- `q` - Search query
+- `level` - beginner, intermediate, advanced
+- `category` - Category slug
+- `price_min`, `price_max` - Price range
+- `sort` - newest, popular, rating, price_asc, price_desc
+- `page`, `limit` - Pagination
+
+---
+
 ## Notes
 
 - Genesis Cohort: Only 4 courses initially, consider hiding some filters

@@ -134,6 +134,15 @@ Landing page that communicates PeerLoop's value proposition and guides visitors 
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/courses/featured` | Page load | Featured courses for carousel |
+| `GET /api/creators/featured` | Page load (optional) | Featured creators section |
+
+---
+
 ## Notes
 
 - Genesis Cohort launch: May feature only 4 courses (per CD-026)

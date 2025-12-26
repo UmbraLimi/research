@@ -178,10 +178,140 @@ Enable students to select a Student-Teacher and schedule a tutoring session for 
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/courses/:id/sts` | Page load | Get available Student-Teachers for course |
+| `GET /api/sts/:id/availability` | ST selected | Get ST's available time slots |
+| `GET /api/sts/:id/bookings` | Date selected | Get existing bookings (to exclude) |
+| `POST /api/sessions` | Confirm booking | Create session in DB |
+| `POST /api/checkout/session` | If payment required | Create Stripe checkout |
+
+### Booking Flow (Custom Calendar)
+
+```
+Page Load:
+  1. GET /api/courses/:id → verify enrollment
+  2. GET /api/courses/:id/sts → list of available STs
+  3. If ST pre-selected: skip to availability
+
+ST Selection:
+  1. User selects ST (or "Schedule Later")
+  2. "Schedule Later" → POST /api/enrollments/:id/deferred → back to SDSH
+
+Date Selection:
+  1. GET /api/sts/:id/availability → weekly pattern
+  2. GET /api/sts/:id/bookings?from=&to= → existing sessions
+  3. Client computes available slots (availability - bookings)
+  4. Display calendar with available dates highlighted
+
+Time Selection:
+  1. User selects date
+  2. Client shows time slots for that day
+  3. User selects time slot
+
+Booking Confirmation:
+  1. POST /api/sessions {
+       course_id, st_id, student_id,
+       scheduled_start, scheduled_end
+     }
+  2. Backend:
+     - Validates slot still available (race condition check)
+     - Creates session record (status: 'scheduled')
+     - Triggers email confirmation (Resend)
+  3. Response: { session_id, confirmation }
+```
+
+### Timezone Handling
+
+```typescript
+// Client sends times in user's local timezone
+POST /api/sessions {
+  scheduled_start: "2025-01-15T10:00:00",  // User's local time
+  timezone: "America/New_York"              // User's timezone
+}
+
+// Server stores in UTC
+sessions.scheduled_start: "2025-01-15T15:00:00Z"
+
+// Display: Always convert to viewer's timezone
+// ST sees in their timezone, Student sees in their timezone
+```
+
+### Calendar Export
+
+After successful booking:
+```
+POST /api/sessions/:id/calendar-export?format=ics
+
+Returns: .ics file content for:
+- Google Calendar (webcal:// link)
+- Apple Calendar (direct .ics download)
+- Outlook (direct .ics download)
+```
+
+### Email Notifications (Resend)
+
+| Trigger | Template | Recipients |
+|---------|----------|------------|
+| Booking confirmed | `session-booked` | Student + ST |
+| 24h before | `session-reminder-24h` | Student + ST |
+| 1h before | `session-reminder-1h` | Student + ST |
+| 15min before | `session-reminder-15m` | Student + ST |
+
+### Payment Integration (If Applicable)
+
+For courses with per-session pricing:
+```
+POST /api/checkout/session {
+  session_id: string,
+  return_url: "/booking/confirmation?session={session_id}"
+}
+
+→ Stripe Checkout Session created
+→ Redirect to Stripe
+→ Webhook: checkout.session.completed
+→ Session status: 'paid' → 'scheduled'
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   SBOK      │      │  PeerLoop   │      │  Resend     │
+│   (Client)  │      │  (Server)   │      │  (Email)    │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ GET /sts/:id/      │                    │
+       │   availability     │                    │
+       │───────────────────>│                    │
+       │ weekly pattern     │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ POST /sessions     │                    │
+       │───────────────────>│                    │
+       │                    │ Send confirmation  │
+       │                    │───────────────────>│
+       │ { session_id }     │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ GET /sessions/:id/ │                    │
+       │   calendar-export  │                    │
+       │───────────────────>│                    │
+       │ .ics content       │                    │
+       │<───────────────────│                    │
+```
+
+---
+
 ## Notes
 
 - CD-033: "Schedule Later" is key option for flexible enrollment
-- Consider buffer time between sessions
-- Timezone handling is critical
-- Integration with VideoProvider for room creation
-- Email confirmation with calendar invite
+- Buffer time: 15min between sessions (configurable per ST)
+- Timezone handling: All times stored UTC, displayed in user's timezone
+- VideoProvider room created on-demand at session time (not at booking)
+- Email confirmation with calendar invite via Resend + React Email
+- Race condition: Double-booking prevented via DB constraint + validation

@@ -1,6 +1,7 @@
 # Hosting & Infrastructure Decisions - RUN-001
 
 **Created:** 2025-12-24
+**Updated:** 2025-12-26
 **Related Global Research:** `research/comp-001-cloudflare-vs-vercel.md`
 
 ---
@@ -18,7 +19,8 @@ RUN-001 uses **Cloudflare** as the primary hosting platform per DIR-003.
 | **Database** | Cloudflare D1 (SQLite) | Edge-native, low cost |
 | **File Storage** | Cloudflare R2 | S3-compatible, free egress |
 | **Auth** | Custom JWT | Simple, no vendor lock-in |
-| **Email** | TBD (Resend or CF Email) | Transactional notifications |
+| **Email** | Resend ✅ | Developer-friendly, React Email support (revisit Cloudflare Email post-MVP) |
+| **Calendar** | Custom built ✅ | With Google/Apple calendar export |
 
 ---
 
@@ -103,7 +105,7 @@ D1 (MVP) → Neon/Supabase Postgres (Growth) → Dedicated (Scale)
 | User avatars | R2 | Small files, frequent reads |
 | Course thumbnails | R2 | CDN-served |
 | Course PDFs | R2 or external links | Per CD-019 |
-| Video recordings | BBB server or R2 | TBD |
+| Video recordings | PlugNmeet + R2 ✅ | Store on PlugNmeet, replicate to R2 for redundancy |
 
 ### Cloudflare KV
 - **Purpose:** Session tokens, rate limiting, caching
@@ -198,14 +200,24 @@ If Cloudflare becomes limiting:
 
 ---
 
-## Open Questions (from comp-001)
+## Questions Resolved ✅ (2025-12-26)
 
-| Question | RUN-001 Answer |
-|----------|----------------|
+| Question | Resolution |
+|----------|------------|
 | Existing accounts? | Assume new Cloudflare account |
 | Node.js packages needed? | Minimize, use Workers-compatible |
-| Recording storage? | BBB server initially, R2 later |
+| Recording storage? | PlugNmeet + replicate to R2 |
 | Cost vs DX priority? | Cost (bootstrapped MVP) |
+| Email provider? | Resend |
+| Calendar system? | Custom built with Google/Apple export |
+
+---
+
+## Post-MVP Considerations
+
+| Service | Current | Consider Post-MVP | Rationale |
+|---------|---------|-------------------|-----------|
+| Email | Resend | Cloudflare Email Service | Native Workers integration, no API keys, auto DNS config. Currently in private beta - revisit when GA. |
 
 ---
 

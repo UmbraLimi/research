@@ -222,6 +222,62 @@ Platform administration hub for managing users, processing payouts, reviewing co
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/dashboard` | Page load | Aggregated metrics and alerts |
+| `GET /api/admin/users` | Users section | Paginated user list |
+| `GET /api/admin/courses` | Courses section | Paginated course list |
+| `GET /api/admin/enrollments` | Enrollments section | Paginated enrollment list |
+| `GET /api/admin/payouts/pending` | Payouts section | Pending payouts |
+| `POST /api/admin/payouts/:id/approve` | Approve payout | Process single payout |
+| `POST /api/admin/payouts/batch-approve` | Batch approve | Process multiple payouts |
+| `GET /api/admin/certificates/pending` | Certificates section | Pending certificates |
+| `GET /api/admin/analytics` | Analytics section | Platform metrics |
+| `GET /api/admin/flags/count` | Alerts | Flagged content count |
+
+**Dashboard Response:**
+```typescript
+GET /api/admin/dashboard
+{
+  metrics: {
+    total_users: number,
+    users_growth: number,        // percent change
+    active_courses: number,
+    total_revenue: number,       // cents
+    pending_payouts: number,     // cents
+    sessions_this_week: number
+  },
+  alerts: {
+    pending_payouts: number,
+    pending_certificates: number,
+    flagged_content: number,
+    system_alerts: string[]
+  },
+  recent: {
+    enrollments: [...],          // last 5
+    payouts: [...],              // last 5
+    users: [...]                 // last 5
+  }
+}
+```
+
+**Payout Approval:**
+```typescript
+POST /api/admin/payouts/:id/approve
+// Triggers Stripe Transfer
+// Returns { success, transfer_id, amount }
+
+POST /api/admin/payouts/batch-approve
+{
+  payout_ids: string[]
+}
+// Returns { success, processed: number, failed: number }
+```
+
+---
+
 ## Notes
 
 - CD-020: Semi-automated payouts (admin approves, Stripe transfers)

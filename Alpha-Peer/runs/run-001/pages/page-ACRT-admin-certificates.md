@@ -120,14 +120,58 @@ For each pending certificate:
 
 ---
 
-## CRUD Operations
+## API Calls
 
-| Operation | Endpoint | Notes |
-|-----------|----------|-------|
-| List | GET /api/admin/certificates | Paginated, filterable |
-| Read | GET /api/admin/certificates/:id | Full certificate data |
-| Create | POST /api/admin/certificates | Issue certificate |
-| Update | PATCH /api/admin/certificates/:id | Revoke/reinstate |
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/certificates` | Page load | Paginated, filterable list |
+| `GET /api/admin/certificates/pending` | Pending tab | Awaiting approval |
+| `GET /api/admin/certificates/:id` | Detail open | Full certificate data |
+| `POST /api/admin/certificates` | Issue | Create new certificate |
+| `POST /api/admin/certificates/:id/approve` | Approve | Issue pending cert |
+| `POST /api/admin/certificates/:id/reject` | Reject | Decline pending cert |
+| `POST /api/admin/certificates/:id/revoke` | Revoke | Revoke issued cert |
+| `POST /api/admin/certificates/:id/reinstate` | Reinstate | Restore revoked cert |
+| `GET /api/admin/certificates/:id/pdf` | Download | Get certificate PDF |
+
+**Query Parameters:**
+- `q` - Search recipient name
+- `course_id` - Filter by course
+- `type` - completion, mastery, teaching
+- `status` - pending, issued, revoked
+- `from`, `to` - Issue date range
+- `page`, `limit` - Pagination
+
+**Issue Certificate:**
+```typescript
+POST /api/admin/certificates
+{
+  user_id: string,
+  course_id: string,
+  type: 'completion' | 'mastery' | 'teaching',
+  notes?: string,
+  notify: boolean
+}
+```
+
+**Pending Certificate Response:**
+```typescript
+GET /api/admin/certificates/pending
+{
+  certificates: [{
+    id, type,
+    recipient: { id, name, avatar },
+    course: { id, title },
+    recommended_by: { id, name } | null,
+    recommended_at: string,
+    supporting: {
+      progress_percent: number,
+      sessions_attended: number,
+      avg_rating?: number
+    }
+  }]
+}
+```
 
 ---
 

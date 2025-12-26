@@ -160,6 +160,45 @@ Central hub for students to track their enrolled courses, upcoming sessions, lea
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/users/me` | Page load | Current user profile |
+| `GET /api/enrollments` | Page load | Enrolled courses with progress |
+| `GET /api/sessions?upcoming=true&limit=3` | Page load | Next 3 upcoming sessions |
+| `GET /api/certificates` | Page load | Earned certificates |
+| `GET /api/notifications/count` | Page load | Unread notification count |
+| `GET /api/activity?limit=10` | Page load | Recent activity timeline |
+
+**Enrollments Response:**
+```typescript
+GET /api/enrollments
+{
+  enrollments: [{
+    id, course_id, status, enrolled_at,
+    course: { id, title, slug, thumbnail },
+    student_teacher: { id, name, avatar },
+    progress: { completed: number, total: number, percent: number }
+  }]
+}
+```
+
+**Sessions Response:**
+```typescript
+GET /api/sessions?upcoming=true&limit=3
+{
+  sessions: [{
+    id, scheduled_start, status,
+    course: { id, title },
+    teacher: { id, name, avatar },
+    can_join: boolean  // true if within 15 min of start
+  }]
+}
+```
+
+---
+
 ## Notes
 
 - Consider real-time session countdown

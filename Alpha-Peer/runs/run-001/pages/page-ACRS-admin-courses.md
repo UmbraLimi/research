@@ -111,14 +111,42 @@ CRUD interface for managing all courses - view, edit, feature, suspend, and over
 
 ---
 
-## CRUD Operations
+## API Calls
 
-| Operation | Endpoint | Notes |
-|-----------|----------|-------|
-| List | GET /api/admin/courses | Paginated, filterable |
-| Read | GET /api/admin/courses/:id | Full course data |
-| Update | PATCH /api/admin/courses/:id | Admin edits |
-| Delete | DELETE /api/admin/courses/:id | Only if no enrollments |
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/courses` | Page load | Paginated, filterable course list |
+| `GET /api/admin/courses/:id` | Detail open | Full course data with stats |
+| `PATCH /api/admin/courses/:id` | Save edit | Update course settings |
+| `DELETE /api/admin/courses/:id` | Delete | Remove course (no enrollments) |
+| `POST /api/admin/courses/:id/feature` | Feature | Add to featured |
+| `DELETE /api/admin/courses/:id/feature` | Unfeature | Remove from featured |
+| `POST /api/admin/courses/:id/suspend` | Suspend | Hide course |
+| `POST /api/admin/courses/:id/unsuspend` | Unsuspend | Restore course |
+| `POST /api/admin/courses/:id/transfer` | Transfer | Change owner |
+
+**Query Parameters:**
+- `q` - Search title, creator name
+- `category_id` - Filter by category
+- `status` - published, draft, suspended, retired
+- `level` - beginner, intermediate, advanced
+- `featured` - true/false
+- `page`, `limit` - Pagination
+
+**Course Response:**
+```typescript
+GET /api/admin/courses/:id
+{
+  course: { ...all fields... },
+  creator: { id, name },
+  stats: {
+    enrollments: number,
+    active_sts: number,
+    sessions_completed: number,
+    revenue: number
+  }
+}
+```
 
 ---
 

@@ -147,6 +147,25 @@ Display comprehensive creator information including qualifications, expertise, c
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators/:handle` | Page load | Creator profile data |
+| `GET /api/creators/:handle/courses` | Page load | Creator's courses |
+| `POST /api/follows` | "Follow" clicked | Follow creator |
+| `DELETE /api/follows/:id` | "Unfollow" clicked | Unfollow creator |
+| `GET /api/users/me/follows/:creator_id` | Page load (auth) | Check if following |
+
+**Response includes:**
+- Profile: name, handle, avatar, title, bio, teaching_philosophy, website
+- Qualifications: user_qualifications array
+- Expertise: user_expertise tags
+- Stats: students_taught, courses_created, average_rating, follower_count
+- Courses: Array of course cards
+
+---
+
 ## Notes
 
 - CD-017: Creator profiles are a key trust signal ($8K-11K estimate)

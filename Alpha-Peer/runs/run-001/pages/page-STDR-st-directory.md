@@ -130,6 +130,29 @@ Allow visitors and students to discover available Student-Teachers, browse by co
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/student-teachers` | Page load | ST list with stats |
+| `GET /api/student-teachers?course=...&available=...` | Filter | Filtered results |
+| `GET /api/courses` | Page load | Course filter dropdown options |
+
+**Query Parameters:**
+- `q` - Search by name or expertise
+- `course` - Filter by course slug
+- `available` - Boolean, only show available now
+- `sort` - students, rating, newest
+- `page`, `limit` - Pagination
+
+**Response includes for each ST:**
+- Profile: id, name, handle, avatar, bio_short
+- Certifications: Array of { course_id, course_title, certified_date }
+- Stats: students_taught, average_rating
+- Availability: is_available (boolean)
+
+---
+
 ## Notes
 
 - P1 priority: Core flow works via CDET ST section; directory is enhancement

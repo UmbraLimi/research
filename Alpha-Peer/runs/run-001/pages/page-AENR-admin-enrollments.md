@@ -125,15 +125,51 @@ CRUD interface for managing enrollments - view, create manual enrollments, cance
 
 ---
 
-## CRUD Operations
+## API Calls
 
-| Operation | Endpoint | Notes |
-|-----------|----------|-------|
-| List | GET /api/admin/enrollments | Paginated, filterable |
-| Read | GET /api/admin/enrollments/:id | Full enrollment data |
-| Create | POST /api/admin/enrollments | Manual/comp enrollment |
-| Update | PATCH /api/admin/enrollments/:id | Edit enrollment |
-| Delete | DELETE /api/admin/enrollments/:id | Soft delete |
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/enrollments` | Page load | Paginated, filterable list |
+| `GET /api/admin/enrollments/:id` | Detail open | Full enrollment data |
+| `POST /api/admin/enrollments` | Create | Manual/comp enrollment |
+| `PATCH /api/admin/enrollments/:id` | Save edit | Update enrollment |
+| `DELETE /api/admin/enrollments/:id` | Delete | Soft delete |
+| `POST /api/admin/enrollments/:id/reassign-st` | Reassign | Change ST |
+| `POST /api/admin/enrollments/:id/cancel` | Cancel | Cancel enrollment |
+| `POST /api/admin/enrollments/:id/refund` | Refund | Process refund |
+| `POST /api/admin/enrollments/:id/force-complete` | Complete | Override complete |
+| `GET /api/admin/enrollments/export` | Export | CSV export |
+
+**Query Parameters:**
+- `q` - Search student name/email, course title
+- `course_id` - Filter by course
+- `status` - active, completed, cancelled
+- `st_assigned` - true/false
+- `from`, `to` - Date range
+- `page`, `limit` - Pagination
+
+**Create Enrollment:**
+```typescript
+POST /api/admin/enrollments
+{
+  user_id: string,
+  course_id: string,
+  st_id?: string,
+  payment_status: 'paid' | 'comp' | 'waived',
+  reason?: string,
+  notify: boolean
+}
+```
+
+**Refund:**
+```typescript
+POST /api/admin/enrollments/:id/refund
+{
+  amount?: number,  // cents, optional for partial
+  reason: string
+}
+// Triggers Stripe refund
+```
 
 ---
 

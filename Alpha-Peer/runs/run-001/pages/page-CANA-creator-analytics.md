@@ -158,6 +158,102 @@ Provide Creators with detailed analytics about their courses, student engagement
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators/me/analytics` | Page load | Aggregated analytics |
+| `GET /api/creators/me/analytics/enrollments` | Chart | Enrollment trends |
+| `GET /api/creators/me/analytics/courses` | Table | Course performance |
+| `GET /api/creators/me/analytics/funnel` | Funnel section | Conversion metrics |
+| `GET /api/creators/me/analytics/progress` | Chart | Student progress distribution |
+| `GET /api/creators/me/analytics/sessions` | Chart | Session metrics |
+| `GET /api/creators/me/analytics/st-performance` | Table | ST leaderboard |
+| `GET /api/creators/me/analytics/export` | Export | CSV/PDF export |
+
+**Query Parameters:**
+- `period` - 7d, 30d, 90d, 1y, custom
+- `from`, `to` - Date range for custom
+- `course_id` - Filter by specific course
+
+**Analytics Summary Response:**
+```typescript
+GET /api/creators/me/analytics?period=30d
+{
+  key_metrics: {
+    total_revenue: number,      // cents
+    new_enrollments: number,
+    completion_rate: number,    // percent
+    avg_rating: number,
+    active_students: number
+  },
+  comparison: {
+    revenue_change: number,     // percent vs previous period
+    enrollments_change: number,
+    rating_change: number
+  }
+}
+```
+
+**Enrollment Trends Response:**
+```typescript
+GET /api/creators/me/analytics/enrollments?period=30d
+{
+  data: [
+    { date: '2025-01-01', enrollments: 5, revenue: 50000 },
+    { date: '2025-01-02', enrollments: 3, revenue: 30000 }
+  ],
+  granularity: 'day' | 'week' | 'month'
+}
+```
+
+**Course Performance Response:**
+```typescript
+GET /api/creators/me/analytics/courses?period=30d
+{
+  courses: [{
+    id, title,
+    enrollments_total: number,
+    enrollments_period: number,
+    revenue_total: number,
+    revenue_period: number,
+    completion_rate: number,
+    avg_rating: number,
+    active_students: number
+  }]
+}
+```
+
+**Funnel Response:**
+```typescript
+GET /api/creators/me/analytics/funnel?period=30d&course_id=...
+{
+  steps: [
+    { name: 'Page Views', count: 1000, rate: 100 },
+    { name: 'Enrollments', count: 50, rate: 5 },
+    { name: 'Completions', count: 20, rate: 40 },
+    { name: 'Became ST', count: 5, rate: 25 }
+  ]
+}
+```
+
+**Progress Distribution Response:**
+```typescript
+GET /api/creators/me/analytics/progress?course_id=...
+{
+  distribution: [
+    { stage: 'Not Started', count: 10 },
+    { stage: '1-25%', count: 15 },
+    { stage: '26-50%', count: 20 },
+    { stage: '51-75%', count: 12 },
+    { stage: '76-99%', count: 8 },
+    { stage: 'Completed', count: 35 }
+  ]
+}
+```
+
+---
+
 ## Notes
 
 - Consider caching/pre-computing metrics for performance

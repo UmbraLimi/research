@@ -154,10 +154,126 @@ Course-specific community chat room where enrolled students can ask questions, g
 
 ---
 
+## Server Integration
+
+### Feature Flag
+```typescript
+// Requires: canAccess('course_chat')
+// Also check: user enrolled in course OR user is certified ST for course
+```
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/courses/:id/chat/room` | Page load | Get/create chat room |
+| `GET /api/courses/:id/chat/messages` | Page load | Load message history |
+| `POST /api/courses/:id/chat/messages` | Send message | Create message |
+| `WS /api/chat/connect` | Page load | WebSocket connection |
+| `POST /api/goodwill/award` | "This Helped!" | Award points |
+| `GET /api/courses/:id/chat/helpers` | Page load | Online STs |
+
+### WebSocket Architecture (Custom)
+
+```
+Connection:
+  1. GET /api/courses/:id/chat/room → { room_id, user_token }
+  2. Connect: WS /api/chat/connect?room={room_id}&token={user_token}
+  3. Server validates token, joins user to room
+
+Implementation: Cloudflare Durable Objects
+  - Each course has a Durable Object instance
+  - Handles message broadcast
+  - Tracks online users
+  - Manages presence
+
+Message Flow:
+  Client → WebSocket → Durable Object → Broadcast to room
+                    → Store in D1 (chat_messages table)
+```
+
+### WebSocket Events
+
+```typescript
+// Client → Server
+{ type: 'message', content: string, is_question: boolean }
+{ type: 'typing' }
+{ type: 'mark_helpful', message_id: string }
+
+// Server → Client
+{ type: 'message', data: ChatMessage }
+{ type: 'user_joined', user: User }
+{ type: 'user_left', user_id: string }
+{ type: 'presence', users: User[] }
+{ type: 'typing', user_id: string }
+```
+
+### Goodwill Points Award
+
+```typescript
+// POST /api/goodwill/award
+{
+  recipient_id: string,
+  points: number,        // 5 default for chat help
+  reason: 'chat_help',
+  reference_id: message_id
+}
+
+// Backend:
+1. Validate sender has sufficient balance
+2. Deduct from sender: UPDATE user_goodwill SET balance = balance - points
+3. Add to recipient: UPDATE user_goodwill SET balance = balance + points
+4. Record transaction in goodwill_transactions
+5. Broadcast point award to chat room
+```
+
+### Message Storage
+
+```typescript
+// POST /api/courses/:id/chat/messages (also via WebSocket)
+{
+  content: string,
+  is_question: boolean,
+  reply_to_id?: string
+}
+
+// Stored in chat_messages table
+// Also broadcast via Durable Object
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   CHAT      │      │  Cloudflare │      │   D1 / KV   │
+│   (Client)  │      │  Durable Obj│      │  (Storage)  │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ WS connect         │                    │
+       │───────────────────>│                    │
+       │                    │ Load history       │
+       │                    │───────────────────>│
+       │ { messages }       │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ Send message       │                    │
+       │───────────────────>│                    │
+       │                    │ Store message      │
+       │                    │───────────────────>│
+       │                    │                    │
+       │                    │ Broadcast to room  │
+       │<───────────────────│                    │
+       │                    │──────> (other clients)
+```
+
+---
+
 ## Notes
 
+- **Feature Flag:** `course_chat` - check with `canAccess('course_chat')`
 - **Block 2+ feature:** Part of Goodwill Points system (CD-023)
-- May use Stream Chat or similar real-time service
-- Consider anti-spam: rate limits, moderation
+- Custom WebSocket via Cloudflare Durable Objects (not Stream Chat)
+- Consider anti-spam: rate limits (1 msg/sec), moderation
 - ST incentive: Earning points for helping
 - Integration with MODQ for flagged content
+- Message history persisted in chat_messages table

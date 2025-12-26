@@ -118,15 +118,42 @@ CRUD interface for managing all platform users - view, search, edit roles, suspe
 
 ---
 
-## CRUD Operations
+## API Calls
 
-| Operation | Endpoint | Notes |
-|-----------|----------|-------|
-| List | GET /api/admin/users | Paginated, filterable |
-| Read | GET /api/admin/users/:id | Full user data |
-| Create | POST /api/admin/users | Manual creation |
-| Update | PATCH /api/admin/users/:id | Edit fields |
-| Delete | DELETE /api/admin/users/:id | Soft delete preferred |
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/users` | Page load | Paginated, filterable user list |
+| `GET /api/admin/users/:id` | Detail open | Full user data with stats |
+| `POST /api/admin/users` | Add user | Manual user creation |
+| `PATCH /api/admin/users/:id` | Save edit | Update user fields |
+| `DELETE /api/admin/users/:id` | Delete | Soft delete user |
+| `POST /api/admin/users/:id/suspend` | Suspend | Suspend account |
+| `POST /api/admin/users/:id/unsuspend` | Unsuspend | Restore account |
+| `POST /api/admin/users/:id/reset-password` | Reset password | Send reset email |
+| `POST /api/admin/users/:id/verify-email` | Verify email | Manual verification |
+| `GET /api/admin/users/export` | Export | CSV export |
+
+**Query Parameters:**
+- `q` - Search name/email/handle
+- `role` - student, st, creator, admin, moderator
+- `status` - active, suspended, unverified
+- `from`, `to` - Joined date range
+- `page`, `limit` - Pagination
+
+**User Response:**
+```typescript
+GET /api/admin/users/:id
+{
+  user: { ...all fields... },
+  stats: {
+    enrollments: number,
+    sessions: number,
+    courses_created: number,
+    certificates: number
+  },
+  audit_log: [{ action, timestamp, by }]
+}
+```
 
 ---
 

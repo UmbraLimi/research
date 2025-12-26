@@ -146,6 +146,68 @@ When clicking a student row:
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators/me/students` | Page load | Student list |
+| `GET /api/creators/me/students/:id` | Detail open | Student detail |
+| `GET /api/creators/me/courses` | Filter dropdown | Course options |
+| `GET /api/enrollments/:id/progress` | Detail open | Module progress |
+| `GET /api/enrollments/:id/sessions` | Detail open | Session history |
+| `PUT /api/enrollments/:id/notes` | Save notes | Creator's notes on student |
+| `POST /api/enrollments/:id/flag` | Flag student | Mark at-risk |
+| `GET /api/creators/me/students/export` | Export | CSV export |
+
+**Query Parameters:**
+- `q` - Search by name/email
+- `course_id` - Filter by course
+- `status` - active, completed, cancelled
+- `sort` - name, enrolled_at, progress, last_activity
+- `page`, `limit` - Pagination
+
+**Students Response:**
+```typescript
+GET /api/creators/me/students
+{
+  students: [{
+    id,
+    user: { id, name, avatar, handle, email },
+    course: { id, title },
+    enrollment: {
+      id, enrolled_at, completed_at, status
+    },
+    progress: { completed: number, total: number, percent: number },
+    sessions: { completed: number, scheduled: number },
+    is_st: boolean,  // Became ST for this course
+    is_at_risk: boolean
+  }],
+  pagination: { page, limit, total, has_more }
+}
+```
+
+**Student Detail Response:**
+```typescript
+GET /api/creators/me/students/:id
+{
+  user: { id, name, avatar, handle, email },
+  enrollment: { id, course_id, enrolled_at, status },
+  progress: {
+    modules: [{ module_id, title, is_complete, completed_at }],
+    percent: number
+  },
+  sessions: [{
+    id, scheduled_start, status, st: { name, avatar }
+  }],
+  assigned_st: { id, name, avatar } | null,
+  certificate: { type, issued_at } | null,
+  notes: string,  // Creator's private notes
+  is_at_risk: boolean
+}
+```
+
+---
+
 ## Notes
 
 - Consider "At Risk" auto-flagging based on inactivity

@@ -175,11 +175,167 @@ Real-time help request system allowing students to summon available Student-Teac
 
 ---
 
+## Server Integration
+
+### Feature Flag
+```typescript
+// Requires: canAccess('summon_help')
+// Depends on: course_chat, goodwill_points
+// Also check: user enrolled in course
+```
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/courses/:id/helpers/available` | Modal open | Get online helpers |
+| `POST /api/help/request` | "Summon Helper" | Create help request |
+| `WS /api/help/connect` | Request created | Real-time help session |
+| `POST /api/help/:id/complete` | "End Session" | Mark session complete |
+| `POST /api/goodwill/award` | Award points | Transfer goodwill points |
+
+### Help Request Flow
+
+```
+Initiate Request:
+  1. POST /api/help/request {
+       course_id: string,
+       module_id?: string,
+       message?: string
+     }
+  2. Backend:
+     - Create help_request (status: 'pending')
+     - Broadcast to available STs via WebSocket
+     - Start timeout timer (2 minutes)
+  3. Response: { request_id, available_helpers: count }
+
+ST Receives Notification:
+  - Push notification: "Student needs help in [Course]"
+  - WebSocket event to ST dashboard
+  - First to accept wins
+
+ST Accepts:
+  1. POST /api/help/:id/accept
+  2. Backend:
+     - Update status: 'accepted'
+     - Set helper_id
+     - Notify student
+  3. Both parties join WebSocket room
+```
+
+### WebSocket Help Session
+
+```typescript
+// Connection:
+WS /api/help/connect?request_id={id}&token={user_token}
+
+// Events:
+// Server → Client
+{ type: 'matched', helper: User }
+{ type: 'message', data: ChatMessage }
+{ type: 'helper_typing' }
+{ type: 'session_ended', duration: number }
+
+// Client → Server
+{ type: 'message', content: string }
+{ type: 'typing' }
+{ type: 'end_session' }
+```
+
+### Session Completion
+
+```typescript
+// POST /api/help/:id/complete
+{
+  ended_by: 'student' | 'helper',
+  duration_seconds: number
+}
+
+// Backend:
+1. Update help_request status: 'completed'
+2. Record duration
+3. Calculate points eligibility (min 5 min)
+4. Return { eligible_for_points: boolean, suggested_points: 15 }
+```
+
+### Points Award
+
+```typescript
+// POST /api/goodwill/award
+{
+  recipient_id: helper_user_id,
+  points: 10-25,
+  reason: 'summon_help',
+  reference_id: help_request_id
+}
+
+// Same flow as CHAT goodwill award
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   Student   │      │  PeerLoop   │      │     ST      │
+│   (HELP)    │      │  (Server)   │      │   (TDSH)    │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ POST /help/request │                    │
+       │───────────────────>│                    │
+       │                    │ Create request     │
+       │                    │ Broadcast to STs   │
+       │                    │───────────────────>│
+       │ { pending }        │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ Waiting...         │ POST /help/:id/    │
+       │                    │ accept             │
+       │                    │<───────────────────│
+       │                    │                    │
+       │ WS: matched        │ WS: student joined │
+       │<───────────────────│───────────────────>│
+       │                    │                    │
+       │ [Chat session via WebSocket]            │
+       │<──────────────────────────────────────>│
+       │                    │                    │
+       │ POST /help/:id/    │                    │
+       │ complete           │                    │
+       │───────────────────>│                    │
+       │                    │ Session ended      │
+       │ { award prompt }   │───────────────────>│
+       │<───────────────────│                    │
+       │                    │                    │
+       │ POST /goodwill/    │                    │
+       │ award              │                    │
+       │───────────────────>│                    │
+       │                    │ Transfer points    │
+```
+
+### Availability System
+
+```typescript
+// STs set availability:
+POST /api/users/me/availability/status
+{ available_for_help: true }
+
+// Stored in KV for fast lookup:
+KV: help_available:{course_id} → [user_id, user_id, ...]
+
+// When ST goes offline or busy:
+- Remove from KV set
+- Broadcast updated count to HELP modals
+```
+
+---
+
 ## Notes
 
+- **Feature Flag:** `summon_help` - check with `canAccess('summon_help')`
+- **Dependencies:** Requires `course_chat` and `goodwill_points` features
 - **Block 2+ feature:** Part of Goodwill Points system (CD-023)
 - Minimum 5-minute session for points eligibility
-- Anti-gaming: Cooldown between summons to same person
-- ST notification: Push notification when summoned
-- Consider escalation to video for complex help
+- Anti-gaming: Cooldown between summons to same person (15 min)
+- ST notification: Push + WebSocket when summoned
+- Consider escalation to video (links to SBOK for scheduled session)
 - Points range: 10-25 per CD-023
+- Timeout: 2 minutes waiting, then "No helpers available"

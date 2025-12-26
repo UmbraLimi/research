@@ -179,6 +179,71 @@ Display and edit user profile information, manage privacy settings, view achieve
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/users/me` | Page load (own) | Own profile data |
+| `GET /api/users/:handle` | Page load (other) | Other user's profile |
+| `PUT /api/users/me` | Save changes | Update profile fields |
+| `POST /api/users/me/avatar` | Avatar upload | Upload new avatar |
+| `GET /api/users/:handle/stats` | Page load | User statistics |
+| `GET /api/users/:handle/certificates` | Page load | Earned certificates |
+| `GET /api/users/:handle/followers` | Expand section | Follower list |
+| `GET /api/users/:handle/following` | Expand section | Following list |
+| `POST /api/follows` | Follow clicked | Follow user |
+| `DELETE /api/follows/:id` | Unfollow clicked | Unfollow user |
+| `GET /api/users/me/follows/:user_id` | Page load (auth) | Check if following |
+| `GET /api/users/me/goodwill` | Page load (own, Block 2+) | Goodwill points |
+| `PUT /api/users/me/availability` | Toggle (ST) | Update availability |
+
+**Profile Response:**
+```typescript
+GET /api/users/:handle
+{
+  id, name, handle, avatar, title, bio,
+  privacy_public: boolean,
+  roles: string[],  // ['student', 'st', 'creator']
+  qualifications: [{ sentence, display_order }],
+  expertise: string[],
+  interests: string[]
+}
+```
+
+**Stats Response:**
+```typescript
+GET /api/users/:handle/stats
+{
+  followers_count, following_count,
+  courses_enrolled, courses_completed,  // students
+  students_taught, sessions_conducted,  // STs
+  courses_created, total_students       // creators
+}
+```
+
+**Profile Update:**
+```typescript
+PUT /api/users/me
+{
+  name?, title?, bio?,
+  privacy_public?,
+  interests?: string[],
+  expertise?: string[],
+  qualifications?: [{ sentence }]
+}
+```
+
+**Goodwill Response (Block 2+):**
+```typescript
+GET /api/users/me/goodwill
+{
+  total_earned, spent, balance,
+  breakdown: [{ category, amount }]
+}
+```
+
+---
+
 ## Notes
 
 - Consider unified profile page that adapts to role

@@ -217,6 +217,91 @@ Course creation and management interface for Creators to build, edit, publish, a
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators/me/courses` | List view | Creator's courses |
+| `GET /api/courses/:id` | Edit view | Course details |
+| `POST /api/courses` | Create new | Create course |
+| `PUT /api/courses/:id` | Save changes | Update course |
+| `DELETE /api/courses/:id` | Delete | Remove course |
+| `GET /api/courses/:id/curriculum` | Edit view | Module list |
+| `POST /api/courses/:id/curriculum` | Add module | Create module |
+| `PUT /api/courses/:id/curriculum/:module_id` | Edit module | Update module |
+| `PUT /api/courses/:id/curriculum/reorder` | Drag-drop | Reorder modules |
+| `DELETE /api/courses/:id/curriculum/:module_id` | Delete module | Remove module |
+| `PUT /api/courses/:id/publish` | Publish | Set status published |
+| `PUT /api/courses/:id/unpublish` | Unpublish | Set status draft |
+| `POST /api/courses/:id/thumbnail` | Upload | Upload thumbnail |
+| `GET /api/categories` | Edit view | Category dropdown |
+
+**Courses List Response:**
+```typescript
+GET /api/creators/me/courses
+{
+  courses: [{
+    id, title, slug, thumbnail_url,
+    status: 'draft' | 'published' | 'retired',
+    student_count: number,
+    created_at, updated_at
+  }]
+}
+```
+
+**Course Detail Response:**
+```typescript
+GET /api/courses/:id
+{
+  id, title, slug, tagline, description,
+  thumbnail_url, category_id, level,
+  price_cents, currency, lifetime_access,
+  peerloop_features: {
+    one_on_one: boolean,
+    certified_teachers: boolean,
+    earn_while_teaching: boolean,
+    teacher_commission: number
+  },
+  objectives: [{ id, objective, display_order }],
+  includes: [{ id, item, display_order }],
+  prerequisites: [{ id, type, content, display_order }],
+  target_audience: [{ id, description, display_order }],
+  tags: string[],
+  status, created_at, updated_at
+}
+```
+
+**Create/Update Course:**
+```typescript
+POST /api/courses
+PUT /api/courses/:id
+{
+  title, slug?, tagline?, description?,
+  category_id?, level?, price_cents?, currency?,
+  peerloop_features?: { ... },
+  objectives?: [...],
+  includes?: [...],
+  prerequisites?: [...],
+  target_audience?: [...],
+  tags?: [...]
+}
+```
+
+**Curriculum Response:**
+```typescript
+GET /api/courses/:id/curriculum
+{
+  modules: [{
+    id, title, description, duration,
+    session_number, module_order,
+    video_url, document_url,
+    objectives, topics, exercise
+  }]
+}
+```
+
+---
+
 ## Notes
 
 - CD-019: Content is external (YouTube/Vimeo, Google Docs)

@@ -185,6 +185,82 @@ Content moderation dashboard for reviewing flagged content, taking action on vio
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/moderation/queue` | Page load | Flagged content list |
+| `GET /api/moderation/queue/:id` | Detail open | Full flag details |
+| `POST /api/moderation/queue/:id/dismiss` | Dismiss | Mark not violation |
+| `POST /api/moderation/queue/:id/remove` | Remove | Delete content |
+| `POST /api/moderation/queue/:id/warn` | Warn | Issue user warning |
+| `POST /api/moderation/queue/:id/ban` | Ban | Suspend user |
+| `GET /api/moderation/history` | History tab | Past actions |
+| `GET /api/moderation/stats` | Statistics | Queue metrics |
+
+**Query Parameters:**
+- `status` - pending, reviewed
+- `type` - post, message, profile
+- `priority` - high, medium, low
+- `from`, `to` - Date range
+- `page`, `limit` - Pagination
+
+**Queue Response:**
+```typescript
+GET /api/moderation/queue
+{
+  items: [{
+    id,
+    content: { id, type, text, author_id },
+    author: { id, name, avatar, handle },
+    flags: [{
+      reason, flagged_by: { name }, flagged_at
+    }],
+    priority: 'high' | 'medium' | 'low'
+  }],
+  pagination: { page, limit, total }
+}
+```
+
+**Flag Detail Response:**
+```typescript
+GET /api/moderation/queue/:id
+{
+  content: { id, type, full_text, media_urls, course_id },
+  author: {
+    id, name, handle, avatar,
+    account_age_days: number,
+    previous_violations: number
+  },
+  flags: [...],
+  context: {
+    feed_url: string,
+    surrounding_posts?: [...]
+  }
+}
+```
+
+**Moderation Actions:**
+```typescript
+POST /api/moderation/queue/:id/dismiss
+{ notes?: string }
+
+POST /api/moderation/queue/:id/remove
+{ notes?: string, warn?: boolean }
+
+POST /api/moderation/queue/:id/warn
+{ message: string, notes?: string }
+
+POST /api/moderation/queue/:id/ban
+{
+  duration: 'temp_1d' | 'temp_7d' | 'temp_30d' | 'permanent',
+  reason: string,
+  notes?: string
+}
+```
+
+---
+
 ## Notes
 
 - CD-010: Community Moderator is distinct role from Creator

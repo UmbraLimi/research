@@ -121,13 +121,54 @@ View and manage all tutoring sessions - monitor activity, access recordings, res
 
 ---
 
-## CRUD Operations
+## API Calls
 
-| Operation | Endpoint | Notes |
-|-----------|----------|-------|
-| List | GET /api/admin/sessions | Paginated, filterable |
-| Read | GET /api/admin/sessions/:id | Full session data |
-| Update | PATCH /api/admin/sessions/:id | Status, notes, resolution |
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/sessions` | Page load | Paginated, filterable list |
+| `GET /api/admin/sessions/:id` | Detail open | Full session data |
+| `PATCH /api/admin/sessions/:id` | Save changes | Update status, notes |
+| `GET /api/admin/sessions/:id/recording` | View recording | Signed URL for playback |
+| `POST /api/admin/sessions/:id/resolve` | Resolve dispute | Apply resolution |
+| `POST /api/admin/sessions/:id/credit` | Credit session | Give free session |
+| `POST /api/admin/sessions/:id/warn` | Warn user | Issue warning |
+| `GET /api/admin/sessions/upcoming` | Calendar view | Upcoming sessions |
+| `GET /api/admin/sessions/stats` | Metrics | Session statistics |
+
+**Query Parameters:**
+- `q` - Search student/ST name
+- `course_id` - Filter by course
+- `status` - scheduled, completed, cancelled, no_show
+- `from`, `to` - Date range
+- `has_dispute` - true/false
+- `low_rating` - true (≤2 stars)
+- `page`, `limit` - Pagination
+
+**Session Response:**
+```typescript
+GET /api/admin/sessions/:id
+{
+  session: { ...all fields... },
+  student: { id, name },
+  st: { id, name },
+  course: { id, title },
+  feedback: {
+    student: { rating, comment } | null,
+    st: { rating, comment } | null
+  },
+  dispute: { reason, status, statements } | null,
+  recording_available: boolean
+}
+```
+
+**Resolve Dispute:**
+```typescript
+POST /api/admin/sessions/:id/resolve
+{
+  action: 'dismiss' | 'warn_student' | 'warn_st' | 'refund' | 'credit',
+  notes: string
+}
+```
 
 ---
 

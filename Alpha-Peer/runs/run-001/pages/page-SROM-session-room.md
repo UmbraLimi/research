@@ -171,11 +171,117 @@ Video conferencing interface for 1-on-1 tutoring sessions between students and S
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/sessions/:id` | Page load | Verify session exists, user authorized, get status |
+| `POST /api/video/token` | "Join Session" clicked | Get PlugNmeet join token |
+| `POST /api/sessions/:id/feedback` | Feedback submitted | Record rating and comments |
+
+### PlugNmeet Integration Flow
+
+```
+Page Load:
+  1. GET /api/sessions/:id → session details, participants
+  2. Check session.status (scheduled, active, ended)
+  3. Check current time vs scheduled_start (join window)
+
+Join Flow:
+  1. User clicks "Join Session"
+  2. POST /api/video/token { session_id, role: "participant"|"host" }
+  3. Backend:
+     - Verifies user is session participant
+     - Calls PlugNmeet API: createRoom (if not exists)
+     - Calls PlugNmeet API: getJoinToken
+     - Returns { join_url, token }
+  4. Client redirects to PlugNmeet room (iframe or new tab)
+
+During Session:
+  - PlugNmeet handles all video/audio
+  - Our client polls /api/sessions/:id for status updates (optional)
+  - Webhooks update our DB asynchronously
+```
+
+### Webhooks Received (Background)
+
+| Webhook | Impact | DB Update |
+|---------|--------|-----------|
+| `participant_joined` | Track attendance start | `session_attendance.joined_at` |
+| `participant_left` | Track attendance end | `session_attendance.left_at`, calculate `duration_seconds` |
+| `room_finished` | Session complete | `sessions.status = 'completed'`, `sessions.ended_at` |
+| `recording_proceeded` | Recording ready | `sessions.recording_url` (replicated to R2) |
+
+### Token Generation Details
+
+```typescript
+// POST /api/video/token
+{
+  session_id: string,
+  user_id: string (from auth)
+}
+
+// Response
+{
+  join_url: "https://plugnmeet.peerloop.com/...",
+  token: "jwt-token-here",
+  room_id: "peerloop-session-{session_id}"
+}
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   SROM      │      │  PeerLoop   │      │  PlugNmeet  │
+│   (Client)  │      │  (Server)   │      │  (Service)  │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ GET /sessions/:id  │                    │
+       │───────────────────>│                    │
+       │ session data       │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ POST /video/token  │                    │
+       │───────────────────>│                    │
+       │                    │ createRoom()       │
+       │                    │───────────────────>│
+       │                    │ room_id            │
+       │                    │<───────────────────│
+       │                    │                    │
+       │                    │ getJoinToken()     │
+       │                    │───────────────────>│
+       │                    │ token              │
+       │                    │<───────────────────│
+       │ { join_url, token }│                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ redirect to PlugNmeet                   │
+       │─────────────────────────────────────────>
+       │                    │                    │
+       │           [Webhooks: participant_joined, room_finished, etc.]
+       │                    │<───────────────────│
+       │                    │ Update DB          │
+```
+
+### Recording Storage
+
+1. PlugNmeet stores recording temporarily
+2. Webhook `recording_proceeded` triggers:
+   - Download from PlugNmeet
+   - Upload to R2: `recordings/sessions/{session_id}/{timestamp}.webm`
+   - Update `sessions.recording_url`
+3. Client shows "Recording Available" with R2 URL
+
+---
+
 ## Notes
 
-- **VideoProvider abstraction:** BBB or PlugNmeet (see API.md)
+- **VideoProvider:** PlugNmeet (selected per `assets/video-platform-decisions.md`)
 - CD-007: 1-on-1 optimized, P2P when possible
-- Recording storage: R2 or video provider cloud
-- Session reminders: 24h, 1h, 15min before
+- Recording storage: PlugNmeet → R2 replication
+- Session reminders: 24h, 1h, 15min before (via Resend)
 - Consider "reschedule" option from pre-join if issues
 - Accessibility: Keyboard navigation, screen reader support for controls

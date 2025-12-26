@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**Version:** v4
-**Last Updated:** 2025-12-25
+**Version:** v6
+**Last Updated:** 2025-12-26
 
 > **Version History:** Increment version when substantive changes occur (new phases, changed workflows, new commands). Minor edits (typos, formatting) don't require version bump.
 
@@ -24,7 +24,9 @@ MyResearch/
 │   ├── DB-SCHEMA.md      # Database entities, fields, relationships
 │   ├── PAGES.md          # Page inventory with data requirements
 │   ├── COMPONENTS.md     # Reusable UI component library
-│   ├── API.md            # Backend API operations surface
+│   ├── API.md            # API quick reference (index by HTTP method)
+│   ├── DB-API.md         # Internal endpoints with DB-SCHEMA references
+│   ├── REMOTE-API.md     # External service endpoints (Stripe, Stream, etc.)
 │   ├── client-docs/      # Client-provided materials (don't modify originals)
 │   ├── research/         # Technology research (tech-NNN-*.md, comp-NNN-*.md)
 │   ├── scenarios/        # SPECS.md variants (sc-NNN-*-SPECS.md) - legacy
@@ -115,7 +117,7 @@ The Gather phase collects all information needed to create comprehensive technic
 **Inputs during Gather:**
 | Input Type | Command | Updates |
 |------------|---------|---------|
-| Client documents | `/r-add-client-doc` | GOALS.md, USER-STORIES.md, client-docs-index.md, DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md |
+| Client documents | `/r-add-client-doc` | GOALS.md, USER-STORIES.md, client-docs-index.md, DB-SCHEMA.md, PAGES.md, COMPONENTS.md, DB-API.md |
 | Software/services | `/r-add-software <url>` | PLAN.md, research/tech-NNN-*.md |
 | User stories | `/r-add-user-story` | USER-STORIES.md |
 | Directives | `/r-add-directive` | DIRECTIVES.md |
@@ -127,7 +129,9 @@ The Gather phase collects all information needed to create comprehensive technic
 - `DB-SCHEMA.md` - Database entities, fields, relationships (from client docs with data samples)
 - `PAGES.md` - Page inventory with data requirements (from user stories and mockups)
 - `COMPONENTS.md` - Reusable UI components (from pages and data structures)
-- `API.md` - Backend API operations (from user stories and data requirements)
+- `API.md` - API quick reference index (by HTTP method)
+- `DB-API.md` - Internal endpoints with DB-SCHEMA table references
+- `REMOTE-API.md` - External service endpoints (Stripe, Stream, PlugNmeet, Resend)
 - `PLAN.md` - Phases, tasks, technology inventory
 - `/research/` - Tech docs for each software/service evaluated
 - `/client-docs/` - Original client materials with index
@@ -137,19 +141,19 @@ The Gather phase collects all information needed to create comprehensive technic
 2. Add software/services → creates research docs, maps to user stories
 3. Add individual user stories → as gaps are discovered
 4. Research fills gaps → identifies what services are needed for which stories
-5. Analyze documents for architecture implications → updates DB-SCHEMA.md, PAGES.md, COMPONENTS.md, API.md
+5. Analyze documents for architecture implications → updates DB-SCHEMA.md, PAGES.md, COMPONENTS.md, DB-API.md
 
 **Architecture document updates during Gather:**
 - When processing client docs with data samples (like database schemas), update DB-SCHEMA.md
 - When identifying new pages from user stories or mockups, update PAGES.md
 - When pages reveal reusable UI patterns, update COMPONENTS.md
-- When user stories imply backend operations, update API.md
+- When user stories imply backend operations, update DB-API.md (internal) or REMOTE-API.md (external services)
 
 **Gather is complete when:**
 - All client documents processed
 - All required/optional services researched
 - User stories mapped to technologies
-- Architecture documents (DB-SCHEMA, PAGES, COMPONENTS, API) populated
+- Architecture documents (DB-SCHEMA, PAGES, COMPONENTS, DB-API, REMOTE-API) populated
 - Gaps identified and addressed
 - Ready to create SPECS.md scenarios
 
@@ -268,12 +272,51 @@ runs/run-NNN/pages/
 - Mobile considerations
 - Error handling
 - Analytics events
+- **Server Integration** (for pages calling external services)
 
 **Page Categories:**
 - Public pages (10): Visitor-accessible
 - Authenticated pages (18): Logged-in users
 - Role-specific pages (3): Creator, Admin, Moderator
 - Admin SPA screens (7): CRUD interfaces within Admin SPA
+
+### Feature Flags System (Added 2025-12-26)
+
+All features are documented and architected upfront. Feature flags control what's enabled in each release - nothing is "out of scope" until explicitly flagged off.
+
+**Database-Driven Flags:**
+```sql
+features (
+  id TEXT PRIMARY KEY,       -- 'video_sessions', 'newsletters'
+  name TEXT,                 -- Display name
+  enabled BOOLEAN,           -- Global on/off
+  allowed_roles TEXT[],      -- ['student', 'creator'] or ['*']
+  requires TEXT[]            -- Dependencies on other features
+)
+```
+
+**Client-Side Pattern:**
+```typescript
+// On app load: fetch features + user roles
+// On page render: check canAccess('feature_id')
+function canAccess(featureId: string): boolean {
+  const feature = features[featureId];
+  if (!feature?.enabled) return false;
+  if (feature.allowed_roles.includes('*')) return true;
+  return feature.allowed_roles.some(role => user.roles.includes(role));
+}
+```
+
+**Key Documents:**
+- `runs/run-001/FEATURE-FLAGS.md` - All 20 feature flags with dependencies
+- `DB-SCHEMA.md` - Features table and related tables
+
+**Technology Decisions:**
+- Video Sessions: PlugNmeet
+- Community Feed: Stream.io
+- Course Chat: Custom WebSocket (Cloudflare Durable Objects)
+- Payments: Stripe Connect
+- Email: Resend
 
 ### Baseline/Overlay Model for Pages
 
@@ -361,7 +404,7 @@ This first run became the template for how runs work and what they produce.
 
 - **Client docs are read-only** - Reference them but don't modify originals
 - **SPECS.md is the handoff document** - Update it as decisions are made
-- **Architecture docs accumulate** - DB-SCHEMA, PAGES, COMPONENTS, API grow during GATHER, finalize during RUN
+- **Architecture docs accumulate** - DB-SCHEMA, PAGES, COMPONENTS, DB-API, REMOTE-API grow during GATHER, finalize during RUN
 - **Trace decisions to sources** - Link back to research, client docs, or learnings
 - **file_holding/ is temporary** - Files staged here get processed and moved
 - **Scenarios for comparison** - `/scenarios/` holds SPECS.md variants for client review

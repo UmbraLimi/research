@@ -4,7 +4,7 @@
 **Type:** Video Conferencing / Virtual Classroom
 **Website:** https://www.plugnmeet.org/
 **Source:** CD-028 (Brian LeBlanc Slack message, Dec 24, 2025)
-**Status:** 🔄 EVALUATING (Potential BBB Replacement)
+**Status:** ✅ SELECTED (2025-12-26)
 
 ---
 
@@ -129,33 +129,300 @@ PlugNmeet positions itself as a **"modern BigBlueButton replacement"** - open-so
 
 ---
 
-## Recommendation
+## Decision Summary (2025-12-26)
 
-**PlugNmeet appears to be a strong candidate to replace BBB for PeerLoop.**
+**PlugNmeet selected as video platform for PeerLoop.**
 
-### Advantages over BBB:
-1. Modern interface (better UX for students)
-2. Better scalability architecture
-3. Potentially lower cost (flat VPS vs per-session)
-4. AI accessibility features built-in
-5. Same classroom features
-
-### Next Steps:
-1. **Brian to "look deeper"** - awaiting his final assessment
-2. Research PlugNmeet documentation and API
-3. Evaluate self-hosted vs Cloud pricing for expected scale
-4. Check production stability/references
-5. Update DIR-001 (MUST-USE BBB) if decision changes
+### Why PlugNmeet over BBB:
+1. Modern Zoom-like interface (better UX for students)
+2. Better scalability architecture (microservices vs monolithic)
+3. Lower cost (~$10/mo VPS vs $80-150/mo for BBB)
+4. AI accessibility features built-in (transcription, translation)
+5. Same classroom features (whiteboard, breakout rooms, polls)
+6. Full API coverage for our VideoProvider interface
 
 ---
 
-## Questions to Resolve
+## Questions Resolved ✅
 
-1. **Stability:** Is PlugNmeet production-ready? Any case studies/references?
-2. **API:** Does it have the APIs we need for custom integration?
-3. **Recording storage:** Where are recordings stored? Can we use our own storage?
-4. **Hosted option:** Is the Cloud Flex Plan viable, or should we self-host?
-5. **Migration:** If we start with BBB, how hard to switch to PlugNmeet later?
+| Question | Resolution |
+|----------|------------|
+| Stability | Brian approved after evaluation (2025-12-26) |
+| API | Full API documented below - covers all our needs |
+| Recording storage | PlugNmeet server + replicate to R2 |
+| Hosted option | Self-hosted for cost efficiency |
+| Migration | N/A - starting with PlugNmeet |
+
+---
+
+## API Reference
+
+**Base URL:** `https://{your-server}/auth`
+**Method:** All endpoints use POST with JSON body
+**Auth Headers Required:**
+- `API-KEY`: Your server API key
+- `HASH-SIGNATURE`: HMAC-SHA256 of request body (hex format) using API Secret
+- `Content-Type`: application/json
+
+### Room Management
+
+#### Create Room
+**Endpoint:** `POST /room/create`
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `room_id` | string | Yes | Unique room identifier (reusable after session ends) |
+| `max_participants` | number | No | Maximum allowed participants |
+| `empty_timeout` | number | No | Seconds room stays active if no one joins |
+| `metadata` | object | Yes | Room configuration (see below) |
+
+**Metadata Object:**
+| Field | Type | Required |
+|-------|------|----------|
+| `room_title` | string | Yes |
+| `welcome_message` | string | No |
+| `webhook_url` | string | No |
+| `logout_url` | string | No |
+| `room_features` | object | Yes |
+| `default_lock_settings` | object | No |
+
+**Room Features (key fields for PeerLoop):**
+| Field | Type | Purpose |
+|-------|------|---------|
+| `allow_webcams` | boolean | Enable video |
+| `mute_on_start` | boolean | Mute participants on join |
+| `allow_screen_share` | boolean | Screen sharing |
+| `room_duration` | number | Max duration (0 = unlimited) |
+| `recording_features.is_allow` | boolean | Enable recording |
+| `recording_features.enable_auto_cloud_recording` | boolean | Auto-start recording |
+| `chat_features.is_allow` | boolean | Enable chat |
+| `whiteboard_features.is_allow` | boolean | Enable whiteboard |
+| `waiting_room_features.is_active` | boolean | Waiting room |
+| `breakout_room_features.is_allow` | boolean | Breakout rooms |
+
+**Response:**
+```json
+{
+  "status": true,
+  "msg": "success",
+  "room_info": { ... }
+}
+```
+
+#### Join Room (Get Token)
+**Endpoint:** `POST /room/getJoinToken`
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `room_id` | string | Yes | Room to join |
+| `user_info.name` | string | Yes | Display name |
+| `user_info.user_id` | string | Yes | Unique user ID |
+| `user_info.is_admin` | boolean | Yes | Moderator access |
+| `user_info.is_hidden` | boolean | No | Join as spectator |
+| `user_info.user_metadata.profile_pic` | string | No | Avatar URL |
+| `user_info.user_metadata.record_webcam` | boolean | No | Include in recording |
+
+**Response:**
+```json
+{
+  "status": true,
+  "msg": "success",
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+**Usage:** Redirect user to `https://{server}/?access_token={token}`
+
+#### Check Room Status
+**Endpoint:** `POST /room/isRoomActive`
+
+| Parameter | Type | Required |
+|-----------|------|----------|
+| `room_id` | string | Yes |
+
+**Response:**
+```json
+{
+  "status": true,
+  "is_active": true,
+  "msg": "success"
+}
+```
+
+#### End Room
+**Endpoint:** `POST /room/endRoom`
+
+| Parameter | Type | Required |
+|-----------|------|----------|
+| `room_id` | string | Yes |
+
+**Response:**
+```json
+{
+  "status": true,
+  "msg": "room ended"
+}
+```
+
+### Recording Management
+
+#### Fetch Recordings
+**Endpoint:** `POST /recording/fetch`
+
+| Parameter | Type | Required | Default |
+|-----------|------|----------|---------|
+| `room_ids` | array | Yes | - |
+| `from` | number | No | 0 |
+| `limit` | number | No | 20 |
+| `order_by` | string | No | DESC |
+
+**Response includes:** `record_id`, `room_id`, `file_path`, `file_size`, `creation_time`
+
+#### Get Recording Info
+**Endpoint:** `POST /recording/recording-info`
+
+#### Download Recording
+**Endpoint:** `POST /recording/download`
+
+Returns download token for secure file access.
+
+#### Delete Recording
+**Endpoint:** `POST /recording/delete`
+
+#### Update Recording Metadata
+**Endpoint:** `POST /recording/update-metadata`
+
+### Webhooks
+
+Configure `webhook_url` in room creation to receive events.
+
+| Event | Trigger |
+|-------|---------|
+| `room_created` | Room initialized |
+| `room_started` | First participant joins |
+| `room_finished` | Room ends |
+| `participant_joined` | User enters room |
+| `participant_left` | User leaves room |
+| `track_published` | Audio/video stream starts |
+| `track_unpublished` | Audio/video stream stops |
+| `start_recording` | Recording begins |
+| `end_recording` | Recording stops |
+| `recording_proceeded` | Recording file ready |
+| `rtmp_started` | RTMP broadcast begins |
+| `rtmp_ended` | RTMP broadcast ends |
+| `speech_to_text_session_started` | Transcription begins |
+| `speech_to_text_session_ended` | Transcription ends |
+
+**Webhook Payload Structure:**
+```typescript
+interface WebhookEvent {
+  event: string;
+  room: { sid: string; identity: string; name: string };
+  participant?: { sid: string; identity: string; name: string };
+  recording_info?: { ... };
+}
+```
+
+### SDKs Available
+
+| Language | Package |
+|----------|---------|
+| PHP | `composer require mynaparrot/plugnmeet-sdk` |
+| JavaScript | `npm install @anthropic-ai/plugnmeet-sdk-js` |
+
+---
+
+## Mapping to PeerLoop VideoProvider Interface
+
+| VideoProvider Method | PlugNmeet Endpoint | Notes |
+|---------------------|-------------------|-------|
+| `createRoom()` | `POST /room/create` | ✅ Full support |
+| `deleteRoom()` | `POST /room/endRoom` | ✅ Ends active session |
+| `getJoinUrl()` | `POST /room/getJoinToken` | ✅ Returns token for URL |
+| `startRecording()` | Room feature or webhook | Use `enable_auto_cloud_recording` |
+| `stopRecording()` | Via room end or API | Recording stops with room |
+| `getRecording()` | `POST /recording/fetch` | ✅ Full support |
+| `getRoomStatus()` | `POST /room/isRoomActive` | ✅ Full support |
+
+**Webhook Integration:**
+- `room_finished` → Update session status in DB
+- `recording_proceeded` → Trigger R2 replication
+- `participant_joined/left` → Track attendance
+
+---
+
+## Data Persistence & Session History
+
+### What PlugNmeet Stores (Queryable via API)
+
+| API | Data Available | Limitation |
+|-----|----------------|------------|
+| `/room/fetchPastRooms` | Room title, room_id, room_sid, participant count, created/ended timestamps | Aggregated - no individual user data |
+| `/analytics/fetch` | File metadata, room-level stats | Deprecated; no per-user breakdown |
+| `/recording/fetch` | Recording files by room_id | Files only, not user data |
+
+**Key limitation:** PlugNmeet uses its own `user_id` namespace. When you call `getJoinToken`, you pass your user ID, but PlugNmeet doesn't maintain a queryable database linking "PeerLoop user X attended sessions Y and Z."
+
+### What Must Be Captured via Webhooks
+
+| Webhook Event | Data to Store in PeerLoop DB |
+|---------------|------------------------------|
+| `participant_joined` | user_id, room_id, timestamp → attendance start |
+| `participant_left` | user_id, room_id, timestamp → attendance end |
+| `room_finished` | room_id, timestamp → session completion |
+| `recording_proceeded` | room_id, file info → link recording to session |
+
+### PeerLoop Database Design for Session Tracking
+
+```
+sessions table
+├── session_id (PeerLoop ID)
+├── plugnmeet_room_id
+├── plugnmeet_room_sid
+├── status, started_at, ended_at
+└── recording_url
+
+session_attendance table
+├── session_id
+├── user_id (PeerLoop user)
+├── joined_at, left_at
+└── duration_seconds
+```
+
+### Webhook Handler Pattern
+
+```typescript
+// POST /api/webhooks/plugnmeet
+switch (event.event) {
+  case 'participant_joined':
+    await db.sessionAttendance.create({
+      sessionId: lookupByRoomId(event.room.identity),
+      userId: event.participant.identity, // PeerLoop user_id passed at join
+      joinedAt: new Date()
+    });
+    break;
+  case 'participant_left':
+    await db.sessionAttendance.update({
+      leftAt: new Date(),
+      durationSeconds: calculateDuration()
+    });
+    break;
+  case 'room_finished':
+    await db.sessions.update({
+      status: 'completed',
+      endedAt: new Date()
+    });
+    break;
+  case 'recording_proceeded':
+    await replicateToR2(event.recording_info);
+    await db.sessions.update({
+      recordingUrl: r2Url
+    });
+    break;
+}
+```
+
+**Bottom line:** Webhooks are required for user-level session data. PlugNmeet's API provides room-level history, but attendance tracking per user must be built by listening to `participant_joined/left` events.
 
 ---
 
@@ -175,3 +442,27 @@ Same as BBB (tech-001):
 - Brian researched modern alternatives
 - Found PlugNmeet as "Best Modern BBB Replacement"
 - Still needs deeper investigation before final decision
+
+---
+
+## References
+
+### Official Documentation
+- [PlugNmeet Website](https://www.plugnmeet.org/)
+- [API Reference Introduction](https://www.plugnmeet.org/docs/api/intro)
+- [Create Room API](https://www.plugnmeet.org/docs/api/room/create)
+- [Join Room API](https://www.plugnmeet.org/docs/api/room/join)
+- [Room Is Active API](https://www.plugnmeet.org/docs/api/room/is-active)
+- [End Room API](https://www.plugnmeet.org/docs/api/room/end)
+- [Fetch Past Rooms API](https://www.plugnmeet.org/docs/api/room/fetch-past)
+- [Recording Fetch API](https://www.plugnmeet.org/docs/api/recording/fetch)
+- [Webhooks Documentation](https://www.plugnmeet.org/docs/others/webhooks/)
+- [Scalable Setup Guide](https://www.plugnmeet.org/docs/developer-guide/scalable-setup)
+
+### SDKs
+- [JavaScript/Node.js SDK](https://github.com/mynaparrot/plugNmeet-sdk-js)
+- [PHP SDK](https://github.com/mynaparrot/plugNmeet-sdk-php)
+- [Server Source Code](https://github.com/mynaparrot/plugNmeet-server)
+
+### npm
+- [plugnmeet-sdk-js on npm](https://www.npmjs.com/package/plugnmeet-sdk-js)

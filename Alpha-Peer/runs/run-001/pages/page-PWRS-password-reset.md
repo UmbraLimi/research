@@ -153,11 +153,152 @@ Accessed via `/reset-password/:token`
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `POST /api/auth/forgot-password` | Email submitted | Send reset email |
+| `GET /api/auth/reset-token/:token` | Token page load | Validate token |
+| `POST /api/auth/reset-password` | New password submitted | Update password |
+
+### Request Reset Flow (Resend)
+
+```
+Email Submitted:
+  1. POST /api/auth/forgot-password { email }
+  2. Backend:
+     - Look up user by email (don't reveal if exists)
+     - If exists: generate reset token, store with expiry
+     - Send reset email via Resend
+     - Always return success (security)
+  3. Response: { success: true }
+  4. Client shows "Check your email" regardless
+```
+
+### Resend Password Reset Email
+
+```typescript
+// Backend sends reset email:
+import { Resend } from 'resend';
+import { PasswordResetEmail } from '@/emails/password-reset';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+await resend.emails.send({
+  from: 'PeerLoop <noreply@peerloop.com>',
+  to: user.email,
+  subject: 'Reset your PeerLoop password',
+  react: PasswordResetEmail({
+    name: user.name,
+    resetUrl: `${origin}/reset-password/${token}`
+  })
+});
+```
+
+### Token Validation
+
+```typescript
+// GET /api/auth/reset-token/:token
+1. Look up token in password_reset_tokens
+2. Check: not expired (< 1 hour old)
+3. Check: not used (used_at is null)
+4. Return: { valid: true } or { valid: false, reason: 'expired'|'invalid' }
+```
+
+### Password Reset Flow
+
+```
+New Password Submitted:
+  1. POST /api/auth/reset-password {
+       token: string,
+       password: string
+     }
+  2. Backend:
+     - Validate token again
+     - Hash new password
+     - UPDATE users SET password_hash = new_hash
+     - Mark token as used
+     - Invalidate all existing sessions
+     - Send confirmation email (optional)
+  3. Response: { success: true }
+  4. Client redirects to LGIN
+```
+
+### React Email Template
+
+```typescript
+// emails/password-reset.tsx
+export function PasswordResetEmail({ name, resetUrl }) {
+  return (
+    <Html>
+      <Body>
+        <Text>Hi {name},</Text>
+        <Text>Click the button below to reset your password:</Text>
+        <Button href={resetUrl}>
+          Reset Password
+        </Button>
+        <Text>This link expires in 1 hour.</Text>
+        <Text>If you didn't request this, ignore this email.</Text>
+      </Body>
+    </Html>
+  );
+}
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   PWRS      │      │  PeerLoop   │      │   Resend    │
+│   (Client)  │      │  (Server)   │      │   (Email)   │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ POST /auth/        │                    │
+       │   forgot-password  │                    │
+       │───────────────────>│                    │
+       │                    │ Generate token     │
+       │                    │ Store in DB        │
+       │                    │                    │
+       │                    │ Send reset email   │
+       │                    │───────────────────>│
+       │ { success }        │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ Show confirmation  │                    │
+       │                    │                    │
+       │                    │                    │ Email delivered
+       │                    │                    │
+       │ (user clicks link: /reset-password/:token)
+       │                    │                    │
+       │ GET /auth/reset-   │                    │
+       │   token/:token     │                    │
+       │───────────────────>│                    │
+       │ { valid: true }    │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ Show reset form    │                    │
+       │                    │                    │
+       │ POST /auth/        │                    │
+       │   reset-password   │                    │
+       │───────────────────>│                    │
+       │                    │ Update password    │
+       │                    │ Invalidate sessions│
+       │ { success }        │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ Redirect to LGIN   │                    │
+```
+
+---
+
 ## Notes
 
-- **Security:** Token should expire in 1 hour
-- **Security:** Token should be single-use
-- **Security:** Don't reveal if email exists (use generic message)
+- **Security:** Token expires in 1 hour
+- **Security:** Token is single-use (marked used after reset)
+- **Security:** Generic response (don't reveal if email exists)
 - **Security:** Invalidate all sessions after password reset
-- Rate limit reset requests to prevent abuse
-- Consider adding CAPTCHA for request form
+- Rate limit reset requests (3 per hour per IP)
+- Resend handles email delivery
+- Consider CAPTCHA for request form (anti-abuse)

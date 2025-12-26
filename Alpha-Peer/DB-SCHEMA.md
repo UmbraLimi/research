@@ -1,11 +1,11 @@
 # PeerLoop - Database Schema
 
-**Version:** v1
-**Last Updated:** 2025-12-23
-**Status:** GATHER Phase - Accumulating from source documents
-**Primary Source:** CD-021 (Database Schema Sample)
+**Version:** v2
+**Last Updated:** 2025-12-26
+**Status:** RUN-001 Amendment - Service Integration Fields Added
+**Primary Source:** CD-021 (Database Schema Sample), Service Research Docs
 
-> This document accumulates database schema requirements during GATHER phase. During RUN phase, scenarios may have variations based on technology choices.
+> This document defines database schema requirements. Updated during RUN-001 Amendment to include fields for external service integrations (PlugNmeet, Stripe Connect, Resend).
 
 ---
 
@@ -62,12 +62,17 @@ Primary user table supporting multiple roles (Student, Student-Teacher, Creator,
 | is_moderator | boolean | Yes | CD-010 | Community moderator |
 | privacy_public | boolean | Yes | CD-018 | Profile visibility toggle |
 | email_verified | boolean | Yes | US-P013 | Email verification status |
+| email_status | enum | No | tech-004 | valid, bounced (from Resend webhooks) |
+| marketing_opt_out | boolean | No | tech-004 | Opted out via spam complaint |
+| stripe_account_id | string | No | tech-003 | Stripe Connect account ID |
+| stripe_account_status | enum | No | tech-003 | pending, active, restricted |
+| stripe_payouts_enabled | boolean | No | tech-003 | Can receive payouts |
 | created_at | timestamp | Yes | - | Record creation |
 | updated_at | timestamp | Yes | - | Last update |
 
-**Indexes:** email (unique), handle (unique)
+**Indexes:** email (unique), handle (unique), stripe_account_id (unique)
 
-**Source:** CD-021 (instructorsDatabase), CD-018 (Student Profile System)
+**Source:** CD-021 (instructorsDatabase), CD-018 (Student Profile System), tech-003 (Stripe Connect), tech-004 (Resend)
 
 ---
 
@@ -470,16 +475,21 @@ Booked tutoring sessions.
 | enrollment_id | uuid | Yes | - | FK to enrollments |
 | teacher_id | uuid | Yes | - | FK to users (ST or Creator) |
 | student_id | uuid | Yes | - | FK to users |
-| scheduled_start | timestamp | Yes | CD-015 | Session start time |
-| scheduled_end | timestamp | Yes | - | Session end time |
+| scheduled_start | timestamp | Yes | CD-015 | Scheduled start time |
+| scheduled_end | timestamp | Yes | - | Scheduled end time |
+| started_at | timestamp | No | tech-006 | Actual start (from webhook) |
+| ended_at | timestamp | No | tech-006 | Actual end (from webhook) |
 | status | enum | Yes | - | scheduled, in_progress, completed, cancelled |
-| bbb_meeting_url | string | No | CD-014 | BBB/video meeting link |
-| recording_url | string | No | US-V005 | Session recording URL |
+| plugnmeet_room_id | string | No | tech-006 | PlugNmeet room identifier |
+| plugnmeet_room_sid | string | No | tech-006 | PlugNmeet room session ID |
+| recording_url | string | No | US-V005 | Session recording URL (R2) |
 | cancelled_by | uuid | No | - | FK to users (who cancelled) |
 | cancel_reason | text | No | - | Cancellation reason |
 | created_at | timestamp | Yes | - | Booking time |
 
-**Source:** CD-014 (Video Conferencing), CD-015 (Calendar/Scheduling)
+**Indexes:** enrollment_id, teacher_id, student_id, plugnmeet_room_id
+
+**Source:** CD-015 (Calendar/Scheduling), tech-006 (PlugNmeet)
 
 ---
 
@@ -501,6 +511,27 @@ Post-session mutual assessments.
 
 ---
 
+### session_attendance
+
+Participant attendance tracking from PlugNmeet webhooks.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| session_id | uuid | Yes | tech-006 | FK to sessions |
+| user_id | uuid | Yes | tech-006 | FK to users (participant) |
+| joined_at | timestamp | Yes | tech-006 | When participant joined (webhook) |
+| left_at | timestamp | No | tech-006 | When participant left (webhook) |
+| duration_seconds | int | No | tech-006 | Computed from join/leave times |
+
+**Indexes:** session_id, user_id (unique together for active attendance)
+
+**Note:** Created via `participant_joined` webhook, updated via `participant_left` webhook. A user may have multiple attendance records if they leave and rejoin.
+
+**Source:** tech-006 (PlugNmeet webhooks)
+
+---
+
 ## Payments & Transactions
 
 ### transactions
@@ -512,32 +543,44 @@ Payment records.
 | id | uuid | Yes | - | Primary key |
 | enrollment_id | uuid | Yes | - | FK to enrollments |
 | amount_cents | int | Yes | CD-020 | Total payment amount |
-| stripe_payment_id | string | Yes | CD-020 | Stripe transaction ID |
+| stripe_payment_id | string | Yes | CD-020 | Stripe payment intent ID |
+| stripe_charge_id | string | No | tech-003 | Stripe charge ID (for transfers) |
+| transfer_group | string | No | tech-003 | Links charge to transfers |
 | status | enum | Yes | - | pending, completed, refunded, failed |
 | paid_at | timestamp | No | - | Payment confirmation time |
 | created_at | timestamp | Yes | - | Record creation |
 
-**Source:** CD-020 (Payment & Escrow)
+**Indexes:** enrollment_id, stripe_payment_id, transfer_group
+
+**Source:** CD-020 (Payment & Escrow), tech-003 (Stripe Connect)
 
 ---
 
 ### payment_splits
 
-Revenue split tracking (70/15/15).
+Revenue split tracking. Split varies by instructor type:
+- **Creator teaches:** 15% Platform, 85% Creator
+- **S-T teaches:** 15% Platform, 15% Creator, 70% S-T
 
 | Field | Type | Required | Source | Notes |
 |-------|------|----------|--------|-------|
 | id | uuid | Yes | - | Primary key |
+| enrollment_id | uuid | Yes | tech-003 | FK to enrollments |
 | transaction_id | uuid | Yes | - | FK to transactions |
-| recipient_id | uuid | Yes | CD-020 | FK to users |
-| recipient_type | enum | Yes | - | platform, creator, student_teacher |
+| recipient_id | uuid | No | CD-020 | FK to users (null for platform) |
+| recipient_type | enum | Yes | tech-003 | platform, creator, creator_royalty, student_teacher |
 | amount_cents | int | Yes | CD-020 | Split amount |
-| percentage | int | Yes | CD-020 | Split % (15, 15, or 70) |
-| status | enum | Yes | - | pending, released, paid |
-| released_at | timestamp | No | - | When released from escrow |
-| paid_at | timestamp | No | - | When paid out |
+| percentage | int | Yes | CD-020 | Split % (15, 15, 70, or 85) |
+| stripe_transfer_id | string | No | tech-003 | Stripe transfer ID (null for platform) |
+| status | enum | Yes | - | pending, paid, reversed |
+| created_at | timestamp | Yes | - | When split was created |
+| paid_at | timestamp | No | tech-003 | When transfer completed (from webhook) |
 
-**Source:** CD-020 (70/15/15 split), CD-001
+**Indexes:** enrollment_id, transaction_id, stripe_transfer_id
+
+**Note:** `creator_royalty` is used when an S-T teaches - the creator receives 15% as a royalty.
+
+**Source:** CD-020, tech-003 (Stripe Connect)
 
 ---
 
@@ -940,6 +983,204 @@ Track free 15-minute intro sessions between visitors and Student-Teachers.
 
 ---
 
+## System Configuration Tables
+
+### features
+
+Feature flags for controlling feature visibility and rollout.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | string | Yes | - | Primary key ('video_sessions', 'newsletters') |
+| name | string | Yes | - | Display name |
+| description | text | No | - | What the feature does |
+| enabled | boolean | Yes | - | Global on/off switch |
+| allowed_roles | string[] | Yes | - | ['student', 'creator'] or ['*'] for all |
+| block | integer | No | - | Implementation block (0-9) |
+| requires | string[] | No | - | Other feature IDs this depends on |
+| created_at | timestamp | Yes | - | Record creation |
+| updated_at | timestamp | Yes | - | Last update |
+
+**Source:** FEATURE-FLAGS.md
+
+---
+
+### chat_rooms
+
+Course-specific chat rooms (for COURSE_CHAT feature).
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| course_id | uuid | Yes | - | FK to courses |
+| name | string | Yes | - | Room name (usually course title) |
+| is_active | boolean | Yes | - | Whether chat is enabled |
+| created_at | timestamp | Yes | - | Record creation |
+
+**Source:** FEATURE-FLAGS.md (course_chat feature)
+
+---
+
+### chat_messages
+
+Messages in course chat rooms.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| room_id | uuid | Yes | - | FK to chat_rooms |
+| user_id | uuid | Yes | - | FK to users |
+| content | text | Yes | - | Message content |
+| reply_to_id | uuid | No | - | FK to chat_messages (for threads) |
+| is_deleted | boolean | Yes | - | Soft delete flag |
+| created_at | timestamp | Yes | - | Message timestamp |
+
+**Indexes:** room_id + created_at (for fetching history)
+
+**Source:** FEATURE-FLAGS.md (course_chat feature)
+
+---
+
+### help_requests
+
+Summon help requests from students.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| student_id | uuid | Yes | - | FK to users |
+| course_id | uuid | Yes | - | FK to courses |
+| module_id | uuid | No | - | FK to course_curriculum |
+| message | text | No | - | What they need help with |
+| status | enum | Yes | - | pending, accepted, completed, expired |
+| helper_id | uuid | No | - | FK to users (ST who accepted) |
+| points_spent | integer | No | - | Goodwill points used |
+| created_at | timestamp | Yes | - | Request time |
+| accepted_at | timestamp | No | - | When helper accepted |
+| completed_at | timestamp | No | - | When help session ended |
+
+**Source:** FEATURE-FLAGS.md (summon_help feature), CD-023
+
+---
+
+### newsletters
+
+Creator newsletter posts.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| creator_id | uuid | Yes | - | FK to users |
+| title | string | Yes | - | Newsletter title |
+| content | text | Yes | - | Newsletter body (HTML/markdown) |
+| status | enum | Yes | - | draft, scheduled, sent |
+| tier_id | uuid | No | - | FK to newsletter_tiers (null = all) |
+| scheduled_for | timestamp | No | - | Send time (if scheduled) |
+| sent_at | timestamp | No | - | Actual send time |
+| opens_count | integer | No | - | Tracking metric |
+| clicks_count | integer | No | - | Tracking metric |
+| created_at | timestamp | Yes | - | Record creation |
+| updated_at | timestamp | Yes | - | Last update |
+
+**Source:** FEATURE-FLAGS.md (newsletters feature)
+
+---
+
+### newsletter_subscribers
+
+Newsletter subscription records.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| creator_id | uuid | Yes | - | FK to users (creator) |
+| user_id | uuid | Yes | - | FK to users (subscriber) |
+| tier_id | uuid | No | - | FK to newsletter_tiers |
+| subscribed_at | timestamp | Yes | - | When subscribed |
+| unsubscribed_at | timestamp | No | - | When unsubscribed |
+
+**Unique:** creator_id + user_id
+
+**Source:** FEATURE-FLAGS.md (newsletters feature)
+
+---
+
+### newsletter_tiers
+
+Paid subscription tiers for newsletters (future).
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| creator_id | uuid | Yes | - | FK to users |
+| name | string | Yes | - | Tier name |
+| price_cents | integer | Yes | - | Monthly price in cents |
+| description | text | No | - | What's included |
+| is_active | boolean | Yes | - | Available for subscription |
+| created_at | timestamp | Yes | - | Record creation |
+
+**Source:** FEATURE-FLAGS.md (newsletters feature)
+
+---
+
+### leaderboard_entries
+
+Gamification leaderboard data.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| user_id | uuid | Yes | - | FK to users |
+| leaderboard_type | enum | Yes | - | weekly_points, monthly_helper, etc. |
+| period | string | Yes | - | '2025-W01', '2025-01' |
+| score | integer | Yes | - | Points/count for ranking |
+| rank | integer | No | - | Calculated rank |
+| created_at | timestamp | Yes | - | Record creation |
+| updated_at | timestamp | Yes | - | Last update |
+
+**Unique:** user_id + leaderboard_type + period
+
+**Source:** FEATURE-FLAGS.md (leaderboard feature)
+
+---
+
+### sub_communities
+
+Topic-based community spaces.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| name | string | Yes | - | Community name |
+| slug | string | Yes | - | URL slug |
+| description | text | No | - | What it's about |
+| cover_image_url | string | No | - | Banner image |
+| is_public | boolean | Yes | - | Anyone can join vs invite-only |
+| creator_id | uuid | Yes | - | FK to users |
+| created_at | timestamp | Yes | - | Record creation |
+
+**Source:** FEATURE-FLAGS.md (sub_communities feature)
+
+---
+
+### sub_community_members
+
+Membership in sub-communities.
+
+| Field | Type | Required | Source | Notes |
+|-------|------|----------|--------|-------|
+| id | uuid | Yes | - | Primary key |
+| community_id | uuid | Yes | - | FK to sub_communities |
+| user_id | uuid | Yes | - | FK to users |
+| role | enum | Yes | - | member, moderator, admin |
+| joined_at | timestamp | Yes | - | When joined |
+
+**Unique:** community_id + user_id
+
+**Source:** FEATURE-FLAGS.md (sub_communities feature)
+
+---
+
 ## Document Lineage
 
 | Source Document | Entities Derived |
@@ -953,11 +1194,13 @@ Track free 15-minute intro sessions between visitors and Student-Teachers.
 | CD-019 | module_progress, external video/doc URLs |
 | CD-020 | transactions, payment_splits, payouts |
 | CD-015 | availability, sessions |
-| CD-014 | sessions (BBB fields), session recordings |
 | CD-013 | posts, post_interactions, content_flags |
 | CD-003 | enrollments, certificates, messages, employer_sponsorships |
 | CD-011 | certificate types (mastery vs completion) |
 | CD-029 | visitor_inquiries, intro_sessions |
+| tech-003 | users.stripe_*, transactions.transfer_group, payment_splits.stripe_transfer_id |
+| tech-004 | users.email_status, users.marketing_opt_out |
+| tech-006 | sessions.plugnmeet_*, session_attendance (new table) |
 
 ---
 
@@ -977,3 +1220,4 @@ Track free 15-minute intro sessions between visitors and Student-Teachers.
 | Version | Date | Changes |
 |---------|------|---------|
 | v1 | 2025-12-23 | Initial schema from CD-021 analysis |
+| v2 | 2025-12-26 | Added service integration fields (RUN-001 Amendment Step 4): users (Stripe + email fields), sessions (PlugNmeet fields), session_attendance (new), transactions (transfer_group), payment_splits (stripe_transfer_id) |

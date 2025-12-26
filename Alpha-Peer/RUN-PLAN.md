@@ -54,19 +54,21 @@ For each page in `runs/run-001/pages/`:
 
 ## Phase 4: Scenario Creation 🔥 IN PROGRESS
 
-### 4.1 - RUN-001: Stream + VideoProvider (sc-002) 🔥 UNDER REVIEW
+### 4.1 - RUN-001: Stream + VideoProvider (sc-002) ✅ APPROVED
+
+**Status:** Approved 2025-12-26 - Pending Amendment
 
 **Created:**
 - [x] Run folder structure (`runs/run-001/`)
 - [x] Inputs and parameters (`run-001.md`)
-- [x] Questions state snapshot (21 open, 3 deferred, 2 resolved)
+- [x] Questions state snapshot (17 open, 0 deferred, 13 resolved)
 - [x] `scenario.md` - 14-section technical specification
 
 **Run-specific assets:**
-- `assets/video-platform-decisions.md` - VideoProvider interface
+- `assets/video-platform-decisions.md` - PlugNmeet selected
 - `assets/stream-usage.md` - Stream.io feeds-only, 5 feed types
-- `assets/hosting-decisions.md` - Cloudflare stack
-- `assets/payment-decisions.md` - Stripe Connect, 85/15 split
+- `assets/hosting-decisions.md` - Cloudflare stack, Resend, custom calendar
+- `assets/payment-decisions.md` - Stripe Connect, 15/85 or 15/15/70 split
 
 **Page flow documentation:**
 - `pages/PAGES-INDEX.md` - Schema definition + registry
@@ -79,10 +81,33 @@ For each page in `runs/run-001/pages/`:
 - `STORY-DEPENDENCIES.md` - Dependency chains + 10-block order
 - `FEATURES.md` - ~286 features with hours estimates
 
-**Pending:**
-- [ ] Client review of scenario.md + page flows
-- [ ] Document feedback in `review-notes.md`
-- [ ] Decide: Approve, revise, or create RUN-002
+**Decisions Resolved 2025-12-26:**
+- [x] Video Platform → PlugNmeet
+- [x] Payment Split (S-T teaches) → 15% platform, 15% Creator, 70% S-T
+- [x] Calendar → Custom built with Google/Apple export
+- [x] Email → Resend
+- [x] Recording Storage → PlugNmeet + R2 replication
+- [x] Stream.io Auth → Token provider pattern
+
+### 4.1.1 - RUN-001 Amendment ✅ COMPLETE
+
+**Purpose:** Incorporate service API research into architecture documents.
+
+**Plan:** See `runs/run-001/AMENDMENT-PLAN.md`
+
+**Sequence:**
+| Step | Output | Status |
+|------|--------|--------|
+| 1. Server Architecture | `SERVER.md` | ✅ Complete |
+| 2. Service Adapters | `API.md` (v2) | ✅ Complete |
+| 3. Webhook Architecture | `SERVER.md` + `API.md` | ✅ Complete |
+| 4. DB-SCHEMA Update | `DB-SCHEMA.md` (v2) | ✅ Complete |
+| 5. API.md Update | (Merged into Step 2) | ✅ Complete |
+| 6. Page Review | 7 priority pages updated | ✅ Complete |
+| 7. Flow Review | `FLOWS.md` (5 journeys) | ✅ Complete |
+
+**Key insight:** This is HOW we implement, not changing WHAT we build.
+The VideoProvider abstraction remains - PlugNmeet implements it.
 
 ### 4.2 - Future Runs (As Needed)
 - [ ] RUN-002: If RUN-001 rejected or needs major changes

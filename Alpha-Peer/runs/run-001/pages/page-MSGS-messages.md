@@ -142,10 +142,66 @@ Private direct messaging between users, enabling student-teacher communication, 
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/conversations` | Page load | List all conversations |
+| `GET /api/conversations/:id` | Thread opened | Conversation with messages |
+| `POST /api/conversations` | New conversation | Start new thread |
+| `POST /api/conversations/:id/messages` | Send message | Post new message |
+| `PUT /api/conversations/:id/read` | Thread opened | Mark as read |
+| `GET /api/users/search?q=...` | New conversation | Find users to message |
+
+**Conversations List Response:**
+```typescript
+GET /api/conversations
+{
+  conversations: [{
+    id, updated_at,
+    participants: [{ id, name, avatar }],
+    last_message: { content, created_at, sender_id },
+    unread_count: number
+  }]
+}
+```
+
+**Single Conversation Response:**
+```typescript
+GET /api/conversations/:id
+{
+  id, created_at,
+  participants: [{ id, name, avatar, handle }],
+  messages: [{
+    id, sender_id, content, created_at
+  }]
+}
+```
+
+**Send Message:**
+```typescript
+POST /api/conversations/:id/messages
+{
+  content: string
+}
+// Returns created message with id, created_at
+```
+
+**Start Conversation:**
+```typescript
+POST /api/conversations
+{
+  participant_ids: string[],
+  initial_message: string
+}
+// Returns new conversation with id
+```
+
+---
+
 ## Notes
 
-- Consider using Stream Chat or similar service
-- Real-time message delivery important
+- Using custom WebSocket for real-time message delivery
 - Push notifications for new messages
 - Message encryption considerations (future)
 - Rate limiting to prevent spam

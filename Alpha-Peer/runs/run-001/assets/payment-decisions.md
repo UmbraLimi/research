@@ -1,6 +1,7 @@
 # Payment & Revenue Decisions - RUN-001
 
 **Created:** 2025-12-24
+**Updated:** 2025-12-26
 **Related Sources:** CD-020 (Payment & Escrow), CD-033 (S-T Pricing Clarification)
 
 ---
@@ -18,14 +19,22 @@ RUN-001 uses **Stripe** for all payment processing with **Connect Express** for 
 - Creator prices course as if they're NOT the primary teacher
 - "Too complicated for the creator to charge premium. Too confusing." - Brian
 
-### Revenue Split: 85/15
+### Revenue Split ✅ RESOLVED (2025-12-26)
+
+**When Creator teaches:**
 | Recipient | Share | Example ($450 course) |
 |-----------|-------|----------------------|
 | Platform (PeerLoop) | 15% | $67.50 |
-| Creator/S-T | 85% | $382.50 |
+| Creator | 85% | $382.50 |
 
-**When Creator teaches:** Creator receives full 85% (they're playing the S-T role)
-**When S-T teaches:** Split TBD between Creator royalty and S-T payment
+**When S-T teaches:**
+| Recipient | Share | Example ($450 course) |
+|-----------|-------|----------------------|
+| Platform (PeerLoop) | 15% | $67.50 |
+| Creator (royalty) | 15% | $67.50 |
+| Student-Teacher | 70% | $315.00 |
+
+**Rationale:** S-T does the teaching work, deserves majority. Creator still earns royalty for course content.
 
 ### Any-Time Refunds
 - Students can request refund at any time
@@ -268,14 +277,14 @@ switch (event.type) {
 
 ---
 
-## Open Questions
+## Questions Status
 
-| Question | Status | Impact |
-|----------|--------|--------|
-| Exact Creator/S-T split when S-T teaches? | Open | Payment logic |
-| Escrow/hold period? | Assumed none | Risk management |
-| PayPal support? | CD-032 mentions "eventually" | Post-MVP |
-| International payments? | Brian wants global | Currency handling |
+| Question | Status | Resolution |
+|----------|--------|------------|
+| Exact Creator/S-T split when S-T teaches? | ✅ Resolved | 15% platform, 15% Creator, 70% S-T |
+| Escrow/hold period? | Assumed none | Pay after session, clawback if refund |
+| PayPal support? | Post-MVP | CD-032 mentions "eventually" |
+| International payments? | Post-MVP | Brian wants global, defer for now |
 
 ---
 

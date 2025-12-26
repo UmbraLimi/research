@@ -146,10 +146,145 @@ Register new users to the platform, collecting essential information and creatin
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `POST /api/auth/signup` | Form submitted | Create account |
+| `POST /api/auth/resend-verification` | "Resend" clicked | Resend verification email |
+| `POST /api/auth/verify-email` | Verification link clicked | Confirm email |
+
+### Signup Flow (Resend Email Verification)
+
+```
+Form Submitted:
+  1. POST /api/auth/signup {
+       name: string,
+       email: string,
+       password: string,
+       role: 'student' | 'creator'
+     }
+  2. Backend:
+     - Validate email not taken
+     - Hash password (bcrypt)
+     - Create user record (email_verified = false)
+     - Generate verification token
+     - Send verification email via Resend
+  3. Response: { success: true, message: "Check your email" }
+  4. Client shows confirmation screen
+```
+
+### Resend Email Integration
+
+```typescript
+// Backend sends verification email:
+import { Resend } from 'resend';
+import { VerificationEmail } from '@/emails/verification';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+await resend.emails.send({
+  from: 'PeerLoop <noreply@peerloop.com>',
+  to: user.email,
+  subject: 'Verify your PeerLoop account',
+  react: VerificationEmail({
+    name: user.name,
+    verificationUrl: `${origin}/verify-email?token=${token}`
+  })
+});
+```
+
+### Email Verification Flow
+
+```
+User Clicks Verification Link:
+  1. GET /verify-email?token=xxx
+  2. POST /api/auth/verify-email { token }
+  3. Backend:
+     - Validate token (not expired, not used)
+     - UPDATE users SET email_verified = true
+     - Mark token as used
+     - Auto-login user (set session)
+  4. Redirect to dashboard (SDSH/CDSH)
+```
+
+### React Email Template
+
+```typescript
+// emails/verification.tsx
+export function VerificationEmail({ name, verificationUrl }) {
+  return (
+    <Html>
+      <Body>
+        <Text>Hi {name},</Text>
+        <Text>Welcome to PeerLoop! Click below to verify your email:</Text>
+        <Button href={verificationUrl}>
+          Verify Email
+        </Button>
+        <Text>This link expires in 24 hours.</Text>
+      </Body>
+    </Html>
+  );
+}
+```
+
+### Resend Webhook (Optional)
+
+```typescript
+// Handle email delivery issues:
+POST /api/webhooks/resend
+
+Events:
+- email.bounced → Mark user.email_status = 'bounced'
+- email.complained → Mark user.email_status = 'complained'
+- email.failed → Log for retry
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   SGUP      │      │  PeerLoop   │      │   Resend    │
+│   (Client)  │      │  (Server)   │      │   (Email)   │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ POST /auth/signup  │                    │
+       │───────────────────>│                    │
+       │                    │ Create user        │
+       │                    │ Generate token     │
+       │                    │                    │
+       │                    │ Send verification  │
+       │                    │───────────────────>│
+       │                    │                    │
+       │ { success }        │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ Show "Check email" │                    │
+       │                    │                    │
+       │                    │                    │ Email delivered
+       │                    │                    │ to user inbox
+       │                    │                    │
+       │ (user clicks link) │                    │
+       │                    │                    │
+       │ POST /auth/        │                    │
+       │   verify-email     │                    │
+       │───────────────────>│                    │
+       │                    │ Verify token       │
+       │                    │ Mark verified      │
+       │ { redirect }       │                    │
+       │<───────────────────│                    │
+```
+
+---
+
 ## Notes
 
 - **Invitation-only launch (GO-025):** May require invite code field for Genesis Cohort
 - Consider progressive profiling: minimal signup, more info later
-- Email verification flow should follow (US-P013)
+- Email verification required before full access (US-P013)
 - Security: Password strength indicator
 - GDPR: Clear consent for terms/privacy
+- Resend handles email delivery, bounces, complaints
+- Verification token expires in 24 hours

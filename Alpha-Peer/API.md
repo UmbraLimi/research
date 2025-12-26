@@ -1,1568 +1,283 @@
-# PeerLoop - API Surface
-
-**Version:** v1
-**Last Updated:** 2025-12-23
-**Status:** GATHER Phase - Accumulating from source documents
-**Primary Source:** CD-021 (Database Schema Sample), User Stories
-
-> This document defines the backend API operations needed to support the application. During RUN phase, scenarios may specify REST vs. GraphQL, specific frameworks, or third-party API integrations.
-
----
-
-## API Overview
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        PeerLoop API                             │
-├─────────────────────────────────────────────────────────────────┤
-│  Auth        Users       Courses      Sessions      Payments    │
-│  ────        ─────       ───────      ────────      ────────    │
-│  login       getUser     getCourses   book          checkout    │
-│  signup      updateUser  getCourse    cancel        split       │
-│  logout      follow      enroll       join          payout      │
-│  refresh     unfollow    progress     record        refund      │
-├─────────────────────────────────────────────────────────────────┤
-│  Feed        Messages    Certs        Admin         Webhooks    │
-│  ────        ────────    ─────        ─────         ────────    │
-│  getPosts    getConvs    issue        users         stripe      │
-│  createPost  sendMsg     verify       payouts       bbb         │
-│  interact    markRead    download     analytics     stream      │
-└─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Authentication
-
-### POST /auth/signup
-Create new user account.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-G011, US-P007 |
-| **Access** | Public |
-| **Rate Limit** | 5/minute |
-
-**Request:**
-```json
-{
-  "name": "string",
-  "email": "string",
-  "password": "string",
-  "role": "student | creator"
-}
-```
-
-**Response:** `201 Created`
-```json
-{
-  "user": { "id": "uuid", "name": "string", "email": "string", "role": "string" },
-  "token": "jwt_token"
-}
-```
-
----
-
-### POST /auth/login
-Authenticate user.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-G012, US-P008 |
-| **Access** | Public |
-| **Rate Limit** | 10/minute |
-
-**Request:**
-```json
-{
-  "email": "string",
-  "password": "string"
-}
-```
-
-**Response:** `200 OK`
-```json
-{
-  "user": { ... },
-  "token": "jwt_token",
-  "refreshToken": "refresh_token"
-}
-```
-
----
-
-### POST /auth/logout
-End user session.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P010 |
-| **Access** | Authenticated |
-
-**Response:** `204 No Content`
-
----
-
-### POST /auth/reset-password
-Request password reset.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-G013, US-P009 |
-| **Access** | Public |
-| **Rate Limit** | 3/hour |
-
-**Request:**
-```json
-{
-  "email": "string"
-}
-```
-
-**Response:** `200 OK` (always, for security)
-
----
-
-### POST /auth/refresh
-Refresh access token.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P012 |
-| **Access** | Public (with refresh token) |
-
----
-
-## Users
-
-### GET /users/:id
-Get user profile.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-G008, US-G009, US-C008, US-T003 |
-| **Access** | Public (respects privacy_public) |
-| **Data Source** | users, user_qualifications, user_expertise, user_stats |
-
-**Response:** `200 OK`
-```json
-{
-  "id": "uuid",
-  "name": "string",
-  "handle": "string",
-  "title": "string",
-  "avatar_url": "string",
-  "bio": "string",
-  "website": "string",
-  "is_creator": "boolean",
-  "is_student_teacher": "boolean",
-  "qualifications": [
-    { "id": "uuid", "sentence": "string" }
-  ],
-  "expertise": ["string"],
-  "stats": {
-    "students_taught": "number",
-    "courses_created": "number",
-    "average_rating": "number",
-    "total_reviews": "number"
-  },
-  "follower_count": "number",
-  "following_count": "number",
-  "is_following": "boolean"
-}
-```
-
----
-
-### PATCH /users/:id
-Update own profile.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S008, US-C008, US-T003 |
-| **Access** | Authenticated (own profile only) |
-
-**Request:**
-```json
-{
-  "name": "string",
-  "title": "string",
-  "bio": "string",
-  "bio_short": "string",
-  "website": "string",
-  "avatar_url": "string",
-  "privacy_public": "boolean",
-  "is_student_teacher": "boolean"
-}
-```
-
----
-
-### POST /users/:id/follow
-Follow a user.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S048, US-S028 |
-| **Access** | Authenticated |
-| **Data Source** | follows |
-
-**Response:** `201 Created`
-
----
-
-### DELETE /users/:id/follow
-Unfollow a user.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S048 |
-| **Access** | Authenticated |
-
-**Response:** `204 No Content`
-
----
-
-### GET /users/:id/followers
-Get user's followers.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S049 |
-| **Access** | Authenticated |
-
-**Response:** `200 OK`
-```json
-{
-  "followers": [{ "id": "uuid", "name": "string", "avatar_url": "string" }],
-  "total": "number",
-  "page": "number"
-}
-```
-
----
-
-### GET /users/:id/following
-Get users this user follows.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S049 |
-| **Access** | Authenticated |
-
----
-
-### GET /student-teachers
-List Student-Teachers.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S050, US-S051, US-P066 |
-| **Access** | Public or Authenticated |
-| **Data Source** | users, student_teachers |
-
-**Query Params:**
-- `course_id` - Filter by course (US-S061)
-- `search` - Name/interest search
-- `page`, `limit` - Pagination
-
-**Response:** `200 OK`
-```json
-{
-  "student_teachers": [
-    {
-      "user": { ... },
-      "courses_certified": [{ "id": "uuid", "title": "string" }],
-      "students_taught": "number",
-      "certified_date": "date"
-    }
-  ],
-  "total": "number"
-}
-```
-
----
-
-### GET /creators
-List creators.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S004 |
-| **Access** | Public |
-| **Data Source** | users (is_creator=true), user_expertise, user_stats |
-
-**Query Params:**
-- `search` - Name/expertise search
-- `expertise` - Filter by expertise tag
-- `page`, `limit`
-
----
-
-## Courses
-
-### GET /courses
-List courses with filtering.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-G005, US-S001, US-S003, US-S057, US-S058 |
-| **Access** | Public |
-| **Data Source** | courses, categories |
-
-**Query Params:**
-- `search` - Title/description search
-- `level` - beginner, intermediate, advanced (US-S057)
-- `category_id` - Category filter (US-S058)
-- `min_price`, `max_price` - Price range
-- `creator_id` - Filter by creator
-- `sort` - rating, students, price, newest
-- `page`, `limit`
-
-**Response:** `200 OK`
-```json
-{
-  "courses": [
-    {
-      "id": "uuid",
-      "title": "string",
-      "description": "string",
-      "thumbnail_url": "string",
-      "level": "string",
-      "price_cents": "number",
-      "duration": "string",
-      "rating": "number",
-      "student_count": "number",
-      "category": { "id": "uuid", "name": "string" },
-      "creator": { "id": "uuid", "name": "string", "avatar_url": "string" }
-    }
-  ],
-  "total": "number",
-  "page": "number"
-}
-```
-
----
-
-### GET /courses/:id
-Get course details.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-G006, US-S005, US-S059, US-S060, US-S061 |
-| **Access** | Public |
-| **Data Source** | courses, course_curriculum, course_objectives, course_includes, student_teachers |
-
-**Response:** `200 OK`
-```json
-{
-  "id": "uuid",
-  "title": "string",
-  "description": "string",
-  "thumbnail_url": "string",
-  "level": "string",
-  "price_cents": "number",
-  "duration": "string",
-  "rating": "number",
-  "student_count": "number",
-  "creator": { ... },
-  "category": { ... },
-  "tags": ["string"],
-  "learning_objectives": ["string"],
-  "includes": ["string"],
-  "curriculum": [
-    {
-      "id": "uuid",
-      "title": "string",
-      "description": "string",
-      "duration": "string",
-      "video_count": "number",
-      "reading_count": "number",
-      "has_assessment": "boolean"
-    }
-  ],
-  "peerloop_features": {
-    "one_on_one_teaching": "boolean",
-    "certified_teachers": "boolean",
-    "earn_while_teaching": "boolean",
-    "teacher_commission": "number"
-  },
-  "student_teachers": [
-    {
-      "user": { "id": "uuid", "name": "string", "avatar_url": "string" },
-      "students_taught": "number",
-      "certified_date": "date"
-    }
-  ],
-  "is_enrolled": "boolean",
-  "is_following": "boolean"
-}
-```
-
----
-
-### POST /courses/:id/follow
-Follow a course.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S006 |
-| **Access** | Authenticated |
-| **Data Source** | course_follows |
-
----
-
-### DELETE /courses/:id/follow
-Unfollow a course.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S006 |
-| **Access** | Authenticated |
-
----
-
-### GET /categories
-List course categories.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S058 |
-| **Access** | Public |
-| **Data Source** | categories |
-
-**Response:** `200 OK`
-```json
-{
-  "categories": [
-    { "id": "uuid", "name": "string", "slug": "string", "course_count": "number" }
-  ]
-}
-```
-
----
-
-## Enrollments
-
-### POST /courses/:id/enroll
-Enroll in a course (initiates payment).
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S002, US-S006, US-P026 |
-| **Access** | Authenticated |
-| **Data Source** | enrollments, transactions |
-
-**Request:**
-```json
-{
-  "student_teacher_id": "uuid (optional)"
-}
-```
-
-**Response:** `200 OK`
-```json
-{
-  "checkout_url": "stripe_checkout_url",
-  "session_id": "stripe_session_id"
-}
-```
-
----
-
-### GET /enrollments
-Get user's enrollments.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S009, US-P060 |
-| **Access** | Authenticated |
-| **Data Source** | enrollments, courses, module_progress |
-
-**Response:** `200 OK`
-```json
-{
-  "enrollments": [
-    {
-      "id": "uuid",
-      "course": { ... },
-      "status": "string",
-      "progress_percent": "number",
-      "enrolled_at": "timestamp",
-      "student_teacher": { ... },
-      "next_session": { ... }
-    }
-  ]
-}
-```
-
----
-
-### GET /enrollments/:id/content
-Get course content (enrolled users only).
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S052, US-S053, US-S054 |
-| **Access** | Authenticated (enrolled only) |
-| **Data Source** | course_curriculum, module_progress |
-
-**Response:** `200 OK`
-```json
-{
-  "course": { ... },
-  "modules": [
-    {
-      "id": "uuid",
-      "title": "string",
-      "description": "string",
-      "video_url": "string",
-      "document_url": "string",
-      "is_complete": "boolean"
-    }
-  ]
-}
-```
-
----
-
-### PATCH /enrollments/:id/modules/:moduleId
-Update module progress.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S055 |
-| **Access** | Authenticated (enrolled only) |
-| **Data Source** | module_progress |
-
-**Request:**
-```json
-{
-  "is_complete": "boolean"
-}
-```
-
----
-
-### DELETE /enrollments/:id
-Cancel enrollment.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S015 |
-| **Access** | Authenticated (own enrollment) |
-
-**Request:**
-```json
-{
-  "reason": "string"
-}
-```
-
----
-
-## Sessions
-
-### GET /availability/:userId
-Get teacher availability.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P020, US-S035 |
-| **Access** | Authenticated |
-| **Data Source** | availability |
-
-**Query Params:**
-- `date` - Specific date
-- `start_date`, `end_date` - Date range
-
-**Response:** `200 OK`
-```json
-{
-  "slots": [
-    {
-      "date": "date",
-      "start_time": "time",
-      "end_time": "time",
-      "is_available": "boolean"
-    }
-  ],
-  "timezone": "string"
-}
-```
-
----
-
-### POST /sessions
-Book a session.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S044, US-S045, US-P021 |
-| **Access** | Authenticated (enrolled students) |
-| **Data Source** | sessions, availability |
-
-**Request:**
-```json
-{
-  "enrollment_id": "uuid",
-  "teacher_id": "uuid",
-  "scheduled_start": "timestamp"
-}
-```
-
-**Response:** `201 Created`
-```json
-{
-  "session": {
-    "id": "uuid",
-    "scheduled_start": "timestamp",
-    "scheduled_end": "timestamp",
-    "bbb_meeting_url": "string"
-  }
-}
-```
-
-**Side Effects:**
-- Sends email notification (US-S046)
-- Sends in-app notification
-- Generates BBB link (US-P065)
-
----
-
-### GET /sessions
-Get user's sessions.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S009 |
-| **Access** | Authenticated |
-| **Data Source** | sessions |
-
-**Query Params:**
-- `status` - scheduled, completed, cancelled
-- `role` - student, teacher
-- `upcoming` - boolean
-
----
-
-### PATCH /sessions/:id
-Update session (reschedule, cancel).
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S013, US-S014, US-T002 |
-| **Access** | Authenticated (participant) |
-
-**Request:**
-```json
-{
-  "scheduled_start": "timestamp (for reschedule)",
-  "status": "cancelled",
-  "cancel_reason": "string"
-}
-```
-
----
-
-### POST /sessions/:id/join
-Get join URL for session.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S042 |
-| **Access** | Authenticated (participant) |
-
-**Response:** `200 OK`
-```json
-{
-  "join_url": "bbb_join_url"
-}
-```
-
----
-
-### POST /sessions/:id/assessment
-Submit post-session assessment.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-V006 |
-| **Access** | Authenticated (participant) |
-| **Data Source** | session_assessments |
-
-**Request:**
-```json
-{
-  "rating": "number (1-5)",
-  "comment": "string (optional)"
-}
-```
-
----
-
-## Video Platform Interface Contract
-
-> **Architectural Decision:** The video platform is abstracted behind an interface contract. Any video solution (BBB, PlugNmeet, Daily.co, etc.) must implement these operations. This allows platform flexibility without changing core application code.
-
-### Required Capabilities
-
-| Capability | Description | User Stories |
-|------------|-------------|--------------|
-| **Room Creation** | Create a video room with unique ID | US-P065, US-P088 |
-| **Join URL Generation** | Generate participant-specific join URLs | US-S042, US-S043 |
-| **Screen Sharing** | Must support screen sharing | US-A017, US-T007 |
-| **Recording** | Record sessions, retrieve recording URL | US-V005, US-P042 |
-| **Participant Limit** | Minimum 2 (1:1), ideally configurable for groups | US-V002 |
-| **Webhooks** | Session started/ended/participant events | Monitoring |
-
-### Interface: VideoProvider
-
-```typescript
-interface VideoProvider {
-  // Room lifecycle
-  createRoom(options: CreateRoomOptions): Promise<Room>;
-  deleteRoom(roomId: string): Promise<void>;
-
-  // Participant access
-  getJoinUrl(roomId: string, participant: Participant): Promise<string>;
-
-  // Recording
-  startRecording(roomId: string): Promise<RecordingId>;
-  stopRecording(recordingId: string): Promise<RecordingUrl>;
-  getRecording(recordingId: string): Promise<RecordingUrl>;
-
-  // Status
-  getRoomStatus(roomId: string): Promise<RoomStatus>;
-}
-
-interface CreateRoomOptions {
-  sessionId: string;           // Our internal session ID
-  scheduledStart: Date;
-  scheduledEnd: Date;
-  maxParticipants?: number;    // Default 2 for 1:1
-  enableRecording?: boolean;
-  enableScreenShare?: boolean; // Default true
-  moderatorId: string;         // Teacher/S-T user ID
-}
-
-interface Room {
-  roomId: string;              // Provider's room ID
-  meetingUrl: string;          // Generic meeting URL
-  moderatorUrl: string;        // URL with moderator privileges
-  expiresAt?: Date;
-}
-
-interface Participant {
-  userId: string;
-  name: string;
-  role: 'moderator' | 'attendee';
-  avatarUrl?: string;
-}
-
-interface RoomStatus {
-  isActive: boolean;
-  participantCount: number;
-  recordingActive: boolean;
-  startedAt?: Date;
-}
-```
-
-### Provider Implementations
-
-| Provider | Implementation Status | Notes |
-|----------|----------------------|-------|
-| **BigBlueButton** | Evaluated (tech-001) | Established, Blindside Networks managed |
-| **PlugNmeet** | Evaluated (tech-006) | Modern BBB alternative, self-hosted |
-| **Daily.co** | Not yet evaluated | P2P for 1:1, cost-efficient |
-| **Digital Samba** | Not yet evaluated | Low-code iframe embed |
-
-### Integration Points with Core System
-
-| Core System Component | Video Platform Interaction |
-|-----------------------|---------------------------|
-| **Session Booking (POST /sessions)** | Calls `createRoom()` → stores `roomId`, `meetingUrl` |
-| **Join Session (POST /sessions/:id/join)** | Calls `getJoinUrl()` → returns participant URL |
-| **Session End (webhook)** | Receives webhook → updates session status |
-| **Recording Access** | Calls `getRecording()` → stores/serves URL |
-| **Session Cancel (PATCH /sessions/:id)** | Calls `deleteRoom()` if scheduled |
-
-### Webhook Events (Inbound)
-
-```
-POST /webhooks/video-platform
-
-Events:
-- session.started    → Update session status to 'in_progress'
-- session.ended      → Update session status to 'completed', trigger assessment
-- participant.joined → Log for analytics
-- participant.left   → Log for analytics
-- recording.ready    → Store recording URL, notify participants
-```
-
-### Evaluation Criteria for Provider Selection
-
-| Criteria | Weight | BBB | PlugNmeet | Daily.co |
-|----------|--------|-----|-----------|----------|
-| 1:1 Session Cost | HIGH | Per-session fee | Flat $5-10/mo | Per-minute |
-| Recording Storage | HIGH | Provider cloud | Self-hosted | Provider cloud |
-| Screen Sharing | REQUIRED | ✅ | ✅ | ✅ |
-| Integration Complexity | MEDIUM | API + webhooks | API + webhooks | SDK |
-| UI Customization | LOW | Limited | Good | Excellent |
-| Managed Hosting | MEDIUM | Blindside | Self-host | Managed |
-
-### Decision Status
-
-**Current Directive:** DIR-001 specifies MUST-USE BigBlueButton
-
-**Recommendation:** Evaluate PlugNmeet against this interface. If it implements all required capabilities, update DIR-001 to allow either BBB or PlugNmeet as compliant providers.
-
-**Questions #2 and #3 are now non-blocking** - the interface is defined; provider selection can happen during implementation.
-
----
-
-## Payments
-
-### POST /checkout/create
-Create Stripe checkout session.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P026 |
-| **Access** | Authenticated |
-
-**Request:**
-```json
-{
-  "course_id": "uuid"
-}
-```
-
-**Response:** `200 OK`
-```json
-{
-  "checkout_url": "string",
-  "session_id": "string"
-}
-```
-
----
-
-### GET /earnings
-Get user's earnings.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S012, US-T013, US-T023, US-C035 |
-| **Access** | Authenticated (ST or Creator) |
-| **Data Source** | payment_splits |
-
-**Response:** `200 OK`
-```json
-{
-  "pending_balance_cents": "number",
-  "total_earned_cents": "number",
-  "recent_transactions": [
-    {
-      "id": "uuid",
-      "amount_cents": "number",
-      "status": "string",
-      "course_title": "string",
-      "date": "timestamp"
-    }
-  ]
-}
-```
-
----
-
-### GET /payouts
-Get payout history.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-T023, US-C035 |
-| **Access** | Authenticated (ST or Creator) |
-| **Data Source** | payouts |
-
----
-
-## Certificates
-
-### POST /certificates/recommend
-ST recommends student for certification.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P061 |
-| **Access** | Authenticated (Student-Teacher) |
-
-**Request:**
-```json
-{
-  "enrollment_id": "uuid",
-  "type": "completion | mastery"
-}
-```
-
----
-
-### POST /certificates/issue
-Creator issues certificate.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-C014, US-P062 |
-| **Access** | Authenticated (Creator) |
-| **Data Source** | certificates |
-
-**Request:**
-```json
-{
-  "enrollment_id": "uuid",
-  "type": "completion | mastery | teaching"
-}
-```
-
----
-
-### GET /certificates
-Get user's certificates.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S021, US-S022 |
-| **Access** | Authenticated |
-| **Data Source** | certificates |
-
----
-
-## Community Feed
-
-> **Note:** Most feed operations will use getstream.io SDK. These endpoints are for reference or custom functionality.
-
-### GET /feed
-Get personalized feed.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S025, US-P002 |
-| **Access** | Authenticated |
-| **Integration** | getstream.io |
-
----
-
-### POST /posts
-Create a post.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S036, US-T017, US-C031 |
-| **Access** | Authenticated |
-| **Data Source** | posts (or getstream.io) |
-
-**Request:**
-```json
-{
-  "content": "string",
-  "post_type": "post | announcement | teaching_tip | availability",
-  "course_id": "uuid (optional)"
-}
-```
-
----
-
-### POST /posts/:id/like
-Like a post.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S037 |
-| **Access** | Authenticated |
-
----
-
-### POST /posts/:id/bookmark
-Bookmark a post.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S038 |
-| **Access** | Authenticated |
-
----
-
-### POST /posts/:id/reply
-Reply to a post.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S039 |
-| **Access** | Authenticated |
-
----
-
-### POST /posts/:id/flag
-Flag post for moderation.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S041 |
-| **Access** | Authenticated |
-| **Data Source** | content_flags |
-
----
-
-### POST /posts/:id/promote
-Promote a post to the main Peer Loop feed.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S071, US-P085 |
-| **Access** | Authenticated (post author) |
-| **Data Source** | promoted_posts, user_goodwill |
-| **Source** | CD-024 |
-
-**Request:**
-```json
-{
-  "points_to_spend": "number"
-}
-```
-
-**Validation:**
-- User must have sufficient goodwill balance
-- Post must be course-specific (not already in main feed)
-
-**Response:** `201 Created`
-```json
-{
-  "promotion": {
-    "id": "uuid",
-    "post_id": "uuid",
-    "points_spent": "number",
-    "expires_at": "timestamp"
-  }
-}
-```
-
----
-
-### GET /instructors/:id/feed
-Get instructor-level feed (for students who have purchased any course from this instructor).
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S070, US-C037 |
-| **Access** | Authenticated (users in instructor_followers) |
-| **Data Source** | posts (filtered by instructor), instructor_followers |
-| **Source** | CD-024 |
-
-**Query Params:**
-- `page`, `limit` - Pagination
-
-**Access Control:**
-- Checks if user has purchased any course from this instructor
-- Returns 403 if not a follower
-
-**Response:** `200 OK`
-```json
-{
-  "instructor": { "id": "uuid", "name": "string", "avatar_url": "string" },
-  "posts": [
-    {
-      "id": "uuid",
-      "author": { ... },
-      "content": "string",
-      "course": { "id": "uuid", "title": "string" },
-      "created_at": "timestamp"
-    }
-  ],
-  "total": "number"
-}
-```
-
----
-
-### GET /users/:id/instructor-followers
-Get list of students who have access to instructor's feed.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-C038 |
-| **Access** | Authenticated (instructor viewing own followers) |
-| **Data Source** | instructor_followers |
-| **Source** | CD-024 |
-
-**Response:** `200 OK`
-```json
-{
-  "followers": [
-    {
-      "user": { "id": "uuid", "name": "string", "avatar_url": "string" },
-      "first_enrollment_at": "timestamp",
-      "courses_enrolled": ["string"]
-    }
-  ],
-  "total": "number"
-}
-```
-
----
-
-### GET /feed/access
-Get user's feed access levels.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S069, US-P083 |
-| **Access** | Authenticated |
-| **Data Source** | enrollments, instructor_followers |
-| **Source** | CD-024 |
-
-**Response:** `200 OK`
-```json
-{
-  "course_feeds": [
-    { "course_id": "uuid", "course_title": "string" }
-  ],
-  "instructor_feeds": [
-    { "instructor_id": "uuid", "instructor_name": "string" }
-  ],
-  "main_feed": true
-}
-```
-
----
-
-## Messages
-
-### GET /conversations
-Get user's conversations.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P004, US-S019 |
-| **Access** | Authenticated |
-| **Data Source** | conversations, conversation_participants, messages |
-
----
-
-### POST /conversations
-Create new conversation.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S016, US-S018, US-T008 |
-| **Access** | Authenticated |
-
-**Request:**
-```json
-{
-  "participant_ids": ["uuid"]
-}
-```
-
----
-
-### GET /conversations/:id/messages
-Get messages in conversation.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S019 |
-| **Access** | Authenticated (participant) |
-| **Data Source** | messages |
-
----
-
-### POST /conversations/:id/messages
-Send message.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S016, US-T008 |
-| **Access** | Authenticated (participant) |
-
-**Request:**
-```json
-{
-  "content": "string"
-}
-```
-
----
-
-## Admin
-
-### GET /admin/pending-payouts
-Get pending payouts.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-A026 |
-| **Access** | Authenticated (Admin) |
-| **Data Source** | payment_splits |
-
----
-
-### POST /admin/payouts/:id/process
-Process a payout.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-A027 |
-| **Access** | Authenticated (Admin) |
-| **Data Source** | payouts |
-
----
-
-### POST /admin/payouts/batch
-Process all pending payouts.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-A028 |
-| **Access** | Authenticated (Admin) |
-
----
-
-### GET /admin/analytics
-Get platform analytics.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-A019-A025 |
-| **Access** | Authenticated (Admin) |
-
-**Response includes:**
-- User retention (US-A019)
-- Course stats (US-A020)
-- Revenue tracking (US-A021)
-- Session status (US-A022)
-- Conversion rates (US-A023)
-- Grade averages (US-A024)
-
----
-
-## Webhooks (Incoming)
-
-### POST /webhooks/stripe
-Stripe payment webhooks.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-P026, US-P028 |
-| **Sender** | Stripe |
-
-**Events handled:**
-- `checkout.session.completed` - Enrollment confirmed
-- `payment_intent.succeeded` - Payment successful
-- `charge.refunded` - Refund processed
-
----
-
-### POST /webhooks/bbb
-BigBlueButton session webhooks.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-A018, US-V005 |
-| **Sender** | BBB/Blindside Networks |
-
-**Events handled:**
-- `meeting-ended` - Session completed
-- `recording-ready` - Recording available
-
----
-
-## Goodwill Points (Block 2+)
-
-*Note: Not MVP - Goodwill points are a community currency replacing 5-star reviews.*
-
-### POST /summons
-Create a help summon request.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S062 |
-| **Access** | Authenticated (enrolled students) |
-| **Data Source** | help_summons |
-
-**Request:**
-```json
-{
-  "course_id": "uuid",
-  "module_id": "uuid (optional)"
-}
-```
-
-**Response:** `201 Created`
-```json
-{
-  "summon": {
-    "id": "uuid",
-    "status": "pending",
-    "available_helpers": 3
-  }
-}
-```
-
----
-
-### GET /summons/active
-Get active summon requests for available S-Ts.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-T025 |
-| **Access** | Authenticated (S-Ts with availability on) |
-| **Data Source** | help_summons |
-
-**Response:** `200 OK`
-```json
-{
-  "summons": [
-    {
-      "id": "uuid",
-      "student": { "id": "uuid", "name": "string", "avatar_url": "string" },
-      "course": { "id": "uuid", "title": "string" },
-      "module_title": "string",
-      "created_at": "timestamp"
-    }
-  ]
-}
-```
-
----
-
-### POST /summons/:id/respond
-Respond to a summon request.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-T026 |
-| **Access** | Authenticated (certified S-T for that course) |
-| **Data Source** | help_summons |
-
-**Response:** `200 OK`
-```json
-{
-  "summon": {
-    "id": "uuid",
-    "status": "responded",
-    "chat_url": "string"
-  }
-}
-```
-
----
-
-### POST /summons/:id/complete
-Complete a summon and award points.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S064, US-T027 |
-| **Access** | Authenticated (student who created summon) |
-| **Data Source** | help_summons, goodwill_transactions |
-
-**Request:**
-```json
-{
-  "points": 15
-}
-```
-
-**Validation:**
-- Points must be 10-25
-- Session must be 5+ minutes
-
-**Response:** `200 OK`
-```json
-{
-  "summon": { "status": "completed", "points_awarded": 15 },
-  "helper_new_total": 862
-}
-```
-
----
-
-### GET /goodwill/balance
-Get own goodwill balance.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S067 |
-| **Access** | Authenticated |
-| **Data Source** | user_goodwill |
-
-**Response:** `200 OK`
-```json
-{
-  "total_earned": 847,
-  "spent": 120,
-  "balance": 727,
-  "breakdown": {
-    "summons_helped": 12,
-    "questions_answered": 45,
-    "referrals": 2
-  }
-}
-```
-
----
-
-### GET /goodwill/transactions
-Get goodwill transaction history.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S067 |
-| **Access** | Authenticated |
-| **Data Source** | goodwill_transactions |
-
-**Query Params:**
-- `type` - earned, spent
-- `page`, `limit`
-
-**Response:** `200 OK`
-```json
-{
-  "transactions": [
-    {
-      "id": "uuid",
-      "type": "earned",
-      "points": 15,
-      "reason": "summon_help",
-      "from_user": { "name": "string" },
-      "course_title": "string",
-      "created_at": "timestamp"
-    }
-  ]
-}
-```
-
----
-
-### POST /goodwill/award
-Award points to a user (for chat answers).
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S066 |
-| **Access** | Authenticated |
-| **Data Source** | goodwill_transactions, user_goodwill |
-
-**Request:**
-```json
-{
-  "to_user_id": "uuid",
-  "points": 5,
-  "reason": "question_answer",
-  "message_id": "uuid"
-}
-```
-
-**Validation:**
-- Max 3 awards per day to same person
-- Cooldown between awards
-
-**Response:** `201 Created`
-
----
-
-### PATCH /users/:id/availability
-Update "Available to Help" status.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-T024 |
-| **Access** | Authenticated (own profile, S-Ts only) |
-| **Data Source** | user_availability |
-
-**Request:**
-```json
-{
-  "is_available": true
-}
-```
-
-**Response:** `200 OK`
-
----
-
-### GET /courses/:id/available-helpers
-Get count of available helpers for a course.
-
-| Attribute | Value |
-|-----------|-------|
-| **User Stories** | US-S063, US-P080 |
-| **Access** | Authenticated (enrolled students) |
-| **Data Source** | user_availability, student_teachers |
-
-**Response:** `200 OK`
-```json
-{
-  "available_count": 3,
-  "helpers": [
-    { "id": "uuid", "name": "string", "avatar_url": "string" }
-  ]
-}
-```
-
----
-
-## API Summary
-
-| Category | Endpoints |
-|----------|-----------|
-| Authentication | 5 |
-| Users | 9 |
-| Courses | 5 |
-| Enrollments | 5 |
-| Sessions | 6 |
-| Payments | 3 |
-| Certificates | 3 |
-| Feed | 10 |
-| Messages | 4 |
-| Admin | 4 |
-| Webhooks | 2 |
-| Goodwill | 9 |
-| **Total** | **65** |
-
----
-
-## Document Lineage
-
-| Source Document | Endpoints Derived |
-|-----------------|-------------------|
-| CD-021 | Course detail structure, user profile structure, ST listing |
-| US-P007-P013 | Authentication endpoints |
-| US-S057-S061, CD-021 | Course filtering, objectives, includes, per-course STs |
-| CD-015 | Session booking, availability |
-| CD-020 | Payment/payout endpoints |
-| CD-013 | Feed endpoints |
-| CD-018 | Follow endpoints, profile updates |
-| CD-023 | Summons CRUD, goodwill points, availability toggle, available helpers |
-| CD-024 | Instructor feed, post promotion, feed access levels, instructor followers |
-
----
-
-## Notes for Implementation
-
-1. **REST vs GraphQL:** Default assumption is REST; RUN phase may specify GraphQL
-2. **Authentication:** JWT-based, refresh token rotation
-3. **Rate Limiting:** Apply per endpoint based on abuse potential
-4. **Pagination:** Cursor-based preferred for scalability
-5. **Versioning:** Consider /v1/ prefix for future compatibility
-6. **getstream.io:** Feed operations may use Stream SDK directly instead of API
-7. **BBB API:** Session creation integrates with Blindside Networks API
-
----
-
-## API Version History
+# PeerLoop - API Quick Reference
+
+**Version:** v3
+**Last Updated:** 2025-12-26
+
+> Quick lookup of all API endpoints organized by HTTP method. For detailed documentation:
+> - **Internal/DB endpoints:** [DB-API.md](DB-API.md)
+> - **External service endpoints:** [REMOTE-API.md](REMOTE-API.md)
+
+---
+
+## GET Endpoints
+
+| Endpoint | Purpose | Doc |
+|----------|---------|-----|
+| `GET /api/activity` | User's recent activity | DB |
+| `GET /api/admin/analytics` | Platform analytics | DB |
+| `GET /api/admin/categories` | List categories | DB |
+| `GET /api/admin/certificates` | List certificates | DB |
+| `GET /api/admin/certificates/pending` | Pending certificates | DB |
+| `GET /api/admin/certificates/:id` | Certificate detail | DB |
+| `GET /api/admin/certificates/:id/pdf` | Download certificate PDF | DB |
+| `GET /api/admin/courses` | List all courses | DB |
+| `GET /api/admin/courses/:id` | Course detail | DB |
+| `GET /api/admin/dashboard` | Admin dashboard metrics | DB |
+| `GET /api/admin/enrollments` | List enrollments | DB |
+| `GET /api/admin/enrollments/:id` | Enrollment detail | DB |
+| `GET /api/admin/enrollments/export` | Export enrollments CSV | DB |
+| `GET /api/admin/flags/count` | Flagged content count | DB |
+| `GET /api/admin/payouts` | All payouts | DB |
+| `GET /api/admin/payouts/pending` | Pending payouts | DB |
+| `GET /api/admin/payouts/:id` | Payout detail | DB |
+| `GET /api/admin/sessions` | List sessions | DB |
+| `GET /api/admin/sessions/:id` | Session detail | DB |
+| `GET /api/admin/sessions/:id/recording` | Get recording URL | DB |
+| `GET /api/admin/sessions/stats` | Session statistics | DB |
+| `GET /api/admin/sessions/upcoming` | Upcoming sessions | DB |
+| `GET /api/admin/users` | List all users | DB |
+| `GET /api/admin/users/:id` | User detail | DB |
+| `GET /api/admin/users/export` | Export users CSV | DB |
+| `GET /api/auth/reset-token/:token` | Validate reset token | DB |
+| `GET /api/categories` | List all categories | DB |
+| `GET /api/certificates` | User's certificates | DB |
+| `GET /api/communities/:slug` | Sub-community details | DB |
+| `GET /api/communities/:slug/feed` | Sub-community feed | DB |
+| `GET /api/conversations` | List conversations | DB |
+| `GET /api/conversations/:id` | Conversation with messages | DB |
+| `GET /api/courses` | List courses | DB |
+| `GET /api/courses/featured` | Featured courses | DB |
+| `GET /api/courses/:id` | Course details | DB |
+| `GET /api/courses/:id/chat/helpers` | Available helpers in chat | DB |
+| `GET /api/courses/:id/chat/messages` | Chat messages | DB |
+| `GET /api/courses/:id/chat/room` | Chat room info | DB |
+| `GET /api/courses/:id/curriculum` | Course modules | DB |
+| `GET /api/courses/:id/helpers/available` | Available helpers count | DB |
+| `GET /api/courses/:id/sts` | Student-Teachers for course | DB |
+| `GET /api/courses/:slug` | Course by slug | DB |
+| `GET /api/creators` | List creators | DB |
+| `GET /api/creators/featured` | Featured creators | DB |
+| `GET /api/creators/:handle` | Creator profile | DB |
+| `GET /api/creators/:handle/courses` | Creator's courses | DB |
+| `GET /api/creators/me/analytics` | Analytics summary | DB |
+| `GET /api/creators/me/analytics/courses` | Course performance | DB |
+| `GET /api/creators/me/analytics/enrollments` | Enrollment trends | DB |
+| `GET /api/creators/me/analytics/export` | Export analytics | DB |
+| `GET /api/creators/me/analytics/funnel` | Conversion funnel | DB |
+| `GET /api/creators/me/analytics/progress` | Progress distribution | DB |
+| `GET /api/creators/me/analytics/sessions` | Session metrics | DB |
+| `GET /api/creators/me/analytics/st-performance` | ST performance | DB |
+| `GET /api/creators/me/courses` | Creator's courses list | DB |
+| `GET /api/creators/me/dashboard` | Creator dashboard | DB |
+| `GET /api/creators/me/earnings` | Earnings summary | DB |
+| `GET /api/creators/me/payouts` | Payout history | DB |
+| `GET /api/creators/me/pending-approvals` | Pending approvals | DB |
+| `GET /api/creators/me/sessions` | Session history | DB |
+| `GET /api/creators/me/sessions/:id` | Session detail | DB |
+| `GET /api/creators/me/sessions/stats` | Session statistics | DB |
+| `GET /api/creators/me/sessions/upcoming` | Upcoming sessions | DB |
+| `GET /api/creators/me/student-teachers` | Creator's STs | DB |
+| `GET /api/creators/me/students` | Students list | DB |
+| `GET /api/creators/me/students/:id` | Student detail | DB |
+| `GET /api/creators/me/students/export` | Export students CSV | DB |
+| `GET /api/creators/me/transactions` | Transaction history | DB |
+| `GET /api/enrollments` | User's enrollments | DB |
+| `GET /api/enrollments/:id/progress` | Enrollment progress | DB |
+| `GET /api/enrollments/:id/sessions` | Sessions for enrollment | DB |
+| `GET /api/helpers/available` | Available helpers | DB |
+| `GET /api/instructors/:id/feed/access` | Check feed access | DB |
+| `GET /api/leaderboard` | Get leaderboard | DB |
+| `GET /api/leaderboard/me` | User's position | DB |
+| `GET /api/moderation/history` | Moderation history | DB |
+| `GET /api/moderation/queue` | Moderation queue | DB |
+| `GET /api/moderation/queue/:id` | Flag detail | DB |
+| `GET /api/moderation/stats` | Moderation stats | DB |
+| `GET /api/newsletters` | Creator's newsletters | DB |
+| `GET /api/newsletters/subscribers` | Newsletter subscribers | DB |
+| `GET /api/newsletters/tiers` | Newsletter tiers | DB |
+| `GET /api/notifications` | Get notifications | DB |
+| `GET /api/notifications/count` | Unread count | DB |
+| `GET /api/payments/connect/status` | Stripe account status | REMOTE |
+| `GET /api/sessions/:id` | Session details | DB |
+| `GET /api/sessions/:id/recording` | Session recording URL | DB |
+| `GET /api/sts/:id/availability` | ST's availability | DB |
+| `GET /api/sts/:id/bookings` | ST's existing bookings | DB |
+| `GET /api/student-teachers` | List STs | DB |
+| `GET /api/student-teachers/me/dashboard` | ST dashboard | DB |
+| `GET /api/student-teachers/me/earnings` | ST earnings | DB |
+| `GET /api/student-teachers/me/sessions` | ST's sessions | DB |
+| `GET /api/student-teachers/me/students` | ST's students | DB |
+| `GET /api/users/me` | Current user profile | DB |
+| `GET /api/users/me/availability` | User availability | DB |
+| `GET /api/users/me/follows/:user_id` | Check if following | DB |
+| `GET /api/users/me/goodwill` | Goodwill points | DB |
+| `GET /api/users/me/payouts` | Payout history | DB |
+| `GET /api/users/me/rewards` | Rewards breakdown | DB |
+| `GET /api/users/me/settings` | User settings | DB |
+| `GET /api/users/search` | Search users | DB |
+| `GET /api/users/:handle` | User public profile | DB |
+| `GET /api/users/:handle/availability` | User availability | DB |
+| `GET /api/users/:handle/certificates` | User's certificates | DB |
+| `GET /api/users/:handle/followers` | User's followers | DB |
+| `GET /api/users/:handle/following` | Who user follows | DB |
+| `GET /api/users/:handle/reviews` | User reviews | DB |
+| `GET /api/users/:handle/st-info` | ST info | DB |
+| `GET /api/users/:handle/stats` | User statistics | DB |
+
+---
+
+## POST Endpoints
+
+| Endpoint | Purpose | Doc |
+|----------|---------|-----|
+| `POST /api/admin/categories` | Create category | DB |
+| `POST /api/admin/categories/:id/merge` | Merge categories | DB |
+| `POST /api/admin/categories/reorder` | Reorder categories | DB |
+| `POST /api/admin/certificates` | Issue certificate | DB |
+| `POST /api/admin/certificates/:id/approve` | Approve certificate | DB |
+| `POST /api/admin/certificates/:id/reinstate` | Reinstate certificate | DB |
+| `POST /api/admin/certificates/:id/reject` | Reject certificate | DB |
+| `POST /api/admin/certificates/:id/revoke` | Revoke certificate | DB |
+| `POST /api/admin/courses/:id/feature` | Feature course | DB |
+| `POST /api/admin/courses/:id/suspend` | Suspend course | DB |
+| `POST /api/admin/courses/:id/transfer` | Transfer ownership | DB |
+| `POST /api/admin/courses/:id/unsuspend` | Unsuspend course | DB |
+| `POST /api/admin/enrollments` | Create enrollment | DB |
+| `POST /api/admin/enrollments/:id/cancel` | Cancel enrollment | DB |
+| `POST /api/admin/enrollments/:id/force-complete` | Force complete | DB |
+| `POST /api/admin/enrollments/:id/reassign-st` | Reassign ST | DB |
+| `POST /api/admin/enrollments/:id/refund` | Process refund | DB |
+| `POST /api/admin/payouts/:id/approve` | Approve payout | DB |
+| `POST /api/admin/payouts/:id/process` | Process payout | DB |
+| `POST /api/admin/payouts/:id/retry` | Retry payout | DB |
+| `POST /api/admin/payouts/batch` | Batch process | DB |
+| `POST /api/admin/payouts/batch-approve` | Batch approve | DB |
+| `POST /api/admin/sessions/:id/credit` | Credit session | DB |
+| `POST /api/admin/sessions/:id/resolve` | Resolve dispute | DB |
+| `POST /api/admin/sessions/:id/warn` | Warn user | DB |
+| `POST /api/admin/users` | Create user | DB |
+| `POST /api/admin/users/:id/reset-password` | Send reset email | DB |
+| `POST /api/admin/users/:id/suspend` | Suspend user | DB |
+| `POST /api/admin/users/:id/unsuspend` | Unsuspend user | DB |
+| `POST /api/admin/users/:id/verify-email` | Verify email | DB |
+| `POST /api/auth/forgot-password` | Request reset | DB |
+| `POST /api/auth/login` | Authenticate | DB |
+| `POST /api/auth/resend-verification` | Resend verification | REMOTE |
+| `POST /api/auth/reset-password` | Set new password | DB |
+| `POST /api/auth/signup` | Create account | DB |
+| `POST /api/auth/verify-email` | Verify email | DB |
+| `POST /api/certificates/:id/issue` | Issue certificate | DB |
+| `POST /api/certificates/recommend` | Recommend for cert | DB |
+| `POST /api/checkout/session` | Create checkout | REMOTE |
+| `POST /api/communities/:slug/invite` | Invite to community | DB |
+| `POST /api/communities/:slug/join` | Join community | DB |
+| `POST /api/communities/:slug/posts` | Post to community | DB |
+| `POST /api/conversations` | Start conversation | DB |
+| `POST /api/conversations/:id/messages` | Send message | DB |
+| `POST /api/courses` | Create course | DB |
+| `POST /api/courses/:id/chat/messages` | Send chat message | DB |
+| `POST /api/courses/:id/curriculum` | Add module | DB |
+| `POST /api/courses/:id/thumbnail` | Upload thumbnail | DB |
+| `POST /api/enrollments/:id/flag` | Flag student | DB |
+| `POST /api/enrollments/:id/progress` | Update progress | DB |
+| `POST /api/follows` | Follow user | DB |
+| `POST /api/goodwill/award` | Award points | DB |
+| `POST /api/help/:id/complete` | Complete help | DB |
+| `POST /api/help/request` | Request help | DB |
+| `POST /api/moderation/queue/:id/ban` | Ban user | DB |
+| `POST /api/moderation/queue/:id/dismiss` | Dismiss flag | DB |
+| `POST /api/moderation/queue/:id/remove` | Remove content | DB |
+| `POST /api/moderation/queue/:id/warn` | Warn user | DB |
+| `POST /api/newsletters` | Create newsletter | DB |
+| `POST /api/newsletters/:id/send` | Send newsletter | REMOTE |
+| `POST /api/payments/connect/dashboard` | Get dashboard link | REMOTE |
+| `POST /api/payments/connect/onboard` | Start onboarding | REMOTE |
+| `POST /api/payouts/request` | Request payout | REMOTE |
+| `POST /api/posts` | Create post | REMOTE |
+| `POST /api/posts/:id/flag` | Flag post | REMOTE |
+| `POST /api/posts/:id/promote` | Promote post | REMOTE |
+| `POST /api/sessions` | Book session | DB |
+| `POST /api/sessions/:id/accept` | Accept session | DB |
+| `POST /api/sessions/:id/feedback` | Submit feedback | DB |
+| `POST /api/stream/token` | Get Stream token | REMOTE |
+| `POST /api/student-teachers/:id/approve` | Approve ST | DB |
+| `POST /api/users/me/avatar` | Upload avatar | DB |
+| `POST /api/video/token` | Get video token | REMOTE |
+| `POST /api/webhooks/plugnmeet` | PlugNmeet webhook | REMOTE |
+| `POST /api/webhooks/resend` | Resend webhook | REMOTE |
+| `POST /api/webhooks/stripe` | Stripe webhook | REMOTE |
+
+---
+
+## PUT Endpoints
+
+| Endpoint | Purpose | Doc |
+|----------|---------|-----|
+| `PUT /api/communities/:slug` | Update community | DB |
+| `PUT /api/conversations/:id/read` | Mark as read | DB |
+| `PUT /api/courses/:id` | Update course | DB |
+| `PUT /api/courses/:id/curriculum/:module_id` | Update module | DB |
+| `PUT /api/courses/:id/curriculum/reorder` | Reorder modules | DB |
+| `PUT /api/courses/:id/publish` | Publish course | DB |
+| `PUT /api/courses/:id/unpublish` | Unpublish course | DB |
+| `PUT /api/enrollments/:id/notes` | Update notes | DB |
+| `PUT /api/newsletters/:id` | Update newsletter | DB |
+| `PUT /api/notifications/:id/read` | Mark as read | DB |
+| `PUT /api/notifications/read-all` | Mark all read | DB |
+| `PUT /api/users/me` | Update profile | DB |
+| `PUT /api/users/me/availability` | Update availability | DB |
+
+---
+
+## PATCH Endpoints
+
+| Endpoint | Purpose | Doc |
+|----------|---------|-----|
+| `PATCH /api/admin/categories/:id` | Update category | DB |
+| `PATCH /api/admin/courses/:id` | Update course | DB |
+| `PATCH /api/admin/enrollments/:id` | Update enrollment | DB |
+| `PATCH /api/admin/sessions/:id` | Update session | DB |
+| `PATCH /api/admin/users/:id` | Update user | DB |
+| `PATCH /api/users/me/settings` | Update settings | DB |
+
+---
+
+## DELETE Endpoints
+
+| Endpoint | Purpose | Doc |
+|----------|---------|-----|
+| `DELETE /api/admin/categories/:id` | Delete category | DB |
+| `DELETE /api/admin/courses/:id` | Delete course | DB |
+| `DELETE /api/admin/courses/:id/feature` | Unfeature course | DB |
+| `DELETE /api/admin/enrollments/:id` | Delete enrollment | DB |
+| `DELETE /api/admin/payouts/:id` | Cancel payout | DB |
+| `DELETE /api/admin/users/:id` | Delete user | DB |
+| `DELETE /api/communities/:slug/leave` | Leave community | DB |
+| `DELETE /api/courses/:id` | Delete course | DB |
+| `DELETE /api/courses/:id/curriculum/:module_id` | Delete module | DB |
+| `DELETE /api/follows/:id` | Unfollow user | DB |
+| `DELETE /api/newsletters/:id` | Delete newsletter | DB |
+| `DELETE /api/notifications/:id` | Delete notification | DB |
+
+---
+
+## Summary
+
+| Method | Count |
+|--------|-------|
+| GET | 108 |
+| POST | 73 |
+| PUT | 13 |
+| PATCH | 6 |
+| DELETE | 12 |
+| **Total** | **212** |
+
+---
+
+## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
-| v1 | 2025-12-23 | Initial API surface from user stories and CD-021 |
+| v1 | 2025-12-23 | Initial API surface |
+| v2 | 2025-12-26 | Added service provider contracts |
+| v3 | 2025-12-26 | Converted to quick reference index; detailed docs split to DB-API.md + REMOTE-API.md |

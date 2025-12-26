@@ -147,6 +147,28 @@ Display Student-Teacher's credentials, teaching availability, courses they're ce
 
 ---
 
+## API Calls
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/users/:handle` | Page load | Profile data |
+| `GET /api/users/:handle/st-info` | Page load (if ST) | ST-specific data |
+| `GET /api/users/:handle/availability` | Page load | Availability calendar |
+| `GET /api/users/:handle/reviews` | Page load | Teaching reviews |
+| `GET /api/users/me/enrollments` | Page load (auth) | Check if can book |
+
+**ST Info Response:**
+- Certifications: Array of { course, certified_date, students_taught }
+- Stats: total_students_taught, total_sessions, average_rating
+- Certificates: Array of earned completion/mastery certs
+
+**Availability Response:**
+- is_available_now: boolean
+- slots: Array of { day_of_week, start_time, end_time }
+- timezone: string
+
+---
+
 ## Notes
 
 - ST profile is an extension of regular user profile (PROF)

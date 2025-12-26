@@ -158,9 +158,175 @@ Central hub for Student-Teachers to manage their teaching schedule, track earnin
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/student-teachers/me/dashboard` | Page load | Aggregated dashboard data |
+| `GET /api/student-teachers/me/sessions` | Sessions section | Upcoming teaching sessions |
+| `GET /api/student-teachers/me/students` | Students section | Assigned students |
+| `GET /api/student-teachers/me/earnings` | Earnings section | Earnings breakdown |
+| `POST /api/certificates/recommend` | Recommend cert | Recommend student for certification |
+| `POST /api/sessions/:id/accept` | Accept intro | Accept intro session request |
+| `POST /api/payouts/request` | Request payout | Initiate payout |
+
+### Dashboard Data Aggregation
+
+```typescript
+// GET /api/student-teachers/me/dashboard
+{
+  earnings: {
+    pending_balance: 70000,      // cents (ST's 70% share)
+    total_earned: 420000,        // lifetime
+    this_month: 28000,
+    payout_threshold: 5000
+  },
+  upcoming_sessions: [
+    {
+      id, scheduled_start, scheduled_end,
+      student: { id, name, avatar },
+      course: { id, title },
+      can_join: true  // within join window
+    }
+  ],
+  students: [
+    {
+      id, name, avatar,
+      course_id, course_title,
+      progress_percent,
+      sessions_completed
+    }
+  ],
+  pending_actions: {
+    cert_recommendations: [ ... ],  // Students ready to recommend
+    intro_requests: [ ... ]         // Pending intro session requests (CD-029)
+  },
+  stats: {
+    sessions_this_month: 12,
+    average_rating: 4.8,
+    students_helped: 24
+  }
+}
+```
+
+### Earnings Calculation (70% Share)
+
+```typescript
+// Payment split logic (per CD-020, CD-033):
+// When S-T teaches a session:
+//   Platform: 15%
+//   Creator: 15%
+//   S-T: 70%     ← This is what TDSH displays
+
+// Query for ST earnings:
+SELECT SUM(amount_cents) FROM payment_splits
+WHERE recipient_id = :st_user_id
+  AND recipient_type = 'student_teacher'
+  AND status IN ('pending', 'paid')
+GROUP BY status
+```
+
+### Certification Recommendation Flow
+
+```
+Recommend Student for Certification:
+  1. ST identifies student ready for completion
+  2. Click "Recommend for Certification"
+  3. POST /api/certificates/recommend {
+       student_id, course_id, notes
+     }
+  4. Backend:
+     - Creates certificate record (status: 'recommended')
+     - Notifies Creator (appears in CDSH pending)
+  5. Creator approves → certificate issued
+```
+
+### Intro Session Request Flow (CD-029)
+
+```
+Trust-Building Intro Sessions:
+  1. Student requests free intro with specific ST
+  2. Appears in ST's pending_actions.intro_requests
+  3. ST clicks "Accept" or "Decline"
+  4. POST /api/sessions/:id/accept { accepted: true }
+  5. Backend:
+     - Updates session.status = 'scheduled' (or rejected)
+     - Sends email to student (Resend)
+     - Intro sessions: no payment split (free)
+```
+
+### Session Join Flow
+
+```
+Upcoming Session Card:
+  - If within 15min of scheduled_start:
+    can_join: true
+  - "Join" button visible
+  - Click "Join" → SROM page
+  - Token generation happens on SROM page (not here)
+```
+
+### Payout Request Flow
+
+Same as Creator (CDSH), but recipient_type = 'student_teacher':
+
+```
+POST /api/payouts/request
+→ Stripe Transfer to ST's Express account
+→ Webhook: transfer.paid updates status
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   TDSH      │      │  PeerLoop   │      │ External    │
+│   (Client)  │      │  (Server)   │      │ Services    │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ GET /st/me/        │                    │
+       │   dashboard        │                    │
+       │───────────────────>│                    │
+       │                    │ Query DB for:      │
+       │                    │ - sessions         │
+       │                    │ - payment_splits   │
+       │                    │ - students         │
+       │ { dashboard data } │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ POST /certificates/│                    │
+       │   recommend        │                    │
+       │───────────────────>│                    │
+       │                    │ Create certificate │
+       │                    │ Notify creator     │
+       │                    │ (Resend email)     │
+       │                    │───────────────────>│
+       │ { recommended }    │                    │
+       │<───────────────────│                    │
+```
+
+### Real-time Updates
+
+```
+New Session Booking:
+  - When student books via SBOK
+  - Notification sent to ST (in-app + email)
+  - Dashboard shows updated upcoming_sessions
+
+Consider:
+  - WebSocket for real-time session notifications
+  - Or: polling /api/notifications every 30s
+```
+
+---
+
 ## Notes
 
 - Multi-role users: May see both learning + teaching sections
-- CD-033: 85/15 split (ST gets 85%)
+- CD-033: ST gets 70% when teaching Creator's course content
+- CD-033: ST gets 85% when teaching their own content (no Creator)
 - Consider combining SDSH + TDSH into unified role-aware dashboard
 - Real-time notification for new session bookings
+- Payout requires active Stripe Connect (see SETT)

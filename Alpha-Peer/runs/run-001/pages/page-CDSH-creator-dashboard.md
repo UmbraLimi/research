@@ -170,9 +170,151 @@ Central hub for Creators to manage their courses, track earnings, approve Studen
 
 ---
 
+## Server Integration
+
+### API Endpoints Called
+
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/creators/me/dashboard` | Page load | Aggregated dashboard data |
+| `GET /api/creators/me/earnings` | Earnings section | Detailed earnings breakdown |
+| `GET /api/creators/me/courses` | Course list | Creator's courses with stats |
+| `GET /api/creators/me/pending-approvals` | Pending section | ST apps + cert requests |
+| `POST /api/student-teachers/:id/approve` | Approve ST | Approve ST application |
+| `POST /api/certificates/:id/issue` | Issue cert | Issue certification |
+| `POST /api/payouts/request` | Request payout | Initiate payout |
+
+### Dashboard Data Aggregation
+
+```typescript
+// GET /api/creators/me/dashboard
+{
+  earnings: {
+    pending_balance: 45000,     // cents (from payment_splits)
+    total_earned: 250000,       // lifetime
+    this_month: 15000,
+    payout_threshold: 5000,     // minimum for payout
+    last_payout: { ... }
+  },
+  pending_counts: {
+    st_applications: 3,
+    cert_requests: 5
+  },
+  courses: [
+    {
+      id, title, thumbnail_url,
+      student_count, completion_rate, rating,
+      revenue: 125000  // Creator's 15% share
+    }
+  ],
+  recent_activity: [...]
+}
+```
+
+### Earnings Calculation (15% Royalty)
+
+```typescript
+// Payment split logic (per CD-020, CD-033):
+// When S-T teaches a session:
+//   Platform: 15%
+//   Creator: 15%    ← This is what CDSH displays
+//   S-T: 70%
+
+// Query for creator earnings:
+SELECT SUM(amount_cents) FROM payment_splits
+WHERE recipient_id = :creator_id
+  AND recipient_type = 'creator'
+  AND status IN ('pending', 'paid')
+GROUP BY status
+```
+
+### Pending Approvals Flow
+
+```
+ST Application Approval:
+  1. GET /api/creators/me/pending-approvals
+  2. Display list of pending ST applications
+  3. Creator clicks "Approve" or "Decline"
+  4. POST /api/student-teachers/:id/approve { approved: true }
+  5. Backend:
+     - Updates student_teachers.is_active = true
+     - Sends email to approved ST (Resend)
+     - Creates notification
+
+Certificate Issuance:
+  1. ST recommends student (via TDSH)
+  2. Creator sees in pending-approvals
+  3. Creator clicks "Issue Certificate"
+  4. POST /api/certificates/:id/issue
+  5. Backend:
+     - Updates certificate.status = 'issued'
+     - Generates PDF certificate (if applicable)
+     - Sends email to student (Resend)
+```
+
+### Payout Request Flow
+
+```
+Request Payout:
+  1. Creator clicks "Request Payout"
+  2. POST /api/payouts/request { amount: <balance> }
+  3. Backend:
+     - Validates: balance >= threshold
+     - Validates: stripe_payouts_enabled = true
+     - Creates Stripe Transfer to creator's Express account
+     - Records in payouts table
+  4. Webhook: transfer.paid
+     - Updates payout.status = 'paid'
+     - Clears pending balance
+
+Stripe Transfer:
+  stripe.transfers.create({
+    amount: balance_cents,
+    currency: 'usd',
+    destination: creator.stripe_account_id,
+    transfer_group: 'payout-{creator_id}-{date}'
+  })
+```
+
+### Data Flow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   CDSH      │      │  PeerLoop   │      │   Stripe    │
+│   (Client)  │      │  (Server)   │      │  (Connect)  │
+└──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+       │                    │                    │
+       │ GET /dashboard     │                    │
+       │───────────────────>│                    │
+       │                    │ Query DB for:      │
+       │                    │ - payment_splits   │
+       │                    │ - courses          │
+       │                    │ - pending approvals│
+       │ { aggregated data }│                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ POST /payouts/     │                    │
+       │   request          │                    │
+       │───────────────────>│                    │
+       │                    │ Create Transfer    │
+       │                    │───────────────────>│
+       │                    │ transfer_id        │
+       │                    │<───────────────────│
+       │ { payout_pending } │                    │
+       │<───────────────────│                    │
+       │                    │                    │
+       │                    │ Webhook:           │
+       │                    │ transfer.paid      │
+       │                    │<───────────────────│
+       │                    │ Update payout      │
+```
+
+---
+
 ## Notes
 
-- CD-020: Creator gets 15% royalty
+- CD-020: Creator gets 15% royalty (calculated in payment_splits)
 - Creators may also be Students/STs (multi-role dashboard)
-- Consider email notifications for pending approvals
-- Analytics could expand significantly (separate page?)
+- Email notifications for pending approvals via Resend
+- Payout requires active Stripe Connect (see SETT)
+- Analytics could expand significantly (CANA page for detailed analytics)

@@ -116,14 +116,14 @@
 
 | Source | Questions | Status |
 |--------|-----------|--------|
-| CD-005 | 1 | Open |
+| CD-005 | 1 | ✅ Resolved |
 | CD-007 & CD-028 | 3 | **#2-4 Deferred** (interface abstraction) |
-| CD-010 | 1 | Open |
-| CD-011 | 4 | Open |
-| CD-018 | 1 | Open |
-| CD-027 | 12 | Open |
-| CD-032 | 4 | **#23, #26 Resolved** |
-| **Total** | **26** | **21 Open, 3 Deferred, 2 Resolved** |
+| CD-010 | 1 | ✅ Resolved |
+| CD-011 | 4 | ✅ Resolved (#8 superseded by #1) |
+| CD-018 | 1 | ✅ Resolved |
+| CD-027 | 12 | ✅ Resolved (#12 unclear - skip) |
+| CD-032 | 4 | ✅ Resolved |
+| **Total** | **26** | **22 Resolved, 3 Deferred, 1 Unclear** |
 
 ---
 
@@ -144,3 +144,22 @@
 |----------|--------|------|------------|
 | #23: S-T Pricing Visibility | Course price IS S-T price. Unified pricing, no Teacher premium. 85/15 split. | 2025-12-24 | CD-033, API.md |
 | #26: Timeline (6 vs 4 months) | 4 months confirmed. Feature removal strategy if scope doesn't fit. | 2025-12-24 | PLAN.md |
+| #1: GetStream vs Bluesky | **Stream for feeds** - GetStream.io confirmed | 2025-12-26 | - |
+| #5: Paid newsletter subscriptions | **No, Post-MVP** | 2025-12-26 | FEATURE-FLAGS.md |
+| #6: AI Assistant | **Post-MVP** | 2025-12-26 | FEATURE-FLAGS.md |
+| #7: Newsletters technology | **Use Resend**, scope TBD (use good defaults) | 2025-12-26 | REMOTE-API.md |
+| #9: Mastery vs Completion certs | **Completion=MVP, Mastery=post-MVP** | 2025-12-26 | FEATURE-FLAGS.md |
+| #10: Profile visibility default | **Private** | 2025-12-26 | DB-SCHEMA.md |
+| #11: Instructor community | **Yes**, same as `instructor_followers` | 2025-12-26 | - |
+| #13: Auto-join communities | **Just Town Hall** for now, may expand later | 2025-12-26 | - |
+| #14: Feed access rules | **Confirmed** - course purchase → course feed; any instructor course → instructor feed | 2025-12-26 | - |
+| #15: Availability states | **Just Available/Unavailable** | 2025-12-26 | DB-SCHEMA.md |
+| #16: Booking flow | **Calendar-first** (schedule then get video link) | 2025-12-26 | - |
+| #17: Group sessions | **No, post-MVP** | 2025-12-26 | FEATURE-FLAGS.md |
+| #18: Creator Studio tab | **No** - Creator uses same dashboard as ST | 2025-12-26 | - |
+| #19: Admin features MVP | **CRUD to start**, add as needed | 2025-12-26 | - |
+| #20: Homework submission/grading | **Yes, MVP** | 2025-12-26 | FEATURE-FLAGS.md |
+| #21: Session resources storage | **Stored on platform** (R2) | 2025-12-26 | DB-SCHEMA.md |
+| #22: Header user dropdown | **Yes** - avatar/settings/logout | 2025-12-26 | COMPONENTS.md |
+| #24: Course completion criteria | **ST recommendation + Creator approval** | 2025-12-26 | - |
+| #25: Moderator invite flow | **Two-step**: email to invite to platform, then email to assign moderator role | 2025-12-26 | - |

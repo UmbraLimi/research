@@ -75,15 +75,48 @@ CRUD interface for managing course categories - the taxonomy used to organize an
 
 ---
 
-## CRUD Operations
+## API Calls
 
-| Operation | Endpoint | Notes |
-|-----------|----------|-------|
-| List | GET /api/admin/categories | Ordered list |
-| Create | POST /api/admin/categories | Add category |
-| Update | PATCH /api/admin/categories/:id | Edit category |
-| Delete | DELETE /api/admin/categories/:id | Only if no courses |
-| Reorder | POST /api/admin/categories/reorder | Batch update order |
+| Endpoint | When | Purpose |
+|----------|------|---------|
+| `GET /api/admin/categories` | Page load | Ordered category list |
+| `POST /api/admin/categories` | Add | Create new category |
+| `PATCH /api/admin/categories/:id` | Edit | Update category |
+| `DELETE /api/admin/categories/:id` | Delete | Remove (if no courses) |
+| `POST /api/admin/categories/reorder` | Drag/drop | Update display order |
+| `POST /api/admin/categories/:id/merge` | Merge | Merge into another |
+
+**Category Response:**
+```typescript
+GET /api/admin/categories
+{
+  categories: [{
+    id, name, slug, display_order,
+    description, icon,
+    course_count: number
+  }]
+}
+```
+
+**Reorder:**
+```typescript
+POST /api/admin/categories/reorder
+{
+  order: [
+    { id: 'cat_1', display_order: 0 },
+    { id: 'cat_2', display_order: 1 }
+  ]
+}
+```
+
+**Merge:**
+```typescript
+POST /api/admin/categories/:id/merge
+{
+  into_category_id: string
+}
+// Moves all courses, then deletes source
+```
 
 ---
 
