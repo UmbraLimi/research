@@ -91,4 +91,6 @@ Maintain `FACTS.md` as a living document of facts and pertinent information gath
 
 ## Git Workflow
 
-Follow the parent repository workflow - commit from `~/MyResearch` root folder using `/gr-commit`.
+Two commit options:
+- `/r-commit` - Commit only this project's changes
+- `/par-commit` - Commit all changes across the repo

@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**Version:** v7
-**Last Updated:** 2025-12-26
+**Version:** v8
+**Last Updated:** 2025-12-28
 
 > **Version History:** Increment version when substantive changes occur (new phases, changed workflows, new commands). Minor edits (typos, formatting) don't require version bump.
 
@@ -37,7 +37,7 @@ MyResearch/
 │   ├── learnings/        # Knowledge capture (learning-NNN-*.md)
 │   ├── decisions/        # Decision records (decision-NNN-*.md)
 │   └── .claude/commands/ # Project-specific slash commands (r-*)
-└── file_holding/         # Temporary staging for file processing
+└── Minimum-Project/      # Template for new projects
 ```
 
 **Important:** Launch Claude Code from `Alpha-Peer/` folder, not `MyResearch/`.
@@ -70,27 +70,28 @@ After creating numbered files, update the "Current State" section in STRUCTURE.m
 ## Slash Commands
 
 Commands are split between two locations:
-- **`~/.claude/commands/`** - User-level `/q-*` commands (available in all projects)
+- **`MyResearch/.claude/commands/`** - Parent-level `/par-*` commands (available in all subfolders)
 - **`Alpha-Peer/.claude/commands/`** - Project-specific `/r-*` commands
 
-### `/q-*` Commands (Session & Git) - User-level
+### `/par-*` Commands (Session & Git) - Parent-level
 
 | Command | Purpose |
 |---------|---------|
-| `/q-resume` | Analyze PLAN.md and show current progress to resume work |
-| `/q-update` | Update PLAN.md with current progress (run frequently) |
-| `/q-end-session` | Full end-of-session workflow (learnings, prompts, optional commit) |
-| `/q-commit` | Stage and commit all changes with descriptive message |
-| `/q-learnings` | Document session learnings and insights |
-| `/q-prompts` | Save all user prompts from session for future reference |
-| `/q-timestamp` | Get current date/time (utility, called by other commands) |
-| `/q-pare` | Optimize CLAUDE.md by moving content to OFFLOAD.md |
+| `/par-resume` | Analyze PLAN.md and show current progress to resume work |
+| `/par-update` | Update PLAN.md with current progress (run frequently) |
+| `/par-end-session` | Full end-of-session workflow (learnings, prompts, optional commit) |
+| `/par-commit` | Stage and commit all changes in repo |
+| `/par-learnings` | Document session learnings and insights |
+| `/par-prompts` | Save all user prompts from session for future reference |
+| `/par-timestamp` | Get current date/time (utility, called by other commands) |
+| `/par-pare` | Optimize CLAUDE.md by moving content to OFFLOAD.md |
 
 ### `/r-*` Commands (Research & Documentation) - Project-level
 
 | Command | Purpose |
 |---------|---------|
-| `/r-add-client-doc` | Process client document(s) from file_holding |
+| `/r-commit` | Stage and commit only this project's changes |
+| `/r-add-client-doc` | Process client document(s) added to chat |
 | `/r-add-software` | Research software/service from URL, create tech doc |
 | `/r-add-user-story` | Add a single user story with proper numbering |
 | `/r-add-directive` | Add constraint/restriction for scenario generation |
@@ -406,7 +407,6 @@ This first run became the template for how runs work and what they produce.
 - **SPECS.md is the handoff document** - Update it as decisions are made
 - **Architecture docs accumulate** - DB-SCHEMA, PAGES, COMPONENTS, DB-API, REMOTE-API grow during GATHER, finalize during RUN
 - **Trace decisions to sources** - Link back to research, client docs, or learnings
-- **file_holding/ is temporary** - Files staged here get processed and moved
 - **Scenarios for comparison** - `/scenarios/` holds SPECS.md variants for client review
 
 ### Capturing Review Decisions (Added 2025-12-26)

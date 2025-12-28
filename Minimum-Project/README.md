@@ -24,23 +24,26 @@ This folder is a template for new research projects in the MyResearch repository
 | File/Folder | Purpose |
 |-------------|---------|
 | `CLAUDE.md` | Project guidance for Claude Code - customize for your project |
-| `PLAN.md` | Work tracking with phases and tasks - required for `/q-resume` and `/q-update` |
-| `docs/sessions/` | Session logs created by `/q-learnings` and `/q-prompts` |
-| `.claude/commands/` | Project-specific slash commands (empty by default) |
+| `PLAN.md` | Work tracking with phases and tasks - required for `/par-resume` and `/par-update` |
+| `docs/sessions/` | Session logs created by `/par-learnings` and `/par-prompts` |
+| `.claude/commands/` | Project-specific slash commands (includes `/r-commit` by default) |
 
 ## Available Slash Commands
 
 When you launch Claude Code from any project folder, you get:
 
-**User-level commands** (from `~/.claude/commands/`):
-- `/q-resume` - Load PLAN.md and show where you left off
-- `/q-update` - Save progress to PLAN.md (run frequently!)
-- `/q-end-session` - Full wrap-up: learnings, prompts, optional commit
-- `/q-commit` - Stage and commit all changes
-- `/q-learnings` - Document what you learned this session
-- `/q-prompts` - Save prompts used this session
-- `/q-timestamp` - Utility for other commands
-- `/q-pare` - Optimize CLAUDE.md by offloading content
+**Parent-level commands** (from `MyResearch/.claude/commands/`):
+- `/par-resume` - Load PLAN.md and show where you left off
+- `/par-update` - Save progress to PLAN.md (run frequently!)
+- `/par-end-session` - Full wrap-up: learnings, prompts, optional commit
+- `/par-commit` - Stage and commit all changes in repo
+- `/par-learnings` - Document what you learned this session
+- `/par-prompts` - Save prompts used this session
+- `/par-timestamp` - Utility for other commands
+- `/par-pare` - Optimize CLAUDE.md by offloading content
+
+**Project-level commands** (from `.claude/commands/`):
+- `/r-commit` - Stage and commit only this project's changes
 
 ## Adding Project-Specific Commands
 
@@ -57,23 +60,21 @@ argument-hint: "<optional-arg>"
 Instructions for Claude to follow when this command is invoked.
 ```
 
-Suggested prefix: Use a short project identifier (e.g., `/ap-` for Alpha-Peer, `/mn-` for My-New-Project).
+Suggested prefix: Use `/r-` for project-specific commands to distinguish from parent `/par-*` commands.
 
 ## Caveats
 
-- **Launch location matters** - Claude Code only finds `.claude/commands/` in the folder where you launch it. Always `cd` into your project folder first.
+- **PLAN.md is required** - The `/par-resume` and `/par-update` commands expect this file. Don't rename or delete it.
 
-- **PLAN.md is required** - The `/q-resume` and `/q-update` commands expect this file. Don't rename or delete it.
+- **Two commit options** - Use `/r-commit` to commit only this project's changes, or `/par-commit` to commit all changes across the repo.
 
-- **Git operations work from subfolders** - Even though the git repo is at `MyResearch/`, `/q-commit` works from any subfolder.
-
-- **Session files are auto-organized** - `/q-learnings` and `/q-prompts` create files in `docs/sessions/YYYY-MM/` automatically.
+- **Session files are auto-organized** - `/par-learnings` and `/par-prompts` create files in `docs/sessions/YYYY-MM/` automatically.
 
 ## Suggestions
 
-- **Run `/q-update` frequently** - Don't wait until end of session. If Claude Code crashes or you lose context, PLAN.md is your recovery point.
+- **Run `/par-update` frequently** - Don't wait until end of session. If Claude Code crashes or you lose context, PLAN.md is your recovery point.
 
-- **Keep CLAUDE.md focused** - Put only essential guidance here. Use `/q-pare` if it gets too long.
+- **Keep CLAUDE.md focused** - Put only essential guidance here. Use `/par-pare` if it gets too long.
 
 - **Use phases in PLAN.md** - Break work into numbered phases (1.1, 1.2, 2.1...) for clear progress tracking.
 

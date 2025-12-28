@@ -12,7 +12,7 @@ This file provides guidance to Claude Code when working in this project folder.
 Project-Name/
 ├── PLAN.md               # Work phases and progress tracking
 ├── CLAUDE.md             # This file - project guidance
-├── docs/sessions/        # Session logs (created by /q-learnings, /q-prompts)
+├── docs/sessions/        # Session logs (created by /par-learnings, /par-prompts)
 └── .claude/commands/     # Project-specific slash commands (r-*)
 ```
 
@@ -20,19 +20,20 @@ Project-Name/
 
 ### Available Commands
 
-**User-level (`~/.claude/commands/`)** - Available in all projects:
-- `/q-resume` - Resume work by analyzing PLAN.md
-- `/q-update` - Update PLAN.md with current progress
-- `/q-end-session` - End session workflow (learnings, prompts, commit)
-- `/q-commit` - Stage and commit changes
-- `/q-learnings` - Document session learnings
-- `/q-prompts` - Save session prompts
-- `/q-timestamp` - Get current date/time
+**Parent-level (`MyResearch/.claude/commands/`)** - Available in all projects:
+- `/par-resume` - Resume work by analyzing PLAN.md
+- `/par-update` - Update PLAN.md with current progress
+- `/par-end-session` - End session workflow (learnings, prompts, commit)
+- `/par-commit` - Stage and commit all changes in repo
+- `/par-learnings` - Document session learnings
+- `/par-prompts` - Save session prompts
+- `/par-timestamp` - Get current date/time
 
-**Project-level (`.claude/commands/`)** - Add project-specific commands here.
+**Project-level (`.claude/commands/`)** - Add project-specific commands here:
+- `/r-commit` - Stage and commit only this project's changes
 
 ## Workflow
 
-1. Start session: `/q-resume`
-2. Do work, update progress: `/q-update`
-3. End session: `/q-end-session`
+1. Start session: `/par-resume`
+2. Do work, update progress: `/par-update`
+3. End session: `/par-end-session`

@@ -6,11 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a research workspace containing multiple projects in pre-development phases. Each project has its own CLAUDE.md with project-specific guidance.
 
+**Why a single repo?** Research and planning projects change infrequently and don't warrant individual GitHub repos. This monorepo provides a single backup point while keeping projects organized in subfolders.
+
 ```
 MyResearch/
+├── .claude/commands/     # Parent-level slash commands (/par-*)
 ├── Alpha-Peer/           # Main research project (see Alpha-Peer/CLAUDE.md)
-├── Minimum-Project/      # Template for new projects
-└── file_holding/         # Temporary staging for file processing
+└── Minimum-Project/      # Template for new projects
 ```
 
 ## Working with Projects
@@ -24,37 +26,32 @@ This ensures project-specific `.claude/commands/` are available.
 
 ## Git Commit Workflow
 
-**Always commit from the root `~/MyResearch` folder:**
-1. Exit the subfolder session (do NOT run `/gr-commit` from subfolder)
-2. Change to `~/MyResearch`
-3. Run `/gr-commit` from there
+Two commit options available from any subfolder:
 
-This keeps all commits at the repository root level.
+| Command | Scope | Use when |
+|---------|-------|----------|
+| `/par-commit` | All changes in repo | Committing work across multiple projects |
+| `/r-commit` | Current folder only | Committing just this project's changes |
+
+Both commands are available from any project folder.
 
 ## Slash Commands
 
 Commands are split between two locations:
 
-**User-level (`~/.claude/commands/`)** - Available in all projects:
+**Parent-level (`.claude/commands/`)** - Available in all subfolders:
 | Command | Purpose |
 |---------|---------|
-| `/q-resume` | Analyze PLAN.md and resume work |
-| `/q-update` | Update PLAN.md with progress |
-| `/q-end-session` | End session (learnings, prompts, optional commit) |
-| `/q-commit` | Stage and commit changes |
-| `/q-learnings` | Document session learnings |
-| `/q-prompts` | Save session prompts |
-| `/q-timestamp` | Get current date/time |
-| `/q-pare` | Optimize CLAUDE.md by moving content to OFFLOAD.md |
+| `/par-resume` | Analyze PLAN.md and resume work |
+| `/par-update` | Update PLAN.md with progress |
+| `/par-end-session` | End session (learnings, prompts, optional commit) |
+| `/par-commit` | Stage and commit all changes |
+| `/par-learnings` | Document session learnings |
+| `/par-prompts` | Save session prompts |
+| `/par-timestamp` | Get current date/time |
+| `/par-pare` | Optimize CLAUDE.md by moving content to OFFLOAD.md |
 
 **Project-level** - See each project's CLAUDE.md for `/r-*` commands.
-
-## file_holding/ Staging Area
-
-Temporary location for processing files:
-1. User drops files here
-2. Use `/r-add-client-doc` (in Alpha-Peer) to process and move to appropriate folder
-3. Files are removed after processing
 
 ## Creating New Projects
 
