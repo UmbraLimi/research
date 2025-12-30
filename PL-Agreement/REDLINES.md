@@ -2,10 +2,27 @@
 
 This document tracks suggested changes to the Alpha Peer Engagement Letter.
 
+## Current Status: NEAR FINAL (December 30, 2025)
+
+The lawyer's composite revisions (12.29.25) accepted the majority of Developer's proposed changes. Only **3 items** remain before signing:
+
+| Item | Section | Action |
+|------|---------|--------|
+| Dispute Resolution | 11(c)-(d) | Modify: add prevailing party fees + remote proceedings |
+| Non-Competition | 12(j) | Clarify: duration of "thereafter" |
+| Notice Address | 13 | Edit: remove brackets from email |
+
+**Response drafted:** See `EMAIL-RESPONSE-2025-12-30.md`
+
+---
+
 **Legend:**
 - ~~strikethrough~~ = remove
 - **bold** = add
 - [brackets] = notes/options
+- ✅ = Accepted in 12.29.25 draft
+- ⚠️ = Needs modification/clarification
+- ❌ = Rejected by lawyer
 
 ---
 
@@ -619,87 +636,72 @@ The specific Services currently being performed are set forth in the most recent
 
 ## Negotiation Priority Guide
 
-### MUST-HAVE (Dealbreakers)
+### STATUS: NEGOTIATION SUBSTANTIALLY COMPLETE
 
-These protect you from serious risk. Do not sign without them.
+**As of December 30, 2025**, the lawyer accepted the vast majority of proposed changes. The priority guide below is preserved for historical reference.
 
-| # | Change | Why It's Critical |
-|---|--------|-------------------|
-| 2 | No personal liability clause | Without this, your personal assets could be at risk |
-| 6 | Compensation terms | The entire payment structure - without it, nothing is defined |
-| 8 | Payment on termination | Ensures you get paid for work done if project ends |
-| 14-15 | Simplified warranty (no free period) | Post-MVP fixes are paid work via block/SOW; eliminates 24-month free bug fix exposure |
-| 21 | Narrow liability cap exceptions | Without this, the liability cap is meaningless (unlimited exposure) |
-| 24 | Arbitration instead of Louisiana courts | You cannot practically litigate in a foreign jurisdiction |
-| Missing 1 | Notices section | Agreement requires written notice but has no addresses |
+### Remaining Items (3 total)
 
-**If Brian refuses these:** Serious red flag. Consider walking away or insisting on professional legal review before proceeding.
+| Priority | Item | Section | Action |
+|----------|------|---------|--------|
+| **HIGH** | Dispute Resolution | 11(c)-(d) | Modify: add prevailing party fees + remote proceedings |
+| **MEDIUM** | Non-Competition | 12(j) | Clarify: what does "thereafter" mean? |
+| **LOW** | Notice Address | 13 | Minor edit: remove brackets |
 
 ---
 
-### IMPORTANT (Push Hard)
+### HISTORICAL: Original Priority Guide (December 18, 2025)
 
-These provide significant protection. Fight for them, but could negotiate specifics.
+*Preserved for reference. Most items below were accepted.*
 
-| # | Change | What You Gain | Negotiation Room |
-|---|--------|---------------|------------------|
-| 1 | Corporate capacity | Reinforces liability protection | Minor - just clarifying language |
-| 5 | SOW superseding structure | Formalizes your working model | Could simplify language |
-| 7 | Mutual termination | You can exit, not just Brian | Could extend notice period (30 days?) |
-| 12 | Confidentiality limited to 3 years | Not bound forever | Could go to 5 years if pushed |
-| 16 | Cap indemnity at 2x | Limits IP claim exposure | Could negotiate to 1x or 3x |
-| 17 | Exclude open source | Not liable for React/Next.js IP issues | Critical - don't concede |
-| 18 | Indemnity survival 3 years | Not liable for claims 10 years later | Could go to 5 years |
-| 22-23 | Mutual liability limits | Fairness - if you're capped, so is he | Standard, should be easy |
-| 30 | Change of control exit | Exit/renegotiate if ownership changes | Could adjust threshold |
-| Missing 2 | Client cooperation | Not blamed for his delays | Adjust response time (5→7 days?) |
+#### MUST-HAVE (Dealbreakers) - **ALL RESOLVED** ✅
 
----
+| # | Change | Status |
+|---|--------|--------|
+| 2 | No personal liability clause | ✅ Accepted |
+| 6 | Compensation terms | ✅ Accepted |
+| 8 | Payment on termination | ✅ Accepted |
+| 15 | Warranty 24 months → 60 days | ✅ Better: now billable through SOW |
+| 21 | Narrow liability cap exceptions | ✅ Accepted |
+| 24 | Arbitration instead of Louisiana courts | ❌ Rejected - but Developer proposing modifications |
+| Missing 1 | Notices section | ✅ Accepted |
 
-### NICE-TO-HAVE (Concede If Needed)
+#### IMPORTANT (Push Hard) - **MOSTLY RESOLVED** ✅
 
-Good to have, but won't hurt you significantly if dropped.
+| # | Change | Status |
+|---|--------|--------|
+| 1 | Corporate capacity | ✅ Accepted |
+| 5 | SOW superseding structure | ✅ Accepted |
+| 7 | Mutual termination | ✅ Accepted (with mid-SOW caveat) |
+| 12 | Confidentiality limited to 3 years | ✅ Accepted |
+| 14 | Client warranties | ✅ Accepted |
+| 16 | Cap indemnity at 2x | ✅ Accepted |
+| 17 | Exclude open source | ✅ Accepted |
+| 18 | Indemnity survival 3 years | ✅ Accepted |
+| 22-23 | Mutual liability limits | ✅ Accepted |
+| 30 | Change of control exit | ✅ Accepted |
+| Missing 2 | Client cooperation | ✅ Accepted (response timeline removed) |
 
-| # | Change | Why It's Lower Priority |
-|---|--------|------------------------|
-| 3-4 | Timeline/revision limits | Your SOW flexibility already handles this |
-| 9 | Further assurances compensation | Low likelihood of being invoked |
-| 10 | General knowledge exception | You start fresh anyway - low practical risk |
-| 11 | Mutual confidentiality | Nice, but what secrets would Brian reveal? |
-| 13 | Archival copy | Minor protection |
-| 19-20 | Mutual indemnity + procedures | Nice for fairness, but you're unlikely to sue Brian |
-| 25-28 | Boilerplate (contractor, severability, etc.) | Standard clauses - most lawyers would add anyway |
-| 29 | Non-compete | **You're offering this** - it benefits Brian, not you |
-| Missing 3 | Portfolio rights | You said you're flexible on this |
-| Missing 4 | Force majeure | Rarely invoked; pandemic clause is standard |
+#### NICE-TO-HAVE - **MOSTLY RESOLVED** ✅
 
----
-
-### Negotiation Strategy
-
-**Opening position:** Present all 35 modifications as your proposed revisions.
-
-**If Brian pushes back:**
-1. First, explain the reasoning (REDLINES.md has rationale for each)
-2. Concede "Nice-to-Have" items to show flexibility
-3. Hold firm on "Must-Have" items
-4. Negotiate specifics on "Important" items (e.g., 3 years → 5 years)
-
-**Good faith gestures you're already making:**
-- Change 29: Non-compete (protects his investment)
-- Change 26: Assignment clause allows acquisition (supports his investor goals)
-- Full IP assignment (you're not retaining any code rights)
-- Removed late payment interest (trust)
-
-**Your leverage:**
-- He needs you (5 weeks invested, you know the project)
-- Good relationship built on trust
-- You're being reasonable, not adversarial
-- These changes are industry-standard, not unusual
+| # | Change | Status |
+|---|--------|--------|
+| 3-4 | Timeline/revision limits | ✅ Accepted |
+| 9 | Further assurances compensation | ✅ Accepted |
+| 10 | General knowledge exception | ✅ Accepted |
+| 11 | Mutual confidentiality | ✅ Accepted |
+| 13 | Archival copy | ✅ Accepted |
+| 19-20 | Mutual indemnity + procedures | ✅ Accepted (procedures expanded) |
+| 25-28 | Boilerplate clauses | ✅ Accepted |
+| 29 | Non-compete | ⚠️ Modified - needs clarification on duration |
+| Missing 3 | Portfolio rights | ✅ Accepted (requires consent) |
+| Missing 4 | Force majeure | ✅ Accepted |
 
 ---
 
 ## Summary Statistics
+
+### Original Proposal (December 18, 2025)
 
 | Category | Count |
 |----------|-------|
@@ -707,7 +709,40 @@ Good to have, but won't hurt you significantly if dropped.
 | Sections reviewed | 12 of 12 |
 | Missing provisions to add | 4 |
 | Exhibits drafted | 2 |
-| **Total modifications** | **35** |
-| Must-Have | 7 |
-| Important | 10 |
-| Nice-to-Have | 16 |
+| **Total modifications** | **36** |
+
+### Lawyer's Response (December 29, 2025)
+
+| Category | Count |
+|----------|-------|
+| ✅ Fully accepted | 24 |
+| ⚠️ Partially accepted / Modified | 7 |
+| ❌ Rejected | 2 |
+| Lawyer additions (new) | 3 |
+
+### Current Status (December 30, 2025)
+
+| Category | Count |
+|----------|-------|
+| Items Developer accepts as-is | 22 |
+| Items requiring modification | 1 (Section 11 - Dispute Resolution) |
+| Items requiring clarification | 1 (Section 12(j) - Non-compete duration) |
+| Minor edits | 1 (Section 13 - Email brackets) |
+| **Total items to resolve** | **3** |
+
+### Key Outcomes
+
+**Major wins:**
+- Warranty work now billable (not free 24-month obligation)
+- Mutual termination rights
+- 3-year confidentiality limit (not indefinite)
+- IP indemnity capped at 2x
+- Change of Control exit rights preserved
+- No Personal Liability clause accepted
+- Non-compete post-termination period removed
+
+**Concessions made:**
+- Louisiana courts instead of arbitration (with modifications)
+- Expenses must be in SOW upfront
+- Cannot exit mid-SOW without consent
+- Portfolio rights require prior consent

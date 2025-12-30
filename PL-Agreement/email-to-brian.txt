@@ -1,0 +1,25 @@
+Subject: Proposed Revisions to Engagement Letter - For Your Lawyer's Review
+
+Hi Brian,
+I've worked through the engagement letter from Butler Snow and put together my proposed revisions. I've tried to balance protecting both of our interests while keeping the document practical for how we actually work together.
+
+What's attached:
+- PDF version (easier to read)
+- Markdown source (in case it's useful)
+
+How I've organized it:
+At the top you'll find a summary table that groups the changes by priority:
+- High Priority — A handful of substantive items that will likely need discussion (compensation terms, warranty period, liability caps, arbitration)
+- Medium Priority — Provisions that balance rights between us (mutual termination, mutual indemnification, etc.)
+- Low Priority — Standard clauses and housekeeping items that should be straightforward
+
+Each proposed change shows the current text, my suggested revision, and a brief rationale.
+
+My approach:
+I've tried to formalize what we're already doing (prepaid blocks, hourly billing for all work including meetings and revisions) while adding protections that are standard in software development agreements. I'm open to discussion on any of these — nothing is set in stone.
+
+The non-competition clause (Change 28) is something I'm offering to demonstrate my commitment to PeerLoop. Happy to discuss the duration or scope if needed.
+
+Let me know if you or your lawyer have questions. I'm happy to jump on a call to walk through anything.
+
+Fraser

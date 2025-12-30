@@ -6,29 +6,63 @@
 
 ---
 
-## STATUS: HISTORICAL DOCUMENT
-
-> **This document represents Developer's initial proposed changes sent on December 18, 2025.**
->
-> **Lawyer's response received:** December 29, 2025 - Majority of changes accepted.
->
-> **Current status:** See `EMAIL-RESPONSE-2025-12-30.md` for remaining items.
->
-> **For current negotiation state:** See `REDLINES.md` and `FACTS.md`
-
----
-
 ## Summary
 
 This document contains proposed revisions to the Alpha Peer Engagement Letter. Changes are organized by section for easy reference. Each proposed change includes the current text, proposed revision, and brief rationale.
 
-These proposed changes seek to formalize the existing working arrangement, clarify ambiguous terms, and ensure balanced protections for both parties. Many changes reflect industry standard practices for software development agreements.
+These proposed changes seek to formalize the existing working arrangement and clarify ambiguous terms.
 
 **Key Commercial Terms** (detailed in Change 4):
 - Developer is compensated at **$150.00 USD per hour** for all Services performed
 - All work is billable, including meetings, research, revisions, and bug fixes
 - Services are performed in **prepaid blocks of hours**, each accompanied by a Statement of Work (SOW)
 - Payment via Wise transfer in U.S. Dollars
+
+---
+
+## Changes by Priority
+
+**High Priority** — Substantive terms requiring discussion:
+| # | Change | Section |
+|---|--------|---------|
+| 4 | Compensation terms | Section 3 |
+| 13 | Warranty period (24mo → 60 days) | Section 7 |
+| 14 | Cap indemnification at 2x contract | Section 8 |
+| 19 | Narrow liability cap exceptions | Section 10 |
+| 22 | Replace litigation with arbitration | Section 11 |
+| 23 | No personal liability for Fraser | Section 12 |
+
+**Medium Priority** — Balancing provisions:
+| # | Change | Section |
+|---|--------|---------|
+| 5 | Mutual termination rights | Section 4 |
+| 7 | Post-termination assistance compensation | Section 5 |
+| 8 | General knowledge exception | Section 5 |
+| 10 | Confidentiality survival (indefinite → 3 years) | Section 6 |
+| 12 | Add client warranties | Section 7 |
+| 15 | Exclude third-party components from indemnity | Section 8 |
+| 16 | Indemnity survival (indefinite → 3 years) | Section 8 |
+| 17 | Add mutual indemnification | Section 8 |
+| 20 | Mutual liability caps | Section 10 |
+| 21 | Mutual consequential damages waiver | Section 10 |
+| 29 | Change of control provision | Section 12 |
+
+**Low Priority** — Housekeeping and standard clauses:
+| # | Change | Section |
+|---|--------|---------|
+| 1 | Fill in corporate jurisdiction | Preamble |
+| 2 | Reference SOW for timelines | Section 2 |
+| 3 | SOW superseding structure | Section 2 |
+| 6 | Termination payment/transition | Section 4 |
+| 9 | Mutual confidentiality | Section 6 |
+| 11 | Archival copy retention | Section 6 |
+| 18 | Indemnification procedures | Section 8 |
+| 24 | Independent contractor | Section 12 |
+| 25 | Assignment clause | Section 12 |
+| 26 | Severability | Section 12 |
+| 27 | Waiver | Section 12 |
+| 28 | Non-competition (Developer offered) | Section 12 |
+| 13-16 | New sections: Notices, Cooperation, Portfolio, Force Majeure | New |
 
 ---
 
@@ -39,8 +73,10 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > The Technifar Corporation, a ____________ corporation d/b/a Meristics, represented hereby its duly authorized representative, Fraser Gorrie ("Developer")
 
-**Proposed:**
-> The Technifar Corporation, an **Ontario, Canada** corporation d/b/a Meristics, represented **herein** by its duly authorized **officer and employee**, Fraser Gorrie ("Developer")
+
+
+The Technifar Corporation, an Ontario, Canada corporation d/b/a Meristics, represented herein by its duly authorized officer and employee, Fraser Gorrie ("Developer")
+
 
 **Rationale:** Fills in required corporate jurisdiction and corrects minor typographical error ("hereby" → "herein"). Clarifies corporate structure for the record.
 
@@ -53,8 +89,10 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > Developer hereby agrees to timely provide the Services and the Deliverables
 
-**Proposed:**
-> Developer hereby agrees to provide the Services and the Deliverables **in accordance with the timelines set forth in the applicable Statement of Work ("SOW")**
+
+
+Developer hereby agrees to provide the Services and the Deliverables in accordance with the timelines set forth in the applicable Statement of Work ("SOW")
+
 
 **Rationale:** Replaces vague "timely" standard with clear reference to SOW-defined schedules, reducing ambiguity and potential disputes about performance timing.
 
@@ -77,21 +115,22 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > [Parties to insert description of compensation terms/methodology; invoicing terms; etc.]
 
-**Proposed replacement:**
 
-> **3. Compensation.**
->
-> **(a) Hourly Rate.** Client shall compensate Developer at the rate of One Hundred Fifty U.S. Dollars ($150.00 USD) per hour for all Services performed, including (but not limited to) meetings, research, revisions and bug fixes.
->
-> **(b) Prepaid Blocks.** Services shall be performed in prepaid blocks of hours. Prior to the commencement of each block, the Parties shall mutually agree on the number of hours in the block, and Client shall prepay for such hours upon receipt of Developer's invoice. Each block shall be accompanied by a Statement of Work describing the intended scope of Services for that block.
->
-> **(c) Payment Terms.** All invoices are due and payable upon receipt. Payments shall be made in U.S. Dollars via Wise transfer to Developer's designated Wise account, or by such other method as the Parties may agree.
->
-> **(d) Expenses.** Third-party services, hosting, software licenses, and similar project costs shall be paid directly by Client. In the event Developer incurs any project-related expenses (such as API usage charges), Developer shall notify Client and the Parties shall mutually determine responsibility for such costs. Any expenses to be reimbursed to Developer shall be invoiced separately and paid via Wise transfer.
->
-> **(e) Rate Adjustment.** Developer's hourly rate may be adjusted upon mutual written agreement of the Parties. Any rate adjustment shall apply to SOWs executed after the date of such agreement.
->
-> **(f) Work Stoppage.** If any prepaid block is exhausted and a new block has not been agreed upon and prepaid, Developer shall have no obligation to continue performing Services until a new block is established.
+
+3. Compensation.
+
+(a) Hourly Rate. Client shall compensate Developer at the rate of One Hundred Fifty U.S. Dollars ($150.00 USD) per hour for all Services performed, including (but not limited to) meetings, research, revisions and bug fixes.
+
+(b) Prepaid Blocks. Services shall be performed in prepaid blocks of hours. Prior to the commencement of each block, the Parties shall mutually agree on the number of hours in the block, and Client shall prepay for such hours upon receipt of Developer's invoice. Each block shall be accompanied by a Statement of Work describing the intended scope of Services for that block.
+
+(c) Payment Terms. All invoices are due and payable upon receipt. Payments shall be made in U.S. Dollars via Wise transfer to Developer's designated Wise account, or by such other method as the Parties may agree.
+
+(d) Expenses. Third-party services, hosting, software licenses, and similar project costs shall be paid directly by Client. In the event Developer incurs any project-related expenses (such as API usage charges), Developer shall notify Client and the Parties shall mutually determine responsibility for such costs. Any expenses to be reimbursed to Developer shall be invoiced separately and paid via Wise transfer.
+
+(e) Rate Adjustment. Developer's hourly rate may be adjusted upon mutual written agreement of the Parties. Any rate adjustment shall apply to SOWs executed after the date of such agreement.
+
+(f) Work Stoppage. If any prepaid block is exhausted and a new block has not been agreed upon and prepaid, Developer shall have no obligation to continue performing Services until a new block is established.
+
 
 **Rationale:** Formalizes the prepaid block arrangement already in use between the parties. Provides clear terms for both sides.
 
@@ -104,10 +143,12 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > This Agreement (including any or all SOWs) may also be terminated by Client for its convenience without penalty or termination fee, but only upon fifteen (15) days' prior written notice to Developer.
 
-**Proposed:**
-> This Agreement (including any or all SOWs) may also be terminated by **either Party** for **such Party's** convenience without penalty or termination fee, but only upon fifteen (15) days' prior written notice to **the other Party**.
 
-**Rationale:** Balances termination rights between the parties.
+
+This Agreement (including any or all SOWs) may also be terminated by either Party for such Party's convenience without penalty or termination fee, but only upon fifteen (15) days' prior written notice to the other Party.
+
+
+**Rationale:** (std) Makes termination rights mutual.
 
 ---
 
@@ -136,10 +177,12 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > Developer agrees to execute, and to cause its personnel (if applicable) to execute, such documents and take such actions as Client may reasonably request to perfect, maintain, or enforce Client's rights in the Deliverables.
 
-**Proposed:**
-> Developer agrees to execute, and to cause its personnel (if applicable) to execute, such documents and take such actions as Client may reasonably request to perfect, maintain, or enforce Client's rights in the Deliverables. **Client shall provide Developer with reasonable advance notice of any such request, and if such request is made more than six (6) months after termination of this Agreement, Client shall compensate Developer at Developer's then-current hourly rate for time spent responding to such request.**
 
-**Rationale:** Standard practice to compensate for post-termination administrative assistance. Ensures continued cooperation while providing reasonable terms for both parties.
+
+Developer agrees to execute, and to cause its personnel (if applicable) to execute, such documents and take such actions as Client may reasonably request to perfect, maintain, or enforce Client's rights in the Deliverables. Client shall provide Developer with reasonable advance notice of any such request, and if such request is made more than six (6) months after termination of this Agreement, Client shall compensate Developer at Developer's then-current hourly rate for time spent responding to such request.
+
+
+**Rationale:** (std) Compensates for post-termination administrative assistance.
 
 ---
 
@@ -152,7 +195,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > For the avoidance of doubt, nothing in this Section 5(d) shall restrict Developer's use of general programming skills, knowledge, techniques, or experience gained during the performance of Services, provided that Developer does not use or disclose any Confidential Client Information.
 
-**Rationale:** Standard "residual knowledge" clause in software development agreements. Does not diminish Client's IP protections; simply avoids unenforceable restrictions on general skills.
+**Rationale:** (std) "Residual knowledge" clause. Does not diminish Client's IP protections.
 
 ---
 
@@ -173,10 +216,12 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > Developer's obligations pursuant to this Section 6 shall indefinitely survive the expiration or earlier termination of the Engagement Letter.
 
-**Proposed:**
-> Developer's obligations pursuant to this Section 6 shall survive the expiration or earlier termination of the Engagement Letter **for a period of three (3) years; provided, however, that obligations with respect to trade secrets shall survive for so long as such information remains a trade secret under applicable law.**
 
-**Rationale:** Three years is industry standard for confidentiality obligations. Trade secrets remain protected indefinitely under applicable law regardless of contractual term.
+
+Developer's obligations pursuant to this Section 6 shall survive the expiration or earlier termination of the Engagement Letter for a period of three (3) years; provided, however, that obligations with respect to trade secrets shall survive for so long as such information remains a trade secret under applicable law.
+
+
+**Rationale:** (std) Three years. Trade secrets remain protected indefinitely under applicable law.
 
 ---
 
@@ -189,7 +234,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > Notwithstanding the foregoing, Developer may retain one (1) archival copy of Confidential Client Information solely for legal compliance and dispute resolution purposes, subject to Developer's ongoing confidentiality obligations.
 
-**Rationale:** Standard archival retention provision for legal compliance. Protects both parties by maintaining clear records in the event of disputes.
+**Rationale:** (std) Archival retention for legal compliance and dispute resolution.
 
 ---
 
@@ -201,7 +246,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(c) Client Representations and Warranties.** Client represents and warrants that: (i) it has full power and authority to enter into this Agreement; (ii) all Client Materials provided to Developer are owned by or properly licensed to Client, and do not infringe any third party's intellectual property rights; and (iii) Client will provide timely feedback, approvals, and decisions as reasonably necessary for Developer to perform the Services.
 
-**Rationale:** Balances warranties between the parties. Client should warrant that materials provided are legitimate.
+**Rationale:** (std) Mutual warranties. Client warrants materials provided are legitimate.
 
 ---
 
@@ -210,17 +255,18 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current (Section 7(b)):**
 > For a period of [twenty-four] months following Client's acceptance of the Deliverables, Developer shall, at no additional charge, correct any reproducible defect or nonconformity in the Deliverables reported by Client, provided that such defect or nonconformity is not caused by Client's misuse or unauthorized modification.
 
-**Proposed replacement:**
 
-> For a period of **sixty (60) days** following **Developer's delivery of each Deliverable (or, if applicable, Client's written acceptance thereof)**, Developer shall, at no additional charge, correct any reproducible defect or nonconformity in the Deliverables reported by Client, **subject to the following conditions:**
->
-> **(i)** The defect or nonconformity must exist in the Deliverable as delivered by Developer and must not result from: (A) Client's misuse, unauthorized modification, or combination with other software or services not provided by Developer; (B) changes to third-party platforms, APIs, libraries, or services outside Developer's control; (C) modifications made by anyone other than Developer after delivery; or (D) use of the Deliverable in an environment other than that specified by Developer.
->
-> **(ii) Client bears the burden of demonstrating** that the reported defect existed in the Deliverable as originally delivered.
->
-> **(iii)** Developer shall have no warranty obligations with respect to any Deliverable that Client has modified or permitted others to modify without Developer's written consent.
 
-**Rationale:** Industry standard warranty period for software is 30-90 days. Extended periods are impractical given rapid technology changes and third-party dependencies. Clear burden allocation reduces disputes.
+For a period of sixty (60) days following Developer's delivery of each Deliverable (or, if applicable, Client's written acceptance thereof), Developer shall, at no additional charge, correct any reproducible defect or nonconformity in the Deliverables reported by Client, subject to the following conditions:
+
+(i) The defect or nonconformity must exist in the Deliverable as delivered by Developer and must not result from: (A) Client's misuse, unauthorized modification, or combination with other software or services not provided by Developer; (B) changes to third-party platforms, APIs, libraries, or services outside Developer's control; (C) modifications made by anyone other than Developer after delivery; or (D) use of the Deliverable in an environment other than that specified by Developer.
+
+(ii) Client bears the burden of demonstrating that the reported defect existed in the Deliverable as originally delivered.
+
+(iii) Developer shall have no warranty obligations with respect to any Deliverable that Client has modified or permitted others to modify without Developer's written consent.
+
+
+**Rationale:** (std) Warranty period 30-90 days for software. Extended periods impractical given technology changes and third-party dependencies.
 
 ---
 
@@ -247,7 +293,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 >
 > (iv) claims arising from Client's specifications or requirements that necessarily result in infringement.
 
-**Rationale:** Standard exclusion for third-party components. Developer cannot control third-party software behavior or be liable for Client-specified requirements.
+**Rationale:** (std) Exclusion for third-party components. Developer cannot control third-party software behavior.
 
 ---
 
@@ -256,8 +302,10 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > Developer's obligations pursuant to this Section 8 shall indefinitely survive the expiration or earlier termination of the Engagement Letter.
 
-**Proposed:**
-> Developer's obligations pursuant to this Section 8 shall survive the expiration or earlier termination of the Engagement Letter **for a period of three (3) years.**
+
+
+Developer's obligations pursuant to this Section 8 shall survive the expiration or earlier termination of the Engagement Letter for a period of three (3) years.
+
 
 **Rationale:** Indefinite indemnification is unreasonable. Three years allows reasonable time for claims to surface while limiting long-term exposure.
 
@@ -279,7 +327,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(f) Indemnification Procedures.** The indemnified Party shall: (i) promptly notify the indemnifying Party of any claim; (ii) give the indemnifying Party sole control of the defense and settlement; and (iii) provide reasonable cooperation at the indemnifying Party's expense. The indemnifying Party shall not settle any claim in a manner that admits liability or imposes obligations on the indemnified Party without such Party's prior written consent.
 
-**Rationale:** Standard indemnification procedure language protects both parties.
+**Rationale:** (std) Indemnification procedures.
 
 ---
 
@@ -290,10 +338,12 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current (appears twice in 10(a) and 10(b)):**
 > Except for liability arising from (a) Developer's intellectual property indemnity obligations, (b) Developer's breach of its confidentiality obligations, or (c) Developer's gross negligence or willful misconduct
 
-**Proposed:**
-> Except for liability arising from Developer's gross negligence or willful misconduct
 
-**Rationale:** With IP indemnity separately capped (Change 14), maintaining additional unlimited exceptions would create inconsistent liability treatment. Standard practice reserves unlimited liability only for intentional misconduct.
+
+Except for liability arising from Developer's gross negligence or willful misconduct
+
+
+**Rationale:** IP indemnity separately capped (Change 14). (std) Unlimited liability reserved for intentional misconduct only.
 
 ---
 
@@ -303,7 +353,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(c) Mutual Application.** The limitations of liability set forth in this Section 10 shall apply equally to both Parties. In no event shall either Party's aggregate liability to the other Party exceed the total amounts paid or payable by Client to Developer under this Agreement.
 
-**Rationale:** Mutual liability caps are standard in commercial agreements and provide balanced risk allocation for both parties.
+**Rationale:** (std) Mutual liability caps.
 
 ---
 
@@ -312,8 +362,10 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current (Section 10(b)):**
 > ...in no event shall Developer be liable for any lost data or content, lost profits, business interruption...
 
-**Proposed:**
-> ...in no event shall **either Party** be liable **to the other** for any lost data or content, lost profits, business interruption or for any indirect, incidental, special, consequential, exemplary or punitive damages...
+
+
+...in no event shall either Party be liable to the other for any lost data or content, lost profits, business interruption or for any indirect, incidental, special, consequential, exemplary or punitive damages...
+
 
 **Rationale:** Consequential damages waiver should be mutual.
 
@@ -326,19 +378,20 @@ These proposed changes seek to formalize the existing working arrangement, clari
 **Current:**
 > The Engagement Letter shall be governed by and construed in accordance with the laws of the State of Louisiana, without giving effect to conflicts of law principles. Any controversy, claim or dispute between the Parties relating to the Engagement Letter or the Services shall be heard in any court of competent jurisdiction situated in Baton Rouge, Louisiana.
 
-**Proposed replacement:**
 
-> **11. Governing Law and Dispute Resolution.**
->
-> **(a) Governing Law.** This Agreement shall be governed by and construed in accordance with the laws of the State of Louisiana, without giving effect to conflicts of law principles.
->
-> **(b) Informal Resolution.** Before initiating any formal dispute resolution, the Parties agree to attempt in good faith to resolve any dispute through informal negotiation. Either Party may initiate informal negotiations by providing written notice to the other Party describing the dispute. The Parties shall meet (in person or by video conference) within fourteen (14) days of such notice to attempt resolution.
->
-> **(c) Arbitration.** Any dispute not resolved through informal negotiation within thirty (30) days shall be resolved by binding arbitration administered by the American Arbitration Association ("AAA") in accordance with its Commercial Arbitration Rules. The arbitration shall be conducted by a single arbitrator mutually agreed upon by the Parties, or if the Parties cannot agree, selected by the AAA. The arbitration may be conducted remotely by video conference. The arbitrator's decision shall be final and binding, and judgment on the award may be entered in any court of competent jurisdiction.
->
-> **(d) Costs.** Each Party shall bear its own attorneys' fees and costs in any dispute resolution proceeding, and the Parties shall share equally the fees and expenses of the arbitrator.
->
-> **(e) Small Claims Exception.** Notwithstanding the foregoing, either Party may bring an action in small claims court for disputes within the jurisdictional limits of such court.
+
+11. Governing Law and Dispute Resolution.
+
+(a) Governing Law. This Agreement shall be governed by and construed in accordance with the laws of the State of Louisiana, without giving effect to conflicts of law principles.
+
+(b) Informal Resolution. Before initiating any formal dispute resolution, the Parties agree to attempt in good faith to resolve any dispute through informal negotiation. Either Party may initiate informal negotiations by providing written notice to the other Party describing the dispute. The Parties shall meet (in person or by video conference) within fourteen (14) days of such notice to attempt resolution.
+
+(c) Arbitration. Any dispute not resolved through informal negotiation within thirty (30) days shall be resolved by binding arbitration administered by the American Arbitration Association ("AAA") in accordance with its Commercial Arbitration Rules. The arbitration shall be conducted by a single arbitrator mutually agreed upon by the Parties, or if the Parties cannot agree, selected by the AAA. The arbitration may be conducted remotely by video conference. The arbitrator's decision shall be final and binding, and judgment on the award may be entered in any court of competent jurisdiction.
+
+(d) Costs. Each Party shall bear its own attorneys' fees and costs in any dispute resolution proceeding, and the Parties shall share equally the fees and expenses of the arbitrator.
+
+(e) Small Claims Exception. Notwithstanding the foregoing, either Party may bring an action in small claims court for disputes within the jurisdictional limits of such court.
+
 
 **Rationale:** Arbitration is faster, cheaper, and can be conducted remotely. More practical for cross-border disputes between Canadian corporation and U.S. client. Louisiana law retained as governing law.
 
@@ -352,7 +405,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(e) No Personal Liability.** Fraser Gorrie is signing this Agreement solely in his capacity as an officer and employee of The Technifar Corporation. Nothing in this Agreement shall be construed to impose any personal liability on Fraser Gorrie individually, and Client agrees to look solely to The Technifar Corporation for performance of Developer's obligations hereunder.
 
-**Rationale:** Clarifies that obligations run to the corporate entity, which is standard when contracting with corporations.
+**Rationale:** (std) Obligations run to the corporate entity.
 
 ---
 
@@ -372,7 +425,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(g) Assignment.** Neither Party may assign this Agreement or any rights or obligations hereunder without the prior written consent of the other Party; provided, however, that Client may assign this Agreement to any successor entity in connection with a merger, acquisition, or sale of all or substantially all of Client's assets, upon written notice to Developer.
 
-**Rationale:** Standard assignment restriction with customary exception for corporate transactions.
+**Rationale:** (std) Assignment restriction with customary exception for corporate transactions.
 
 ---
 
@@ -382,7 +435,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(h) Severability.** If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect, and the invalid provision shall be modified to the minimum extent necessary to make it valid and enforceable.
 
-**Rationale:** Standard protective clause ensuring one invalid provision doesn't void entire agreement.
+**Rationale:** (std) One invalid provision doesn't void entire agreement.
 
 ---
 
@@ -392,7 +445,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(i) Waiver.** The failure of either Party to enforce any provision of this Agreement shall not constitute a waiver of such Party's right to enforce such provision or any other provision in the future.
 
-**Rationale:** Standard clause preventing waiver by non-enforcement.
+**Rationale:** (std) Non-enforcement does not waive future enforcement.
 
 ---
 
@@ -412,7 +465,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **(k) Change of Control.** This Agreement reflects a working relationship built on mutual trust and direct communication between the Parties. In the event of a material change in Client's ownership or management structure, either Party may request renegotiation of this Agreement's terms.
 
-**Rationale:** Standard provision acknowledging that service agreements often depend on the specific individuals involved. Provides flexibility for both parties if circumstances change.
+**Rationale:** (std) Service agreements often depend on specific individuals involved.
 
 ---
 
@@ -441,7 +494,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **14. Client Cooperation.** Client acknowledges that Developer's ability to perform the Services depends on Client's timely cooperation. Client agrees to provide timely access to Client Materials, systems, accounts, and personnel reasonably necessary for Developer to perform the Services. If project timelines are affected by scheduling conflicts or response delays on either side, the Parties agree to adjust deadlines accordingly through mutual discussion.
 
-**Rationale:** Clarifies mutual responsibilities and ensures smooth project execution. Standard provision to avoid disputes arising from communication delays.
+**Rationale:** (std) Clarifies mutual responsibilities.
 
 ---
 
@@ -449,7 +502,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **15. Portfolio Rights.** Upon completion of the project or with Client's prior written consent, Developer may include a general description of the Services performed and non-confidential screenshots or descriptions of the Deliverables in Developer's portfolio, website, and marketing materials for the purpose of showcasing Developer's work to prospective clients. Developer shall not disclose Confidential Client Information in such materials without Client's prior written approval.
 
-**Rationale:** Standard provision in creative services agreements. Developer may reference work publicly only with Client consent and without disclosing confidential information.
+**Rationale:** (std) Developer may reference work publicly only with Client consent.
 
 ---
 
@@ -457,7 +510,7 @@ These proposed changes seek to formalize the existing working arrangement, clari
 
 > **16. Force Majeure.** Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including but not limited to acts of God, natural disasters, war, terrorism, riots, epidemics, pandemics, government actions, power failures, internet or telecommunications failures, or failures of third-party service providers. The affected Party shall promptly notify the other Party and use reasonable efforts to mitigate the impact of the force majeure event.
 
-**Rationale:** Standard clause protecting both parties from liability for events outside their control.
+**Rationale:** (std) Neither party liable for events outside their control.
 
 ---
 

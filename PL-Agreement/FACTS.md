@@ -7,9 +7,12 @@ This document captures facts and pertinent information gathered during agreement
 ## Project Timeline
 
 - **Introductory meeting**: November 11, 2025
-- **Agreement draft date**: December 16, 2025
+- **Agreement draft date**: December 16, 2025 (Butler Snow Draft)
 - **Analysis start date**: December 18, 2025
-- **Project duration so far**: ~5 weeks
+- **Proposed changes sent**: December 18, 2025
+- **Lawyer's composite revisions received**: December 29, 2025
+- **Developer's response drafted**: December 30, 2025
+- **Project duration so far**: ~7 weeks
 
 ---
 
@@ -28,7 +31,20 @@ This document captures facts and pertinent information gathered during agreement
 
 - **Project name**: PeerLoop (formerly Alpha Peer)
 - **Type**: Web application / online educational platform
-- **Client entity**: Alpha Peer, LLC (Delaware LLC)
+- **Client entity**: Alpha Peer, LLC
+
+### Alpha Peer, LLC Business Registration
+
+| Detail | Delaware Entity | Louisiana Entity |
+|--------|-----------------|------------------|
+| Formation Date | September 5, 2025 | September 12, 2025 |
+| Address | 1209 Orange St, Wilmington, DE | 37459 Ultima Plaza Ste B #123, Prairieville, LA |
+| Registered Agent | The Corporation Trust Company | Brian Leblanc |
+| File Number | 10322377 | 46659892Q |
+
+*Source: Bizapedia, retrieved December 30, 2025*
+
+**Note:** Company is very new (~4 months old). No litigation history found in public searches.
 
 ### Development Status
 
@@ -134,11 +150,49 @@ This document captures facts and pertinent information gathered during agreement
 
 ---
 
+## Agreement Negotiation Status
+
+### Current Status (as of December 30, 2025)
+
+**Near final.** Lawyer's composite revisions (12.29.25) accepted majority of Developer's proposed changes.
+
+### Items Remaining Before Signing
+
+| Item | Section | Status |
+|------|---------|--------|
+| Dispute Resolution | 11(c)-(d) | Developer requesting: prevailing party fees + remote proceedings |
+| Non-Competition | 12(j) | Developer requesting clarification on duration of "thereafter" |
+| Notice Address | 13 | Minor edit: remove brackets from Developer email |
+
+### Key Wins for Developer in 12.29.25 Draft
+
+- **Mutual termination rights** - Either party can terminate for convenience
+- **Warranty work billable** - Bug fixes done through paid SOW, not free
+- **3-year confidentiality limit** - Not indefinite
+- **IP indemnity capped at 2x** - Not unlimited
+- **Client indemnification added** - Mutual protection
+- **Change of Control exit rights** - Can terminate/renegotiate if ownership changes
+- **No Personal Liability clause** - Fraser protected from personal liability
+- **Non-compete period removed** - Lawyer struck the 2-year post-termination restriction (though "thereafter" needs clarification)
+
+### Items Developer Accepted (Lawyer's Changes)
+
+- Louisiana courts instead of arbitration (with proposed modifications)
+- Expenses must be identified in SOW upfront
+- Cannot exit mid-SOW without Client consent
+- Portfolio rights require prior written consent
+- Detailed indemnification procedures
+- Gross negligence/willful misconduct excluded from liability caps
+
+---
+
 ## Other Notes
 
 - Brian wants to ensure no hurdles to securing investors who may want ownership in the business/software
 - Agreement was drafted by Brian's lawyer (Butler Snow) from Brian's perspective
 - Fraser does not currently have a lawyer
+- **Brian's email**: bjleblanc@gmail.com
+- **Fraser's email for agreement**: fraser@meristics.com
 
 ### Developer's Approach to Client Relationships
 
