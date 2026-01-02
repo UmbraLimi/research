@@ -60,6 +60,14 @@
 
 ---
 
+## Workflow & Process
+
+*How do you like to work? (e.g., research first then write, outline before drafting, iterative revisions, etc.) Any phases or milestones you already envision?*
+
+
+
+---
+
 ## Technical Aspects
 
 *If the topic involves technology, tools, or technical concepts—what are they?*
