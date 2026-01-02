@@ -49,27 +49,105 @@ Output is markdown text (not files) that I copy-paste into Obsidian notes.
 
 ## Output Format
 
-Markdown text block ready to paste into Obsidian. Target structure:
+Markdown text block ready to paste into Obsidian Daily Notes. Target structure:
 
 ```markdown
-## Summary
-[2-3 sentence impact summary: what this thread is about and why it matters]
+### 💬 Slack • 🟠 Project Name • #channel • 10:17
+- `Via   `:: [[Slack • AIM • #channel]]
+- `Who   `:: [[Person1]], [[Person2]], [[Person3]] (mentioned)
+- `Times `:: 10:17 - 10:45
+- `Focus `:: Brief summary with [[glossary terms]] linked
 
-## Decisions Needed
-- [ ] [Decision or action required of me]
-- [ ] [Another decision...]
+#### Discussion
+- Key point with [[wiki-links]] applied
+- Another key point (audio)
+- Attachment: `filename.png` — description
+- Link: Description — `https://...`
 
-## Watching For
-- [ ] [Task someone else committed to] — @person, expected by [date if mentioned]
-- [ ] [Another expected deliverable...]
-
-## Key Points
-- [Important detail 1]
-- [Important detail 2]
+#### Tasks
+- [ ] My commitment task 🔺 ⏳ 2025-12-20
+- [ ] Decide: Decision needed (context) 🔺
+- [ ] [[expect]] - [[Person]] to deliver X by timeframe
 
 ---
-Source: [platform] | Date: [date range] | Participants: [names]
 ```
+
+**Format notes:**
+- Header: Level 3 (`###`) with platform emoji, project emoji+name, channel, start time
+- Metadata: Dataview inline fields (`key::`) with wiki-links
+- Discussion: Key points, attachments, links as bullets
+- Tasks: My commitments (🔺), decisions (`Decide:` + 🔺), watching (`[[expect]]`)
+- Omit Tasks section entirely if no tasks identified
+
+---
+
+## Extraction Schema
+
+Skills must internally construct this JSON structure before formatting as markdown. This ensures consistent extraction across platforms and enables future output format flexibility.
+
+```json
+{
+  "attachments": [
+    {
+      "type": "file | image | audio",
+      "filename": "document.pdf",
+      "description": "Brief description of content",
+      "person": "@Name (for audio only)",
+      "time": "10:53 AM (for audio only)",
+      "duration": "0:50 (for audio only)"
+    }
+  ],
+  "links": [
+    {
+      "description": "Zoom meeting link",
+      "url": "https://..."
+    }
+  ],
+  "summary": "2-3 sentence impact summary",
+  "my_commitments": [
+    {
+      "task": "What Fraser agreed/offered to do",
+      "deadline": "Friday (if mentioned)"
+    }
+  ],
+  "decisions_needed": [
+    {
+      "task": "Specific decision or action required",
+      "context": "Additional context if relevant"
+    }
+  ],
+  "watching_for": [
+    {
+      "task": "What someone committed to do",
+      "person": "@Name",
+      "expected": "EOW (timeframe if mentioned)"
+    }
+  ],
+  "key_points": [
+    {
+      "point": "Specific assertion or commitment made",
+      "from_audio": false
+    }
+  ],
+  "participants": [
+    {
+      "name": "@Name",
+      "mentioned_only": false
+    }
+  ],
+  "source": {
+    "platform": "slack | telegram | email",
+    "channel": "#channel-name or thread subject",
+    "date_range": "Jan 2-3, 2026"
+  }
+}
+```
+
+**Schema rules:**
+- Omit empty arrays (don't include `"attachments": []`)
+- `from_audio: true` marks key points derived from audio transcript
+- `mentioned_only: true` for participants referenced but not present
+- Deadlines/timeframes only when explicitly stated in thread
 
 ---
 

@@ -47,7 +47,40 @@ Screenshots capture completion signals (like "Sent." or reactions) that text sel
 
 ## Pre-Processing Checks
 
-**Before processing, check for missing content:**
+**First, identify the source channel and date:**
+
+Check if the screenshot includes:
+- **Channel:** Message input placeholder (e.g., "Message 🔒translation-system")
+- **Date:** Date picker/header in the screenshot
+
+If either is missing, ask the user before processing:
+- "What channel is this from?" (show numbered list below)
+- "What date is this thread from?"
+
+If channel is visible but not in the reference list, ask which Via to use.
+
+```
+Which channel is this thread from?
+
+**CFU Workspace:**
+1. ai-dev (🔵 UBT)
+2. dj-dev (🔵 DJ)
+3. dtub-dev (🔵 DTUB)
+4. dev-works (🔵 CFU-W)
+5. translation-system (🟢 XLATE)
+6. CFU DM Gabriel
+
+**AIM Workspace:**
+7. peer-loop-team (🟠 Peer Loop)
+8. AIM DM Brian
+9. AIM DM Gabriel
+
+(Enter number or name)
+```
+
+Map their response to the Via link and Project from `slack-reference.md`.
+
+**Then check for missing content:**
 
 1. **Thread replies:** If you see "1 reply" or "X replies" under a message but no Thread panel is visible on the right side of the image, STOP and output:
    ```
@@ -80,93 +113,132 @@ Screenshots capture completion signals (like "Sent." or reactions) that text sel
    ```
    Capture meeting links, shared docs, resources. Truncate long URLs but keep them recognizable.
 
+## Reference Data
+
+**Before formatting, read `.claude/commands/slack-reference.md`** for lookup tables:
+- **Projects** — channel → project name + emoji
+- **Channels → Via** — channel → wiki-link for Via field
+- **People** — name variations → wiki-links
+- **Glossary** — terms → wiki-links (apply to Discussion and Focus)
+
 ## Your Task
 
-Analyze the thread and produce a markdown block with these sections:
+**Step 1: Extract to JSON (internal)**
 
-### 1. Summary (2-3 sentences)
-What is this thread about? Why does it matter? Focus on impact, not just content.
+Mentally construct the extraction schema defined in PURPOSE.md:
+- `attachments[]` — files, images, audio with metadata
+- `links[]` — URLs shared in thread
+- `summary` — brief impact summary (becomes Focus)
+- `my_commitments[]` — tasks Fraser agreed/offered to do, with deadline if mentioned
+- `decisions_needed[]` — actions required of Fraser, with context
+- `watching_for[]` — commitments others made, with person and expected timeframe
+- `key_points[]` — specific assertions/commitments (mark `from_audio: true` if from transcript)
+- `participants[]` — who's in the thread (mark `mentioned_only: true` if referenced but not present)
+- `source{}` — platform, channel, time range
 
-### 2. My Commitments
-Tasks **Fraser Gorrie agreed to do or offered to do**.
-- Things Fraser said he would do ("I'll report back", "I'll check on this")
-- Use `- [ ]` checkbox format
-- If none, write "None identified"
+**Step 2: Apply Reference Lookups**
 
-### 3. Decisions Needed
-Actions or decisions required **of Fraser Gorrie specifically**.
-- Only include items where Fraser needs to decide or act
-- Use `- [ ]` checkbox format
-- Be specific about what's needed
-- If none, write "None identified"
+Using slack-reference.md:
+1. Look up channel → get Project name and emoji (omit if no match)
+2. Look up channel → get Via wiki-link (default: `[[Slack • <channel>]]`)
+3. Convert participant names → wiki-links where matched
+4. Replace glossary terms → wiki-links in Discussion and Focus text
 
-### 4. Watching For
-Commitments or tasks **others** said they would do.
-- Include the person's name with @
-- Include expected date/timeframe if mentioned
-- Use `- [ ]` checkbox format
-- If none, write "None identified"
+**Step 3: Format as Markdown**
 
-### 5. Key Points
-Capture **specific assertions and commitments** people made—not just what happened.
-- Quote or paraphrase key statements that matter (e.g., **"Don't worry about the budget"**)
-- Highlight commitments, constraints cleared, requirements stated
-- Note status confirmations with evidence (e.g., "Sent to Carlos, 👍 by Fraser")
-- If a key point derives from audio transcript, add **(audio)** at the end
-- 3-5 bullet points max
-- Skip generic summaries—capture what was actually said/claimed
+Build the Daily Notes structure:
 
-### 6. Participants
-List unique participants in the thread.
-- Format: `@Name` for each person
-- Include people mentioned but not present (e.g., "@Carlos (mentioned)")
-- Order: active participants first, then mentioned
+### Header (level 3)
+`### 💬 Slack • [emoji] [Project] • [channel/DM] • [start time]`
+- Omit project and emoji if no match in reference
+- Use channel name or "DM Name" for DMs
 
-### 7. Source metadata
-Single line: `Source: Slack (#channel-name) | Date: [date range from thread]`
+### Metadata Block
+```
+- `Via   `:: [[Slack • ...]]
+- `Who   `:: [[Person1]], [[Person2]], [[Person3]] (mentioned)
+- `Date  `:: YYYY-MM-DD
+- `Times `:: HH:MM - HH:MM
+- `Focus `:: Brief summary with [[glossary terms]] linked
+```
+- Date: helps verify paste into correct Daily Note
+- Who: comma-separated wiki-links; append `(mentioned)` for mentioned_only participants
+- Focus: one line summary with glossary wiki-links applied
+
+### Discussion Section (level 4)
+`#### Discussion`
+- Key points as bullets
+- Append `(audio)` if from_audio is true
+- Include attachments as bullets: `- Attachment: \`filename.png\` — description`
+- Include links as bullets: `- Link: description — \`https://...\``
+- Apply glossary wiki-links to text
+- 3-5 bullets max
+
+### Tasks Section (level 4)
+`#### Tasks`
+Format by type:
+- **My commitments**: `- [ ] task description 🔺 ⏳ YYYY-MM-DD` (date only if deadline mentioned)
+- **Decisions needed**: `- [ ] Decide: task description (context) 🔺`
+- **Watching for**: `- [ ] [[expect]] - [[Person]] to do X by timeframe`
+
+**Always include the Tasks section**, even if empty (write "None" if no tasks).
+
+**Be aggressive about inferring tasks** — better to identify implied tasks that can be deleted than miss ones the user didn't catch. Examples of implied tasks:
+- If someone sends something to a third party for action, watch for that action to complete
+- If a meeting was discussed but not scheduled, that's a decision/commitment needed
+- If someone said "I'll look into it" without a deadline, still track it
+
+### Separator
+End with `---`
 
 ## Output Format
 
+**IMPORTANT:** Wrap the entire output in a fenced code block (` ```markdown ... ``` `) so the user can copy raw markdown that pastes correctly into Obsidian.
+
+Output this structure:
+
+~~~
 ```markdown
-**Attachments:** (if any)
-1. `filename.png` — [description]
-2. Audio (@person, 10:53 AM, 0:50) — [description or key quote]
-
-**Links:** (if any)
-- Zoom meeting: `https://events.zoom.us/[...]`
-- Shared doc: `https://docs.google.com/[...]`
-
-## Summary
-[Your 2-3 sentence summary]
-
-## My Commitments
-- [ ] [Task Fraser agreed/offered to do]
-
-## Decisions Needed
-- [ ] [Specific decision or action for Fraser]
-
-## Watching For
-- [ ] [What someone committed to] — @person, expected [timeframe]
-
-## Key Points
-- [Key detail 1]
-- [Key detail 2] (audio)
-
-## Participants
-@Name1, @Name2, @Name3 (mentioned)
-
+### 💬 Slack • 🟠 Peer Loop • #peerloop-general • 10:17
+- `Via   `:: [[Slack • AIM • #peerloop-general]]
+- `Who   `:: [[Brian LeBlanc]], [[Sarah Chen]], Carlos (mentioned)
+- `Date  `:: 2025-12-31
+- `Times `:: 10:17 - 10:45
+- `Focus `:: [[Cloudflare]] setup for [[Peer Loop]] landing page
+#### Discussion
+- [[Brian LeBlanc]] available today to walk through setup
+- Current landing page hosted on [[Cloudflare]] Pages
+- Need dashboard access to configure DNS (audio)
+- Attachment: `architecture.png` — diagram of current setup
+- Link: Cloudflare docs — `https://developers.cloudflare.com/[...]`
+#### Tasks
+- [ ] Get [[Cloudflare]] dashboard access from [[Brian LeBlanc]] 🔺 ⏳ 2025-12-20
+- [ ] Decide: Use subdomain or main domain? (affects SSL config) 🔺
+- [ ] [[expect]] - [[Brian LeBlanc]] to send login credentials by EOD
 ---
-Source: Slack (#channel-name) | Date: [dates]
 ```
+~~~
+
+**Note:** No blank lines between sections — CSS handles vertical spacing via headings.
 
 ## Guidelines
 
+**First-person narrative for Fraser:**
+- When summarizing what Fraser said/did, use "I" not "[[Fraser Gorrie]]"
+- Example: "I requested Advanced Papers 3, 4, and 9 be sent to Carlos"
+- When others reference Fraser, use judgment on how to summarize
+
+**Task identification:**
 - Distinguish "FYI" from "action required"
-- If someone asks Fraser a question, that's a decision/action needed
-- If Fraser said "I'll do X" or "I'll check on Y", that's "My Commitments"
-- If Fraser asked someone to do something and they agreed, that's "Watching For"
-- Capture deadlines explicitly when mentioned
-- Keep it scannable—this goes into Obsidian for quick reference
+- If someone asks Fraser a question, that's a decision needed → `Decide:` task
+- If Fraser said "I'll do X" or "I'll check on Y" → My commitment with 🔺
+- If Fraser asked someone to do something and they agreed → `[[expect]]` task
+- Capture deadlines explicitly with `⏳ YYYY-MM-DD` format
+
+**Formatting:**
+- Apply wiki-links from reference tables to all people and glossary terms
+- Keep Focus to one line—detailed points go in Discussion
+- Keep it scannable—this goes into Obsidian Daily Notes
 
 ---
 

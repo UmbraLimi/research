@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**Phase 1.2** — Testing Slack skill
+**Phase 1.3** — Validate Slack skill in practice
 
 ---
 
@@ -21,10 +21,25 @@
 - [x] Add My Commitments section
 - [x] Add Participants section
 - [x] Add (audio) annotation for transcript-derived key points
-- [ ] Specify exact markdown file format for thread output
+- [x] Specify exact markdown file format for thread output
+  - Added JSON extraction schema to PURPOSE.md
+  - Skill now uses two-step process: extract to schema → format as markdown
+  - Output wrapped in code block for clean copy-paste to Obsidian
+- [x] Integrate with Obsidian Daily Notes format
+  - Created `slack-reference.md` for lookup tables (projects, channels, people, glossary)
+  - Output matches Daily Notes structure: `### 💬 Slack •` header, metadata block, Discussion, Tasks
+  - Task formatting: 🔺 for commitments/decisions, `[[expect]]` for watching
+  - Wiki-links auto-applied from reference tables
+  - Dataview inline fields (`Via::`, `Who::`, `Date::`, `Times::`, `Focus::`)
+  - First-person narrative for Fraser ("I" not `[[Fraser Gorrie]]`)
+  - Compact output (no blank lines between sections — CSS handles spacing)
+  - DM header format: `### 💬 Slack • Name DM • time` (no project emoji)
+  - Channel/date detection from screenshot input placeholder
+  - Aggressive task inference (better to over-identify than miss)
+  - Always include Tasks section (even if empty)
 
 ### 1.3 Validate in practice
-- [ ] Use skill on 3-5 real threads
+- [ ] Use skill on 3-5 real threads (1 done: translation-system 2025-12-31)
 - [ ] Paste results into Obsidian, evaluate usefulness
 - [ ] Document what works and what needs adjustment
 
@@ -57,6 +72,14 @@
 |----------|--------|-----------|
 | Skill architecture | Per-platform | Tailored prompts for each format |
 | User identification | Hardcoded "Fraser Gorrie" | Zero friction, update if needed |
+| Output format | Daily Notes integration | Matches existing manual format, uses Dataview fields |
+| Reference data | Separate `slack-reference.md` file | User can edit mappings without touching skill logic |
+| Task markers | 🔺 for priority, `[[expect]]` for watching | Consistent with user's Obsidian Tasks setup |
+| Narrative voice | First-person for Fraser | More natural in personal Daily Notes |
+| Task inference | Aggressive (over-identify) | Better to delete unwanted than miss important |
+| Tasks section | Always include (even if empty) | Consistent format |
+| Section spacing | No blank lines | CSS handles vertical spacing via headings |
+| DM format | Person name, no project emoji | DMs don't belong to projects |
 
 ## Open Decisions
 
