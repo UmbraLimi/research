@@ -113,6 +113,13 @@ Map their response to the Via link and Project from `slack-reference.md`.
    ```
    Capture meeting links, shared docs, resources. Truncate long URLs but keep them recognizable.
 
+5. **Multi-day threads:** If the thread spans multiple days (date separators visible like "December 2nd, 2025" then "December 3rd, 2025"), produce **separate outputs for each day**. Each day becomes its own Daily Notes entry with:
+   - Its own header and start time
+   - Its own `Date::` (single date, not a range)
+   - Its own Discussion and Tasks
+
+   This allows pasting each block into its respective Daily Note. Even if the conversation is continuous, split by calendar day.
+
 ## Reference Data
 
 **Before formatting, read `.claude/commands/slack-reference.md`** for lookup tables:
@@ -169,10 +176,22 @@ Build the Daily Notes structure:
 `#### Discussion`
 - Key points as bullets
 - Append `(audio)` if from_audio is true
-- Include attachments as bullets: `- Attachment: \`filename.png\` — description`
-- Include links as bullets: `- Link: description — \`https://...\``
+- Reference attachments/links inline where contextually relevant
 - Apply glossary wiki-links to text
 - 3-5 bullets max
+
+### Attachments Section (level 4) — optional
+`#### Attachments`
+- Inventory of files, images, or audio shared in thread
+- Format: `- \`filename.png\` — brief description`
+- For audio: `- Audio (@person, HH:MM, duration) — brief description or key quote`
+- Omit section entirely if no attachments
+
+### Links Section (level 4) — optional
+`#### Links`
+- Inventory of URLs shared in thread
+- Format: `- Description — \`https://...\`` (truncate long URLs with `[...]`)
+- Omit section entirely if no links
 
 ### Tasks Section (level 4)
 `#### Tasks`
@@ -208,13 +227,58 @@ Output this structure:
 #### Discussion
 - [[Brian LeBlanc]] available today to walk through setup
 - Current landing page hosted on [[Cloudflare]] Pages
-- Need dashboard access to configure DNS (audio)
-- Attachment: `architecture.png` — diagram of current setup
-- Link: Cloudflare docs — `https://developers.cloudflare.com/[...]`
+- Need dashboard access to configure DNS — shared `architecture.png` showing current setup (audio)
+- [[Brian LeBlanc]] pointed to [[Cloudflare]] docs for SSL config
+#### Attachments
+- `architecture.png` — diagram of current hosting setup
+- Audio (@Brian, 10:32, 1:15) — explains DNS requirements
+#### Links
+- Cloudflare SSL docs — `https://developers.cloudflare.com/ssl/[...]`
 #### Tasks
 - [ ] Get [[Cloudflare]] dashboard access from [[Brian LeBlanc]] 🔺 ⏳ 2025-12-20
 - [ ] Decide: Use subdomain or main domain? (affects SSL config) 🔺
 - [ ] [[expect]] - [[Brian LeBlanc]] to send login credentials by EOD
+---
+```
+~~~
+
+**Multi-day example** — each day is a separate code block:
+
+~~~
+```markdown
+### 💬 Slack • 🟢 XLATE-Pilot • #translation-system • 10:30
+- `Via   `:: [[Slack • CFU • translation-system]]
+- `Who   `:: [[Gabriel Rymberg|Gabriel]], Carlos (mentioned)
+- `Date  `:: 2025-12-02
+- `Times `:: 10:30 - 14:27
+- `Focus `:: Coordinating [[Cloudflare]] Pages setup for translation review
+#### Discussion
+- I asked [[Gabriel Rymberg|Gabriel]] to set up [[Cloudflare]] Pages for translation review
+- [[Gabriel Rymberg|Gabriel]] shared "Get Started" screenshot, unsure how to proceed
+- Time zone conflict — rescheduled setup session to next day
+#### Attachments
+- `image.png` — [[Cloudflare]] Pages "Get Started" screen
+#### Tasks
+- [ ] [[expect]] - [[Gabriel Rymberg|Gabriel]] to do [[Cloudflare]] Pages setup together (next day)
+---
+```
+
+```markdown
+### 💬 Slack • 🟢 XLATE-Pilot • #translation-system • 01:11
+- `Via   `:: [[Slack • CFU • translation-system]]
+- `Who   `:: [[Gabriel Rymberg|Gabriel]], Carlos (mentioned)
+- `Date  `:: 2025-12-03
+- `Times `:: 01:11 - 12:42
+- `Focus `:: Carlos completed first translation review — positive feedback
+#### Discussion
+- [[Gabriel Rymberg|Gabriel]] praised review system and forwarded to Carlos
+- Carlos completed review — shared JSON file with edits
+#### Attachments
+- `human-edits-carlos-COMPLETE` — JSON with Carlos's completed review
+#### Links
+- Zoom events — `https://events.zoom.us/ejl/[...]`
+#### Tasks
+None
 ---
 ```
 ~~~

@@ -3,7 +3,11 @@
     "allow": [
       "Skill(par-decisions)",
       "Bash(git commit:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Skill(par-end-session)",
+      "Skill(par-timestamp)",
+      "Skill(par-prompts)",
+      "Skill(par-update)"
     ]
   }
 }
