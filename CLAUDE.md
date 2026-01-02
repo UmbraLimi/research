@@ -30,7 +30,7 @@ Two commit options available from any subfolder:
 
 | Command | Scope | Use when |
 |---------|-------|----------|
-| `/par-commit` | All changes in repo | Committing work across multiple projects |
+| `/repo-commit` | All changes in repo | Committing work across multiple projects |
 | `/r-commit` | Current folder only | Committing just this project's changes |
 
 Both commands are available from any project folder.
@@ -45,7 +45,7 @@ Commands are split between two locations:
 | `/par-resume` | Analyze PLAN.md and resume work |
 | `/par-update` | Update PLAN.md with progress |
 | `/par-end-session` | End session (learnings, prompts, optional commit) |
-| `/par-commit` | Stage and commit all changes |
+| `/repo-commit` | Stage and commit all changes |
 | `/par-learnings` | Document session learnings |
 | `/par-prompts` | Save session prompts |
 | `/par-timestamp` | Get current date/time |

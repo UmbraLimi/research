@@ -80,7 +80,7 @@ Commands are split between two locations:
 | `/par-resume` | Analyze PLAN.md and show current progress to resume work |
 | `/par-update` | Update PLAN.md with current progress (run frequently) |
 | `/par-end-session` | Full end-of-session workflow (learnings, prompts, optional commit) |
-| `/par-commit` | Stage and commit all changes in repo |
+| `/repo-commit` | Stage and commit all changes in repo |
 | `/par-learnings` | Document session learnings and insights |
 | `/par-prompts` | Save all user prompts from session for future reference |
 | `/par-timestamp` | Get current date/time (utility, called by other commands) |

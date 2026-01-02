@@ -34,7 +34,7 @@ See PURPOSE.md for the exact output format template and platform-specific consid
 | Command | Scope | Purpose |
 |---------|-------|---------|
 | `/r-commit` | This folder | Commit only Comm-Helpers changes |
-| `/par-commit` | All projects | Commit all repo changes |
+| `/repo-commit` | All projects | Commit all repo changes |
 | `/par-resume` | — | Load PLAN.md and continue work |
 | `/par-update` | — | Save progress to PLAN.md |
 | `/par-end-session` | — | Wrap up: learnings, prompts, optional commit |

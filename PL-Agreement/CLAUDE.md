@@ -93,4 +93,4 @@ Maintain `FACTS.md` as a living document of facts and pertinent information gath
 
 Two commit options:
 - `/r-commit` - Commit only this project's changes
-- `/par-commit` - Commit all changes across the repo
+- `/repo-commit` - Commit all changes across the repo

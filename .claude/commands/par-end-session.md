@@ -41,7 +41,7 @@ Next: [Next immediate task]
 
 Ready to commit?
 - /r-commit   → Commit only this project's changes
-- /par-commit → Commit all changes across the repo
+- /repo-commit → Commit all changes across the repo
 ```
 
 **Ask user** which commit scope they prefer, then execute the chosen command.

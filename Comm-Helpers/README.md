@@ -134,7 +134,7 @@ When you launch Claude Code from any project folder, you get:
 - `/par-resume` - Load PLAN.md and show where you left off
 - `/par-update` - Save progress to PLAN.md (run frequently!)
 - `/par-end-session` - Full wrap-up: learnings, prompts, optional commit
-- `/par-commit` - Stage and commit all changes in repo
+- `/repo-commit` - Stage and commit all changes in repo
 - `/par-learnings` - Document what you learned this session
 - `/par-prompts` - Save prompts used this session
 - `/par-timestamp` - Utility for other commands
@@ -165,7 +165,7 @@ Suggested prefix: Use `/r-` for project-specific commands to distinguish from pa
 
 - **PLAN.md is required for session commands** - Create it during setup (step 5). The `/par-resume` and `/par-update` commands expect this file.
 
-- **Two commit options** - Use `/r-commit` to commit only this project's changes, or `/par-commit` to commit all changes across the repo.
+- **Two commit options** - Use `/r-commit` to commit only this project's changes, or `/repo-commit` to commit all changes across the repo.
 
 - **Session files are auto-organized** - `/par-learnings` and `/par-prompts` create files in `docs/sessions/YYYY-MM/` automatically.
 
