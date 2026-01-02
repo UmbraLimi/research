@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Skill(par-decisions)"
+      "Skill(par-decisions)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)"
     ]
   }
 }

@@ -13,6 +13,7 @@ Execute the following steps in order:
 
 1. Execute `/par-learnings` command
 2. Execute `/par-prompts` command (if useful prompts were used this session)
+3. Execute `/par-decisions` command (if decisions were made this session)
 
 ## Step 2: Optional Documentation Update
 
@@ -29,8 +30,9 @@ Display summary and offer commit choices:
 ```
 ✅ Session Files Created
 
-Learnings: docs/sessions/2025-11/2025-11-16_14-30-00 Learnings.md
-Prompts:   docs/sessions/2025-11/2025-11-16_14-30-00 Prompts.md (if created)
+Learnings:  docs/sessions/2025-11/2025-11-16_14-30-00 Learnings.md
+Prompts:    docs/sessions/2025-11/2025-11-16_14-30-00 Prompts.md (if created)
+Decisions:  docs/sessions/2025-11/2025-11-16_14-30-00 Decisions.md (if created)
 
 Documentation: [Updated/Already current]
 
