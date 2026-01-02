@@ -5,23 +5,25 @@ argument-hint: ''
 
 # End Session Workflow
 
-**Purpose:** Simplified end-of-session workflow that captures learnings and documents work. Creates session files and optionally updates documentation before committing.
+**Purpose:** End-of-session workflow that captures learnings, updates PLAN.md, and commits. Creates session files and ensures documentation is current before committing.
 
 Execute the following steps in order:
 
 ## Step 1: Create Session Files
 
+**Always execute all three commands** — don't pre-assess whether they're "needed." Valuable history is lost when these are skipped based on poor judgment.
+
 1. Execute `/par-learnings` command
-2. Execute `/par-prompts` command (if useful prompts were used this session)
-3. Execute `/par-decisions` command (if decisions were made this session)
+2. Execute `/par-prompts` command
+3. Execute `/par-decisions` command
 
-## Step 2: Optional Documentation Update
+If a session truly had no learnings/prompts/decisions (rare), the command itself will determine that — don't skip preemptively.
 
-**Ask user:** "Does PLAN.md need updating?
+## Step 2: Update PLAN.md
 
-**If YES:** Run `/par-update` then proceed to Step 3
+**Always run `/par-update`** — Review PLAN.md against session work and update as needed.
 
-**If NO:** Skip to Step 3
+Even if PLAN.md was recently modified, that change may have been for a different purpose. A full review ensures nothing is missed.
 
 ## Step 3: Commit Options
 
@@ -30,11 +32,11 @@ Display summary and offer commit choices:
 ```
 ✅ Session Files Created
 
-Learnings:  docs/sessions/2025-11/2025-11-16_14-30-00 Learnings.md
-Prompts:    docs/sessions/2025-11/2025-11-16_14-30-00 Prompts.md (if created)
-Decisions:  docs/sessions/2025-11/2025-11-16_14-30-00 Decisions.md (if created)
+Learnings:  docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Learnings.md
+Prompts:    docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Prompts.md
+Decisions:  docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Decisions.md
 
-Documentation: [Updated/Already current]
+PLAN.md: Updated
 
 Current Status: Phase X.Y - [Section Name]
 Next: [Next immediate task]
