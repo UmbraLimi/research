@@ -116,19 +116,6 @@ PURPOSE.md ships with a generic set of sections. Before filling it out, customiz
 | **Target Repository** | Where will the code eventually live? |
 | **Handoff Criteria** | When is planning "done" and coding begins? |
 
-### Skill & Tool Development Projects
-
-*Examples: Claude Code skills, automation helpers, processing utilities*
-
-| Section | Purpose |
-|---------|---------|
-| **Input Sources** | What formats/platforms/data types will be processed? |
-| **Output Format** | What does the deliverable look like? Template/example |
-| **Requirements** | Functional and quality requirements for the tool |
-| **Use Cases** | Specific scenarios showing how the tool will be used |
-| **Technical Aspects** | Implementation details, frameworks, limitations |
-| **Workflow & Process** | Build iteratively? Start with one case? How to refine? |
-
 ### Mix and Match
 
 Most projects blend types. A nature publication project might include:
