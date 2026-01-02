@@ -27,7 +27,10 @@ This folder is a template for new non-programming projects in the ~/MyResearch r
    cd My-New-Project
    claude
    ```
-3. Fill out `PURPOSE.md` with whatever you know about the project (see sections in that file)
+3. Customize `PURPOSE.md` sections for your project:
+   - Review the Section Library below
+   - Keep core sections, add/remove others as needed
+   - Then fill out each section
 
 4. Run `/init` to have CC create `CLAUDE.md` from `README.md` and `PURPOSE.md`
    - After creating CLAUDE.md, CC should offer: "Do you want me to create a basic PLAN.md from what I found in this folder?"
@@ -49,6 +52,78 @@ This folder is a template for new non-programming projects in the ~/MyResearch r
 | ----------- | -------------------------------------------- |
 | `CLAUDE.md` | `/init` command (step 4)                     |
 | `PLAN.md`   | You or Claude Code (step 5)                  |
+
+## Section Library
+
+PURPOSE.md ships with a generic set of sections. Before filling it out, customize the sections for your project type. Use this library as a reference.
+
+### Core Sections (keep for all projects)
+
+| Section | Purpose |
+|---------|---------|
+| **Goals** | What you're trying to accomplish |
+| **Background Information** | Knowledge, documents, resources you bring |
+| **Personal Context** | Your skills, time, experience relevant to this |
+| **Concerns & Risks** | What could go wrong, known pitfalls |
+| **Constraints** | Budget, time, dependencies, limitations |
+| **Other Notes** | Catch-all for anything else |
+
+### Writing & Publication Projects
+
+*Examples: nature articles, blog series, newsletter content*
+
+| Section | Purpose |
+|---------|---------|
+| **Audience** | Who is this for? Age range, expertise level, interests |
+| **Content & Sources** | Topics to cover, anecdotes, source materials |
+| **Preferences** | Tone, voice, style guidelines |
+| **Outputs & Platforms** | Blog, Twitter, Substack, etc. with format requirements |
+| **Workflow & Process** | Research → outline → draft → revise, or however you work |
+
+### Research & Comparison Projects
+
+*Examples: evaluating video platforms, choosing a CMS, comparing services*
+
+| Section | Purpose |
+|---------|---------|
+| **Research Questions** | Specific questions you need answered |
+| **Candidates** | Options/products/services being evaluated |
+| **Evaluation Criteria** | How you'll judge and compare (features, price, ease, etc.) |
+| **Decision Factors** | What matters most? Weighted priorities |
+| **Deliverable** | Recommendation doc? Comparison matrix? Decision memo? |
+
+### Hobby & Collection Projects
+
+*Examples: stamp collecting, photography archive, bird life list*
+
+| Section | Purpose |
+|---------|---------|
+| **Current State** | What do you have now? How is it organized? |
+| **Acquisition Goals** | What are you trying to add or complete? |
+| **Organization System** | How will items be cataloged, stored, displayed? |
+| **Community & Resources** | Groups, references, experts, marketplaces |
+| **Budget & Sourcing** | How much to spend, where to find items |
+
+### Planning-for-Code Projects
+
+*Examples: app planning, architecture research, requirements gathering*
+
+| Section | Purpose |
+|---------|---------|
+| **Technical Aspects** | Technologies, frameworks, integrations involved |
+| **Requirements** | What must the eventual code do? |
+| **Architecture Questions** | Decisions that need research before coding |
+| **Target Repository** | Where will the code eventually live? |
+| **Handoff Criteria** | When is planning "done" and coding begins? |
+
+### Mix and Match
+
+Most projects blend types. A nature publication project might include:
+- Core sections (always)
+- Audience, Content & Sources, Outputs & Platforms (writing)
+- Research Questions, Evaluation Criteria (if comparing sources)
+
+Start with core sections, scan the flavors above, add what fits.
 
 ## Available Slash Commands
 
