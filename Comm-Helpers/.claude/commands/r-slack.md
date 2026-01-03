@@ -86,45 +86,16 @@ Which channel is this thread from?
 
 Map their response to the Via link and Project from `slack-reference.md`.
 
-**Then check for missing content:**
+**Then check for structural issues:**
 
-1. **Thread replies:** If you see "1 reply" or "X replies" under a message but no Thread panel is visible on the right side of the image, STOP and output:
-   ```
-   Thread replies detected but not expanded.
+**Multi-day threads:** If the thread spans multiple days (date separators visible like "December 2nd, 2025" then "December 3rd, 2025"), produce **separate outputs for each day**. Each day becomes its own Daily Notes entry with:
+- Its own header and start time
+- Its own `Date::` (single date, not a range)
+- Its own Discussion and Tasks
 
-   Please click on the reply indicator to open the Thread panel, then recapture the screenshot.
-   ```
-   Thread replies often contain important responses, decisions, or confirmations.
+This allows pasting each block into its respective Daily Note. Even if the conversation is continuous, split by calendar day.
 
-2. **Voice recordings:** If an audio message is visible, the user should provide the full transcript text alongside the screenshot. Look for transcript text in the input.
-   - If transcript is provided: incorporate it into the analysis
-   - If only partial transcript visible (shows "View transcript" link) and no full text provided, ask:
-     ```
-     Audio detected without full transcript. Please paste the transcript text (click "View transcript" in Slack and copy).
-     ```
-
-3. **Attachments:** If images, files, or audio are present, list them in order at the start of output:
-   ```
-   **Attachments:**
-   1. `filename.png` — [brief description of content]
-   2. Audio (@person, 10:53 AM, 0:50) — [brief description or key quote]
-   3. `another-file.png` — [brief description]
-   ```
-   For audio: use format `Audio (@person, [time], [duration])` since audio messages don't have filenames.
-
-4. **Links:** If URLs are shared, list them after Attachments:
-   ```
-   **Links:**
-   - [brief description]: `https://...` (truncate long URLs with [...])
-   ```
-   Capture meeting links, shared docs, resources. Truncate long URLs but keep them recognizable.
-
-5. **Multi-day threads:** If the thread spans multiple days (date separators visible like "December 2nd, 2025" then "December 3rd, 2025"), produce **separate outputs for each day**. Each day becomes its own Daily Notes entry with:
-   - Its own header and start time
-   - Its own `Date::` (single date, not a range)
-   - Its own Discussion and Tasks
-
-   This allows pasting each block into its respective Daily Note. Even if the conversation is continuous, split by calendar day.
+**Note:** Thread replies, audio transcripts, attachments, URLs, and other edge cases are handled in Phase 1 of "Your Task" section.
 
 ## Reference Data
 
@@ -136,11 +107,41 @@ Map their response to the Via link and Project from `slack-reference.md`.
 
 ## Your Task
 
-**Step 1: Extract to JSON (internal)**
+### Phase 1: Edge Case Scan (do this FIRST)
 
-Mentally construct the extraction schema defined in PURPOSE.md:
+**Scan the entire image/text for these elements before reading content:**
+
+| Element | What to look for | Action if found |
+|---------|------------------|-----------------|
+| **Reply indicators** | "1 reply", "X replies" under any message | Note message + reply count |
+| **Attachments** | File icons, images, audio waveforms | Note filename, sender, time |
+| **URLs** | Hyperlinks, link previews | Note URL and context |
+| **Audio** | Voice message waveforms, "View transcript" | Note sender, time, duration |
+| **Huddles** | "A huddle happened" notifications | Note participants, duration |
+
+**If reply indicators or audio transcripts found → PAUSE and output:**
+```
+Additional content needed:
+
+**Thread replies:**
+1. [Message preview] — X replies
+2. [Message preview] — Y replies
+
+**Audio transcripts:**
+1. Audio (@person, HH:MM) — "View transcript" visible
+
+Please paste the text of these items (in order) so I can incorporate them.
+Or reply "skip" for any that are inconsequential.
+```
+
+Wait for user to provide content before proceeding to Phase 2.
+
+### Phase 2: Content Extraction (after edge cases resolved)
+
+Extract to internal JSON structure:
 - `attachments[]` — files, images, audio with metadata
 - `links[]` — URLs shared in thread
+- `replies[]` — content from sub-threads (provided by user)
 - `summary` — brief impact summary (becomes Focus)
 - `my_commitments[]` — tasks Fraser agreed/offered to do, with deadline if mentioned
 - `decisions_needed[]` — actions required of Fraser, with context
@@ -149,7 +150,7 @@ Mentally construct the extraction schema defined in PURPOSE.md:
 - `participants[]` — who's in the thread (mark `mentioned_only: true` if referenced but not present)
 - `source{}` — platform, channel, time range
 
-**Step 2: Apply Reference Lookups**
+### Phase 3: Apply Reference Lookups
 
 Using slack-reference.md:
 1. Look up channel → get Project name and emoji (omit if no match)
@@ -157,7 +158,7 @@ Using slack-reference.md:
 3. Convert participant names → wiki-links where matched
 4. Replace glossary terms → wiki-links in Discussion and Focus text
 
-**Step 3: Format as Markdown**
+### Phase 4: Format as Markdown
 
 Build the Daily Notes structure:
 

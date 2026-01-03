@@ -2,7 +2,7 @@
 
 Authoritative record of current project decisions. Session-level decision files provide historical context; this file reflects the latest resolved state.
 
-*Last Updated: 2026-01-03*
+*Last Updated: 2026-01-03 10:35*
 
 ---
 
@@ -113,6 +113,20 @@ Not all decisions are Fraser's to make. Format based on who decides:
 - **Unclear who decides:** `- [ ] Decide (Who?): [description] 🔺`
 
 Ascertain from context who has authority/responsibility for the decision.
+
+---
+
+### OP-15: Edge Case Scan (Phase 1)
+**Choice:** Explicit scan before content extraction
+
+Process screenshots in phases: Phase 1 scans entire image for reply indicators, audio transcripts, attachments, URLs, and huddles BEFORE reading content. This ensures edge cases aren't missed during content extraction.
+
+---
+
+### OP-16: Missing Content Handling
+**Choice:** Ask for text, not recapture
+
+When reply indicators ("X replies") or audio transcripts ("View transcript") are found without expanded content, pause and ask user to paste the text rather than asking them to recapture the screenshot. More efficient workflow. Include "skip" option for inconsequential items.
 
 ---
 

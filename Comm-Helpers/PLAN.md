@@ -20,6 +20,9 @@
 - [x] Test with real Slack thread (text + screenshot comparison)
 - [x] Add screenshot guidance to skill
 - [x] Add pre-processing checks (threads, audio, attachments, links)
+- [x] Add Phase 1 edge case scan (explicit scan before content extraction)
+  - Scan for: reply indicators, audio transcripts, attachments, URLs, huddles
+  - Pause and ask for reply/transcript text instead of asking to recapture
 - [x] Add My Commitments section
 - [x] Add Participants section
 - [x] Add (audio) annotation for transcript-derived key points
@@ -41,11 +44,12 @@
   - Always include Tasks section (even if empty)
 
 ### 1.3 Validate in practice
-- [x] Use skill on 3-5 real threads (~20 done across CFU and AIM workspaces)
+- [x] Use skill on 3-5 real threads (~25 done across CFU and AIM workspaces)
   - CFU #translation-system: Dec 2-3, 17, 18, 19-22, 23, 29-31
   - CFU DM Rick: Dec 21-23
   - CFU DM Gabriel: Dec 23, Jan 2
   - AIM #peer-loop-team: Dec 1-2, 6, 7, 8, 9-10, 12, 14-15, 16, 17, 21-23, 24, 26-Jan 1
+  - AIM DM Brian: Nov 20, 24-25, 28, 30, Dec 1-3
 - [x] Paste results into Obsidian, evaluate usefulness
   - Workflow works well
   - **Minor friction:** Single leading space on all lines except first `###` — workaround: highlight and Shift-Tab
