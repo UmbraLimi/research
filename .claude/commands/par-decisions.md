@@ -1,20 +1,41 @@
 ---
 description: Document session decisions
-argument-hint: ""
+argument-hint: "[append <filepath>]"
 ---
 
 # Document Session Decisions
 
-Create a session decisions document:
+Create or append to a session decisions document.
+
+## Arguments
+
+- **No argument:** Create new session file
+- **`append <filepath>`:** Append to existing file (used when continuing a session)
+
+---
+
+## Steps
 
 1. **Get current timestamp:**
    - Execute `/par-timestamp` to get current date and time
-   - Store the DATE and MONTH values for consistent use
+   - Store the DATE, TIME, and MONTH values for consistent use
 
-2. **Create the file:**
+2. **Create or append to file:**
+
+   **If creating new:**
    - Directory: `docs/sessions/ABC/` (where `ABC` is MONTH from step 1)
    - Filename: `XYZ Decisions.md` (where `XYZ` is FILENAME from step 1)
    - Example: `docs/sessions/2025-11/2025-11-21_12-15-34 Decisions.md`
+
+   **If appending:**
+   - Use the filepath provided in argument
+   - Add separator before new content:
+     ```markdown
+     ---
+     ## Continued — HH:MM
+
+     [New decisions here]
+     ```
 
 3. **Identify decisions from the conversation:**
    - Scan the session for decisions made during discussion
@@ -56,8 +77,10 @@ Create a session decisions document:
    - Update the `*Last Updated:*` timestamp
    - If DECISIONS.md doesn't exist, create it using the template structure
 
-6. **Confirm creation:**
+6. **Confirm completion:**
    - Display a brief summary in the chat showing:
-     - Session file path created
+     - Session file path (created or appended)
      - Decisions documented
      - Which decisions were added/updated in DECISIONS.md
+
+**IMPORTANT:** Step 5 (update DECISIONS.md) must ALWAYS be executed, regardless of whether creating new or appending. The authoritative record must stay current.

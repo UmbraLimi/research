@@ -41,19 +41,19 @@ If no recent files exist, proceed normally to Step 1.
 
 **Always execute all three commands** — don't pre-assess whether they're "needed." Valuable history is lost when these are skipped based on poor judgment.
 
-1. Execute `/par-learnings` command
-2. Execute `/par-prompts` command
-3. Execute `/par-decisions` command
+**If creating new (Option 2 or no existing files):**
+1. Execute `/par-learnings`
+2. Execute `/par-prompts`
+3. Execute `/par-decisions`
+
+**If appending (Option 1 from Step 0):**
+1. Execute `/par-learnings append <filepath>` (using existing Learnings.md path)
+2. Execute `/par-prompts append <filepath>` (using existing Prompts.md path)
+3. Execute `/par-decisions append <filepath>` (using existing Decisions.md path)
+
+Each skill will add a separator and continue from where the file left off.
 
 If a session truly had no learnings/prompts/decisions (rare), the command itself will determine that — don't skip preemptively.
-
-**If appending (Option 1 from Step 0):** Add new content to existing files with a separator:
-```markdown
----
-## Continued — HH:MM
-
-[New content here]
-```
 
 ## Step 2: Update PLAN.md
 
@@ -66,11 +66,13 @@ Even if PLAN.md was recently modified, that change may have been for a different
 Display summary and offer commit choices:
 
 ```
-✅ Session Files Created
+✅ Session Files [Created/Updated]
 
-Learnings:  docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Learnings.md
-Prompts:    docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Prompts.md
-Decisions:  docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Decisions.md
+Learnings:  docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Learnings.md [created/appended]
+Prompts:    docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Prompts.md [created/appended]
+Decisions:  docs/sessions/YYYY-MM/YYYY-MM-DD_HH-MM-SS Decisions.md [created/appended]
+
+DECISIONS.md: [Updated with OP-XX, OP-YY / No changes]
 
 PLAN.md: Updated
 
