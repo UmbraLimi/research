@@ -20,6 +20,7 @@ Configuration file for `/r-slack` skill. Edit these tables to customize output.
 | Via link | Person |
 |----------|--------|
 | [[Slack • CFU • DM • Gabriel]] | [[Gabriel Rymberg\|Gabriel]] |
+| [[Slack • CFU • DM • Rick]] | [[Rick Lyon]] |
 | [[Slack • AIM • DM • Brian]] | [[Brian LeBlanc]] |
 | [[Slack • AIM • DM • Gabriel]] | [[Gabriel Rymberg\|Gabriel]] |
 
@@ -39,6 +40,7 @@ Configuration file for `/r-slack` skill. Edit these tables to customize output.
 | [[Slack • CFU • dtub-dev]] |
 | [[Slack • CFU • dev-works]] |
 | [[Slack • CFU • DM • Gabriel]] |
+| [[Slack • CFU • DM • Rick]] |
 | [[Slack • CFU • translation-system]] |
 
 ### AIM Workspace

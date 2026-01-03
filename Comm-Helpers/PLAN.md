@@ -41,19 +41,17 @@
   - Always include Tasks section (even if empty)
 
 ### 1.3 Validate in practice
-- [x] Use skill on 3-5 real threads (4 done)
-  - translation-system 2025-12-31
-  - translation-system 2025-12-02/03 (multi-day)
-  - translation-system 2025-12-17
-  - translation-system 2025-12-18
+- [x] Use skill on 3-5 real threads (~20 done across CFU and AIM workspaces)
+  - CFU #translation-system: Dec 2-3, 17, 18, 19-22, 23, 29-31
+  - CFU DM Rick: Dec 21-23
+  - CFU DM Gabriel: Dec 23, Jan 2
+  - AIM #peer-loop-team: Dec 1-2, 6, 7, 8, 9-10, 12, 14-15, 16, 17, 21-23, 24, 26-Jan 1
 - [x] Paste results into Obsidian, evaluate usefulness
   - Workflow works well
   - **Minor friction:** Single leading space on all lines except first `###` — workaround: highlight and Shift-Tab
 - [x] Document what works and what needs adjustment
-  - **Finding:** Multi-day threads need separate outputs per day (for pasting into respective Daily Notes)
-  - **Fix:** Added pre-processing check #5 and multi-day example to skill
-  - **Finding:** Attachments/Links should be both inline (context) AND dedicated sections (inventory)
-  - **Fix:** Added `#### Attachments` and `#### Links` sections, kept inline references in Discussion
+  - See `docs/sessions/` for detailed findings per session
+  - See `DECISIONS.md` for current operating decisions
 
 ---
 
@@ -78,28 +76,9 @@
 
 ---
 
-## Decisions Made
+## Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Skill architecture | Per-platform | Tailored prompts for each format |
-| User identification | Hardcoded "Fraser Gorrie" | Zero friction, update if needed |
-| Output format | Daily Notes integration | Matches existing manual format, uses Dataview fields |
-| Reference data | Separate `slack-reference.md` file | User can edit mappings without touching skill logic |
-| Task markers | 🔺 for priority, `[[expect]]` for watching | Consistent with user's Obsidian Tasks setup |
-| Narrative voice | First-person for Fraser | More natural in personal Daily Notes |
-| Task inference | Aggressive (over-identify) | Better to delete unwanted than miss important |
-| Tasks section | Always include (even if empty) | Consistent format |
-| Section spacing | No blank lines | CSS handles vertical spacing via headings |
-| DM format | Person name, no project emoji | DMs don't belong to projects |
-| Multi-day threads | Separate outputs per day | Each day pastes into its own Daily Note |
-| Attachments/Links | Both inline + dedicated sections | Inline for context, sections for inventory |
-
-## Open Decisions
-
-| Decision | Options | Status |
-|----------|---------|--------|
-| Long thread handling | Truncate vs summarize in chunks | Pending |
+See `DECISIONS.md` for authoritative record of all project decisions.
 
 ---
 
@@ -107,7 +86,9 @@
 
 - Start simple, iterate based on real use
 - Output format in PURPOSE.md is the target, may evolve
+- Detailed findings: `docs/sessions/` (per session)
+- Current decisions: `DECISIONS.md` (authoritative)
 
 ---
 
-*Last Updated: 2026-01-02*
+*Last Updated: 2026-01-03*

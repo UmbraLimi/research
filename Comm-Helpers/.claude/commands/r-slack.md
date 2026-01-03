@@ -53,7 +53,12 @@ Check if the screenshot includes:
 - **Channel:** Message input placeholder (e.g., "Message 🔒translation-system")
 - **Date:** Date picker/header in the screenshot
 
-If either is missing, ask the user before processing:
+**Relative dates:** If the date header shows "Today", "Yesterday", or similar relative terms, ask the user for the actual date before processing:
+- "The screenshot shows '[Today/Yesterday]' — what is today's date?"
+
+Convert to absolute date (YYYY-MM-DD) for the output.
+
+If channel or date is missing, ask the user before processing:
 - "What channel is this from?" (show numbered list below)
 - "What date is this thread from?"
 
@@ -69,11 +74,12 @@ Which channel is this thread from?
 4. dev-works (🔵 CFU-W)
 5. translation-system (🟢 XLATE)
 6. CFU DM Gabriel
+7. CFU DM Rick
 
 **AIM Workspace:**
-7. peer-loop-team (🟠 Peer Loop)
-8. AIM DM Brian
-9. AIM DM Gabriel
+8. peer-loop-team (🟠 Peer Loop)
+9. AIM DM Brian
+10. AIM DM Gabriel
 
 (Enter number or name)
 ```
@@ -197,7 +203,11 @@ Build the Daily Notes structure:
 `#### Tasks`
 Format by type:
 - **My commitments**: `- [ ] task description 🔺 ⏳ YYYY-MM-DD` (date only if deadline mentioned)
-- **Decisions needed**: `- [ ] Decide: task description (context) 🔺`
+- **Decisions needed** (attribute to correct decision-maker):
+  - Fraser decides: `- [ ] Decide: task description (context) 🔺`
+  - Another person decides: `- [ ] [[expect]] - [[Person]] to decide [description]`
+  - Group decides: `- [ ] We need to decide: [description] 🔺`
+  - Unclear who: `- [ ] Decide (Who?): [description] 🔺`
 - **Watching for**: `- [ ] [[expect]] - [[Person]] to do X by timeframe`
 
 **Always include the Tasks section**, even if empty (write "None" if no tasks).
@@ -206,6 +216,8 @@ Format by type:
 - If someone sends something to a third party for action, watch for that action to complete
 - If a meeting was discussed but not scheduled, that's a decision/commitment needed
 - If someone said "I'll look into it" without a deadline, still track it
+- If someone says "Sent" or confirms they sent something to Fraser, create `[[expect]] - [[Person]] to deliver [object]` to track receipt
+- If someone states future intent ("I will send...", "They will probably send...", "She is going to email us..."), create `[[expect]] - [[Person]] to deliver [object]` to track it
 
 ### Separator
 End with `---`

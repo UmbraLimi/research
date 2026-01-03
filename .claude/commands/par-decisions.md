@@ -45,6 +45,19 @@ Create a session decisions document:
 **Rationale**: [Why this option was chosen]
 ```
 
-5. **Confirm creation:**
-   - Display a brief summary in the chat showing the file path created
-   - List the decisions documented
+5. **Update DECISIONS.md (authoritative record):**
+   - Read `DECISIONS.md` in project root
+   - For each decision documented in the session file:
+     - Classify as **Operating** (frequent behavior) or **General** (architectural/strategic)
+     - Check if decision already exists in the appropriate table
+     - If exists: update the row with new choice/rationale if changed
+     - If new: add row to the appropriate table
+     - If decision resolves an Open Decision: move from Open to appropriate table
+   - Update the `*Last Updated:*` timestamp
+   - If DECISIONS.md doesn't exist, create it using the template structure
+
+6. **Confirm creation:**
+   - Display a brief summary in the chat showing:
+     - Session file path created
+     - Decisions documented
+     - Which decisions were added/updated in DECISIONS.md
