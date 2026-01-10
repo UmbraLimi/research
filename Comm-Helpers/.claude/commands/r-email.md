@@ -1,11 +1,17 @@
 ## Usage
 
-**Forward method (preferred):**
+**Message-ID method (recommended for complete metadata):**
+1. Open any email in the thread in Gmail
+2. Click three dots → "Show original"
+3. Copy the Message-ID (e.g., `<CAJ-oin...@mail.gmail.com>`)
+4. Run: `/r-email <MESSAGE-ID>`
+
+**Forward method (quick, limited metadata):**
 1. Click Forward on the email thread in Gmail
 2. Don't send — copy the content from the compose window
 3. Paste here: `/r-email <paste>`
 
-**Print view method:**
+**Print view method (quick, limited metadata):**
 1. Open thread in Gmail → three dots → "Print all"
 2. In print preview, Select All → Copy
 3. Paste here: `/r-email <paste>`
@@ -18,7 +24,65 @@ Process complete threads only (when conversation has concluded).
 
 You are processing an email thread for **Fraser Gorrie**. Extract what matters and format for Obsidian.
 
-## Input Formats
+## Input Detection
+
+**First, determine input type:**
+
+| Input pattern | Type | Action |
+|---------------|------|--------|
+| Contains `@mail.gmail.com>` or starts with `<` and contains `@` | Message-ID | Run gmail-thread.py script |
+| Contains `---------- Forwarded message` | Forward paste | Parse directly |
+| Contains `To:` header with email addresses | Print view paste | Parse directly |
+
+## Message-ID Workflow (API Method)
+
+When input is a Message-ID:
+
+**Step 1: Run the script**
+```bash
+./scripts/gmail-thread.py "<MESSAGE-ID>"
+```
+
+This fetches the complete thread via Gmail API with:
+- Full To/CC/BCC for ALL messages
+- ALL attachments with filenames and sizes
+- Complete message bodies
+
+**Step 2: Process the script output**
+
+The script outputs raw Obsidian markdown. You must improve it:
+
+1. **Rewrite Focus fields** — Replace verbatim text with summaries:
+   - BAD: `Focus `:: Let's see if this wraps it up. Let me know what you think.
+   - GOOD: `Focus `:: Brian sends final draft of engagement letter for review
+
+2. **Rewrite Thread Summary** — Replace auto-generated summary with narrative:
+   - Describe what initiated the thread
+   - Key exchanges and decisions
+   - Final outcome or pending actions
+   - Written in first person for Fraser
+
+3. **Infer Tasks** — Add tasks the script missed:
+   - Commitments made → `[[expect]]` tasks
+   - Questions asked → `Decide:` tasks
+   - Attachments needing review → review tasks
+
+4. **Apply wiki-links** — Use email-reference.md lookups
+
+**Step 3: Output polished markdown**
+
+## Paste Workflow (Forward/Print)
+
+When input is pasted content (Forward or Print view):
+
+**Limitations of paste method:**
+- Forward: No attachment info
+- Print view: Only shows attachments/CC from most recent email
+- Both: May miss metadata from earlier messages in thread
+
+For threads where complete metadata matters (legal, contracts, multi-party), recommend Message-ID method instead.
+
+### Input Formats
 
 **Forward format:**
 ```
@@ -55,7 +119,7 @@ SIZE
 
 ## Pre-Processing Checks
 
-**1. Identify Gmail account:**
+**1. Identify Gmail account (paste method only):**
 
 Check if Print view header shows account (e.g., `Bio-Software Mail`). If not detectable, ask:
 
@@ -91,7 +155,7 @@ If messages span multiple calendar days, produce **separate outputs for each day
 - **Projects** — domain patterns → project name + emoji (optional)
 - **Glossary** — terms → wiki-links (apply to Focus, Discussion, Thread Summary)
 
-## Your Task
+## Content Processing
 
 ### Phase 1: Edge Case Scan
 
@@ -100,7 +164,7 @@ If messages span multiple calendar days, produce **separate outputs for each day
 | Element | What to look for | Action |
 |---------|------------------|--------|
 | **CC recipients** | `Cc:` line in headers | Include in `CC` field |
-| **Attachments** | `X attachments` section at bottom | List in Attachments section |
+| **Attachments** | `X attachments` section (paste) or script output | List in Attachments section |
 | **URLs** | Links in body text | Note for Links section |
 | **Mentioned people** | Names referenced but not in To/CC | Mark as `(mentioned)` |
 
@@ -113,7 +177,7 @@ For each message, extract:
 - `to[]` — recipient(s) name and email
 - `cc[]` — CC recipients (if any)
 - `subject` — subject line
-- `body` — message content
+- `body` — message content (strip quoted replies to avoid duplication)
 - `attachments[]` — filenames and sizes (if present)
 - `urls[]` — links shared
 
@@ -146,7 +210,7 @@ Build the Daily Notes structure for each day:
 - `To    `:: [[Person]], [[Person]]
 - `CC    `:: [[Person]], [[Person]]                  ← omit if none
 - `Subj  `:: Subject line
-- `Focus `:: Brief summary with [[glossary terms]] linked
+- `Focus `:: Brief SUMMARY (not verbatim text) with [[glossary terms]] linked
 - `Date  `:: YYYY-MM-DD
 - `Time  `:: HH:MM
 ```
@@ -167,6 +231,7 @@ For each message on that day:
 ```
 
 - Use `>` blockquotes for message content
+- **Strip quoted replies** — each message shows only new content, not "On ... wrote:" quoted text
 - Multiple messages same day → multiple `##### from:` sections in chronological order
 
 ### Attachments Section (level 4) — optional
@@ -182,9 +247,11 @@ For each message on that day:
 ### Thread Summary Section (level 4) — FINAL ENTRY ONLY
 `#### Thread Summary`
 - Appears only on the last day's entry
-- Summarizes entire thread arc: what started it, key exchanges, decisions, outcome
+- **Write a narrative summary** — not just facts, but the story of the thread
+- What initiated it, key exchanges, decisions made, outcome
 - Written in first person for Fraser
 - Apply wiki-links to people and glossary terms
+- Reference specific attachments by filename when relevant
 - Detailed enough to understand thread without reading each day
 
 ### Tasks Section (level 4)
@@ -313,15 +380,22 @@ End each day's entry with `---`
 - When Fraser is sender, `From` shows "me"
 - In Thread Summary, write from Fraser's perspective
 
+**Focus field:**
+- Must be a SUMMARY, not verbatim text from the email
+- One line describing the purpose/gist of that day's messages
+- Examples: "Brian sends final draft for review", "I accept agreement, ready to sign"
+
 **Message grouping:**
 - Multiple messages on same calendar day → same entry, multiple `##### from:` sections
 - Order chronologically within each day
+- Strip quoted content — each message shows only new text
 
 **Thread Summary content:**
 - What initiated the thread
 - Key back-and-forth points
 - Decisions made or pending
 - Final outcome or current status
+- Reference attachments by filename when relevant
 - Apply wiki-links throughout
 
 **Task identification:**
