@@ -60,6 +60,15 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 - **Mobile strategy**: CC headless mode on Mac Mini processes daily notes; Obsidian Sync propagates results.
 - **MCP server**: TypeScript for v1. Python considered for Phase 4 semantic search.
 
+## Git Rules
+
+**Always ask for explicit permission before running any history-changing git command:**
+- `rebase`, `merge`, `reset --hard`, `push --force`, `commit --amend`
+- Explain *why* you want to run the command and let the user decide
+
+**Safe commands (no permission needed):**
+- `push`, `pull --ff-only`, `add`, `commit`, `status`, `log`, `diff`, `branch`
+
 ## Git Commit Workflow
 
 | Command | Scope |
