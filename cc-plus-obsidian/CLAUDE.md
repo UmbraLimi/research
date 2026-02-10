@@ -45,20 +45,14 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 | `/cco-migrate-schema` | Backfills schema changes to existing card notes |
 | `/cco-project-init` | Sets up repo CLAUDE.md + vault project folder |
 
-## Key Design Decisions
+## Key Files
 
-- **Single access tier** for main vault — no folder-based deny/selective. `===` redaction is the only security.
-- **Qualifying headings** contain `[[wikilinks]]`. Non-qualifying headings stay in the daily note.
-- **6 card types**: coding, non-coding, meeting, slack, email, telegram. Each has its own `log/` subfolder and versioned schema.
-- **Coding cards are CC-generated** from git history (never in daily notes). All other cards are human-entered in daily notes.
-- **Card naming**: `{date} • {project} • {card-type} • {start-time}.md`
-- **Atomic note naming**: `{date} • {heading text without brackets}.md`
-- **Merge rule**: One atomic note per unique heading-signature per day.
-- **Task importance**: `+++++` in daily notes → `[importance:: 5]` in task files.
-- **PLAN.md format**: Named phases with dot-notation (not numbered). Current Sequence at top. COMPLETED-PLAN.md for finished phases.
-- **Schema system**: Versioned schemas in `reference/schemas/`. `/cco-migrate-schema` backfills changes.
-- **Mobile strategy**: CC headless mode on Mac Mini processes daily notes; Obsidian Sync propagates results.
-- **MCP server**: TypeScript for v1. Python considered for Phase 4 semantic search.
+| File | Purpose |
+|------|---------|
+| `DECISIONS.md` | **Authoritative net decisions.** Always check here first for current project decisions. |
+| `PLANNING.md` | Full design document with rationale, alternatives considered, and specs. |
+| `PLAN.md` | Task tracking and current sequence. What to work on next. |
+| `COMPLETED-PLAN.md` | Archive of completed phase details. |
 
 ## Git Rules
 
@@ -86,4 +80,5 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 
 | Date | Summary |
 |------|---------|
-| 2026-02-09 | Initial planning session. Created PLANNING.md and CLAUDE.md. Designed vault structure, daily note processing workflow, card types (6), schema system, mobile strategy, PLAN.md format. Resolved all 8 open questions. |
+| 2026-02-09 (2) | Implementation session. Built vault (`~/Vaults/main/`), 7 schemas, 4 `cco-*` global skills, relocated PeerLoop repo. Integration tested process-daily, project-init, migrate-schema. Created DECISIONS.md. |
+| 2026-02-09 (1) | Initial planning session. Created PLANNING.md and CLAUDE.md. Designed vault structure, daily note processing workflow, card types (6), schema system, mobile strategy, PLAN.md format. Resolved all 8 open questions. |
