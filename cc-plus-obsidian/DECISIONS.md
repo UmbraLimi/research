@@ -68,6 +68,8 @@
 | Skill execution order | Documented at bottom of skill file when steps have data dependencies. |
 | `/cco-session-close` | Runs from project repo. Reads vault path from CLAUDE.md. Generates coding card + session note + appends learnings/decisions + updates plan. |
 | `/cco-process-daily` | Runs from anywhere. Targets `~/Vaults/main` hardcoded. Processes today's daily note by default. |
+| Wikilink resolution | Use the **link target** (before `\|`), not the display alias. `[[Gabriel Rymberg\|Gabriel]]` → project is `Gabriel Rymberg`. |
+| Missing project folder | **Halt entire heading** — no atomic note, no cards, no tasks. Don't guess alternate spellings. User fixes and re-runs. |
 
 ## Mobile & Headless
 
