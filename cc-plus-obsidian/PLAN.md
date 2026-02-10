@@ -1,11 +1,10 @@
 # PLAN — CC + Obsidian Integration
 
 ## Current Sequence
-1. FOUNDATION.SYNC-CONFIG *(manual — open vault in Obsidian, enable Sync)*
-2. FOUNDATION.CREDENTIALS *(manual — populate vendor notes with `===` markers)*
-3. FOUNDATION.PEERLOOP-REPO cleanup *(remove narrative files, update .gitignore on xx3)*
-4. HEADLESS.SETUP
-5. HEADLESS.TRIGGER
+1. FOUNDATION.CREDENTIALS *(manual — populate vendor notes with `===` markers)*
+2. FOUNDATION.PEERLOOP-REPO cleanup *(remove narrative files, update .gitignore on xx3)*
+3. HEADLESS.SETUP
+4. HEADLESS.TRIGGER
 
 ---
 
@@ -31,7 +30,9 @@ Set up the vault, folder structure, and first project (PeerLoop) in both vault a
 - [ ] Remove session docs, PLAN.md, and narrative files from repo
 - [ ] Update `.gitignore` to exclude doc patterns
 
-### SYNC-CONFIG
+### SYNC-CONFIG *(deferred)*
+Obsidian Sync deferred. CC reads/writes vault directly via native file tools. Sync only needed if mobile editing becomes a priority.
+
 - [ ] Configure Obsidian Sync on `~/Vaults/main/`
 - [ ] Verify sync works between Mac Mini and other devices
 - [ ] Upgrade to Plus plan if second vault is needed
@@ -127,8 +128,8 @@ Set up CC headless mode on Mac Mini for mobile-triggered daily note processing.
 
 ---
 
-## MCP-SERVER
-Build the local MCP server (TypeScript v1) for CC vault read access.
+## MCP-SERVER *(deferred)*
+CC reads/writes vault directly via native file tools (Glob, Grep, Read, Write). MCP server adds no value until semantic search is needed. Revisit when keyword search proves insufficient.
 
 ### PARSER
 - [ ] Implement heading-aware markdown parser
@@ -153,7 +154,7 @@ Build the local MCP server (TypeScript v1) for CC vault read access.
 
 ---
 
-## MCP-ADVANCED
+## MCP-ADVANCED *(deferred)*
 Optional enhancements to the MCP server. Low priority — assess after MCP-SERVER is stable.
 
 - [ ] SEMANTIC-SEARCH — Add local embeddings via Ollama on Mac Mini M4 Pro

@@ -54,6 +54,15 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 | `PLAN.md` | Task tracking and current sequence. What to work on next. |
 | `COMPLETED-PLAN.md` | Archive of completed phase details. |
 
+## Content Rules
+
+**Never delete or collapse plan content without explicit instruction.** When told to "defer", "pause", or "skip" something:
+- Add a `*(deferred)*` marker and a one-line rationale
+- Keep all tasks, sub-phases, and detail intact
+- Only the status changes — the content stays in full
+
+**Your goal is never to make files shorter.** If you feel content can be removed, confirm the specific content being removed with the user first.
+
 ## Git Rules
 
 **Always ask for explicit permission before running any history-changing git command:**

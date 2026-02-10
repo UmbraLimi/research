@@ -2,7 +2,7 @@
 
 *Authoritative net decisions for this project. If a decision was made on Monday and changed on Friday, only the Friday decision appears here. For full rationale and alternatives considered, see PLANNING.md.*
 
-*Last Updated: 2026-02-09*
+*Last Updated: 2026-02-09 (session 3)*
 
 ---
 
@@ -74,7 +74,8 @@
 | Decision | Choice |
 |----------|--------|
 | Mobile constraint | DataviewJS with external scripts does NOT work on Obsidian mobile. |
-| Mobile strategy | CC headless mode (`claude -p`) on Mac Mini processes daily notes. Obsidian Sync propagates results to phone. |
+| Obsidian Sync | **Deferred.** CC reads/writes vault directly via native file tools. Sync only needed if mobile editing becomes a priority. |
+| Mobile strategy | CC headless mode (`claude -p`) on Mac Mini processes daily notes. Mobile access deferred until Sync is set up. |
 | Pre-rendered dashboards | Rejected — violates single source of truth. |
 | Trigger mechanism | TBD — file watcher, cron, or manual (Apple Shortcut / webhook → SSH). |
 
@@ -82,10 +83,9 @@
 
 | Decision | Choice |
 |----------|--------|
-| v1 language | TypeScript |
-| v2 consideration | Python for semantic search/embeddings (Phase 4) |
-| Access model | Read-only. Never modifies vault files. CC writes via skills, not MCP. |
-| Redaction | `===(.+?)===` stripped vault-wide regardless of folder. |
+| MCP server | **Deferred.** CC's native file tools (Glob, Grep, Read, Write) provide full vault access. MCP adds no value until semantic search is needed. |
+| Credential security | `===value===` inline markers remain the convention. Without MCP redaction, CC sees raw credentials — acceptable since CC is local and credentials go only to Anthropic's API. |
+| Revisit trigger | When keyword search (Grep) proves insufficient for vault queries, build MCP with semantic search. |
 
 ## Project Structure
 
