@@ -1,10 +1,11 @@
 # PLAN — CC + Obsidian Integration
 
 ## Current Sequence
-1. FOUNDATION.CREDENTIALS *(manual — populate vendor notes with `===` markers)*
-2. FOUNDATION.PEERLOOP-REPO cleanup *(remove narrative files, update .gitignore on xx3)*
-3. HEADLESS.SETUP
-4. HEADLESS.TRIGGER
+1. ENTITY-SCHEMAS *(create entity schemas: project, vendor, person, software)*
+2. FOUNDATION.CREDENTIALS *(manual — populate vendor notes with `===` markers using vendor schema)*
+3. FOUNDATION.PEERLOOP-REPO cleanup *(remove narrative files, update .gitignore on xx3)*
+4. HEADLESS.SETUP
+5. HEADLESS.TRIGGER
 
 ---
 
@@ -44,8 +45,8 @@ Obsidian Sync deferred. CC reads/writes vault directly via native file tools. Sy
 
 ---
 
-## GLOBAL-SKILLS 🔄
-Build the four `cco-` prefixed CC global skills and the schema system.
+## GLOBAL-SKILLS ✅
+Build the four `cco-` prefixed CC global skills and the schema system. Also built `/cco-vault-reset`.
 
 ### SCHEMAS ✅
 - [x] Create `reference/schemas/coding.md` — v1 with all fields from PLANNING.md spec
@@ -67,7 +68,7 @@ Built `/cco-session-close` at `~/.claude/commands/cco-session-close.md` (348 lin
 - [x] UPDATE-PLAN — Marks completed tasks, adds new discoveries
 
 ### PROCESS-DAILY ✅
-Built `/cco-process-daily` at `~/.claude/commands/cco-process-daily.md` (444 lines).
+Built `/cco-process-daily` at `~/.claude/commands/cco-process-daily.md` (444 lines). Updated: wikilink target resolution, project folder validation halts entire heading.
 
 - [x] IDENTIFY-HEADINGS — Parse for `[[wikilinks]]`, skip already-processed
 - [x] CREATE-ATOMIC — Create/append atomic notes in `log/notes/` with frontmatter
@@ -100,6 +101,27 @@ Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`.
 - [x] Test idempotency: process same daily note twice
 - [x] Test `/cco-migrate-schema` with a version bump
 - [x] Test `/cco-project-init` with a new project
+
+---
+
+## ENTITY-SCHEMAS
+Create schemas for entity types beyond cards. Schemas enforce consistent frontmatter for queryability and enable `/cco-migrate-schema` backfill.
+
+### SCHEMA-DESIGN
+- [ ] Define entity schema format (storage, location, fields — extending card schema format)
+- [ ] Reorganize `reference/schemas/` if needed (cards/ vs entities/ subfolders, or flat with category field)
+- [ ] Create `reference/schemas/project.md` — v1
+- [ ] Create `reference/schemas/vendor.md` — v1 (body organized by project)
+- [ ] Create `reference/schemas/person.md` — v1
+- [ ] Create `reference/schemas/software.md` — v1
+
+### MIGRATE-SCHEMA-UPDATE
+- [ ] Generalize `/cco-migrate-schema` to handle entity types (not just cards)
+
+### FIRST-USE
+- [ ] Create PeerLoop project using project schema (`/cco-project-init`)
+- [ ] Create first vendor note using vendor schema (manual, schema as reference)
+- [ ] Validate Dataview queries: `WHERE contains(type, "vendor")`, `WHERE contains(type, "project")`
 
 ---
 
