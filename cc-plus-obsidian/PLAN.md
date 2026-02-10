@@ -1,9 +1,11 @@
 # PLAN — CC + Obsidian Integration
 
 ## Current Sequence
-1. GLOBAL-SKILLS.INTEGRATION-TEST
-2. FOUNDATION.SYNC-CONFIG
-3. FOUNDATION.CREDENTIALS
+1. FOUNDATION.SYNC-CONFIG *(manual — open vault in Obsidian, enable Sync)*
+2. FOUNDATION.CREDENTIALS *(manual — populate vendor notes with `===` markers)*
+3. FOUNDATION.PEERLOOP-REPO cleanup *(remove narrative files, update .gitignore on xx3)*
+4. HEADLESS.SETUP
+5. HEADLESS.TRIGGER
 
 ---
 
@@ -89,14 +91,14 @@ Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`.
 - [x] Add vault integration section to repo CLAUDE.md
 - [x] Create project log and task file
 
-### INTEGRATION-TEST
-- [ ] Test `/cco-session-close` end-to-end on PeerLoop (git → coding card + session note)
-- [ ] Test `/cco-process-daily` with a sample daily note containing all card types
-- [ ] Test merge rule: duplicate heading same day
-- [ ] Test multi-project heading: `## [[A]] • [[B]]`
-- [ ] Test idempotency: process same daily note twice
-- [ ] Test `/cco-migrate-schema` with a version bump
-- [ ] Test `/cco-project-init` with a new project
+### INTEGRATION-TEST ✅
+- [ ] Test `/cco-session-close` end-to-end on PeerLoop — deferred to first real use
+- [x] Test `/cco-process-daily` with a sample daily note containing all card types
+- [x] Test merge rule: duplicate heading same day
+- [x] Test multi-project heading: `## [[A]] • [[B]]`
+- [x] Test idempotency: process same daily note twice
+- [x] Test `/cco-migrate-schema` with a version bump
+- [x] Test `/cco-project-init` with a new project
 
 ---
 
