@@ -1,8 +1,8 @@
-# CC + Obsidian Integration — Master Plan
+# CC + Obsidian Vault System — Master Plan
 
 ## Overview
 
-This document captures the planning and design decisions for integrating Claude Code (CC) with Obsidian as a unified system for a solopreneur managing multiple coding projects. The goals are:
+This document captures the planning and design decisions for a **practice management vault** — a solopreneur's unified knowledge base, work log, and project management system built on Obsidian and integrated with Claude Code (CC). The vault is project-agnostic; PeerLoop is the first project onboarded and serves as the worked example throughout. The goals are:
 
 1. Give CC structured, access-controlled read access to vault knowledge via a local MCP server
 2. Move all project narrative (session logs, plans, decisions, learnings) out of git repos and into Obsidian
@@ -85,9 +85,11 @@ Credentials are stored inline within vendor/service notes (e.g., in `reference/`
 4. **Every project has a parallel presence** in `~/projects/{name}/` (code) and `~/Vaults/main/projects/{name}/` (narrative).
 5. **Session docs are Obsidian-native from birth.** Frontmatter, wikilinks, tags — written by CC's `/cco-session-close` skill, not migrated after the fact.
 6. **Daily notes are the capture surface. Atomic notes are the knowledge base.** You write freely in daily notes; CC processes qualifying headings into structured atomic notes with frontmatter.
-7. **A "project" is anything with a wikilink.** If a heading contains `[[PeerLoop]]`, Peerloop is a project. No separate project registry needed.
+7. **A "project" is anything with a wikilink.** If a heading contains `[[PeerLoop]]` or `[[MeristicsSite]]`, that's a project. No separate project registry needed.
 
 ### System Diagram
+
+*Shown with PeerLoop as the example project. Any onboarded project gets the same repo ↔ vault structure.*
 
 ```
 ┌─────────────────────┐         ┌──────────────────────────────┐
@@ -174,6 +176,8 @@ All folders are CC: FULL access. The only redaction is `===`-wrapped credential 
 
 ### Project Repo Structure (Per Project)
 
+*Example for PeerLoop. All onboarded projects follow this convention.*
+
 ```
 ~/projects/peerloop/
 ├── src/
@@ -187,7 +191,7 @@ All folders are CC: FULL access. The only redaction is `===`-wrapped credential 
 
 ### CLAUDE.md Convention
 
-Each repo's `CLAUDE.md` includes a vault integration section:
+Each repo's `CLAUDE.md` includes a vault integration section. *Example shown for PeerLoop; every onboarded project adds the same block with its own paths.*
 
 ```markdown
 # PeerLoop
@@ -221,7 +225,7 @@ The MCP server is read-only. It never modifies vault files. CC writes to the vau
 
 ### PLAN.md Format
 
-Each project's `plan.md` in the vault uses named (not numbered) phases and tasks with dot-notation addressing. A separate **Current Sequence** at the top defines execution order, decoupling *what* from *when*.
+Each project's `plan.md` in the vault uses named (not numbered) phases and tasks with dot-notation addressing. A separate **Current Sequence** at the top defines execution order, decoupling *what* from *when*. *Format shown for one project; every onboarded project uses the same structure.*
 
 ```markdown
 # PLAN — PeerLoop
@@ -924,6 +928,8 @@ Same structure as Slack card (Discussion, Links, Tasks).
 
 ### Creation Paths
 
+*Both paths work for any onboarded project. PeerLoop shown as example.*
+
 Cards enter the vault via two paths:
 
 **Path 1 — CC-generated (coding cards):**
@@ -1006,6 +1012,8 @@ The `/cco-session-close` skill maintains two running logs per project by appendi
 
 ### Daily Workflow
 
+*Example for a PeerLoop session. Same flow applies to any onboarded project.*
+
 ```
 SESSION START
   cd ~/projects/peerloop
@@ -1045,6 +1053,8 @@ REVIEW (anytime, any device)
 ## Implementation Roadmap
 
 ### Phase 1 — Foundation (Do First)
+
+*Builds the vault structure and onboards PeerLoop as the proof-of-concept project.*
 
 - [ ] Create the fresh Obsidian vault (`~/Vaults/main/`) with the folder structure above
 - [ ] Create `journal/daily/`, `log/`, `projects/`, `reference/`, `business/`

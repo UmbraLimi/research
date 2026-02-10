@@ -1,4 +1,4 @@
-# DECISIONS — CC + Obsidian Integration
+# DECISIONS — CC + Obsidian Vault System
 
 *Authoritative net decisions for this project. If a decision was made on Monday and changed on Friday, only the Friday decision appears here. For full rationale and alternatives considered, see PLANNING.md.*
 
@@ -126,5 +126,14 @@
 | Decision | Choice |
 |----------|--------|
 | History-changing commands | Always ask for explicit permission: rebase, merge, reset --hard, push --force, commit --amend. |
+
+---
+
+## Per-Project: PeerLoop
+
+*Decisions specific to PeerLoop, the first project onboarded to the vault system.*
+
+| Decision | Choice |
+|----------|--------|
 | PeerLoop repo location | `~/projects/peerloop` (moved from `~/MyAstro/Peerloop`) |
 | PeerLoop vault branch | `xx3` (branched from `staging`, not `main` which is stale) |

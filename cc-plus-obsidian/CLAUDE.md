@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Purpose
 
-This is a **planning project** (no code yet) designing the integration between Claude Code and Obsidian. The goal is a system where:
+This is a **planning project** (no code yet) designing a **practice management vault** — a solopreneur's unified knowledge base, work log, and project management system built on Obsidian and integrated with Claude Code. The vault handles multiple coding projects, business operations, reference material, and daily journaling. PeerLoop is the first project onboarded; any project follows the same conventions.
+
+The core design principles:
 
 - **Repos hold code only.** All narrative (session logs, plans, decisions, learnings) lives in an Obsidian vault.
 - **A local MCP server** gives CC full read access to the main vault with `===` credential redaction.
