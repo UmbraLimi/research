@@ -1,4 +1,4 @@
-# PLAN — CC + Obsidian Integration
+# PLAN — CC + Obsidian Vault System
 
 ## Current Sequence
 1. ENTITY-SCHEMAS *(create entity schemas: project, vendor, person, software)*
