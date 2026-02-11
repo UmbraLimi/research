@@ -105,7 +105,7 @@ Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`.
 
 ---
 
-## ENTITY-SCHEMAS
+## ENTITY-SCHEMAS 🔄
 Create schemas for entity types beyond cards. Schemas enforce consistent frontmatter for queryability and enable `/cco-migrate-schema` backfill.
 
 ### SCHEMA-DESIGN
