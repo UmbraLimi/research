@@ -2,7 +2,7 @@
 
 *Authoritative net decisions for this project. If a decision was made on Monday and changed on Friday, only the Friday decision appears here. For full rationale and alternatives considered, see PLANNING.md.*
 
-*Last Updated: 2026-02-10 (session 5)*
+*Last Updated: 2026-02-11 (session 6)*
 
 ---
 
@@ -27,8 +27,10 @@
 | Sub-resource linking | Sub-resources (channels, databases, services) are **headings** within the parent note, not separate files. Link with `[[NoteName#heading]]`. Heading names are self-describing with `•`-separated paths (e.g., `CFU • D1 • essays`). No stub notes — avoids folder clutter and maintenance drift. |
 | Heading alias resolution | Vendor/entity notes store a `heading-aliases` map in frontmatter. `/cco-process-daily` rewrites verbose heading links (e.g., `[[Cloudflare#CFU • D1 • essays]]`) to aliased form (e.g., `[[Cloudflare#CFU • D1 • essays\|DJ database]]`). Aliases are defined once in the source note, applied automatically during processing. |
 | Entity schemas | Each entity type (vendor, person, software, project, etc.) has a schema in `reference/schemas/`. Schemas enforce consistent frontmatter so queries always work. `/cco-migrate-schema` backfills schema changes to existing notes. |
+| `aliases` in entity schemas | Obsidian-native field in all entity schemas. Values resolve as wikilink targets (e.g., `[[Visual Studio Code]]` → `VSCode.md`). Vendor schema v2, software schema v1. |
 | Generic `/cco-create` skill | **No.** Entity notes are created manually using the schema as a reference. Volume is too low to justify automation. `/cco-project-init` remains for projects (which need containment — 6+ files, subfolders). |
 | Schema scope | Schemas cover both cards (high volume, extracted automatically) and entities (low volume, created manually). Same versioning and migration system for both. |
+| ENTITIES.md | Entity-centric guide documenting what entities exist, what's nested inside them, sub-resource conventions, and what you can ask CC to do with each. Serves as human menu and CC reference. |
 
 ## Daily Note Processing
 
@@ -58,6 +60,13 @@
 | Schema versioning | Versioned schemas in `reference/schemas/`. `/cco-migrate-schema` backfills changes. |
 | Schema language | Markdown files with field tables and changelog sections. |
 | No spaces in filenames | `PeerLoop.md` not `Peer Loop.md`. Matches wikilink target `[[PeerLoop]]`. |
+| Software schema location | `reference/software/` — new folder parallel to `reference/vendors/`. `reference/tech-notes/` remains available for non-entity reference material. |
+| Software `##` headings | Flexible — no prescribed convention. Each note organizes by topic, version, integration, or whatever fits. Unlike vendors (`##` = account). Key line recommended for complex notes. |
+| Software `repository` field | Frontmatter field (queryable via Dataview). Optional, default `""`. |
+| Software classification | Via `type` list secondary values: `[software, desktop-app]`, `[software, cli-tool]`, `[software, library, javascript]`. Replaces old hierarchical tags. Don't over-classify — one or two secondary values typical. |
+| Software credentials | Case-by-case. License keys and tool-specific logins in the software note. Purchase history may go in the vendor note for the seller. Goal: find the credential where you'd look first. |
+| Vendor vs. software boundary | If you have an *account* and consume it as a *service*, it's a vendor. If you *install/run* it or it's a tool/library, it's software. SaaS = vendor, desktop/CLI = software. |
+| Products within a vendor | Can be separate software notes. Claude, Claude Code, Claude Desktop are 3 software notes; Anthropic is the vendor with API keys. Gemini is a software note; Google is the vendor. |
 
 ## Task Management
 

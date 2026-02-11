@@ -55,6 +55,7 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 | `PLANNING.md` | Full design document with rationale, alternatives considered, and specs. |
 | `PLAN.md` | Task tracking and current sequence. What to work on next. |
 | `COMPLETED-PLAN.md` | Archive of completed phase details. |
+| `ENTITIES.md` | Entity types in the vault — structure, sub-resources, and what you can ask CC to do with each. |
 
 ## Content Rules
 
@@ -89,9 +90,3 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 
 **Project-level**: `/r-commit`
 
-## Session History
-
-| Date | Summary |
-|------|---------|
-| 2026-02-09 (2) | Implementation session. Built vault (`~/Vaults/main/`), 7 schemas, 4 `cco-*` global skills, relocated PeerLoop repo. Integration tested process-daily, project-init, migrate-schema. Created DECISIONS.md. |
-| 2026-02-09 (1) | Initial planning session. Created PLANNING.md and CLAUDE.md. Designed vault structure, daily note processing workflow, card types (6), schema system, mobile strategy, PLAN.md format. Resolved all 8 open questions. |

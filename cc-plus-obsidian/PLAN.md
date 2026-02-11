@@ -112,17 +112,19 @@ Create schemas for entity types beyond cards. Schemas enforce consistent frontma
 - [x] Define entity schema format (storage, location, fields — extending card schema format)
 - [x] Reorganize `reference/schemas/` if needed (cards/ vs entities/ subfolders, or flat with category field) — kept flat, no subfolders needed yet
 - [ ] Create `reference/schemas/project.md` — v1
-- [x] Create `reference/schemas/vendor.md` — v1 (body organized by account/project)
+- [x] Create `reference/schemas/vendor.md` — v2 (v1: body organized by account/project; v2: added `aliases` field, backfilled 8→20 vendor notes)
 - [ ] Create `reference/schemas/person.md` — v1
-- [ ] Create `reference/schemas/software.md` — v1
+- [x] Create `reference/schemas/software.md` — v1 (flexible ## structure, `repository` + `aliases` in frontmatter, `type` list for classification)
 
 ### MIGRATE-SCHEMA-UPDATE
 - [ ] Generalize `/cco-migrate-schema` to handle entity types (not just cards)
 
 ### FIRST-USE
 - [ ] Create PeerLoop project using project schema (`/cco-project-init`)
-- [x] Create vendor notes using vendor schema — 8 notes (Cloudflare, DeepL, Slack, Telegram, GitHub, DigitalOcean, Resend, Google)
-- [ ] Validate Dataview queries: `WHERE contains(type, "vendor")`, `WHERE contains(type, "project")`
+- [x] Create vendor notes using vendor schema — 20 notes (original 8 + Amazon, Anthropic, Calendly, Cloudinary, DropBox, ForBusinessSake, LinkedIn, OpenAI, OpenRouter, Stream, Substack, Twitter, Vercel, Wise, Zoom, OtterAI)
+- [x] Create software notes using software schema — 22 notes (CotEditor, DroidCLI, JumpCut, MacWhisperPro, MopedTextEditor, Dynalist, AntigravityIDE, Joplin, CursorIDE, Snagit, VSCode, ReactJS, Dataview, BigBlueButton, GoogleGemini, AnthropicClaude, ClaudeCode, ClaudeDesktop, GithubDesktop, OpenAICodexCLI, Zai, Obsidian)
+- [x] Created ENTITIES.md — entity guide documenting structure, sub-resources, and CC interactions for each entity type
+- [ ] Validate Dataview queries: `WHERE contains(type, "vendor")`, `WHERE contains(type, "software")`
 
 ---
 
