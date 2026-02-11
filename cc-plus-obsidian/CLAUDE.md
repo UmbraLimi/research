@@ -38,14 +38,15 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 | `reference/` | Tech notes, vendors, schemas, patterns, templates |
 | `business/` | Clients, proposals, operations |
 
-**Four CC global skills** (prefixed `cco-`):
+**Five CC global skills** (prefixed `cco-`):
 
 | Skill | Purpose |
 |-------|---------|
 | `/cco-session-close` | Writes CC session docs + generates coding timecard from git |
 | `/cco-process-daily` | Processes daily note headings into atomic notes and cards |
 | `/cco-migrate-schema` | Backfills schema changes to existing card notes |
-| `/cco-project-init` | Sets up repo CLAUDE.md + vault project folder |
+| `/cco-project-init` | Creates vault project folder structure |
+| `/cco-project-link-repo` | Links vault project to a code repo (bidirectional) |
 
 ## Key Files
 

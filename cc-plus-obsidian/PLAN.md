@@ -1,7 +1,7 @@
 # PLAN — CC + Obsidian Vault System
 
 ## Current Sequence
-1. ENTITY-SCHEMAS *(create entity schemas: project, vendor, person, software)*
+1. ~~ENTITY-SCHEMAS~~ ✅ *(all 4 schemas complete, all entity types populated)*
 2. FOUNDATION.CREDENTIALS *(manual — populate vendor notes with `===` markers using vendor schema)*
 3. FOUNDATION.PEERLOOP-REPO cleanup *(remove narrative files, update .gitignore on xx3)*
 4. HEADLESS.SETUP
@@ -47,7 +47,7 @@ Obsidian Sync deferred. CC reads/writes vault directly via native file tools. Sy
 ---
 
 ## GLOBAL-SKILLS ✅
-Build the four `cco-` prefixed CC global skills and the schema system. Also built `/cco-vault-reset`.
+Build the five `cco-` prefixed CC global skills and the schema system. Also built `/cco-vault-reset`.
 
 ### SCHEMAS ✅
 - [x] Create `reference/schemas/coding.md` — v1 with all fields from PLANNING.md spec
@@ -88,11 +88,13 @@ Built `/cco-migrate-schema` at `~/.claude/commands/cco-migrate-schema.md`.
 - [x] Dry-run confirmation before modifying
 
 ### PROJECT-INIT ✅
-Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`.
+Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`. Updated: decoupled repo linking into `/cco-project-link-repo`.
 
 - [x] Accept project name, create vault folder structure
-- [x] Add vault integration section to repo CLAUDE.md
+- [x] Add vault integration section to repo CLAUDE.md — moved to `/cco-project-link-repo`
 - [x] Create project log and task file
+- [x] Add schema frontmatter to project log template
+- [x] Create `/cco-project-link-repo` skill for bidirectional repo linking
 
 ### INTEGRATION-TEST ✅
 - [ ] Test `/cco-session-close` end-to-end on PeerLoop — deferred to first real use
@@ -105,24 +107,28 @@ Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`.
 
 ---
 
-## ENTITY-SCHEMAS 🔄
-Create schemas for entity types beyond cards. Schemas enforce consistent frontmatter for queryability and enable `/cco-migrate-schema` backfill.
+## ENTITY-SCHEMAS ✅
+Create schemas for entity types beyond cards. Schemas enforce consistent frontmatter for queryability and enable `/cco-migrate-schema` backfill. All 4 entity schemas complete, all entity types populated from old vault migration.
 
 ### SCHEMA-DESIGN
 - [x] Define entity schema format (storage, location, fields — extending card schema format)
 - [x] Reorganize `reference/schemas/` if needed (cards/ vs entities/ subfolders, or flat with category field) — kept flat, no subfolders needed yet
-- [ ] Create `reference/schemas/project.md` — v1
+- [x] Create `reference/schemas/project.md` — v1 (type, name, aliases, status, repo, created; containment folder with 6 files)
 - [x] Create `reference/schemas/vendor.md` — v2 (v1: body organized by account/project; v2: added `aliases` field, backfilled 8→20 vendor notes)
-- [ ] Create `reference/schemas/person.md` — v1
+- [x] Create `reference/schemas/person.md` — v1 (aliases required for spaced names, flexible body, relationship via `type` list)
 - [x] Create `reference/schemas/software.md` — v1 (flexible ## structure, `repository` + `aliases` in frontmatter, `type` list for classification)
 
 ### MIGRATE-SCHEMA-UPDATE
 - [ ] Generalize `/cco-migrate-schema` to handle entity types (not just cards)
 
 ### FIRST-USE
-- [ ] Create PeerLoop project using project schema (`/cco-project-init`)
+- [x] Create project folders using project schema — 7 projects (PeerLoop, Xlate, XlatePilot, DTUB, DJ, StickerHardlyKnowHer, Meristics)
+- [x] Create organization notes — CenterForUnity (business/), Technifar (business/)
+- [x] Updated ForBusinessSake vendor note with aliases
+- [x] Decoupled `/cco-project-init` (vault-only) and created `/cco-project-link-repo` (repo linking)
 - [x] Create vendor notes using vendor schema — 20 notes (original 8 + Amazon, Anthropic, Calendly, Cloudinary, DropBox, ForBusinessSake, LinkedIn, OpenAI, OpenRouter, Stream, Substack, Twitter, Vercel, Wise, Zoom, OtterAI)
 - [x] Create software notes using software schema — 22 notes (CotEditor, DroidCLI, JumpCut, MacWhisperPro, MopedTextEditor, Dynalist, AntigravityIDE, Joplin, CursorIDE, Snagit, VSCode, ReactJS, Dataview, BigBlueButton, GoogleGemini, AnthropicClaude, ClaudeCode, ClaudeDesktop, GithubDesktop, OpenAICodexCLI, Zai, Obsidian)
+- [x] Create person notes using person schema — 9 notes (BrianLeBlanc, FraserGorrie, JesseShowalter, BradPardiac, ColinGorrie, GabrielRymberg, KatieGorrie, MikeRobinson, TomParish)
 - [x] Created ENTITIES.md — entity guide documenting structure, sub-resources, and CC interactions for each entity type
 - [ ] Validate Dataview queries: `WHERE contains(type, "vendor")`, `WHERE contains(type, "software")`
 

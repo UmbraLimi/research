@@ -2,7 +2,7 @@
 
 *Authoritative net decisions for this project. If a decision was made on Monday and changed on Friday, only the Friday decision appears here. For full rationale and alternatives considered, see PLANNING.md.*
 
-*Last Updated: 2026-02-11 (session 6)*
+*Last Updated: 2026-02-11 (session 7)*
 
 ---
 
@@ -85,7 +85,7 @@
 |----------|--------|
 | Skill implementation | Markdown prompt files in `~/.claude/commands/`, not TypeScript/Python code. CC interprets and executes step-by-step. |
 | Skill prefix | `cco-` for all vault integration skills. Prevents collision with `q-*`, `par-*`, `r-*`. |
-| Skill list | `/cco-session-close`, `/cco-process-daily`, `/cco-migrate-schema`, `/cco-project-init` |
+| Skill list | `/cco-session-close`, `/cco-process-daily`, `/cco-migrate-schema`, `/cco-project-init`, `/cco-project-link-repo` |
 | Card marker detection | Loose matching on keywords (`Timecard` + `Coding`, `Slack`, etc.), not exact emoji sequences. Tolerates device/version variation. |
 | Skill execution order | Documented at bottom of skill file when steps have data dependencies. |
 | `/cco-session-close` | Runs from project repo. Reads vault path from CLAUDE.md. Generates coding card + session note + appends learnings/decisions + updates plan. |
@@ -117,8 +117,14 @@
 |----------|--------|
 | Code repos | `~/projects/{name}/` — code only, no narrative docs |
 | Vault projects | `~/Vaults/main/projects/{name}/` — plan, sessions, decisions, learnings, tasks, log |
-| Parallel presence | Every project has both a repo folder and a vault folder. |
-| CLAUDE.md convention | Each repo has `## Vault Integration` section pointing to vault project path. |
+| Parallel presence | Coding projects have both a repo folder and a vault folder. Hobby/in-house projects may have vault folder only. |
+| CLAUDE.md convention | Each repo has `## Vault Integration` section pointing to vault project path. Added by `/cco-project-link-repo`. |
+| Skill decoupling | `/cco-project-init` creates vault folder only (works for any project). `/cco-project-link-repo` links to a repo separately (coding projects only). Decoupled because many projects won't have repos. |
+| Project status field | Frontmatter `status` field: `active`, `paused`, `completed`, `abandoned`. |
+| Project repo field | Frontmatter `repo` field: empty by default, populated by `/cco-project-link-repo`. |
+| Multi-phase projects | Phases are regular projects with a parent link. Umbrella project (e.g., `Xlate`) holds business info and `## Phases` table. Each phase (e.g., `XlatePilot`) is a full project with its own folder, status, tasks, sessions. Relationship via wikilinks in body — no `parent` schema field (add later if Dataview queries need it). |
+| Meristics unification | "Meristics" = the website project (`projects/meristics/`). "Technifar" = the corporate entity (`business/Technifar.md`). `meristics.com`, `technifar.com`, `bio-software.com` all redirect to `frasergorrie.com`. "Meristics" is also the account name in vendor notes. |
+| Client work done free | Still classified as `[project, client-work]` not `hobby`. The relationship determines the type, not the payment. (StickerHardlyKnowHer.) |
 | Session granularity | One session note per project per day. Multiple CC sessions merge into one note. |
 | Existing docs | Start fresh. No migration of old session docs. Manual move on case-by-case basis. |
 
@@ -137,6 +143,21 @@
 | Decision | Choice |
 |----------|--------|
 | History-changing commands | Always ask for explicit permission: rebase, merge, reset --hard, push --force, commit --amend. |
+
+---
+
+## People Entity
+
+| Decision | Choice |
+|----------|--------|
+| Person note location | `reference/people/{FirstLast}.md` — parallel to `reference/vendors/` and `reference/software/` |
+| Person filename convention | `{FirstLast}.md` — no spaces, matches wikilink target `[[GabrielRymberg]]` |
+| Person aliases rule | **Must include spaced "First Last" form** in `aliases`. People write `[[Gabriel Rymberg]]` not `[[GabrielRymberg]]`. Short names (e.g., `Gabriel`) also included. |
+| Person relationship classification | Via `type` list secondary values: `[person, client]`, `[person, family]`, `[person, friend]`, `[person, vendor-contact]`, `[person, collaborator]` |
+| Organization field | **No frontmatter field.** Org links go in the body as wikilinks (`[[CenterForUnity]]`, `[[ForBusinessSake]]`). Avoids forcing a field that doesn't apply to many people (family, friends). |
+| Person body structure | Flexible `##` headings (Contact, Background, Connections, Notes) — same approach as software notes. Include only sections that apply. |
+| Person credentials | None in person notes. Login info shared by contacts goes in the relevant vendor note. |
+| Alias collisions | Accepted risk. Obsidian offers disambiguation at entry time. Check for collisions when creating new people or migrating old daily notes — don't preemptively avoid short aliases. |
 
 ---
 

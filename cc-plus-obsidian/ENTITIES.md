@@ -43,52 +43,83 @@ CC will always check for an existing vendor note before creating a new one.
 
 ## Projects
 
-**Schema:** `reference/schemas/project.md` *(not yet created)*
-**Location:** `~/Vaults/main/projects/{ProjectName}/`
-**Status:** Schema planned. PeerLoop folder structure exists as the reference pattern.
+**Schema:** `reference/schemas/project.md`
+**Location:** `~/Vaults/main/projects/{project}/` (lowercase folder)
+**Status:** Schema v1 complete. 7 project folders exist.
 
-A project is a body of work with its own repo, vault folder, and lifecycle. Unlike other entities, projects use **containment** — a folder with multiple files — because they accumulate session logs, decisions, learnings, tasks, and plans.
+A project is a body of work with its own vault folder and lifecycle. Unlike other entities, projects use **containment** — a folder with multiple files — because they accumulate session logs, decisions, learnings, tasks, and plans. Not all projects have code repos — hobby, in-house, and planning-only projects have vault folders only.
 
 ### What lives inside a project folder
 
 | File/folder | Purpose |
 |-------------|---------|
-| `{Project}-plan.md` | Project plan and task tracking |
-| `{Project}-decisions.md` | Net decisions for this project |
-| `{Project}-learnings.md` | Accumulated learnings |
+| `{Project}.md` | Project log (schema-governed frontmatter) |
 | `{Project}-tasks.md` | Task backlog extracted from daily notes |
+| `plan.md` | Project plan and task tracking |
+| `decisions.md` | Net decisions for this project |
+| `learnings.md` | Accumulated learnings |
 | `sessions/` | Session notes (one per project per day) |
+
+### Classification & status
+
+Use the `type` list: `[project, client-work]`, `[project, hobby]`, `[project, in-house]`, `[project, research]`.
+
+The `status` field tracks lifecycle: `active`, `paused`, `completed`, `abandoned`.
+
+The `repo` field links to a code repo (empty for non-coding projects, populated by `/cco-project-link-repo`).
+
+### Two skills for projects
+
+| Skill | Purpose | When to use |
+|-------|---------|-------------|
+| `/cco-project-init` | Creates vault folder structure | Any new project |
+| `/cco-project-link-repo` | Links vault project to a code repo | Coding projects with repos |
+
+Run `/cco-project-init` first, then `/cco-project-link-repo` from the repo directory if the project has a code repo.
 
 ### What you can ask CC to do
 
-- **"Set up a vault folder for MyNewProject"** — use `/cco-project-init` (this one has a skill).
-- **"Archive the PeerLoop project"** — CC marks the project inactive, updates status. *(Process TBD — define when the first project completes.)*
+- **"Set up a vault folder for MyNewProject"** — use `/cco-project-init`.
+- **"Link PeerLoop to its repo"** — run `/cco-project-link-repo PeerLoop` from the repo directory.
+- **"Pause the StickerHardlyKnowHer project"** — CC updates `status: paused` in the project note.
+- **"Archive PeerLoop"** — CC updates `status: completed`.
 
 ---
 
 ## People
 
-**Schema:** `reference/schemas/person.md` *(not yet created)*
-**Location:** TBD — likely `~/Vaults/main/reference/people/` or `~/Vaults/main/business/contacts/`
-**Status:** Schema planned. No notes exist yet.
+**Schema:** `reference/schemas/person.md`
+**Location:** `~/Vaults/main/reference/people/{FirstLast}.md`
+**Status:** Schema v1 complete. 9 person notes migrated from old vault.
 
-A person is anyone you interact with professionally — clients, collaborators, contractors, vendor contacts. Referenced from meeting cards (`who` field), project notes, and vendor notes.
+A person is anyone you interact with — clients, collaborators, contractors, vendor contacts, family, friends. Referenced from meeting cards (`who` field), project notes, and vendor notes.
+
+**Aliases are critical for people.** Filenames are `{FirstLast}.md` (no spaces), but people naturally write `[[Gabriel Rymberg]]` or `[[Gabriel]]`. The `aliases` field must include both the spaced full name and any short names so wikilinks resolve correctly.
 
 ### What lives inside a person note
 
-| Concept | Representation |
-|---------|---------------|
-| Contact details | Frontmatter or body fields |
-| Roles/relationships | Body sections (e.g., client, collaborator) |
-| Project associations | Wikilinks to project notes |
-| Communication preferences | Body notes |
+| Concept | Representation | Example |
+|---------|---------------|---------|
+| Contact details | `## Contact` section | Email, phone, address |
+| Professional context | `## Background` section | How you know them, org links |
+| Relationships | `## Connections` section | Family, professional — wikilinks where applicable |
+| Organization links | Wikilinks in body | `[[CenterForUnity]]`, `[[ForBusinessSake]]` |
+| Miscellaneous | `## Notes` section | Anything else |
 
-The exact structure will be defined when the person schema is created.
+Sections are flexible and optional — include only what applies. No prescribed `##` convention.
+
+### Classification
+
+Use the `type` list for relationship classification: `[person, client]`, `[person, family]`, `[person, friend]`, `[person, vendor-contact]`, `[person, collaborator]`. Multiple secondary values are fine when someone wears multiple hats.
 
 ### What you can ask CC to do
 
-- **"Create a person note for Gabriel Rymberg"** — CC reads the schema, creates the note with appropriate frontmatter.
+- **"Create a person note for Gabriel Rymberg"** — CC reads the schema, creates the note with `aliases: [Gabriel Rymberg, Gabriel]`.
 - **"Add Gabriel's Zoom link to his note"** — CC updates the existing person note.
+- **"Brian's new email is brian@newdomain.com"** — CC updates the Contact section.
+- **"Mark Jesse as a collaborator too"** — CC adds `collaborator` to the `type` list.
+
+CC will always check for an existing person note before creating a new one.
 
 ---
 
