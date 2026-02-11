@@ -65,6 +65,8 @@ The full design document is `PLANNING.md`. The `README.md` is Minimum-Project te
 
 **Your goal is never to make files shorter.** If you feel content can be removed, confirm the specific content being removed with the user first.
 
+**Never read from the old vault (`~/Obsidian Vaults/main2025/`) without explicit instruction.** The user will provide old vault content when needed. Do not search, glob, or read files from the old vault on your own.
+
 ## Git Rules
 
 **Always ask for explicit permission before running any history-changing git command:**

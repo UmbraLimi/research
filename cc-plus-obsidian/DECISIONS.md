@@ -2,7 +2,7 @@
 
 *Authoritative net decisions for this project. If a decision was made on Monday and changed on Friday, only the Friday decision appears here. For full rationale and alternatives considered, see PLANNING.md.*
 
-*Last Updated: 2026-02-09 (session 4)*
+*Last Updated: 2026-02-10 (session 5)*
 
 ---
 
@@ -23,7 +23,9 @@
 |----------|--------|
 | Folders vs. frontmatter | Folders for **containment** (grouping related files). Frontmatter for **classification** (what type of thing it is). Never use folder location as the primary way to classify a note. |
 | `type` field | Multi-valued list. `type: [vendor, service-provider]`. Query with `contains(type, "vendor")`. Allows cross-cutting classification without the single-folder problem. |
-| One note per entity | One note per vendor, person, software, etc. Organize the body by project when multiple projects reference the entity. Split into sub-notes only when a single note becomes unwieldy. |
+| One note per entity | One note per vendor, person, software, etc. Organize the body by project/account when multiple projects reference the entity. Split into sub-notes only when a single note becomes unwieldy. |
+| Sub-resource linking | Sub-resources (channels, databases, services) are **headings** within the parent note, not separate files. Link with `[[NoteName#heading]]`. Heading names are self-describing with `•`-separated paths (e.g., `CFU • D1 • essays`). No stub notes — avoids folder clutter and maintenance drift. |
+| Heading alias resolution | Vendor/entity notes store a `heading-aliases` map in frontmatter. `/cco-process-daily` rewrites verbose heading links (e.g., `[[Cloudflare#CFU • D1 • essays]]`) to aliased form (e.g., `[[Cloudflare#CFU • D1 • essays\|DJ database]]`). Aliases are defined once in the source note, applied automatically during processing. |
 | Entity schemas | Each entity type (vendor, person, software, project, etc.) has a schema in `reference/schemas/`. Schemas enforce consistent frontmatter so queries always work. `/cco-migrate-schema` backfills schema changes to existing notes. |
 | Generic `/cco-create` skill | **No.** Entity notes are created manually using the schema as a reference. Volume is too low to justify automation. `/cco-project-init` remains for projects (which need containment — 6+ files, subfolders). |
 | Schema scope | Schemas cover both cards (high volume, extracted automatically) and entities (low volume, created manually). Same versioning and migration system for both. |

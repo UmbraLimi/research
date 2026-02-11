@@ -39,9 +39,10 @@ Obsidian Sync deferred. CC reads/writes vault directly via native file tools. Sy
 - [ ] Upgrade to Plus plan if second vault is needed
 
 ### CREDENTIALS
-- [ ] Populate `reference/vendors/` with vendor notes
-- [ ] Wrap all credential values with `===value===` convention
+- [x] Populate `reference/vendors/` with vendor notes — 8 created: Cloudflare, DeepL, Slack, Telegram, GitHub, DigitalOcean, Resend, Google
+- [x] Wrap all credential values with `===value===` convention — verified across all vendor notes
 - [ ] Verify credentials are visually highlighted in Obsidian (outer `==` renders as highlight)
+- [ ] Populate remaining vendor notes and skeleton details (as needed)
 
 ---
 
@@ -108,10 +109,10 @@ Built `/cco-project-init` at `~/.claude/commands/cco-project-init.md`.
 Create schemas for entity types beyond cards. Schemas enforce consistent frontmatter for queryability and enable `/cco-migrate-schema` backfill.
 
 ### SCHEMA-DESIGN
-- [ ] Define entity schema format (storage, location, fields — extending card schema format)
-- [ ] Reorganize `reference/schemas/` if needed (cards/ vs entities/ subfolders, or flat with category field)
+- [x] Define entity schema format (storage, location, fields — extending card schema format)
+- [x] Reorganize `reference/schemas/` if needed (cards/ vs entities/ subfolders, or flat with category field) — kept flat, no subfolders needed yet
 - [ ] Create `reference/schemas/project.md` — v1
-- [ ] Create `reference/schemas/vendor.md` — v1 (body organized by project)
+- [x] Create `reference/schemas/vendor.md` — v1 (body organized by account/project)
 - [ ] Create `reference/schemas/person.md` — v1
 - [ ] Create `reference/schemas/software.md` — v1
 
@@ -120,7 +121,7 @@ Create schemas for entity types beyond cards. Schemas enforce consistent frontma
 
 ### FIRST-USE
 - [ ] Create PeerLoop project using project schema (`/cco-project-init`)
-- [ ] Create first vendor note using vendor schema (manual, schema as reference)
+- [x] Create vendor notes using vendor schema — 8 notes (Cloudflare, DeepL, Slack, Telegram, GitHub, DigitalOcean, Resend, Google)
 - [ ] Validate Dataview queries: `WHERE contains(type, "vendor")`, `WHERE contains(type, "project")`
 
 ---
