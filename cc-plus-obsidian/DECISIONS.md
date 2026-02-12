@@ -2,7 +2,7 @@
 
 *Authoritative net decisions for this project. If a decision was made on Monday and changed on Friday, only the Friday decision appears here. For full rationale and alternatives considered, see PLANNING.md.*
 
-*Last Updated: 2026-02-11 (session 7)*
+*Last Updated: 2026-02-12 (session 8)*
 
 ---
 
@@ -53,7 +53,14 @@
 | Card storage | Each type has its own `log/` subfolder |
 | Coding cards | CC-generated from git history via `/cco-session-close`. Never in daily notes. |
 | All other cards | Human-entered in daily notes, extracted by `/cco-process-daily` |
-| Meeting card scope | Covers video calls, phone calls, site visits, in-person. `via` field distinguishes them. |
+| Meeting card scope | Covers video calls, phone calls, site visits, in-person. `via` field distinguishes them. `bill` field added (same pattern as coding: `Block-04` or `No`). |
+| Timecard heading format | Unified: `### 🕒 {CardType} • {start}`. No type-specific icons — only 🕒 as regex anchor. Card type name does the distinguishing. |
+| Daily note heading hierarchy | `## qualifying → ### timecard → #### body sections`. Body sections MUST be `####` to nest under their timecard for `/cco-process-daily` parsing. |
+| Card type heading labels | Seven: Meeting, Phone Call, Site Visit, Non-Coding, Slack, Email, Telegram. Phone Call/Site Visit map to `type: meeting` with `via` derived from heading. |
+| Otter transcripts | `#### Transcript` body section inside a meeting timecard. Not a separate card. `/r-otter` invoked manually when `record` field is filled in. |
+| `/cco-meeting` skill | CC-invoked skill. User gives natural language one-liner → CC parses → invokes with structured key=value args → skill enforces consistent skeleton. Covers Meeting, Phone Call, Site Visit only. |
+| Comms skills separation | `/r-slack`, `/r-email`, `/r-otter` remain separate from `/cco-meeting`. Different input paths (screenshots/transcripts vs one-liners). Will be migrated from Comm-Helpers and adapted. |
+| Daily note as working surface | `/cco-meeting` writes to daily note only. User edits freely. `/cco-process-daily` extracts into card notes later. No shortcut from one-liner to card note. |
 | Email card body | Summarized as bullet points, not quoted verbatim. Original lives in email client. |
 | Email threading | `continued: new` for new threads; wikilink to prior card for continuations. |
 | Slack/Telegram cards | Timed (start/end required). Separate fields, not compressed. |
@@ -72,7 +79,7 @@
 
 | Decision | Choice |
 |----------|--------|
-| Importance notation | `+` symbols in daily notes (e.g., `+++++`). CC converts to `[importance:: 5]` during extraction. |
+| Importance notation | `+` symbols in daily notes (e.g., `+++++`). CC converts to `[importance:: 5]` during extraction. Obsidian Tasks plugin format (`🔺`, `⏳`) dropped. |
 | Due dates | Optional. Only when there's a real deadline. |
 | Delegation/assignee | None. Solo workflow. |
 | Urgency field | None. Urgent work gets scheduled directly. |
@@ -85,8 +92,8 @@
 |----------|--------|
 | Skill implementation | Markdown prompt files in `~/.claude/commands/`, not TypeScript/Python code. CC interprets and executes step-by-step. |
 | Skill prefix | `cco-` for all vault integration skills. Prevents collision with `q-*`, `par-*`, `r-*`. |
-| Skill list | `/cco-session-close`, `/cco-process-daily`, `/cco-migrate-schema`, `/cco-project-init`, `/cco-project-link-repo` |
-| Card marker detection | Loose matching on keywords (`Timecard` + `Coding`, `Slack`, etc.), not exact emoji sequences. Tolerates device/version variation. |
+| Skill list | `/cco-session-close`, `/cco-process-daily`, `/cco-meeting`, `/cco-migrate-schema`, `/cco-project-init`, `/cco-project-link-repo` |
+| Card marker detection | Regex `### 🕒 (.+?) • (\d{2}:\d{2})` matches all timecard headings. Card type extracted from capture group. |
 | Skill execution order | Documented at bottom of skill file when steps have data dependencies. |
 | `/cco-session-close` | Runs from project repo. Reads vault path from CLAUDE.md. Generates coding card + session note + appends learnings/decisions + updates plan. |
 | `/cco-process-daily` | Runs from anywhere. Targets `~/Vaults/main` hardcoded. Processes today's daily note by default. |
