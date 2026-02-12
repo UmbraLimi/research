@@ -59,7 +59,7 @@
 | Card type heading labels | Seven: Meeting, Phone Call, Site Visit, Non-Coding, Slack, Email, Telegram. Phone Call/Site Visit map to `type: meeting` with `via` derived from heading. |
 | Otter transcripts | `#### Transcript` body section inside a meeting timecard. Not a separate card. `/r-otter` invoked manually when `record` field is filled in. |
 | `/cco-meeting` skill | CC-invoked skill. User gives natural language one-liner → CC parses → invokes with structured key=value args → skill enforces consistent skeleton. Covers Meeting, Phone Call, Site Visit only. |
-| Comms skills separation | `/r-slack`, `/r-email`, `/r-otter` remain separate from `/cco-meeting`. Different input paths (screenshots/transcripts vs one-liners). Will be migrated from Comm-Helpers and adapted. |
+| Comms skills separation | `/cco-slack`, `/cco-email`, `/cco-otter` are separate from `/cco-meeting`. Different input paths (screenshots/transcripts vs one-liners). Migrated from Comm-Helpers, adapted to project conventions. |
 | Daily note as working surface | `/cco-meeting` writes to daily note only. User edits freely. `/cco-process-daily` extracts into card notes later. No shortcut from one-liner to card note. |
 | Email card body | Summarized as bullet points, not quoted verbatim. Original lives in email client. |
 | Email threading | `continued: new` for new threads; wikilink to prior card for continuations. |
@@ -80,9 +80,11 @@
 | Decision | Choice |
 |----------|--------|
 | Importance notation | `+` symbols in daily notes (e.g., `+++++`). CC converts to `[importance:: 5]` during extraction. Obsidian Tasks plugin format (`🔺`, `⏳`) dropped. |
-| Due dates | Optional. Only when there's a real deadline. |
-| Delegation/assignee | None. Solo workflow. |
+| Due dates | Optional. `[due:: YYYY-MM-DD]` inline field, only when a real deadline is explicitly mentioned. |
+| Watching-for marker | `[[expect]]` wikilink. `- [ ] [[expect]] [[Person]] to do X`. Creates a backlink collection point — CC can grep for `[[expect]]` to answer "what am I waiting for?" queries. Chosen over `#expect` tag: reads as English, equally greppable, no graph noise difference that matters. |
+| Delegation/assignee | None. Solo workflow. `[[expect]]` tracks others' commitments, not delegation. |
 | Urgency field | None. Urgent work gets scheduled directly. |
+| Skill-generated tasks | Plain `- [ ]` checkboxes. No `[importance::]` — that's for human-authored tasks under `##` headings only. Skills use `[[expect]]` for watching-for, `Decide:` prefix for decisions, `[due::]` for deadlines. |
 | Task extraction | Tasks move from atomic notes to `{Project}-tasks.md` with back-link to source. |
 | Task dedup | Extracted tasks marked `→ moved to [[{Project}-tasks]]` in atomic note. |
 
@@ -92,7 +94,7 @@
 |----------|--------|
 | Skill implementation | Markdown prompt files in `~/.claude/commands/`, not TypeScript/Python code. CC interprets and executes step-by-step. |
 | Skill prefix | `cco-` for all vault integration skills. Prevents collision with `q-*`, `par-*`, `r-*`. |
-| Skill list | `/cco-session-close`, `/cco-process-daily`, `/cco-meeting`, `/cco-migrate-schema`, `/cco-project-init`, `/cco-project-link-repo` |
+| Skill list | `/cco-session-close`, `/cco-process-daily`, `/cco-meeting`, `/cco-slack`, `/cco-email`, `/cco-otter`, `/cco-migrate-schema`, `/cco-project-init`, `/cco-project-link-repo`. Reference data: `cco-slack-reference`, `cco-email-reference`. |
 | Card marker detection | Regex `### 🕒 (.+?) • (\d{2}:\d{2})` matches all timecard headings. Card type extracted from capture group. |
 | Skill execution order | Documented at bottom of skill file when steps have data dependencies. |
 | `/cco-session-close` | Runs from project repo. Reads vault path from CLAUDE.md. Generates coding card + session note + appends learnings/decisions + updates plan. |
