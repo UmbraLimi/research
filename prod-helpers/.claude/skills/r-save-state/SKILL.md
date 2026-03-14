@@ -16,6 +16,15 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 **Existing state file:**
 !`.claude/scripts/resume-state-check.sh`
 
+**Conv counter:**
+!`.claude/scripts/conv-read-counter.sh`
+
+**Active conv:**
+!`.claude/scripts/conv-read-current.sh`
+
+**Machine:**
+!`cat ~/.claude/.machine-name 2>/dev/null || echo "(unknown)"`
+
 ---
 
 ## Step 1: Check for Existing State
@@ -31,9 +40,51 @@ Options:
 1. Overwrite with current state
 2. View full file first
 3. Abort (keep existing)
+4. Append (add new state block below existing)
 ```
 
 Wait for user choice before proceeding.
+
+### Option 4 — Append Mode
+
+When the user chooses Append:
+
+1. **Label the existing first block** (if not already labeled). The file's first heading should be `# State — Conv NNN (YYYY-MM-DD ~HH:MM)`. If the file starts with `# Resume State` instead, rewrite that heading using the `**Saved:**` and `**Conv:**` values found in the existing content.
+
+2. **Add the new block** at the end of the file:
+
+```markdown
+
+---
+
+# State — Conv NNN (YYYY-MM-DD ~HH:MM)
+
+**Conv:** [from pre-computed context]
+**Machine:** [from pre-computed context]
+
+## Summary
+...
+```
+
+The new block uses the same internal structure as a normal save (Summary, Completed, Remaining, TodoWrite Items, Key Context) but **omits** the `## Resume Command` section — that only appears once, at the very end of the file after the last block.
+
+3. **Write/update the Resume Command** at the very bottom of the file (after the last block):
+
+```markdown
+
+---
+
+## Resume Command
+
+To continue: run `/r-resume`, which will consolidate all state blocks and present a unified view.
+```
+
+**Important:** The maximum number of blocks in the file should be **2**. `/r-resume` consolidates back to 1 on resume. If the file already contains 2 blocks (detected by counting `# State — Conv` headings), do NOT append — instead warn the user:
+
+```
+⚠️  RESUME-STATE.md already has 2 unconsolidated blocks.
+Run /r-resume first to consolidate before saving new state.
+```
 
 ---
 
@@ -46,6 +97,7 @@ Review the full conversation to identify:
 - **What's remaining** — incomplete items with enough detail to resume
 - **Key context** — decisions made, gotchas discovered, important file paths — anything a fresh session would need to avoid re-discovering
 - **Open questions** — anything unresolved that needs user input
+- **TodoWrite items** — scan the full conversation for any items tracked in TodoWrite; these only exist in conversation memory and will be lost on `/clear` or exit
 
 **Be thorough.** The goal is that a new session with zero prior context can read this file and continue seamlessly. Include file paths and specific details.
 
@@ -53,12 +105,13 @@ Review the full conversation to identify:
 
 ## Step 3: Write RESUME-STATE.md
 
-Create in the project root:
+Create in the project root. Use the conv-labeled heading format so the file is ready for future appends:
 
 ```markdown
-# Resume State
+# State — Conv NNN (YYYY-MM-DD ~HH:MM)
 
-**Saved:** YYYY-MM-DD ~HH:MM
+**Conv:** [from pre-computed context — NNN if active, or "ended" if .conv-current was cleaned up]
+**Machine:** [from pre-computed context]
 
 ## Summary
 
@@ -77,6 +130,15 @@ Create in the project root:
 ### [Group 2 name]
 - [ ] More items...
 
+## TodoWrite Items
+
+[All items from TodoWrite at time of save. These exist only in conversation memory and will be lost on /clear or exit. Include status (pending/in-progress/done) and any context.]
+
+- [ ] Item description — context
+- [ ] Another item — context
+
+If no TodoWrite items exist, write: "No TodoWrite items active."
+
 ## Key Context
 
 [Paragraph or bullets with critical knowledge needed to resume:]
@@ -87,7 +149,7 @@ Create in the project root:
 
 ## Resume Command
 
-To continue: read this file, then work through the **Remaining** items in order.
+To continue: run `/r-resume`, which will consolidate state and present a unified view.
 ```
 
 ---

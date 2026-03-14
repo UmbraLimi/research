@@ -39,3 +39,5 @@ Last Updated: 2026-03-14
 | 8 | "Conv" as conversation numbering short-form | 2026-03-14 | Zero-padded 3-digit, `Conv: NNN` in commits, shared across commits in same conversation |
 | 9 | Auto-synced CONV-COUNTER with mandatory pull/push | 2026-03-14 | `/r-start` pulls+increments+pushes; `/r-end` commits+pushes; HALT on sync failure |
 | 10 | Separate /r-start and /r-end skills | 2026-03-14 | Start wraps resume; End wraps eos+commit+push; no combined skill |
+| 11 | RESUME-STATE.md append mode with max 2 blocks | 2026-03-14 | Oldest-first ordering, conv-labeled headings; /r-save-state refuses 3rd append |
+| 12 | /r-resume as consolidation point for multi-block state | 2026-03-14 | Walks blocks, evaluates with evidence, rewrites to single block after user approval |

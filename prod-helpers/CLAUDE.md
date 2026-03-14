@@ -79,6 +79,7 @@ Decisions are recorded in `DECISIONS.md` under categories: Data Architecture, Ta
 |---------|---------|
 | `/r-start` | **Start conversation** — pull, increment conv counter, push, resume |
 | `/r-end` | **End conversation** — run eos sequence, commit, push, cleanup |
+| `/r-pre-clear` | **Prepare warm restart** — save state, increment conv; user runs /clear then /r-resume |
 | `/r-eos` | End-of-session sequence (runs learn-decide, dump, update-plan, docs) |
 | `/r-learn-decide` | Capture learnings and decisions to session files |
 | `/r-dump` | Create development session transcript |
@@ -115,13 +116,26 @@ Each session reads the file first, works through unchecked items, updates progre
 
 ## Conversation Workflow
 
-Every working session follows this flow:
+Two entry points depending on context:
 
-1. **Start:** `/r-start` — pulls from remote, increments `CONV-COUNTER`, pushes, shows resume context
-2. **Work** — commits mid-session via `/r-commit` (includes `Conv: NNN` and `Machine:` in message)
-3. **End:** `/r-end` — runs eos sequence, commits, pushes, cleans up `.conv-current`
-4. **Exit** Claude Code
+**Cold start** (new terminal, different machine):
+```
+/r-start → work → /r-end → exit
+```
 
-Two machines (MacMiniM4, MacMiniM4-Pro) share this repo. `/r-start` auto-pulls and `/r-end` auto-pushes to keep the conv counter in sync. Both skills HALT on sync failure.
+**Warm restart** (continue working after saving):
+```
+/r-end → /r-pre-clear → /clear → /r-resume → work → /r-end → exit
+```
+
+| Skill | Does | Syncs git? |
+|-------|------|-----------|
+| `/r-start` | pull, increment conv, push, resume | Yes (pull + push) |
+| `/r-end` | eos sequence, commit, push, cleanup | Yes (push) |
+| `/r-pre-clear` | save state, increment conv locally, STOP | No (local only) |
+| `/clear` | built-in CLI command, wipes conversation memory | No |
+| `/r-resume` | read RESUME-STATE.md + PLAN.md, show context | No |
+
+Two machines (MacMiniM4, MacMiniM4-Pro) share this repo. `/r-start` auto-pulls and `/r-end` auto-pushes to keep the conv counter in sync. Both HALT on sync failure.
 
 Session docs go to `docs/sessions/YYYY-MM/`.

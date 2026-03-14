@@ -12,16 +12,17 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 
 | Skill | Type | Purpose |
 |-------|------|---------|
-| `/r-start` | Conversation | Pull, increment conv counter, push, then resume |
+| `/r-start` | Conversation | Pull, increment conv counter, push, then resume (cold start) |
 | `/r-end` | Conversation | Run eos sequence, commit, push, cleanup — replaces manual /r-eos + /r-commit |
+| `/r-pre-clear` | Conversation | Save state, increment conv locally, /clear — warm restart within same process |
 | `/r-eos` | Orchestrator | Runs the 4-skill end-of-session sequence in order |
 | `/r-learn-decide` | Session docs | Captures learnings and decisions to structured files |
 | `/r-dump` | Session docs | Creates development transcript with verbatim user prompts |
 | `/r-update-plan` | Plan tracking | Keeps PLAN.md synchronized with progress |
 | `/r-docs` | Documentation | Updates project docs affected by session changes |
-| `/r-save-state` | Continuity | Saves work state to RESUME-STATE.md for cross-session resume |
+| `/r-save-state` | Continuity | Saves work state to RESUME-STATE.md; supports append mode for multi-block state files (max 2 blocks) |
 | `/r-commit` | Git | Commits only this folder's changes (includes Conv + Machine metadata) |
-| `/r-resume` | Continuity | Loads PLAN.md and presents resumption context |
+| `/r-resume` | Continuity | Loads PLAN.md, consolidates multi-block RESUME-STATE.md, presents resumption context |
 
 ## Interaction Model
 
@@ -38,7 +39,25 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
   ├── /r-commit             ← includes Conv: + Machine: in message
   └── git push              ← mandatory sync
 
+/r-pre-clear (warm restart — preparation)
+  ├── /r-save-state        ← preserves state to RESUME-STATE.md
+  ├── increment conv       ← local only, no push
+  └── STOP                 ← displays instructions, then user does:
+      /clear               ← user runs manually (built-in CLI command)
+      /r-resume            ← user runs manually to pick up from RESUME-STATE.md
+
 /r-save-state              ← standalone, called mid-session or before /compact
+  ├── fresh file           ← writes single block with conv-labeled heading
+  ├── existing (1 block)   ← offers: overwrite / view / abort / append
+  └── existing (2 blocks)  ← refuses append, tells user to /r-resume first
+
+/r-resume (multi-block consolidation)
+  ├── detects 2+ blocks in RESUME-STATE.md
+  ├── walks oldest→newest, checks earlier items against current state
+  ├── explains each classification with evidence (done because X, pending because Y, interaction because Z)
+  ├── waits for user approval before rewriting
+  ├── rewrites to single block after approval
+  └── then proceeds with normal resume flow
 ```
 
 ### Shared Timestamp Convention
@@ -72,6 +91,82 @@ Peerloop-docs `/w-docs` has 4 helper bash scripts for automated change detection
 ### Why no shadow docs for individual skills
 Each SKILL.md is self-documenting — it contains purpose, usage, and design in its frontmatter and body. This overview captures the system-level concerns (interactions, shared conventions, rationale) that individual files can't express.
 
+## Conversation Lifecycle
+
+### What is a "Conv"?
+
+A **conv** (conversation) = one Claude Code invocation with continuous memory. A conv can produce zero or many commits. All commits within a conv share the same conv number (e.g. `Conv: 003`). This gives a human-friendly sense of recency that git hashes lack.
+
+### Key Files
+
+| File | Committed? | Purpose |
+|------|-----------|---------|
+| `CONV-COUNTER` | Yes | Persistent integer, incremented each conv. Cross-machine sync via git. |
+| `.conv-current` | No (gitignored) | Zero-padded conv number for the active session (e.g. `003`). Ephemeral — deleted by `/r-end`. |
+| `RESUME-STATE.md` | Yes | Captures work state for resumption after `/clear` or new session. Conv-labeled blocks (`# State — Conv NNN`), max 2 before consolidation. Includes TodoWrite items, conv state, remaining work. |
+
+### Two Entry Points
+
+**Cold start** — new terminal or switching machines:
+```
+$ claude
+> /r-start       ← git pull, read CONV-COUNTER, increment, commit+push, then /r-resume
+```
+`/r-start` ensures the conv counter is synced from remote before incrementing. The push happens before any work begins, so the other machine will always see it.
+
+**Warm restart** — continuing work after saving within same Claude Code process:
+```
+> /r-pre-clear        ← /r-save-state, increment conv locally, /clear (wipes memory)
+> /r-resume       ← reads RESUME-STATE.md + PLAN.md cold
+```
+`/r-pre-clear` does NOT push — the next `/r-end` handles that. The conv counter is incremented locally in both `CONV-COUNTER` and `.conv-current`.
+
+### Closing a Conv
+
+```
+> /r-end          ← /r-eos (4 sub-skills), /r-commit, git push, rm .conv-current
+```
+Always push. HALT on push failure. This is what syncs everything for the other machine.
+
+### Common Flows
+
+**Single session, end for the day:**
+```
+/r-start → [work] → /r-end → exit
+```
+
+**Multiple convs, same sitting:**
+```
+/r-start → [work] → /r-end → /r-pre-clear → /clear → /r-resume → [work] → /r-end → exit
+```
+
+**Cross-machine:**
+```
+Machine A: /r-start → [work] → /r-end → exit
+Machine B: /r-start → [work] → /r-end → exit
+```
+
+### Edge Cases
+
+| Situation | What happens |
+|-----------|-------------|
+| `.conv-current` exists at `/r-start` | Warning (prior conv didn't `/r-end` cleanly). Proceeds — `CONV-COUNTER` post-pull is source of truth. |
+| Push fails in `/r-start` or `/r-end` | HALT. Do not proceed. Conv counter is not synced. |
+| `/r-pre-clear` without prior `/r-end` | Works — saves state and increments locally. Uncommitted work stays uncommitted; next `/r-end` will pick it up. |
+| Network down at `/r-start` | Pull fails → HALT. Cannot guarantee counter is current. |
+| Network down at `/r-end` | Push fails → HALT. Do not report success. User must push manually when network returns. |
+
+### Commit Message Metadata
+
+Every commit via `/r-commit` includes:
+```
+Conv: 003
+Machine: MacMiniM4
+```
+These are pre-computed via `!` backticks reading `.conv-current` and `~/.claude/.machine-name`.
+
+---
+
 ## Conventions
 
 ### Session file naming
@@ -94,4 +189,5 @@ Completed phases move to `COMPLETED_PLAN.md`. PLAN.md never contains finished wo
 
 - 2026-03-13: Created — 7 skills adapted from peerloop-docs w-* series for prod-helpers project setup session
 - 2026-03-14: Added `/r-resume`, extracted piped `!` backtick commands into `.claude/scripts/` wrapper scripts across 6 skills
-- 2026-03-14: Added `/r-start`, `/r-end` for conversation lifecycle; added Conv + Machine metadata to `/r-commit`
+- 2026-03-14: Added `/r-start`, `/r-end`, `/r-pre-clear` for conversation lifecycle; added Conv + Machine metadata to `/r-commit`
+- 2026-03-14: Added append mode to `/r-save-state` (conv-labeled blocks, max 2); added multi-block consolidation to `/r-resume` (walk → evaluate → merge → rewrite)

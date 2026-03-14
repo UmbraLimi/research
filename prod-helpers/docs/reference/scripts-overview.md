@@ -20,8 +20,8 @@ Wrapper scripts for piped shell commands used in skill `!` backtick pre-computed
 | `decisions-categories.sh` | r-learn-decide | Extracts category headings from DECISIONS.md |
 | `docs-list.sh` | r-docs | Lists all markdown files in docs/ |
 | `resume-state-check.sh` | r-save-state | Checks if RESUME-STATE.md exists and shows saved date |
-| `conv-read-counter.sh` | r-start | Reads CONV-COUNTER persistent value |
-| `conv-read-current.sh` | r-commit, r-end | Reads .conv-current ephemeral session value |
+| `conv-read-counter.sh` | r-start, r-save-state, r-pre-clear | Reads CONV-COUNTER persistent value |
+| `conv-read-current.sh` | r-commit, r-end, r-save-state, r-pre-clear | Reads .conv-current ephemeral session value |
 
 ## Permission
 
