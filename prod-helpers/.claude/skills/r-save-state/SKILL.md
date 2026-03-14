@@ -14,7 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ## Pre-computed Context
 
 **Existing state file:**
-!`if [ -f RESUME-STATE.md ]; then echo "EXISTS — saved on:"; head -5 RESUME-STATE.md | grep 'Saved:'; else echo "No existing RESUME-STATE.md"; fi`
+!`.claude/scripts/resume-state-check.sh`
 
 ---
 

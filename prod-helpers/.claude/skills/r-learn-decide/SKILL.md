@@ -14,7 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 ## Pre-computed Context
 
 **Existing session files this month:**
-!`MONTH=$(date '+%Y-%m'); find docs/sessions/$MONTH \( -name '*Learnings.md' -o -name '*Decisions.md' \) 2>/dev/null | sort | tail -10 | sed 's|^|- |' || echo "- (none yet this month)"`
+!`.claude/scripts/session-files-learn-decide.sh`
 
 ---
 
@@ -154,7 +154,7 @@ Code or reusable approach
 
 ### Categories in DECISIONS.md
 
-!`grep '^## ' DECISIONS.md 2>/dev/null | sed 's/^## /- /' || echo "- (unable to read DECISIONS.md)"`
+!`.claude/scripts/decisions-categories.sh`
 
 ### Important Decision Criteria
 

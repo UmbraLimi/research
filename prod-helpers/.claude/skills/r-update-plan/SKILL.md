@@ -17,7 +17,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 !`head -10 PLAN.md 2>/dev/null || echo "(PLAN.md not found)"`
 
 **Open questions:**
-!`sed -n '/^## Open Questions/,/^## /p' PLAN.md 2>/dev/null | head -20 || echo "(none found)"`
+!`.claude/scripts/plan-open-questions.sh`
 
 ---
 

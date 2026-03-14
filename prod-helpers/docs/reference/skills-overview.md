@@ -19,6 +19,7 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 | `/r-docs` | Documentation | Updates project docs affected by session changes |
 | `/r-save-state` | Continuity | Saves work state to RESUME-STATE.md for cross-session resume |
 | `/r-commit` | Git | Commits only this folder's changes within the monorepo |
+| `/r-resume` | Continuity | Loads PLAN.md and presents resumption context |
 
 ## Interaction Model
 
@@ -55,6 +56,9 @@ Preserves `allowed-tools` (restricts each skill to only the tools it needs) and 
 ### Why adapted from peerloop-docs (not translation-system)
 Peerloop-docs skills are the most mature (386+ sessions). Translation-system uses the older `q-*` commands format. Peerloop-docs also has the dual-repo architecture which forced cleaner separation of concerns in its skills.
 
+### Why wrapper scripts for `!` backtick pipes
+The permission checker matches full command strings — piped commands like `sed ... | head` fail as "multiple operations." Skills now call named scripts in `.claude/scripts/` instead. This preserves build-time determinism, and the script filenames serve as self-documentation in the skill (e.g., `!`.claude/scripts/plan-status-header.sh``). One blanket permission rule `Bash(.claude/scripts/*)` covers all scripts.
+
 ### Why no detection scripts in r-docs
 Peerloop-docs `/w-docs` has 4 helper bash scripts for automated change detection. These were omitted because a planning/research project doesn't have the code surface area to justify them. Simple `git diff` and `find` in `!` interpolation are sufficient. Scripts can be added later if needed.
 
@@ -82,3 +86,4 @@ Completed phases move to `COMPLETED_PLAN.md`. PLAN.md never contains finished wo
 ## History
 
 - 2026-03-13: Created — 7 skills adapted from peerloop-docs w-* series for prod-helpers project setup session
+- 2026-03-14: Added `/r-resume`, extracted piped `!` backtick commands into `.claude/scripts/` wrapper scripts across 6 skills

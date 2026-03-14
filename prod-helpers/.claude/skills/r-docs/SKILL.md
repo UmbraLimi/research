@@ -17,7 +17,7 @@ Execute at the end of a session to update documentation affected by this session
 !`git diff --name-only HEAD~1 -- . 2>/dev/null || git diff --name-only -- . 2>/dev/null || echo "(no changes detected — use session context)"`
 
 **Current docs structure:**
-!`find docs -name '*.md' 2>/dev/null | sort | sed 's|^|- |' || echo "- (no docs found)"`
+!`.claude/scripts/docs-list.sh`
 
 ---
 

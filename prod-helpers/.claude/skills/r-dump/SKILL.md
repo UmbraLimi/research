@@ -14,7 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 ## Pre-computed Context
 
 **Existing session files this month:**
-!`MONTH=$(date '+%Y-%m'); find docs/sessions/$MONTH -name '*Dev.md' 2>/dev/null | sort | tail -5 | sed 's|^|- |' || echo "- (none yet this month)"`
+!`.claude/scripts/session-files-dev.sh`
 
 ---
 
