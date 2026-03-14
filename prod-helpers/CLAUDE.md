@@ -116,7 +116,7 @@ Each session reads the file first, works through unchecked items, updates progre
 
 ## Conversation Workflow
 
-Two entry points depending on context:
+Always start with `/r-start`. It handles both cold and warm starts (it calls `/r-resume` internally, which picks up RESUME-STATE.md if present).
 
 **Cold start** (new terminal, different machine):
 ```
@@ -125,7 +125,7 @@ Two entry points depending on context:
 
 **Warm restart** (continue working after saving):
 ```
-/r-end → /r-pre-clear → /clear → /r-resume → work → /r-end → exit
+/r-end → /r-pre-clear → /clear → /r-start → work → /r-end → exit
 ```
 
 | Skill | Does | Syncs git? |

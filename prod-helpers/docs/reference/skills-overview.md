@@ -12,7 +12,7 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 
 | Skill | Type | Purpose |
 |-------|------|---------|
-| `/r-start` | Conversation | Pull, increment conv counter, push, then resume (cold start) |
+| `/r-start` | Conversation | Pull, increment conv counter, push, then resume — sole entry point for all convs |
 | `/r-end` | Conversation | Run eos sequence, commit, push, cleanup — replaces manual /r-eos + /r-commit |
 | `/r-pre-clear` | Conversation | Save state, increment conv locally, /clear — warm restart within same process |
 | `/r-eos` | Orchestrator | Runs the 4-skill end-of-session sequence in order |
@@ -20,9 +20,9 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 | `/r-dump` | Session docs | Creates development transcript with verbatim user prompts |
 | `/r-update-plan` | Plan tracking | Keeps PLAN.md synchronized with progress |
 | `/r-docs` | Documentation | Updates project docs affected by session changes |
-| `/r-save-state` | Continuity | Saves work state to RESUME-STATE.md; supports append mode for multi-block state files (max 2 blocks) |
+| `/r-save-state` | Continuity | Saves work state to RESUME-STATE.md; supports append mode (max 2 blocks); auto-deletes when all items done |
 | `/r-commit` | Git | Commits only this folder's changes (includes Conv + Machine metadata) |
-| `/r-resume` | Continuity | Loads PLAN.md, consolidates multi-block RESUME-STATE.md, presents resumption context |
+| `/r-resume` | Continuity | Loads PLAN.md, consolidates multi-block RESUME-STATE.md, auto-deletes when all done, conv state warnings; called internally by /r-start |
 
 ## Interaction Model
 
@@ -44,19 +44,21 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
   ├── increment conv       ← local only, no push
   └── STOP                 ← displays instructions, then user does:
       /clear               ← user runs manually (built-in CLI command)
-      /r-resume            ← user runs manually to pick up from RESUME-STATE.md
+      /r-start             ← user runs manually (pulls, increments, pushes, resumes)
 
 /r-save-state              ← standalone, called mid-session or before /compact
   ├── fresh file           ← writes single block with conv-labeled heading
   ├── existing (1 block)   ← offers: overwrite / view / abort / append
   └── existing (2 blocks)  ← refuses append, tells user to /r-resume first
 
-/r-resume (multi-block consolidation)
+/r-resume (multi-block consolidation + conv state checks)
+  ├── checks conv state: warns if no .conv-current or stale context
   ├── detects 2+ blocks in RESUME-STATE.md
   ├── walks oldest→newest, checks earlier items against current state
   ├── explains each classification with evidence (done because X, pending because Y, interaction because Z)
   ├── waits for user approval before rewriting
   ├── rewrites to single block after approval
+  ├── auto-deletes RESUME-STATE.md if all remaining items are [x]
   └── then proceeds with normal resume flow
 ```
 
@@ -105,21 +107,17 @@ A **conv** (conversation) = one Claude Code invocation with continuous memory. A
 | `.conv-current` | No (gitignored) | Zero-padded conv number for the active session (e.g. `003`). Ephemeral — deleted by `/r-end`. |
 | `RESUME-STATE.md` | Yes | Captures work state for resumption after `/clear` or new session. Conv-labeled blocks (`# State — Conv NNN`), max 2 before consolidation. Includes TodoWrite items, conv state, remaining work. |
 
-### Two Entry Points
+### Single Entry Point
 
-**Cold start** — new terminal or switching machines:
+Always run `/r-start`. It handles both cold and warm starts — it calls `/r-resume` internally, which picks up RESUME-STATE.md if present.
+
 ```
 $ claude
 > /r-start       ← git pull, read CONV-COUNTER, increment, commit+push, then /r-resume
 ```
 `/r-start` ensures the conv counter is synced from remote before incrementing. The push happens before any work begins, so the other machine will always see it.
 
-**Warm restart** — continuing work after saving within same Claude Code process:
-```
-> /r-pre-clear        ← /r-save-state, increment conv locally, /clear (wipes memory)
-> /r-resume       ← reads RESUME-STATE.md + PLAN.md cold
-```
-`/r-pre-clear` does NOT push — the next `/r-end` handles that. The conv counter is incremented locally in both `CONV-COUNTER` and `.conv-current`.
+For warm restarts, the user runs `/r-pre-clear` → `/clear` → `/r-start` (not `/r-resume` directly).
 
 ### Closing a Conv
 
@@ -137,7 +135,7 @@ Always push. HALT on push failure. This is what syncs everything for the other m
 
 **Multiple convs, same sitting:**
 ```
-/r-start → [work] → /r-end → /r-pre-clear → /clear → /r-resume → [work] → /r-end → exit
+/r-start → [work] → /r-end → /r-pre-clear → /clear → /r-start → [work] → /r-end → exit
 ```
 
 **Cross-machine:**
@@ -191,3 +189,4 @@ Completed phases move to `COMPLETED_PLAN.md`. PLAN.md never contains finished wo
 - 2026-03-14: Added `/r-resume`, extracted piped `!` backtick commands into `.claude/scripts/` wrapper scripts across 6 skills
 - 2026-03-14: Added `/r-start`, `/r-end`, `/r-pre-clear` for conversation lifecycle; added Conv + Machine metadata to `/r-commit`
 - 2026-03-14: Added append mode to `/r-save-state` (conv-labeled blocks, max 2); added multi-block consolidation to `/r-resume` (walk → evaluate → merge → rewrite)
+- 2026-03-14: Unified entry point — `/r-start` is sole entry for all convs; `/r-resume` internal only. Added conv state warnings and all-done auto-delete to `/r-resume` and `/r-save-state`

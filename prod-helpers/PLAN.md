@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**Phase 1 — Foundation** (in progress — 1.4 partially complete)
+**Phase 1 — Foundation** (in progress — 1.4 complete except deferred test harness)
 
 ---
 

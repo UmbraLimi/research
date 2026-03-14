@@ -7,7 +7,7 @@ allowed-tools: Read, Bash, Glob, Grep, Skill
 
 # Start Conversation
 
-**Purpose:** Sync from remote, increment the conversation counter, push the new counter, lock the conv number for this session, then present resumption context.
+**Purpose:** Sync from remote, increment the conversation counter, push the new counter, lock the conv number for this session, then present resumption context. This is the **only** entry point for all conversations — both cold starts and warm restarts after `/r-pre-clear` → `/clear`.
 
 ---
 

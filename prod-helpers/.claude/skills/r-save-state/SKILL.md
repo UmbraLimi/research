@@ -154,7 +154,23 @@ To continue: run `/r-resume`, which will consolidate state and present a unified
 
 ---
 
-## Step 4: Confirm
+## Step 4: All-Done Check
+
+Before confirming, check whether **all** items in the Remaining section are checked (`[x]`). If so:
+
+1. Display:
+```
+✅ All remaining items are done — nothing to carry forward.
+   Deleting RESUME-STATE.md (state is preserved in git history and PLAN.md).
+```
+
+2. Delete `RESUME-STATE.md` (or skip writing it if this is a fresh save).
+
+3. Do NOT proceed to the confirmation step — the file doesn't need to exist.
+
+---
+
+## Step 5: Confirm
 
 ```
 State saved → RESUME-STATE.md

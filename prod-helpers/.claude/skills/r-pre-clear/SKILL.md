@@ -66,7 +66,7 @@ Next conv: {NEW_CONV}
 
 Now run these two commands manually:
   1. /clear
-  2. /r-resume
+  2. /r-start
 ```
 
 **STOP HERE.** Do not take any further action. The user will run `/clear` and `/r-resume` themselves.

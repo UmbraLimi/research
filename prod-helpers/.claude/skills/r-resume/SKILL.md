@@ -25,8 +25,39 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 **Open questions:**
 !`.claude/scripts/plan-open-questions.sh`
 
+**Active conv (.conv-current):**
+!`test -f .conv-current && echo "$(cat .conv-current)" || echo "(none)"`
+
 **RESUME-STATE.md:**
 !`cat RESUME-STATE.md 2>/dev/null || echo "(no resume state file)"`
+
+---
+
+## Conv State Checks
+
+Before presenting the resume context, evaluate these conditions and display warnings if triggered:
+
+### No active conv
+
+If `.conv-current` is `(none)`, display:
+
+```
+⚠️  No active conv — run /r-start for tracked work, or continue untracked.
+```
+
+This is a soft warning — do not block. The user may just want to peek at status.
+
+### Stale context (raw /clear detected)
+
+If `.conv-current` exists **and** `RESUME-STATE.md` either doesn't exist or its `Conv:` line references an older conv number than `.conv-current`, display:
+
+```
+⚠️  Active conv {NNN} but RESUME-STATE.md is stale/missing.
+    A raw /clear may have been run without /r-pre-clear.
+    Consider running /r-save-state to capture current work before continuing.
+```
+
+This is a soft warning — do not block.
 
 ---
 
@@ -78,6 +109,22 @@ Rewrite `RESUME-STATE.md` as a single `# State — Conv MMM (date)` block (using
 - **TodoWrite Items**: carried from the latest block only (earlier ones are stale)
 
 This ensures the next `/r-pre-clear` can only ever create a 2-block file.
+
+---
+
+## All-Done Cleanup
+
+After consolidation (Step C) or when reading a single-block file, check whether **all** items in the Remaining section are checked (`[x]`). If so:
+
+1. Display:
+```
+✅ All remaining items are done — RESUME-STATE.md has no pending work.
+   Deleting file (state is preserved in git history and PLAN.md).
+```
+
+2. Delete `RESUME-STATE.md`.
+
+3. Continue to present the resume context using PLAN.md only.
 
 ---
 
