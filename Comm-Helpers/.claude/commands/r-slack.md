@@ -225,7 +225,18 @@ End with `---`
 
 ## Output Format
 
-**IMPORTANT:** Wrap the entire output in a fenced code block (` ```markdown ... ``` `) so the user can copy raw markdown that pastes correctly into Obsidian.
+### File Output (prevents trailing whitespace)
+
+1. Write the formatted markdown to `/tmp/timecard.md`
+2. Strip trailing whitespace:
+   ```bash
+   sed 's/[[:space:]]*$//' /tmp/timecard.md > /tmp/timecard-clean.md
+   ```
+3. Open in editor (check `.claude/config.json` for configured editor, default `cursor`):
+   ```bash
+   [editor] /tmp/timecard-clean.md
+   ```
+4. Tell user: "Opened `/tmp/timecard-clean.md` — ready for copying"
 
 Output this structure:
 
