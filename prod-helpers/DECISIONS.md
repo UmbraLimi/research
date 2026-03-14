@@ -35,3 +35,7 @@ Last Updated: 2026-03-14
 | 4 | Simplified r-docs without detection scripts | 2026-03-13 | Use git diff + find instead of dedicated bash scripts; add later if needed |
 | 5 | Wrapper scripts for piped `!` backtick commands | 2026-03-14 | `.claude/scripts/*.sh` with blanket permission rule; preserves build-time determinism |
 | 6 | Preserve `!` backtick determinism as project principle | 2026-03-14 | Never replace pre-computed context with tool-based alternatives without user approval |
+| 7 | Machine tracking in commits via skills `!` backtick | 2026-03-14 | Pre-compute `~/.claude/.machine-name` in r-commit SKILL.md; `Machine:` in commit body |
+| 8 | "Conv" as conversation numbering short-form | 2026-03-14 | Zero-padded 3-digit, `Conv: NNN` in commits, shared across commits in same conversation |
+| 9 | Auto-synced CONV-COUNTER with mandatory pull/push | 2026-03-14 | `/r-start` pulls+increments+pushes; `/r-end` commits+pushes; HALT on sync failure |
+| 10 | Separate /r-start and /r-end skills | 2026-03-14 | Start wraps resume; End wraps eos+commit+push; no combined skill |

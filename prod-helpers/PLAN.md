@@ -33,6 +33,8 @@ Establish the infrastructure before migrating data or building agents.
 ### 1.4 Project Structure
 - [x] Set up directory structure for skills, agents, scripts, and shadow docs
 - [x] Create shadow doc template (defined in r-docs skill)
+- [x] Machine tracking in commits (Machine: line via r-commit skill)
+- [x] Conversation numbering system (CONV-COUNTER, /r-start, /r-end)
 - [ ] Set up test harness / test conventions (deferred — will establish when first script is created)
 
 ---

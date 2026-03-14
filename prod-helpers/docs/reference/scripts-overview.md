@@ -20,6 +20,8 @@ Wrapper scripts for piped shell commands used in skill `!` backtick pre-computed
 | `decisions-categories.sh` | r-learn-decide | Extracts category headings from DECISIONS.md |
 | `docs-list.sh` | r-docs | Lists all markdown files in docs/ |
 | `resume-state-check.sh` | r-save-state | Checks if RESUME-STATE.md exists and shows saved date |
+| `conv-read-counter.sh` | r-start | Reads CONV-COUNTER persistent value |
+| `conv-read-current.sh` | r-commit, r-end | Reads .conv-current ephemeral session value |
 
 ## Permission
 
@@ -37,3 +39,4 @@ This pattern is also used in peerloop-docs (`w-docs` skill with `${CLAUDE_SKILL_
 ## History
 
 - 2026-03-14: Created — 8 scripts extracted from 6 skills to resolve permission checker failures on piped commands
+- 2026-03-14: Added conv-read-counter.sh and conv-read-current.sh for conversation numbering

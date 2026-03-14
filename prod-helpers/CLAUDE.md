@@ -65,6 +65,7 @@ docs/
 | `PLAYBOOK.md` | Repo workflow conventions & deferred enhancements | `/r-learn-decide` |
 | `PURPOSE.md` | Project goals, context, constraints | Manual |
 | `RESUME-STATE.md` | Cross-session continuity (created as needed) | `/r-save-state` |
+| `CONV-COUNTER` | Persistent conversation counter (synced via git) | `/r-start` |
 
 ## Decision Tracking
 
@@ -76,13 +77,15 @@ Decisions are recorded in `DECISIONS.md` under categories: Data Architecture, Ta
 
 | Command | Purpose |
 |---------|---------|
-| `/r-eos` | Full end-of-session sequence (runs all 4 below in order) |
+| `/r-start` | **Start conversation** — pull, increment conv counter, push, resume |
+| `/r-end` | **End conversation** — run eos sequence, commit, push, cleanup |
+| `/r-eos` | End-of-session sequence (runs learn-decide, dump, update-plan, docs) |
 | `/r-learn-decide` | Capture learnings and decisions to session files |
 | `/r-dump` | Create development session transcript |
 | `/r-update-plan` | Update PLAN.md with current progress |
 | `/r-docs` | Update all project documentation |
 | `/r-save-state` | Save work state to RESUME-STATE.md |
-| `/r-commit` | Stage and commit this folder only |
+| `/r-commit` | Stage and commit this folder only (includes Conv + Machine) |
 | `/r-resume` | Load PLAN.md and show where you left off |
 
 **Parent-level (`par-*`)** — also available:
@@ -110,6 +113,15 @@ For blocks too large for one session, create `CURRENT-BLOCK-PLAN.md` at project 
 
 Each session reads the file first, works through unchecked items, updates progress. Deleted when block completes. PLAN.md is too high-level for item tracking; RESUME-STATE.md is session-specific and gets deleted on resume — this fills the gap.
 
-## Session Documentation
+## Conversation Workflow
 
-Use `/r-eos` for full end-of-session wrap-up. Session docs go to `docs/sessions/YYYY-MM/`.
+Every working session follows this flow:
+
+1. **Start:** `/r-start` — pulls from remote, increments `CONV-COUNTER`, pushes, shows resume context
+2. **Work** — commits mid-session via `/r-commit` (includes `Conv: NNN` and `Machine:` in message)
+3. **End:** `/r-end` — runs eos sequence, commits, pushes, cleans up `.conv-current`
+4. **Exit** Claude Code
+
+Two machines (MacMiniM4, MacMiniM4-Pro) share this repo. `/r-start` auto-pulls and `/r-end` auto-pushes to keep the conv counter in sync. Both skills HALT on sync failure.
+
+Session docs go to `docs/sessions/YYYY-MM/`.

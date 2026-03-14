@@ -12,26 +12,33 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 
 | Skill | Type | Purpose |
 |-------|------|---------|
+| `/r-start` | Conversation | Pull, increment conv counter, push, then resume |
+| `/r-end` | Conversation | Run eos sequence, commit, push, cleanup — replaces manual /r-eos + /r-commit |
 | `/r-eos` | Orchestrator | Runs the 4-skill end-of-session sequence in order |
 | `/r-learn-decide` | Session docs | Captures learnings and decisions to structured files |
 | `/r-dump` | Session docs | Creates development transcript with verbatim user prompts |
 | `/r-update-plan` | Plan tracking | Keeps PLAN.md synchronized with progress |
 | `/r-docs` | Documentation | Updates project docs affected by session changes |
 | `/r-save-state` | Continuity | Saves work state to RESUME-STATE.md for cross-session resume |
-| `/r-commit` | Git | Commits only this folder's changes within the monorepo |
+| `/r-commit` | Git | Commits only this folder's changes (includes Conv + Machine metadata) |
 | `/r-resume` | Continuity | Loads PLAN.md and presents resumption context |
 
 ## Interaction Model
 
 ```
-/r-eos (orchestrator)
-  ├── 1. /r-learn-decide  ← receives shared timestamp
-  ├── 2. /r-dump           ← receives shared timestamp
-  ├── 3. /r-update-plan
-  └── 4. /r-docs
+/r-start (conversation open)
+  └── /r-resume            ← called after pull/increment/push
 
-/r-save-state             ← standalone, called mid-session or before /compact
-/r-commit                 ← standalone, called after /r-eos completes
+/r-end (conversation close)
+  ├── /r-eos (orchestrator)
+  │   ├── 1. /r-learn-decide  ← receives shared timestamp
+  │   ├── 2. /r-dump           ← receives shared timestamp
+  │   ├── 3. /r-update-plan
+  │   └── 4. /r-docs
+  ├── /r-commit             ← includes Conv: + Machine: in message
+  └── git push              ← mandatory sync
+
+/r-save-state              ← standalone, called mid-session or before /compact
 ```
 
 ### Shared Timestamp Convention
@@ -87,3 +94,4 @@ Completed phases move to `COMPLETED_PLAN.md`. PLAN.md never contains finished wo
 
 - 2026-03-13: Created — 7 skills adapted from peerloop-docs w-* series for prod-helpers project setup session
 - 2026-03-14: Added `/r-resume`, extracted piped `!` backtick commands into `.claude/scripts/` wrapper scripts across 6 skills
+- 2026-03-14: Added `/r-start`, `/r-end` for conversation lifecycle; added Conv + Machine metadata to `/r-commit`

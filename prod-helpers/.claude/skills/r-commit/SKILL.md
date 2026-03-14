@@ -2,7 +2,7 @@
 name: r-commit
 description: Commit only this folder's changes
 argument-hint: ""
-allowed-tools: Read, Edit, Bash, Glob
+allowed-tools: Bash, Read, Glob
 ---
 
 # Commit Current Folder
@@ -13,76 +13,66 @@ Commit only changes within this project folder, leaving other folders' changes u
 
 ## Pre-computed Context
 
-**Current folder:**
-!`basename $(pwd)`
+**Machine:**
+!`cat ~/.claude/.machine-name 2>/dev/null || echo "(unknown)"`
 
-**Folder status:**
-!`git status -- . 2>/dev/null || echo "(not in a git repo)"`
-
-**Diff summary:**
-!`git diff --stat -- . 2>/dev/null`
+**Conv:**
+!`.claude/scripts/conv-read-current.sh`
 
 ---
 
 ## Workflow
 
-### Step 1: Review Changes
-
-Use the pre-injected status above. If more detail is needed:
+1. **Identify the current folder** relative to the git root:
 
 ```bash
-git diff -- .
+FOLDER_NAME=$(basename $(pwd))
+echo "Committing changes in: $FOLDER_NAME/"
 ```
 
-### Step 2: Stage and Commit
+2. **Show what will be committed** (only this folder):
 
-**Stage only this folder's changes:**
+```bash
+git status -- .
+```
+
+3. **Stage only this folder's changes:**
 
 ```bash
 git add .
 ```
 
-**Verify staging** (confirm no other folders were staged):
+4. **Verify staging** (confirm no other folders were staged):
 
 ```bash
 git status
 ```
 
-### Step 3: Commit Message Format
+5. **Commit** with a concise message and point-form highlights of changes.
 
+Include `Machine:` in the commit message body using the pre-computed value above.
+
+Format:
 ```
 Concise title describing the change
 
-Changes:
-- Specific change with file or component affected
-- Another change with context
+- Point 1
+- Point 2
 
-Docs:
-- Documentation files created or updated
-
-Date: YYYY-MM-DD
+Conv: [from pre-computed context]
+Machine: [from pre-computed context]
 
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-**Title:** Imperative mood, under 72 chars.
+If Conv shows "MISSING", warn the user that `/r-start` was not run, but proceed with the commit (omit the Conv line).
 
-**Body:** Group bullets by category. Only include relevant sections (skip empty ones). Be specific — name files, topics, decisions.
-
-### Step 4: Verify
+6. **Verify commit success:**
 
 ```bash
 git status
 ```
 
-Confirm working tree is clean and commit was successful.
+7. Do NOT push to remote unless explicitly requested.
 
----
-
-## Rules
-
-- **Do NOT push** unless explicitly requested
-- **Do NOT amend** previous commits unless explicitly requested
-- **Do NOT use `--no-verify`** to skip hooks unless explicitly requested
-- **Always commit ALL changes in this folder** — use `git add .`
-- If other folders have staged changes, unstage them first with `git reset HEAD <other-folder>/`
+**Note:** If other folders have staged changes, unstage them first with `git reset HEAD <other-folder>/` before committing.
