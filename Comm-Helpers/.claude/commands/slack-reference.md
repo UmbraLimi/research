@@ -14,6 +14,7 @@ Configuration file for `/r-slack` skill. Edit these tables to customize output.
 | [[Slack • CFU • dev-works]] | [[CFU - Website\|CFU-W]] | 🔵 |
 | [[Slack • CFU • translation-system]] | [[XLATE-Pilot]] | 🟢 |
 | [[Slack • AIM • peer-loop-team]] | [[Peer Loop]] | 🟠 |
+| [[Slack • AIM • peer-loop-bugs]] | [[Peer Loop]] | 🟠 |
 
 ## DMs (no project, use person name in header)
 
@@ -49,6 +50,7 @@ Configuration file for `/r-slack` skill. Edit these tables to customize output.
 | [[Slack • AIM • DM • Brian]] |
 | [[Slack • AIM • DM • Gabriel]] |
 | [[Slack • AIM • peer-loop-team]] |
+| [[Slack • AIM • peer-loop-bugs]] |
 
 ---
 
