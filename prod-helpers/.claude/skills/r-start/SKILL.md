@@ -1,13 +1,13 @@
 ---
 name: r-start
-description: Start a new conversation — pull, increment conv counter, push, then resume
+description: Start a new conversation — pull, increment conv counter, push, transfer pending tasks, then resume
 argument-hint: ""
-allowed-tools: Read, Bash, Glob, Grep, Skill
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskCreate
 ---
 
 # Start Conversation
 
-**Purpose:** Sync from remote, increment the conversation counter, push the new counter, lock the conv number for this session, then present resumption context. This is the **only** entry point for all conversations — both cold starts and warm restarts after `/r-pre-clear` → `/clear`.
+**Purpose:** Sync from remote, increment the conversation counter, push the new counter, transfer any pending tasks from RESUME-STATE.md into TodoWrite, lock the conv number for this session, then present resumption context. This is the **only** entry point for all conversations.
 
 ---
 
@@ -74,7 +74,22 @@ If the push fails, **HALT** and tell the user. The counter increment is not sync
 ╚═══════════════════════════════════╝
 ```
 
-### Step 6: Resume work context
+### Step 6: Transfer pending tasks from RESUME-STATE.md
+
+If `RESUME-STATE.md` exists:
+
+1. Read the file and extract all unchecked items (`- [ ]`) from the `## Remaining` and `## TodoWrite Items` sections.
+2. For each unchecked item, create a TodoWrite entry via `TaskCreate` with the item text as the description.
+3. Delete `RESUME-STATE.md` after all items are transferred.
+4. Display a summary:
+
+```
+📋 Transferred {N} pending tasks from RESUME-STATE.md → TodoWrite
+```
+
+If `RESUME-STATE.md` does not exist, skip this step silently.
+
+### Step 7: Resume work context
 
 Invoke `/r-resume` via the Skill tool to present the current work position and recommended next action.
 
@@ -86,4 +101,5 @@ Invoke `/r-resume` via the Skill tool to present the current work position and r
 - **HALT on push failure** — the counter must be pushed before any work begins
 - If `.conv-current` already exists, warn the user (prior session didn't run `/r-end`) but proceed — the counter in `CONV-COUNTER` (post-pull) is the source of truth
 - The `CONV-COUNTER` file stores an unpadded integer; `.conv-current` stores a zero-padded 3-digit string
-- Do NOT begin any project work until Steps 1–5 are complete
+- Do NOT begin any project work until Steps 1–6 are complete
+- Transfer tasks from RESUME-STATE.md **before** calling `/r-resume` — this ensures `/r-resume` sees a clean state

@@ -47,13 +47,12 @@ If `.conv-current` is `(none)`, display:
 
 This is a soft warning — do not block. The user may just want to peek at status.
 
-### Stale context (raw /clear detected)
+### Stale context
 
 If `.conv-current` exists **and** `RESUME-STATE.md` either doesn't exist or its `Conv:` line references an older conv number than `.conv-current`, display:
 
 ```
 ⚠️  Active conv {NNN} but RESUME-STATE.md is stale/missing.
-    A raw /clear may have been run without /r-pre-clear.
     Consider running /r-save-state to capture current work before continuing.
 ```
 
@@ -108,7 +107,7 @@ Rewrite `RESUME-STATE.md` as a single `# State — Conv MMM (date)` block (using
 - **Key Context**: merged from both blocks, dropping stale entries
 - **TodoWrite Items**: carried from the latest block only (earlier ones are stale)
 
-This ensures the next `/r-pre-clear` can only ever create a 2-block file.
+This ensures the file stays manageable across sessions.
 
 ---
 

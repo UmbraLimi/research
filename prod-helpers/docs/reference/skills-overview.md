@@ -12,9 +12,8 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 
 | Skill | Type | Purpose |
 |-------|------|---------|
-| `/r-start` | Conversation | Pull, increment conv counter, push, then resume — sole entry point for all convs |
-| `/r-end` | Conversation | Run eos sequence, commit, push, cleanup — replaces manual /r-eos + /r-commit |
-| `/r-pre-clear` | Conversation | Save state, increment conv locally, /clear — warm restart within same process |
+| `/r-start` | Conversation | Pull, increment conv counter, push, transfer RESUME-STATE.md tasks to TodoWrite, then resume — sole entry point for all convs |
+| `/r-end` | Conversation | Run eos sequence, save state (TodoWrite → RESUME-STATE.md), commit, push, cleanup |
 | `/r-eos` | Orchestrator | Runs the 4-skill end-of-session sequence in order |
 | `/r-learn-decide` | Session docs | Captures learnings and decisions to structured files |
 | `/r-dump` | Session docs | Creates development transcript with verbatim user prompts |
@@ -36,15 +35,9 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
   │   ├── 2. /r-dump           ← receives shared timestamp
   │   ├── 3. /r-update-plan
   │   └── 4. /r-docs
-  ├── /r-commit             ← includes Conv: + Machine: in message
-  └── git push              ← mandatory sync
-
-/r-pre-clear (warm restart — preparation)
-  ├── /r-save-state        ← preserves state to RESUME-STATE.md
-  ├── increment conv       ← local only, no push
-  └── STOP                 ← displays instructions, then user does:
-      /clear               ← user runs manually (built-in CLI command)
-      /r-start             ← user runs manually (pulls, increments, pushes, resumes)
+  ├── /r-save-state          ← captures TodoWrite items to RESUME-STATE.md (skipped if no pending tasks)
+  ├── /r-commit              ← includes Conv: + Machine: in message
+  └── git push               ← mandatory sync
 
 /r-save-state              ← standalone, called mid-session or before /compact
   ├── fresh file           ← writes single block with conv-labeled heading
@@ -117,12 +110,12 @@ $ claude
 ```
 `/r-start` ensures the conv counter is synced from remote before incrementing. The push happens before any work begins, so the other machine will always see it.
 
-For warm restarts, the user runs `/r-pre-clear` → `/clear` → `/r-start` (not `/r-resume` directly).
+For warm restarts (fresh context, same sitting), the user runs `/r-end` → `/r-start`. The `/r-end` saves pending tasks to RESUME-STATE.md, and the next `/r-start` transfers them back to TodoWrite.
 
 ### Closing a Conv
 
 ```
-> /r-end          ← /r-eos (4 sub-skills), /r-commit, git push, rm .conv-current
+> /r-end          ← /r-eos (4 sub-skills), /r-save-state, /r-commit, git push, rm .conv-current
 ```
 Always push. HALT on push failure. This is what syncs everything for the other machine.
 
@@ -135,7 +128,7 @@ Always push. HALT on push failure. This is what syncs everything for the other m
 
 **Multiple convs, same sitting:**
 ```
-/r-start → [work] → /r-end → /r-pre-clear → /clear → /r-start → [work] → /r-end → exit
+/r-start → [work] → /r-end → /r-start → [work] → /r-end → exit
 ```
 
 **Cross-machine:**
@@ -150,7 +143,6 @@ Machine B: /r-start → [work] → /r-end → exit
 |-----------|-------------|
 | `.conv-current` exists at `/r-start` | Warning (prior conv didn't `/r-end` cleanly). Proceeds — `CONV-COUNTER` post-pull is source of truth. |
 | Push fails in `/r-start` or `/r-end` | HALT. Do not proceed. Conv counter is not synced. |
-| `/r-pre-clear` without prior `/r-end` | Works — saves state and increments locally. Uncommitted work stays uncommitted; next `/r-end` will pick it up. |
 | Network down at `/r-start` | Pull fails → HALT. Cannot guarantee counter is current. |
 | Network down at `/r-end` | Push fails → HALT. Do not report success. User must push manually when network returns. |
 
@@ -190,3 +182,4 @@ Completed phases move to `COMPLETED_PLAN.md`. PLAN.md never contains finished wo
 - 2026-03-14: Added `/r-start`, `/r-end`, `/r-pre-clear` for conversation lifecycle; added Conv + Machine metadata to `/r-commit`
 - 2026-03-14: Added append mode to `/r-save-state` (conv-labeled blocks, max 2); added multi-block consolidation to `/r-resume` (walk → evaluate → merge → rewrite)
 - 2026-03-14: Unified entry point — `/r-start` is sole entry for all convs; `/r-resume` internal only. Added conv state warnings and all-done auto-delete to `/r-resume` and `/r-save-state`
+- 2026-03-21: Simplified workflow — removed `/r-pre-clear`; `/r-end` now auto-calls `/r-save-state` to capture TodoWrite items; `/r-start` now transfers RESUME-STATE.md tasks back to TodoWrite. Closed-loop task persistence across sessions.

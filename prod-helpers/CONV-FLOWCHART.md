@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-    START([Starting Work]) --> RSTART["/r-start<br/><i>pull → inc conv → push → resume</i>"]
+    START([Starting Work]) --> RSTART["/r-start<br/><i>pull → inc conv → push<br/>→ transfer tasks → resume</i>"]
 
     RSTART --> WORK
 
@@ -12,7 +12,7 @@ flowchart TD
 
     WORK --> Q2{Done for the day?}
 
-    Q2 -->|YES| REND_QUIT["/r-end<br/><i>eos → commit → push</i>"]
+    Q2 -->|YES| REND_QUIT["/r-end<br/><i>eos → save state → commit → push</i>"]
     REND_QUIT --> EXIT([exit Claude Code])
 
     Q2 -->|NO| Q3{Need fresh context?<br/><i>token limit, new task, etc.</i>}
@@ -20,17 +20,13 @@ flowchart TD
     Q3 -->|NO| KEEP["Just keep working!<br/><i>/r-commit if you want<br/>to save progress</i>"]
     KEEP --> WORK
 
-    Q3 -->|YES| REND_CONT["/r-end<br/><i>eos → commit → push</i>"]
-    REND_CONT --> RPRECLEAR["/r-pre-clear<br/><i>save state → inc conv → STOP</i>"]
-    RPRECLEAR --> CLEAR["/clear<br/><i>you type this manually</i>"]
-    CLEAR --> RSTART2["/r-start<br/><i>you type this manually</i>"]
+    Q3 -->|YES| REND_CONT["/r-end<br/><i>eos → save state → commit → push</i>"]
+    REND_CONT --> RSTART2["/r-start<br/><i>you type this manually</i>"]
     RSTART2 --> WORK
 
     style WORK fill:#ffd700,stroke:#333,color:#000
     style EXIT fill:#90ee90,stroke:#333,color:#000
     style KEEP fill:#e0e0e0,stroke:#333,color:#000
-    style CLEAR fill:#ffb3b3,stroke:#333,color:#000
-    style RPRECLEAR fill:#ffb3b3,stroke:#333,color:#000
     style RSTART fill:#87ceeb,stroke:#333,color:#000
     style RSTART2 fill:#87ceeb,stroke:#333,color:#000
     style REND_QUIT fill:#87ceeb,stroke:#333,color:#000
@@ -44,15 +40,15 @@ flowchart TD
 │           STARTING WORK                 │
 │                                         │
 │  Always run /r-start                    │
-│  (handles both cold + warm starts)      │
 └──────────────┬──────────────────────────┘
                │
-      ┌────────▼────────┐
-      │    /r-start     │
-      │                 │
-      │ pull → inc conv │
-      │ → push → resume │
-      └────────┬────────┘
+      ┌────────▼──────────────┐
+      │      /r-start         │
+      │                       │
+      │ pull → inc conv →     │
+      │ push → transfer tasks │
+      │ → resume              │
+      └────────┬──────────────┘
                │
                ▼
 ┌──────────────────────────┐
@@ -102,44 +98,29 @@ flowchart TD
    │           │    └─────────────────┘
    │           │
    │           ▼
-   │  ┌─────────────────────┐
-   │  │     /r-end          │
-   │  │                     │
-   │  │ eos → commit → push │
-   │  └─────────┬───────────┘
-   │            │
-   │            ▼
-   │  ┌─────────────────────┐
-   │  │   /r-pre-clear      │
-   │  │                     │
-   │  │ save state →        │
-   │  │ inc conv → STOP     │
-   │  └─────────┬───────────┘
-   │            │
-   │            ▼
-   │  ┌─────────────────────┐
-   │  │   /clear            │
-   │  │   (you type this)   │
-   │  └─────────┬───────────┘
+   │  ┌───────────────────────────┐
+   │  │     /r-end                │
+   │  │                           │
+   │  │ eos → save state →        │
+   │  │ commit → push             │
+   │  └─────────┬─────────────────┘
    │            │
    │            ▼
    │  ┌─────────────────────┐
    │  │   /r-start          │
    │  │   (you type this)   │
-   │  │                     │
-   │  │ pull → inc conv →   │
-   │  │ push → resume       │
    │  └─────────┬───────────┘
    │            │
    │            ▼
    │     back to ★ WORK ★
    │
    ▼
-┌─────────────────────┐
-│      /r-end         │
-│                     │
-│ eos → commit → push │
-└─────────┬───────────┘
+┌───────────────────────────┐
+│      /r-end               │
+│                           │
+│ eos → save state →        │
+│ commit → push             │
+└─────────┬─────────────────┘
           │
           ▼
 ┌─────────────────────┐
@@ -155,7 +136,7 @@ flowchart TD
 | I want to...                        | Run                                      |
 |-------------------------------------|------------------------------------------|
 | Start working (any context)         | `/r-start`                               |
-| Save & keep working (fresh context) | `/r-end` → `/r-pre-clear` → `/clear` → `/r-start` |
+| Save & keep working (fresh context) | `/r-end` → `/r-start`                   |
 | Save & keep working (same context)  | `/r-commit`                              |
 | Save & quit for the day             | `/r-end` → `exit`                        |
 | Save state without ending conv      | `/r-save-state`                          |
@@ -164,9 +145,8 @@ flowchart TD
 ## What Each Command Does
 
 ```
-/r-start   = pull + increment conv + push + show resume context
-/r-end     = session docs + commit + push + cleanup .conv-current
-/r-pre-clear   = save state + increment conv locally + STOP (then YOU run /clear)
+/r-start   = pull + increment conv + push + transfer RESUME-STATE.md → TodoWrite + resume
+/r-end     = session docs + save state (TodoWrite → RESUME-STATE.md) + commit + push + cleanup
 /r-resume  = read RESUME-STATE.md + PLAN.md (no git sync) — called internally by /r-start
 /r-commit  = commit this folder only (Conv + Machine in message)
 ```

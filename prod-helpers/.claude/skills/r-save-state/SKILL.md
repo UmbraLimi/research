@@ -2,7 +2,7 @@
 name: r-save-state
 description: Save current work state for cross-session continuity
 argument-hint: ""
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TaskList, TaskUpdate
 ---
 
 # Save Session State
@@ -154,7 +154,15 @@ To continue: run `/r-resume`, which will consolidate state and present a unified
 
 ---
 
-## Step 4: All-Done Check
+## Step 4: Clear TodoWrite Tasks
+
+After writing RESUME-STATE.md, mark all TodoWrite tasks as completed via `TaskUpdate` (they are now persisted in the file and will be restored by `/r-start`).
+
+Display: `"{N} TodoWrite tasks captured in RESUME-STATE.md — cleared from task list"`
+
+---
+
+## Step 5: All-Done Check
 
 Before confirming, check whether **all** items in the Remaining section are checked (`[x]`). If so:
 
@@ -170,7 +178,7 @@ Before confirming, check whether **all** items in the Remaining section are chec
 
 ---
 
-## Step 5: Confirm
+## Step 6: Confirm
 
 ```
 State saved → RESUME-STATE.md

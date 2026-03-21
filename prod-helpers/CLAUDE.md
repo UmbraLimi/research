@@ -77,9 +77,8 @@ Decisions are recorded in `DECISIONS.md` under categories: Data Architecture, Ta
 
 | Command | Purpose |
 |---------|---------|
-| `/r-start` | **Start conversation** — pull, increment conv counter, push, resume |
-| `/r-end` | **End conversation** — run eos sequence, commit, push, cleanup |
-| `/r-pre-clear` | **Prepare warm restart** — save state, increment conv; user runs /clear then /r-resume |
+| `/r-start` | **Start conversation** — pull, increment conv counter, push, transfer pending tasks, resume |
+| `/r-end` | **End conversation** — run eos sequence, save state, commit, push, cleanup |
 | `/r-eos` | End-of-session sequence (runs learn-decide, dump, update-plan, docs) |
 | `/r-learn-decide` | Capture learnings and decisions to session files |
 | `/r-dump` | Create development session transcript |
@@ -116,24 +115,18 @@ Each session reads the file first, works through unchecked items, updates progre
 
 ## Conversation Workflow
 
-Always start with `/r-start`. It handles both cold and warm starts (it calls `/r-resume` internally, which picks up RESUME-STATE.md if present).
+Always start with `/r-start` and end with `/r-end`. This is the only workflow:
 
-**Cold start** (new terminal, different machine):
 ```
 /r-start → work → /r-end → exit
 ```
 
-**Warm restart** (continue working after saving):
-```
-/r-end → /r-pre-clear → /clear → /r-start → work → /r-end → exit
-```
+`/r-end` automatically saves pending TodoWrite items to `RESUME-STATE.md`. `/r-start` automatically transfers them back to TodoWrite on the next conversation. No manual state management needed.
 
 | Skill | Does | Syncs git? |
 |-------|------|-----------|
-| `/r-start` | pull, increment conv, push, resume | Yes (pull + push) |
-| `/r-end` | eos sequence, commit, push, cleanup | Yes (push) |
-| `/r-pre-clear` | save state, increment conv locally, STOP | No (local only) |
-| `/clear` | built-in CLI command, wipes conversation memory | No |
+| `/r-start` | pull, increment conv, push, transfer RESUME-STATE.md → TodoWrite, resume | Yes (pull + push) |
+| `/r-end` | eos sequence, save state (TodoWrite → RESUME-STATE.md), commit, push, cleanup | Yes (push) |
 | `/r-resume` | read RESUME-STATE.md + PLAN.md, show context | No |
 
 Two machines (MacMiniM4, MacMiniM4-Pro) share this repo. `/r-start` auto-pulls and `/r-end` auto-pushes to keep the conv counter in sync. Both HALT on sync failure.

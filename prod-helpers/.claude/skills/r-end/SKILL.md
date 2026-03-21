@@ -1,8 +1,8 @@
 ---
 name: r-end
-description: End conversation — run end-of-session sequence, commit, and push
+description: End conversation — run end-of-session sequence, save state, commit, and push
 argument-hint: ""
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskList
 ---
 
 # End Conversation
@@ -39,11 +39,23 @@ Invoke the 4 sub-skills **sequentially** via the Skill tool, passing the shared 
 3. **`/r-update-plan`**
 4. **`/r-docs`**
 
-### Step 3: Commit all project changes
+### Step 3: Save pending work state
+
+Check if any pending TodoWrite tasks exist (via `TaskList`). If there are pending tasks:
+
+- Invoke `/r-save-state` via the Skill tool. This captures remaining TodoWrite items into `RESUME-STATE.md` so they survive across sessions.
+- Note in summary: "State saved ✅"
+
+If no pending tasks exist:
+
+- Skip `/r-save-state`
+- Note in summary: "State saved ⏭️ (no pending tasks)"
+
+### Step 4: Commit all project changes
 
 Invoke `/r-commit` via the Skill tool. The commit message must include both `Conv:` and `Machine:` in the body (r-commit handles this from its own pre-computed context).
 
-### Step 4: Push to remote
+### Step 5: Push to remote
 
 ```bash
 git push
@@ -51,13 +63,13 @@ git push
 
 This is **mandatory** — it syncs the work and any counter state for the other machine. If the push fails, tell the user and do not report success.
 
-### Step 5: Clean up session lock
+### Step 6: Clean up session lock
 
 ```bash
 rm .conv-current
 ```
 
-### Step 6: Display closing summary
+### Step 7: Display closing summary
 
 ```
 ╔═══════════════════════════════════╗
@@ -70,8 +82,9 @@ End-of-Session Complete
 2. Session Dump   ✅
 3. Plan Update    ✅
 4. Docs Update    ✅
-5. Committed      ✅
-6. Pushed         ✅
+5. State Saved    ✅ / ⏭️
+6. Committed      ✅
+7. Pushed         ✅
 
 Safe to exit.
 ```
