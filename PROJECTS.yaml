@@ -1,0 +1,14 @@
+# Project prefix registry
+# Each project's 3-letter code and metadata
+
+projects:
+  APR:
+    folder: Alpha-Peer
+  CCO:
+    folder: cc-plus-obsidian
+  CMH:
+    folder: Comm-Helpers
+  PLA:
+    folder: PL-Agreement
+  PRH:
+    folder: prod-helpers

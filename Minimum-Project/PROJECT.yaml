@@ -1,0 +1,3 @@
+# Project identity — set prefix when creating a new project
+# Register it in /PROJECTS.yaml at repo root
+prefix: XXX

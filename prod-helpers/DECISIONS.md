@@ -43,3 +43,5 @@ Last Updated: 2026-03-14
 | 12 | /r-resume as consolidation point for multi-block state | 2026-03-14 | Walks blocks, evaluates with evidence, rewrites to single block after user approval |
 | 13 | Auto-delete RESUME-STATE.md when all items complete | 2026-03-14 | Both /r-resume and /r-save-state detect all-done state and delete; file exists only for pending work |
 | 14 | Unified entry point — always /r-start | 2026-03-14 | /r-start is sole entry point for cold and warm starts; /r-resume is internal only, called by /r-start Step 6 |
+| 15 | Per-project conv numbering with 3-letter prefix | 2026-03-21 | PRH-004 format; each project owns its CONV-COUNTER; prefix registered in repo-root PROJECTS.yaml |
+| 16 | YAML project identity files (PROJECT.yaml + PROJECTS.yaml) | 2026-03-21 | Subfolder PROJECT.yaml has prefix; repo-root PROJECTS.yaml is authoritative registry; template gets XXX placeholder |

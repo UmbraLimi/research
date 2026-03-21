@@ -35,6 +35,7 @@ Establish the infrastructure before migrating data or building agents.
 - [x] Create shadow doc template (defined in r-docs skill)
 - [x] Machine tracking in commits (Machine: line via r-commit skill)
 - [x] Conversation numbering system (CONV-COUNTER, /r-start, /r-end)
+- [ ] Update /r-start, /r-end, /r-commit skills to use PROJECT.yaml prefix in conv numbering and commit messages
 - [ ] Set up test harness / test conventions (deferred — will establish when first script is created)
 
 ---
