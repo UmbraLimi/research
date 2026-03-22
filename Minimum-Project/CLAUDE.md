@@ -40,7 +40,7 @@ docs/
 └── guides/            # How-to procedures for specific workflows
 ```
 
-Lifecycle: requirements → as-designed → build → as-built. Folders created as needed, never pre-created empty.
+Lifecycle: requirements → as-designed → build → as-built. All folders present in every project.
 
 **Key project files:**
 

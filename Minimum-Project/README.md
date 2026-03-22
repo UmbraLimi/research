@@ -124,7 +124,7 @@ See `CONV-FLOWCHART.md` for the full visual guide and quick reference table.
 
 ## Standard docs/ Folder Structure
 
-Folders are created as needed — never pre-create empty folders. This is the standard across all projects:
+All folders present in every project. This is the standard across all projects:
 
 ```
 docs/
