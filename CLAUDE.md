@@ -53,6 +53,33 @@ Commands are split between two locations:
 
 **Project-level** - See each project's CLAUDE.md for `/r-*` commands.
 
+## Standard Documentation Structure
+
+All projects in this repo follow this docs/ folder convention. Folders are created as needed, never pre-created empty.
+
+```
+docs/
+├── sessions/       # Conv/session logs (universal, all projects)
+│   └── YYYY-MM/
+├── requirements/   # What needs to be built/done (user stories, RFCs)
+│   └── rfcs/       # Numbered change requests: RFC-001/, RFC-002/, ...
+├── reference/      # External tools, APIs, services
+├── as-designed/    # Pre-build: specs, formats, plans (how things SHOULD work)
+├── as-built/       # Post-build: how implemented systems actually work
+└── guides/         # How-to procedures for specific workflows
+```
+
+**Lifecycle:** requirements → as-designed → build → as-built
+
+**Root-level docs** (per project, not in docs/):
+- `PLAN.md` — current & pending work
+- `COMPLETED_PLAN.md` — archive of finished phases
+- `DECISIONS.md` — project-domain decisions
+- `DOC-DECISIONS.md` — repo workflow & documentation conventions
+- `PURPOSE.md` — project goals, context, constraints
+
+**Decision routing:** Project/technical decisions → `DECISIONS.md`. Workflow/documentation conventions → `DOC-DECISIONS.md`.
+
 ## Creating New Projects
 
 Copy the `Minimum-Project/` template:

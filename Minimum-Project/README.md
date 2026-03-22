@@ -43,7 +43,6 @@ This folder is a template for new non-programming projects in the ~/MyResearch r
 | ------------------- | ---------------------------------------------------------------- |
 | `README.md`         | These instructions (delete after setup)                          |
 | `PURPOSE.md`        | Fill this out with project goals, context, constraints, etc.     |
-| `docs/sessions/`    | Session logs created by `/par-learnings` and `/par-prompts`      |
 | `.claude/commands/` | Project-specific slash commands (includes `/r-commit`)           |
 
 ## Created During Setup
@@ -52,6 +51,37 @@ This folder is a template for new non-programming projects in the ~/MyResearch r
 | ----------- | -------------------------------------------- |
 | `CLAUDE.md` | `/init` command (step 4)                     |
 | `PLAN.md`   | You or Claude Code (step 5)                  |
+
+## Standard docs/ Folder Structure
+
+Folders are created as needed — never pre-create empty folders. This is the standard across all projects (both research and coding):
+
+```
+docs/
+├── sessions/       # Conv/session logs (learnings, decisions, dev transcripts)
+│   └── YYYY-MM/    # Organized by month
+├── requirements/   # What needs to be built/done
+│   ├── user-stories.md (or user-stories/ dir if split by role)
+│   └── rfcs/       # Numbered change requests (RFC-001/, RFC-002/, ...)
+│       └── INDEX.md
+├── reference/      # External tools, APIs, services (their docs, our notes)
+├── as-designed/    # Pre-build: specs, formats, plans (how things SHOULD work)
+├── as-built/       # Post-build: documentation of implemented systems (how things DO work)
+└── guides/         # How-to procedures for specific workflows
+```
+
+**Lifecycle:** requirements → as-designed → build → as-built
+
+**Root-level docs** (not in docs/):
+
+| File | Purpose |
+|------|---------|
+| `PLAN.md` | Current & pending work (forward-looking only) |
+| `COMPLETED_PLAN.md` | Archive of completed phases (terse) |
+| `DECISIONS.md` | Project-domain decision record |
+| `DOC-DECISIONS.md` | Repo workflow & documentation conventions |
+| `PURPOSE.md` | Project goals, context, constraints |
+| `README.md` | Quick orientation (optional, delete after setup) |
 
 ## Section Library
 
