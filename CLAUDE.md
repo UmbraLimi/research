@@ -82,9 +82,36 @@ docs/
 
 ## Creating New Projects
 
-Copy the `Minimum-Project/` template:
+`Minimum-Project/` is a fully-equipped project template with the complete conversation lifecycle infrastructure already in place: 10 r-* skills, 10 helper scripts, permissions, conv counter, and all standard project files (CLAUDE.md, PLAN.md, DECISIONS.md, etc.). It mirrors the infrastructure in `prod-helpers/` but with generic placeholders ready for customization.
+
+### Setup steps
+
 ```bash
 cp -r Minimum-Project My-New-Project
 cd My-New-Project
-# Update CLAUDE.md and PLAN.md for your project
+claude
 ```
+
+Then inside Claude Code:
+
+1. **Set prefix** — Edit `PROJECT.yaml` with a 3-letter code (e.g., `MNP`). Register it in `/PROJECTS.yaml` at repo root.
+2. **Fill out PURPOSE.md** — Describe goals, context, constraints. See the Section Library in `Minimum-Project/README.md` for project-type-specific sections.
+3. **Run `/init`** — Customizes CLAUDE.md, DECISIONS.md categories, and skill topic tables from your PURPOSE.md.
+4. **Create PLAN.md** — CC will offer, or build your own skeleton.
+5. **Commit setup** — Run `/r-commit` so the repo is clean.
+6. **Delete README.md** — It's setup instructions, not project documentation.
+
+From this point on, start every conversation with `/r-start` and end with `/r-end`.
+
+### What the template provides
+
+| Component | Count | Purpose |
+|-----------|-------|---------|
+| `.claude/skills/r-*` | 10 | Full conversation lifecycle (start, end, resume, eos, learn-decide, dump, update-plan, docs, save-state, commit) |
+| `.claude/scripts/` | 10 | Shell helpers for `!` backtick pre-computation in skills |
+| `.claude/settings.local.json` | 1 | Permissions for all skills, scripts, and git operations |
+| Root project files | 8 | CLAUDE.md, PLAN.md, DECISIONS.md, DOC-DECISIONS.md, COMPLETED_PLAN.md, CONV-COUNTER, CONV-FLOWCHART.md, PROJECT.yaml |
+
+### Prerequisite
+
+The `/r-start` and `/r-end` skills pull/push to sync the conv counter across machines. Projects inside this repo already have a remote. Standalone projects need `git remote add origin <url>` before `/r-start` will work.
