@@ -55,15 +55,16 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 | **Completed phase archive** | `COMPLETED_PLAN.md` | Terse: name + 1-line summary + conv range |
 | **Conv details** | `docs/sessions/` | Full conv logs |
 | **Decision records** | `DECISIONS.md` | Project decisions |
-| **Workflow conventions** | `PLAYBOOK.md` | Repo workflow decisions |
+| **Workflow conventions** | `DOC-DECISIONS.md` | Repo workflow decisions |
 | **Project goals and context** | `PURPOSE.md` | |
 | **API reference** | `docs/reference/` | |
-| **Architecture designs** | `docs/architecture/` | |
+| **Pre-build designs** | `docs/as-designed/` | |
+| **Post-build docs** | `docs/as-built/` | |
 
 **Do NOT put in PLAN.md:**
 - Completed work details (use COMPLETED_PLAN.md)
 - Conv notes or timestamps (use docs/sessions/)
-- Decision rationale (use DECISIONS.md or PLAYBOOK.md)
+- Decision rationale (use DECISIONS.md or DOC-DECISIONS.md)
 
 ---
 

@@ -34,7 +34,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob
    - `{FILENAME} Learnings.md`
    - `{FILENAME} Decisions.md` (skip if no decisions)
 
-4. **Check Important decisions** — route to `DECISIONS.md` or `PLAYBOOK.md` (see Decision Routing below)
+4. **Check Important decisions** — route to `DECISIONS.md` or `DOC-DECISIONS.md` (see Decision Routing below)
 
 5. **Check Insight Capture** — append durable insights to relevant decision entries
 
@@ -60,7 +60,7 @@ These are the key areas for this project. Scan for learnings and decisions in th
 | `credentials` | Credential lookup, obfuscation, compiled decoder |
 | `youtube` | YouTube Shorts archival, Whisper transcription, thumbnails |
 
-### Workflow Topics (→ PLAYBOOK.md)
+### Workflow Topics (→ DOC-DECISIONS.md)
 
 | Topic | Scan For |
 |-------|----------|
@@ -83,10 +83,10 @@ When documenting, consider if items should also update:
 
 | If item involves... | Consider updating... |
 |---------------------|---------------------|
-| Machine-specific | `docs/architecture/devcomputers.md` |
-| New pattern | Relevant doc in `docs/reference/` or `docs/architecture/` |
+| Machine-specific | `docs/as-designed/devcomputers.md` |
+| New pattern | Relevant doc in `docs/reference/` or `docs/as-designed/` |
 | Project architecture | `DECISIONS.md` |
-| Workflow/conventions | `PLAYBOOK.md` |
+| Workflow/conventions | `DOC-DECISIONS.md` |
 
 ---
 
@@ -180,7 +180,7 @@ Decisions about the productivity system: data architecture, API design, migratio
 
 !`.claude/scripts/decisions-categories.sh`
 
-### → PLAYBOOK.md (Workflow Topics)
+### → DOC-DECISIONS.md (Workflow Topics)
 
 Decisions about the repo itself: organization, CC workflow, session conventions, skill behavior.
 

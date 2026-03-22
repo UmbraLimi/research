@@ -41,19 +41,18 @@ When proposing fixes, present the **simplest** option but also supply the **most
 
 ```
 docs/
-├── sessions/          # Session logs (learnings, decisions, dev transcripts, prompts)
+├── sessions/          # Conv logs (learnings, decisions, dev transcripts)
 │   └── YYYY-MM/       # Organized by month
-├── reference/         # API and tool reference docs (populated during Phase 1)
-│   ├── dynalist-api.md
-│   ├── joplin-api.md
-│   └── obsidian-cli.md
-├── architecture/      # Design documents for cross-cutting concerns
-│   ├── tag-mapping.md
-│   ├── note-formats.md
-│   └── agent-guardrails.md
-├── vendors/           # External service notes (Whisper, etc.)
-└── guides/            # How-to guides for specific workflows
+├── requirements/      # What needs to be built/done (user stories, RFCs)
+│   ├── user-stories.md (or user-stories/ dir if split by role)
+│   └── rfcs/          # Numbered change requests (RFC-001/, RFC-002/, ...)
+├── reference/         # External tools, APIs, services (their docs, our notes)
+├── as-designed/       # Pre-build: specs, formats, plans for things not yet built
+├── as-built/          # Post-build: how implemented systems actually work
+└── guides/            # How-to procedures for specific workflows
 ```
+
+Lifecycle: requirements → as-designed → build → as-built. Folders created as needed, never pre-created empty.
 
 **Key project files:**
 
@@ -62,7 +61,7 @@ docs/
 | `PLAN.md` | Current & pending work (forward-looking only) | `/r-update-plan` |
 | `COMPLETED_PLAN.md` | Archive of completed phases (terse) | `/r-update-plan` |
 | `DECISIONS.md` | Cumulative decision record | `/r-learn-decide` |
-| `PLAYBOOK.md` | Repo workflow conventions & deferred enhancements | `/r-learn-decide` |
+| `DOC-DECISIONS.md` | Repo workflow conventions & deferred enhancements | `/r-learn-decide` |
 | `PURPOSE.md` | Project goals, context, constraints | Manual |
 | `RESUME-STATE.md` | Cross-session continuity (created as needed) | `/r-save-state` |
 | `CONV-COUNTER` | Persistent conversation counter (synced via git) | `/r-start` |

@@ -3,3 +3,6 @@
 
 # Ephemeral conv number for current session
 .conv-current
+
+# Machine-specific API credentials
+credentials/
