@@ -14,7 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ## Pre-computed Context
 
 **Current PLAN.md status:**
-!`head -10 PLAN.md 2>/dev/null || echo "(PLAN.md not found)"`
+!`.claude/scripts/plan-status-header.sh`
 
 **Open questions:**
 !`.claude/scripts/plan-open-questions.sh`
@@ -29,12 +29,14 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
    - Document any blockers or issues
 
 2. **If a sub-phase completes:**
-   - Mark all its tasks as done
-   - Note completion in the phase header
+   - Strip it from PLAN.md
+   - Add it to the phase's "Completed:" one-liner summary at the top
+   - Keep detail for remaining items only
 
 3. **If a full phase completes:**
-   - Add terse entry to `COMPLETED_PLAN.md` (phase name + 1-line summary)
-   - Remove completed phase from PLAN.md
+   - Add terse entry to `COMPLETED_PLAN.md` (phase name + 1-line summary + conv range)
+   - Remove entire completed phase from PLAN.md — no stub, no link, no "see COMPLETED_PLAN.md"
+   - Fold deferred items from the completing phase into other relevant phases
    - Update "Current Status" at top of PLAN.md
 
 4. **Update Open Questions** — add new questions, remove resolved ones
@@ -47,20 +49,21 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 
 ## What Lives Where
 
-| Content | Location |
-|---------|----------|
-| **Remaining work** | `PLAN.md` |
-| **Completed phase archive** | `COMPLETED_PLAN.md` |
-| **Session details** | `docs/sessions/` |
-| **Decision records** | `DECISIONS.md` |
-| **Project goals and context** | `PURPOSE.md` |
-| **API reference** | `docs/reference/` |
-| **Architecture designs** | `docs/architecture/` |
+| Content | Location | Notes |
+|---------|----------|-------|
+| **Remaining work** | `PLAN.md` | Active phases only |
+| **Completed phase archive** | `COMPLETED_PLAN.md` | Terse: name + 1-line summary + conv range |
+| **Conv details** | `docs/sessions/` | Full conv logs |
+| **Decision records** | `DECISIONS.md` | Project decisions |
+| **Workflow conventions** | `PLAYBOOK.md` | Repo workflow decisions |
+| **Project goals and context** | `PURPOSE.md` | |
+| **API reference** | `docs/reference/` | |
+| **Architecture designs** | `docs/architecture/` | |
 
 **Do NOT put in PLAN.md:**
 - Completed work details (use COMPLETED_PLAN.md)
-- Session notes or timestamps (use docs/sessions/)
-- Decision rationale (use DECISIONS.md)
+- Conv notes or timestamps (use docs/sessions/)
+- Decision rationale (use DECISIONS.md or PLAYBOOK.md)
 
 ---
 
@@ -68,23 +71,26 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 
 ### While a Phase is Active
 
-**Only show remaining work.** When a sub-phase completes, note it briefly and keep detail for remaining items only.
+**Only show remaining work.** When a sub-phase completes:
+- Strip it from PLAN.md
+- Add it to the phase's "Completed:" one-liner summary at the top
+- Keep detail for remaining items only
 
 ### When a Phase Fully Completes
 
 1. **Add terse entry to COMPLETED_PLAN.md:**
    ```markdown
    ## Phase N: Phase Name ✓
-   Brief 1-line summary of what was accomplished.
+   Brief 1-line summary of deliverables. Convs: NNN-NNN (YYYY-MM-DD)
    ```
 
 2. **Remove entire phase from PLAN.md** — no stub, no link
 
-3. **Update "Current Status"** at top of PLAN.md
+3. **Fold deferred items** from the completing phase into other relevant phases
 
----
+4. **Update "Current Status"** at top of PLAN.md
 
-## PLAN.md is Forward-Looking Only
+### Phases Are Forward-Looking Only
 
 PLAN.md contains only work that remains to be done. Completed work lives exclusively in COMPLETED_PLAN.md.
 

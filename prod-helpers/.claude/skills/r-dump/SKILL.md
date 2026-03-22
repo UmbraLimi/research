@@ -1,19 +1,19 @@
 ---
 name: r-dump
-description: Create development session log
-argument-hint: "[MONTH FILENAME] - optional: 2026-03 20260313_1400"
+description: Create development conv log
+argument-hint: "[MONTH FILENAME] - optional: 2026-03 20260321_1400"
 allowed-tools: Read, Write, Edit, Bash, Glob
 ---
 
-# Dump Session Log
+# Dump Conv Log
 
-**Purpose:** Create a development session log documenting the conversation.
+**Purpose:** Create a development conv log documenting the conversation.
 
 ---
 
 ## Pre-computed Context
 
-**Existing session files this month:**
+**Existing conv files this month:**
 !`.claude/scripts/session-files-dev.sh`
 
 ---
@@ -31,7 +31,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 2. **Create the file:**
    - Directory: `docs/sessions/{MONTH}/`
    - Filename: `{FILENAME} Dev.md`
-   - Example: `docs/sessions/2026-03/20260313_1400 Dev.md`
+   - Example: `docs/sessions/2026-03/20260321_1400 Dev.md`
 
 3. **Write the content** (see format below)
 
@@ -42,11 +42,11 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 ## File Format
 
 ```markdown
-# Session Log - YYYY-MM-DD
+# Conv Log - YYYY-MM-DD
 
 ## Development Transcript
 
-[Chronological log of the session]
+[Chronological log of the conversation]
 
 ### [Topic or Task 1]
 
@@ -68,9 +68,9 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 
 ---
 
-## Session Prompts
+## Conv Prompts
 
-User prompts from this session (for future reference):
+User prompts from this conversation (for future reference):
 
 - [First user prompt]
 - [Second user prompt]
@@ -92,7 +92,7 @@ User prompts from this session (for future reference):
 - No code blocks — reference the effect of code changes instead
 - Short confirmations like "yes", "agreed", "done" are included verbatim with context in parentheses: `**User:** "yes" (push to origin)`
 
-### Session Prompts Section
+### Conv Prompts Section
 
 - List all user prompts in chronological order
 - **Use the user's exact wording** — verbatim, in quotes

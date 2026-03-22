@@ -5,7 +5,7 @@ argument-hint: ""
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
-# Resume Work Session
+# Resume Work
 
 **Purpose:** Analyze PLAN.md to understand current progress and present a concise resumption context.
 
@@ -47,12 +47,23 @@ If `.conv-current` is `(none)`, display:
 
 This is a soft warning — do not block. The user may just want to peek at status.
 
-### Stale context
+### Stale context (raw /clear detected)
 
-If `.conv-current` exists **and** `RESUME-STATE.md` either doesn't exist or its `Conv:` line references an older conv number than `.conv-current`, display:
+If `.conv-current` exists **and** `RESUME-STATE.md` either doesn't exist or its `Conv:` line references an older conv number than `.conv-current`:
+
+**First, check if this is a fresh start.** Look at the most recent git commit message:
+
+```bash
+git log -1 --format=%s
+```
+
+If the message matches `Conv {NNN} start —` (where `{NNN}` matches `.conv-current`), this is a **fresh conv** just created by `/r-start` — suppress the warning silently.
+
+Otherwise, display:
 
 ```
 ⚠️  Active conv {NNN} but RESUME-STATE.md is stale/missing.
+    A raw /clear may have been run without /r-end.
     Consider running /r-save-state to capture current work before continuing.
 ```
 
@@ -97,7 +108,7 @@ Block 2: Conv MMM (date) — [1-line summary]
 - [item] — [reason: superseded by block 2 item X / no longer relevant because Y]
 ```
 
-**Explain every classification.** The user needs to see your reasoning to catch mistakes — you may misjudge whether something is done or misread an interaction. Wait for user approval before rewriting.
+**Explain every classification.** Wait for user approval before rewriting.
 
 ### Step C: Rewrite as single block
 
@@ -106,8 +117,6 @@ Rewrite `RESUME-STATE.md` as a single `# State — Conv MMM (date)` block (using
 - **Remaining**: items from both blocks that are still pending, deduplicated
 - **Key Context**: merged from both blocks, dropping stale entries
 - **TodoWrite Items**: carried from the latest block only (earlier ones are stale)
-
-This ensures the file stays manageable across sessions.
 
 ---
 
@@ -175,5 +184,5 @@ After consolidation (Step C) or when reading a single-block file, check whether 
 - Include **specific file paths** and commands when relevant
 - Highlight **blockers** that need resolution before continuing
 - Keep context brief but sufficient to resume without reading entire PLAN.md
-- If RESUME-STATE.md exists with a single block, incorporate its context (it captures cross-session state)
-- If RESUME-STATE.md has multiple blocks, run **Multi-Block Consolidation** (above) before presenting the resume context
+- If RESUME-STATE.md exists with a single block, incorporate its context
+- If RESUME-STATE.md has multiple blocks, run **Multi-Block Consolidation** before presenting

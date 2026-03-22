@@ -5,9 +5,9 @@ argument-hint: ""
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TaskList, TaskUpdate
 ---
 
-# Save Session State
+# Save Conv State
 
-**Purpose:** Capture everything needed to resume the current session's work after `/compact` or in a new session.
+**Purpose:** Capture everything needed to resume the current conversation's work after `/clear` or in a new session.
 
 ---
 
@@ -88,9 +88,9 @@ Run /r-resume first to consolidate before saving new state.
 
 ---
 
-## Step 2: Scan the Session
+## Step 2: Scan the Conversation
 
-Review the full conversation to identify:
+Review the full conversation **and** the active TaskList to identify:
 
 - **What we were working on** — the high-level task or goal
 - **What's done** — completed items (brief, bulleted)
@@ -98,6 +98,8 @@ Review the full conversation to identify:
 - **Key context** — decisions made, gotchas discovered, important file paths — anything a fresh session would need to avoid re-discovering
 - **Open questions** — anything unresolved that needs user input
 - **TodoWrite items** — scan the full conversation for any items tracked in TodoWrite; these only exist in conversation memory and will be lost on `/clear` or exit
+
+**IMPORTANT — Always call `TaskList` before writing the state file.** Prune completed tasks first, then carry forward remaining tasks into the Remaining section.
 
 **Be thorough.** The goal is that a new session with zero prior context can read this file and continue seamlessly. Include file paths and specific details.
 
@@ -115,7 +117,7 @@ Create in the project root. Use the conv-labeled heading format so the file is r
 
 ## Summary
 
-[2-3 sentence description of what this session was doing and where it stopped]
+[2-3 sentence description of what this conv was doing and where it stopped]
 
 ## Completed
 
@@ -132,7 +134,7 @@ Create in the project root. Use the conv-labeled heading format so the file is r
 
 ## TodoWrite Items
 
-[All items from TodoWrite at time of save. These exist only in conversation memory and will be lost on /clear or exit. Include status (pending/in-progress/done) and any context.]
+[All items from TodoWrite at time of save. These exist only in conversation memory and will be lost on /clear or exit. Include status and context.]
 
 - [ ] Item description — context
 - [ ] Another item — context
@@ -154,15 +156,7 @@ To continue: run `/r-resume`, which will consolidate state and present a unified
 
 ---
 
-## Step 4: Clear TodoWrite Tasks
-
-After writing RESUME-STATE.md, mark all TodoWrite tasks as completed via `TaskUpdate` (they are now persisted in the file and will be restored by `/r-start`).
-
-Display: `"{N} TodoWrite tasks captured in RESUME-STATE.md — cleared from task list"`
-
----
-
-## Step 5: All-Done Check
+## Step 4: All-Done Check
 
 Before confirming, check whether **all** items in the Remaining section are checked (`[x]`). If so:
 
@@ -175,6 +169,20 @@ Before confirming, check whether **all** items in the Remaining section are chec
 2. Delete `RESUME-STATE.md` (or skip writing it if this is a fresh save).
 
 3. Do NOT proceed to the confirmation step — the file doesn't need to exist.
+
+---
+
+## Step 5: Clear TodoWrite Tasks
+
+After writing RESUME-STATE.md, **mark all TodoWrite tasks as completed** (using TaskUpdate with status `completed`). This prevents stale pending-task indicators from lingering after the conv ends — the tasks are now persisted in RESUME-STATE.md and will be restored by `/r-start` Step 7.
+
+Display:
+
+```
+📦 {N} TodoWrite tasks captured in RESUME-STATE.md — cleared from task list.
+```
+
+This confirms to the user that outstanding work was not lost, just transferred to durable storage.
 
 ---
 

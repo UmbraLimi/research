@@ -2,7 +2,7 @@
 
 This document tracks decisions about **how the prod-helpers repo itself works** — its organization, workflows, conventions, and tooling. For technical/architectural decisions (data, agents, APIs), see `DECISIONS.md`.
 
-**Last Updated:** 2026-03-14
+**Last Updated:** 2026-03-21
 
 ---
 
@@ -30,6 +30,27 @@ Any unresolved issue, opportunity, question, or implied action item must be adde
 When a skill's `!` backtick pre-computed command contains shell pipes (`|`), extract it into a named script in `.claude/scripts/`. The script filename serves as self-documentation in the skill. One blanket permission rule `Bash(.claude/scripts/*)` covers all scripts.
 
 **Rationale:** The permission checker matches full command strings — pipes cause "multiple operations" failures. Wrapper scripts are a single command from the checker's perspective. Broad `Bash(sed:*)` patterns also work but script names improve skill readability.
+
+### `!` Backtick Paths: Relative in SKILL.md, Resolved in Scripts
+**Date:** 2026-03-21
+
+`!` backtick lines in SKILL.md must use relative paths (`.claude/scripts/foo.sh`), NOT `$CLAUDE_PROJECT_DIR`. The env var is not available during `!` backtick pre-computation. Scripts internally resolve paths via `${CLAUDE_PROJECT_DIR:-$(pwd)}` for portability across machines.
+
+**Rationale:** `$CLAUDE_PROJECT_DIR` works in hook `command` fields but does NOT expand in `!` backtick execution. Relative paths work because skills execute from the project root. This is a refinement of the wrapper-scripts convention (2026-03-14).
+
+### "Conv" Terminology Standard
+**Date:** 2026-03-21
+
+All skills and docs use "conv" (conversation) not "session". A conv maps 1:1 to a `/r-start` → `/r-end` cycle. Session files in `docs/sessions/` keep the directory name for backward compatibility but file headings use "Conv".
+
+**Rationale:** Consistency across prod-helpers and peerloop-docs. "Conv" is more precise and matches the counter mechanism.
+
+### Dual Decision Routing: DECISIONS.md + PLAYBOOK.md
+**Date:** 2026-03-21
+
+`/r-learn-decide` routes project-domain decisions (data, APIs, agents, migration) to `DECISIONS.md` and workflow/repo-convention decisions (skills, session management, docs structure) to `PLAYBOOK.md`.
+
+**Rationale:** Keeps DECISIONS.md focused on the productivity system itself. Ported from peerloop-docs where this separation proved useful.
 
 ### Multi-Session Block Tracking via CURRENT-BLOCK-PLAN.md
 **Date:** 2026-03-14 (adopted from peerloop-docs Session 276)

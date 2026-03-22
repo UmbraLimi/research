@@ -1,13 +1,13 @@
 ---
 name: r-eos
-description: End-of-session sequence — runs learn-decide, dump, update-plan, and docs
+description: End-of-conv sequence — runs learn-decide, dump, update-plan, and docs
 argument-hint: ""
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill
 ---
 
-# End-of-Session Sequence
+# End-of-Conv Sequence
 
-Runs the 4-skill end-of-session workflow in order. Each skill is invoked via the Skill tool.
+Runs the 4-skill end-of-conv workflow in order. Each skill is invoked via the Skill tool.
 
 **Do NOT skip or reorder steps.** Run each to completion before starting the next.
 
@@ -15,11 +15,11 @@ Runs the 4-skill end-of-session workflow in order. Each skill is invoked via the
 
 ## Shared Timestamp
 
-All session files created by this run share a single timestamp, pre-computed here:
+All conv files created by this run share a single timestamp, pre-computed here:
 
 !`echo "MONTH: $(date '+%Y-%m')" && echo "FILENAME: $(date '+%Y%m%d_%H%M')"`
 
-**Pass these values as arguments** to `/r-learn-decide` and `/r-dump` so all session files match.
+**Pass these values as arguments** to `/r-learn-decide` and `/r-dump` so all conv files match.
 
 ---
 
@@ -27,13 +27,13 @@ All session files created by this run share a single timestamp, pre-computed her
 
 ### Step 1: `/r-learn-decide`
 
-Capture session learnings and decisions.
+Capture conv learnings and decisions.
 
 **Run:** Invoke `/r-learn-decide` via the Skill tool with args `{MONTH} {FILENAME}`. Complete it fully.
 
 ### Step 2: `/r-dump`
 
-Create the development session log.
+Create the development conv log.
 
 **Run:** Invoke `/r-dump` via the Skill tool with args `{MONTH} {FILENAME}`. Complete it fully.
 
@@ -55,15 +55,16 @@ Update all project documentation.
 
 - Run skills **sequentially** — each must finish before starting the next
 - If a skill asks the user a question, wait for their answer before continuing
+- **TodoWrite every gap you find.** During `/r-docs` especially, if you discover undocumented endpoints, stale docs, or any issue you describe but don't fix — TodoWrite it. Never mention "pre-existing" gaps without tracking them.
 - After all 4 complete, display a summary:
 
 ```
-End-of-Session Complete
-───────────────────────
+End-of-Conv Complete
+────────────────────
 1. Learn/Decide  ✅
-2. Session Dump   ✅
+2. Conv Dump      ✅
 3. Plan Update    ✅
 4. Docs Update    ✅
 ```
 
-- Do NOT automatically commit or push — the user will run `/r-commit` separately if needed
+- Do NOT automatically commit or push — `/r-end` handles that

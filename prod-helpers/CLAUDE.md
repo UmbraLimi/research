@@ -77,11 +77,11 @@ Decisions are recorded in `DECISIONS.md` under categories: Data Architecture, Ta
 
 | Command | Purpose |
 |---------|---------|
-| `/r-start` | **Start conversation** — pull, increment conv counter, push, transfer pending tasks, resume |
-| `/r-end` | **End conversation** — run eos sequence, save state, commit, push, cleanup |
-| `/r-eos` | End-of-session sequence (runs learn-decide, dump, update-plan, docs) |
-| `/r-learn-decide` | Capture learnings and decisions to session files |
-| `/r-dump` | Create development session transcript |
+| `/r-start` | **Start conversation** — check repo clean, pull, increment conv counter, push, transfer pending tasks, resume |
+| `/r-end` | **End conversation** — run end-of-conv sequence, save state, commit, push, cleanup |
+| `/r-eos` | End-of-conv sequence (runs learn-decide, dump, update-plan, docs) |
+| `/r-learn-decide` | Capture learnings and decisions to conv files |
+| `/r-dump` | Create development conv log |
 | `/r-update-plan` | Update PLAN.md with current progress |
 | `/r-docs` | Update all project documentation |
 | `/r-save-state` | Save work state to RESUME-STATE.md |
@@ -125,10 +125,10 @@ Always start with `/r-start` and end with `/r-end`. This is the only workflow:
 
 | Skill | Does | Syncs git? |
 |-------|------|-----------|
-| `/r-start` | pull, increment conv, push, transfer RESUME-STATE.md → TodoWrite, resume | Yes (pull + push) |
-| `/r-end` | eos sequence, save state (TodoWrite → RESUME-STATE.md), commit, push, cleanup | Yes (push) |
+| `/r-start` | check repo clean, pull, increment conv, push, transfer RESUME-STATE.md → TodoWrite, resume | Yes (pull + push) |
+| `/r-end` | end-of-conv sequence, save state (TodoWrite → RESUME-STATE.md), commit, push, cleanup | Yes (push) |
 | `/r-resume` | read RESUME-STATE.md + PLAN.md, show context | No |
 
 Two machines (MacMiniM4, MacMiniM4-Pro) share this repo. `/r-start` auto-pulls and `/r-end` auto-pushes to keep the conv counter in sync. Both HALT on sync failure.
 
-Session docs go to `docs/sessions/YYYY-MM/`.
+Conv docs go to `docs/sessions/YYYY-MM/`.

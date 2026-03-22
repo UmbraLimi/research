@@ -1,13 +1,13 @@
 ---
 name: r-start
-description: Start a new conversation — pull, increment conv counter, push, transfer pending tasks, then resume
+description: Start a new conversation — check repo clean, pull, increment conv counter, push, transfer pending tasks, then resume
 argument-hint: ""
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskCreate
 ---
 
 # Start Conversation
 
-**Purpose:** Sync from remote, increment the conversation counter, push the new counter, transfer any pending tasks from RESUME-STATE.md into TodoWrite, lock the conv number for this session, then present resumption context. This is the **only** entry point for all conversations.
+**Purpose:** Verify the repo is clean, sync from remote, increment the conversation counter, push the new counter, transfer any pending tasks from RESUME-STATE.md into TodoWrite, lock the conv number for this conversation, then present resumption context. This is the **only** entry point for all conversations — both cold starts and warm restarts after `/r-end` → `/clear`.
 
 ---
 
@@ -20,13 +20,34 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskCreate
 !`.claude/scripts/conv-read-counter.sh`
 
 **Existing .conv-current:**
-!`test -f .conv-current && echo "WARNING: .conv-current already exists (value: $(cat .conv-current)) — a previous session may not have ended cleanly" || echo "(none — clean state)"`
+!`test -f .conv-current && echo "WARNING: .conv-current already exists (value: $(cat .conv-current)) — a previous conv may not have ended cleanly" || echo "(none — clean state)"`
+
+**Repo status:**
+!`git status --short 2>/dev/null || echo "(unavailable)"`
 
 ---
 
 ## Execution Flow
 
-### Step 1: Pull latest from remote
+### Step 1: Check repo for uncommitted changes
+
+Use the pre-computed repo status above. If the repo shows uncommitted changes:
+
+```
+⚠️  Uncommitted changes detected — cannot start cleanly.
+
+Repo status:
+[status output]
+
+Options:
+1. Commit changes first (run /r-commit)
+2. Stash changes and proceed
+3. Discard changes (destructive!)
+```
+
+**HALT** and wait for user decision. Do not proceed with a dirty repo.
+
+### Step 2: Pull latest from remote
 
 ```bash
 git pull --ff-only
@@ -34,15 +55,15 @@ git pull --ff-only
 
 If this fails (diverged branches, network error), **HALT** and tell the user. Do not proceed — the conv counter will be out of sync.
 
-### Step 2: Read and increment the counter
+### Step 3: Read and increment the counter
 
-Read `CONV-COUNTER`. It contains a single integer (e.g. `14`).
+Read `CONV-COUNTER`. It contains a single integer (e.g. `4`).
 
 Compute the next value: current + 1.
 
-Format as zero-padded 3-digit string (e.g. `015`).
+Format as zero-padded 3-digit string (e.g. `005`).
 
-### Step 3: Write the new counter and lock it
+### Step 4: Write the new counter and lock it
 
 Write the new integer (unpadded) to `CONV-COUNTER`:
 
@@ -56,7 +77,7 @@ Write the zero-padded value to `.conv-current`:
 echo {PADDED_VALUE} > .conv-current
 ```
 
-### Step 4: Commit and push the counter
+### Step 5: Commit and push the counter
 
 ```bash
 git add CONV-COUNTER
@@ -66,7 +87,7 @@ git push
 
 If the push fails, **HALT** and tell the user. The counter increment is not synced until pushed.
 
-### Step 5: Display conversation header
+### Step 6: Display conversation header
 
 ```
 ╔═══════════════════════════════════╗
@@ -74,22 +95,32 @@ If the push fails, **HALT** and tell the user. The counter increment is not sync
 ╚═══════════════════════════════════╝
 ```
 
-### Step 6: Transfer pending tasks from RESUME-STATE.md
+### Step 7: Transfer outstanding tasks to TodoWrite
 
-If `RESUME-STATE.md` exists:
+If `RESUME-STATE.md` exists and has a `## Remaining` section with unchecked items (`- [ ]`):
 
-1. Read the file and extract all unchecked items (`- [ ]`) from the `## Remaining` and `## TodoWrite Items` sections.
-2. For each unchecked item, create a TodoWrite entry via `TaskCreate` with the item text as the description.
-3. Delete `RESUME-STATE.md` after all items are transferred.
-4. Display a summary:
+1. Extract each unchecked item from the Remaining section
+2. Create a TodoWrite (TaskCreate) entry for each one, using:
+   - **subject:** The item text (trimmed, without the checkbox prefix)
+   - **description:** Include any sub-heading context (e.g., "Bug Fix (carried from Conv 010)") and the source: "From RESUME-STATE.md"
+3. Display a brief summary:
 
 ```
-📋 Transferred {N} pending tasks from RESUME-STATE.md → TodoWrite
+📋 Transferred {N} outstanding tasks from RESUME-STATE.md to TodoWrite:
+- [item 1]
+- [item 2]
+...
 ```
 
-If `RESUME-STATE.md` does not exist, skip this step silently.
+4. After successful transfer, delete `RESUME-STATE.md` — the items now live in TodoWrite for this conversation, and the historical state is preserved in git history.
 
-### Step 7: Resume work context
+```
+🗑️  Deleted RESUME-STATE.md (tasks transferred to TodoWrite)
+```
+
+If RESUME-STATE.md doesn't exist or has no unchecked items, skip silently. If it exists but all items are already checked (`[x]`), delete it with a note that all items are done.
+
+### Step 8: Resume work context
 
 Invoke `/r-resume` via the Skill tool to present the current work position and recommended next action.
 
@@ -97,9 +128,9 @@ Invoke `/r-resume` via the Skill tool to present the current work position and r
 
 ## Rules
 
+- **HALT on dirty repo** — never proceed with uncommitted changes
 - **HALT on pull failure** — never increment without a successful pull
 - **HALT on push failure** — the counter must be pushed before any work begins
-- If `.conv-current` already exists, warn the user (prior session didn't run `/r-end`) but proceed — the counter in `CONV-COUNTER` (post-pull) is the source of truth
+- If `.conv-current` already exists, warn the user (prior conv didn't run `/r-end`) but proceed — the counter in `CONV-COUNTER` (post-pull) is the source of truth
 - The `CONV-COUNTER` file stores an unpadded integer; `.conv-current` stores a zero-padded 3-digit string
-- Do NOT begin any project work until Steps 1–6 are complete
-- Transfer tasks from RESUME-STATE.md **before** calling `/r-resume` — this ensures `/r-resume` sees a clean state
+- Do NOT begin any project work until Steps 1–7 are complete

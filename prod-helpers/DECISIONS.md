@@ -2,7 +2,7 @@
 
 Cumulative record of decisions made across sessions. Updated by `/r-learn-decide`.
 
-Last Updated: 2026-03-14
+Last Updated: 2026-03-21
 
 ## Data Architecture
 
@@ -45,3 +45,4 @@ Last Updated: 2026-03-14
 | 14 | Unified entry point — always /r-start | 2026-03-14 | /r-start is sole entry point for cold and warm starts; /r-resume is internal only, called by /r-start Step 6 |
 | 15 | Per-project conv numbering with 3-letter prefix | 2026-03-21 | PRH-004 format; each project owns its CONV-COUNTER; prefix registered in repo-root PROJECTS.yaml |
 | 16 | YAML project identity files (PROJECT.yaml + PROJECTS.yaml) | 2026-03-21 | Subfolder PROJECT.yaml has prefix; repo-root PROJECTS.yaml is authoritative registry; template gets XXX placeholder |
+| 17 | Bulk-sync r-* skills from peerloop-docs | 2026-03-21 | All 10 skills updated: dirty-repo guard, structured commits, insight capture, TodoWrite-all-gaps, PLAYBOOK routing |

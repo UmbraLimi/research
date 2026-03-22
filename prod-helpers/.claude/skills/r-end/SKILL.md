@@ -1,13 +1,13 @@
 ---
 name: r-end
-description: End conversation — run end-of-session sequence, save state, commit, and push
+description: End conversation — run end-of-conv sequence, save state, commit, and push
 argument-hint: ""
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskList
 ---
 
 # End Conversation
 
-**Purpose:** Run the full end-of-session sequence, commit all changes (with conv number and machine), and push to remote so the next machine has everything.
+**Purpose:** Run the full end-of-conv sequence, commit all changes (with Conv and Machine metadata), and push to remote so the next machine has everything.
 
 ---
 
@@ -30,26 +30,32 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskList
 
 Read `.conv-current`. If it's missing or says "MISSING", **HALT** — tell the user to run `/r-start` first. Do not proceed without a locked conv number.
 
-### Step 2: Run end-of-session sequence
+### Step 2: Run end-of-conv sequence
 
-Invoke the 4 sub-skills **sequentially** via the Skill tool, passing the shared timestamp. Each must complete before the next starts.
+Invoke `/r-eos` via the Skill tool. It runs the 4 sub-skills sequentially:
 
-1. **`/r-learn-decide`** with args `{MONTH} {FILENAME}`
-2. **`/r-dump`** with args `{MONTH} {FILENAME}`
-3. **`/r-update-plan`**
-4. **`/r-docs`**
+1. `/r-learn-decide`
+2. `/r-dump`
+3. `/r-update-plan`
+4. `/r-docs`
 
-### Step 3: Save pending work state
+Wait for it to complete fully.
 
-Check if any pending TodoWrite tasks exist (via `TaskList`). If there are pending tasks:
+> **⚠️ CRITICAL: /r-eos completing is NOT the end of /r-end.**
+> Steps 3–7 below MUST still execute after /r-eos finishes.
+> Do NOT stop, summarize, or wait for user input — proceed immediately to Step 3.
 
-- Invoke `/r-save-state` via the Skill tool. This captures remaining TodoWrite items into `RESUME-STATE.md` so they survive across sessions.
-- Note in summary: "State saved ✅"
+### Step 3: Save pending work state (if any)
 
-If no pending tasks exist:
+Check the TaskList for pending (not completed) items. If any exist:
 
-- Skip `/r-save-state`
-- Note in summary: "State saved ⏭️ (no pending tasks)"
+1. Invoke `/r-save-state` via the Skill tool
+2. Wait for it to complete fully
+3. Note in the closing summary: `State saved ✅`
+
+If no pending tasks exist, skip this step and note: `State saved ⏭️  (no pending tasks)`
+
+This ensures TodoWrite items and unfinished work survive across `/clear` boundaries. RESUME-STATE.md will be included in the commit that follows.
 
 ### Step 4: Commit all project changes
 
@@ -61,9 +67,9 @@ Invoke `/r-commit` via the Skill tool. The commit message must include both `Con
 git push
 ```
 
-This is **mandatory** — it syncs the work and any counter state for the other machine. If the push fails, tell the user and do not report success.
+This is **mandatory** — it syncs the work and counter state for the other machine. If the push fails, tell the user and do not report success.
 
-### Step 6: Clean up session lock
+### Step 6: Clean up conv lock
 
 ```bash
 rm .conv-current
@@ -76,13 +82,13 @@ rm .conv-current
 ║  Conv {PADDED_VALUE} closed       ║
 ╚═══════════════════════════════════╝
 
-End-of-Session Complete
-───────────────────────
+End-of-Conv Complete
+────────────────────
 1. Learn/Decide  ✅
-2. Session Dump   ✅
+2. Conv Dump      ✅
 3. Plan Update    ✅
 4. Docs Update    ✅
-5. State Saved    ✅ / ⏭️
+5. State Saved    ✅ or ⏭️
 6. Committed      ✅
 7. Pushed         ✅
 

@@ -1,19 +1,19 @@
 ---
 name: r-learn-decide
-description: Document session learnings and decisions
-argument-hint: "[MONTH FILENAME] - optional: 2026-03 20260313_1400"
+description: Document conv learnings and decisions
+argument-hint: "[MONTH FILENAME] - optional: 2026-03 20260321_1400"
 allowed-tools: Read, Write, Edit, Bash, Glob
 ---
 
-# Document Session Learnings & Decisions
+# Document Conv Learnings & Decisions
 
-**Purpose:** Capture insights and choices from a session into two structured files.
+**Purpose:** Capture insights and choices from a development conversation into two structured files.
 
 ---
 
 ## Pre-computed Context
 
-**Existing session files this month:**
+**Existing conv files this month:**
 !`.claude/scripts/session-files-learn-decide.sh`
 
 ---
@@ -28,21 +28,25 @@ allowed-tools: Read, Write, Edit, Bash, Glob
      date '+%Y%m%d_%H%M'        # FILENAME (compact)
      ```
 
-2. **Scan session** for learnings and decisions
+2. **Scan conversation** for learnings and decisions
 
 3. **Create files** in `docs/sessions/{MONTH}/`:
    - `{FILENAME} Learnings.md`
    - `{FILENAME} Decisions.md` (skip if no decisions)
 
-4. **Route important decisions** to `DECISIONS.md` (see Decision Routing below)
+4. **Check Important decisions** — route to `DECISIONS.md` or `PLAYBOOK.md` (see Decision Routing below)
 
-5. **Confirm creation** (see Confirmation below)
+5. **Check Insight Capture** — append durable insights to relevant decision entries
+
+6. **Confirm creation** (see Confirmation below)
 
 ---
 
 ## Topics (Priority Areas)
 
 These are the key areas for this project. Scan for learnings and decisions in these topics first, but also capture **any others** with appropriate topic names.
+
+### Project Topics (→ DECISIONS.md)
 
 | Topic | Scan For |
 |-------|----------|
@@ -55,7 +59,14 @@ These are the key areas for this project. Scan for learnings and decisions in th
 | `migration` | Data migration patterns, format conversion, validation |
 | `credentials` | Credential lookup, obfuscation, compiled decoder |
 | `youtube` | YouTube Shorts archival, Whisper transcription, thumbnails |
+
+### Workflow Topics (→ PLAYBOOK.md)
+
+| Topic | Scan For |
+|-------|----------|
 | `workflow` | Process, tooling, conventions |
+| `cc-workflow` | Claude Code hooks, skills, config, permissions, session management |
+| `docs-infra` | Repo organization, folder structure, file conventions, what goes where |
 
 ### Cross-Cutting Topics
 
@@ -64,6 +75,18 @@ Items often span multiple topics. Tag with all relevant areas:
 - **tags, migration**: Tag conversion during data moves
 - **agents, skills**: Guard rail patterns that apply to both
 - **joplin, migration**: Retirement workflow
+- **cc-workflow, docs-infra**: Skill paths, $CLAUDE_PROJECT_DIR behavior
+
+### Related Documentation
+
+When documenting, consider if items should also update:
+
+| If item involves... | Consider updating... |
+|---------------------|---------------------|
+| Machine-specific | `docs/architecture/devcomputers.md` |
+| New pattern | Relevant doc in `docs/reference/` or `docs/architecture/` |
+| Project architecture | `DECISIONS.md` |
+| Workflow/conventions | `PLAYBOOK.md` |
 
 ---
 
@@ -76,12 +99,11 @@ Items often span multiple topics. Tag with all relevant areas:
 - Unexpected behaviors discovered
 - Patterns or approaches that worked well
 - Gotchas or caveats to remember
-- API limitations or quirks
 
 **File format:** `{FILENAME} Learnings.md`
 
 ```markdown
-# Session Learnings - YYYY-MM-DD
+# Conv Learnings - YYYY-MM-DD
 
 ## 1. Descriptive Title
 **Topics:** topic1, topic2
@@ -114,7 +136,7 @@ Code or reusable approach
 **File format:** `{FILENAME} Decisions.md`
 
 ```markdown
-# Session Decisions - YYYY-MM-DD
+# Conv Decisions - YYYY-MM-DD
 
 ## 1. Brief Decision Title
 **Type:** Strategic | Implementation
@@ -143,29 +165,36 @@ Code or reusable approach
 
 | Type | Description |
 |------|-------------|
-| Strategic | Project direction, data architecture, workflow design |
-| Implementation | Technical choices, API selection, format decisions |
+| Strategic | Project direction, workflow, architecture |
+| Implementation | Technical choices, API design, library selection |
 
 ---
 
 ## Decision Routing
 
-**When a decision is important**, also add it to `DECISIONS.md` under the appropriate category.
+**When a decision is important**, also add it to the correct file based on topic.
 
-### Categories in DECISIONS.md
+### → DECISIONS.md (Project Topics)
+
+Decisions about the productivity system: data architecture, API design, migration patterns, tool selection, agent design.
 
 !`.claude/scripts/decisions-categories.sh`
+
+### → PLAYBOOK.md (Workflow Topics)
+
+Decisions about the repo itself: organization, CC workflow, session conventions, skill behavior.
 
 ### Important Decision Criteria
 
 | Criterion | Example |
 |-----------|---------|
+| **Thwarted by conditions** | Planned approach blocked by platform/library limitations |
 | **Architecture choice** | How data flows between apps, tag mapping design |
+| **Code style/convention** | Naming patterns, file organization |
 | **Technology selection** | Which API, which transcription tool, which format |
-| **Convention established** | Note format templates, naming patterns |
 | **Breaking change** | Migration order that affects other phases |
 
-### Entry Format for DECISIONS.md
+### Entry Format (Same for Both Files)
 
 ```markdown
 ### [Brief Title]
@@ -175,6 +204,14 @@ Code or reusable approach
 
 **Rationale:** [Why this was chosen]
 ```
+
+**Remember:** Update "Last Updated" date at top of whichever file is modified.
+
+---
+
+## Insight Capture
+
+During processing, scan for **durable, informative insights** worth preserving. An insight qualifies if it connects a decision to broader professional context or would teach someone starting a similar project. Append to the relevant decision entry as `> **Insight:**` blockquotes.
 
 ---
 
@@ -192,4 +229,4 @@ Created: docs/sessions/{MONTH}/{FILENAME} Decisions.md
   Topics: {topics used}
 ```
 
-If no decisions found, note "No decisions identified this session" and skip Decisions file.
+If no decisions found, note "No decisions identified this conv" and skip Decisions file.

@@ -19,45 +19,51 @@ Commit only changes within this project folder, leaving other folders' changes u
 **Conv:**
 !`.claude/scripts/conv-read-current.sh`
 
+**Repo status:**
+!`git status --short -- . 2>/dev/null || echo "(unavailable)"`
+
 ---
 
 ## Workflow
 
-1. **Identify the current folder** relative to the git root:
+### Step 1: Review Changes
 
-```bash
-FOLDER_NAME=$(basename $(pwd))
-echo "Committing changes in: $FOLDER_NAME/"
-```
-
-2. **Show what will be committed** (only this folder):
+Use the pre-injected repo status above. If more detail is needed:
 
 ```bash
 git status -- .
+git diff --stat -- .
 ```
 
-3. **Stage only this folder's changes:**
+### Step 2: Stage and Commit
+
+**Always stage everything in this folder.** Do not selectively stage files.
 
 ```bash
 git add .
 ```
 
-4. **Verify staging** (confirm no other folders were staged):
+Verify staging (confirm no other folders were staged):
 
 ```bash
 git status
 ```
 
-5. **Commit** with a concise message and point-form highlights of changes.
+**Note:** If other folders have staged changes, unstage them first with `git reset HEAD <other-folder>/` before committing.
 
-Include `Machine:` in the commit message body using the pre-computed value above.
+### Step 3: Commit Message Format
 
-Format:
 ```
-Concise title describing the change
+Conv NNN: Concise title describing the change
 
-- Point 1
-- Point 2
+Changes:
+- Specific change with file/component name
+- Another change with context
+
+Fixes:
+- Bug or issue fixed (if applicable)
+
+Stats: X files changed
 
 Conv: [from pre-computed context]
 Machine: [from pre-computed context]
@@ -65,14 +71,32 @@ Machine: [from pre-computed context]
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-If Conv shows "MISSING", warn the user that `/r-start` was not run, but proceed with the commit (omit the Conv line).
+**Title:** Start with `Conv NNN:`, imperative mood, under 72 chars total.
 
-6. **Verify commit success:**
+**Conv line:** If Conv shows "MISSING", warn the user that `/r-start` was not run, but proceed with the commit (omit the Conv line).
+
+**Body:** Group bullets by category. Only include relevant sections (skip empty ones). Be specific — name files, components, endpoints.
+
+### Step 4: Verify
 
 ```bash
 git status
 ```
 
-7. Do NOT push to remote unless explicitly requested.
+### Step 5: Report
 
-**Note:** If other folders have staged changes, unstage them first with `git reset HEAD <other-folder>/` before committing.
+```
+Committed
+─────────
+Commit: [commit hash] [title]       (or "nothing to commit")
+Conv: [NNN]
+```
+
+---
+
+## Rules
+
+- **Do NOT push** unless explicitly requested
+- **Do NOT amend** previous commits unless explicitly requested
+- **Do NOT use `--no-verify`** to skip hooks
+- **Always commit ALL changes** in this folder — use `git add .` without exception
