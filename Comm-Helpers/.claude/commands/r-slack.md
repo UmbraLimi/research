@@ -227,10 +227,15 @@ End with `---`
 
 ### File Output (prevents trailing whitespace)
 
-1. Write the formatted markdown to `/tmp/timecard.md`
-2. Strip trailing whitespace:
+1. Create the file from scratch each time (do not read/edit an existing file):
    ```bash
-   sed 's/[[:space:]]*$//' /tmp/timecard.md > /tmp/timecard-clean.md
+   cat > /tmp/timecard-clean.md << 'ENDOFFILE'
+   <markdown content here>
+   ENDOFFILE
+   ```
+2. Strip trailing whitespace in place:
+   ```bash
+   sed -i '' 's/[[:space:]]*$//' /tmp/timecard-clean.md
    ```
 3. Open in editor (check `.claude/config.json` for configured editor, default `cursor`):
    ```bash
@@ -238,10 +243,9 @@ End with `---`
    ```
 4. Tell user: "Opened `/tmp/timecard-clean.md` — ready for copying"
 
-Output this structure:
+Output raw markdown (no code fences — this is pasted directly into Obsidian):
 
 ~~~
-```markdown
 ### 💬 Slack • 🟠 Peer Loop • #peerloop-general • 10:17
 - `Via   `:: [[Slack • AIM • #peerloop-general]]
 - `Who   `:: [[Brian LeBlanc]], [[Sarah Chen]], Carlos (mentioned)
@@ -263,13 +267,11 @@ Output this structure:
 - [ ] Decide: Use subdomain or main domain? (affects SSL config) 🔺
 - [ ] [[expect]] - [[Brian LeBlanc]] to send login credentials by EOD
 ---
-```
 ~~~
 
-**Multi-day example** — each day is a separate code block:
+**Multi-day example** — each day separated by `---`, no code fences:
 
 ~~~
-```markdown
 ### 💬 Slack • 🟢 XLATE-Pilot • #translation-system • 10:30
 - `Via   `:: [[Slack • CFU • translation-system]]
 - `Who   `:: [[Gabriel Rymberg|Gabriel]], Carlos (mentioned)
@@ -285,9 +287,7 @@ Output this structure:
 #### Tasks
 - [ ] [[expect]] - [[Gabriel Rymberg|Gabriel]] to do [[Cloudflare]] Pages setup together (next day)
 ---
-```
 
-```markdown
 ### 💬 Slack • 🟢 XLATE-Pilot • #translation-system • 01:11
 - `Via   `:: [[Slack • CFU • translation-system]]
 - `Who   `:: [[Gabriel Rymberg|Gabriel]], Carlos (mentioned)
@@ -304,7 +304,6 @@ Output this structure:
 #### Tasks
 None
 ---
-```
 ~~~
 
 **Note:** No blank lines between sections — CSS handles vertical spacing via headings.

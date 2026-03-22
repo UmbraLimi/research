@@ -66,6 +66,7 @@ Map name variations to wiki-links. First column can have multiple variations sep
 | Fraser, Fraser Gorrie | [[Fraser Gorrie]] |
 | Jesse, Jesse Showalter | [[Jesse Showalter\|Jesse]] |
 | Rick, Rick Lyon | [[Rick Lyon]] |
+| Matt, Matt McCloskey | [[Matt McCloskey]] |
 
 **Note:** Fraser Gorrie is the user — commitments by Fraser go in "My Commitments"
 
