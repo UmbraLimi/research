@@ -1,6 +1,6 @@
 # Minimum-Project Template
 
-This folder is a template for new non-programming projects in the ~/MyResearch repository.
+This folder is a template for new non-programming projects in the ~/research repository.
 
 ## What this folder does and doesn't do
 
@@ -14,6 +14,20 @@ This folder is a template for new non-programming projects in the ~/MyResearch r
 
 - Those go into /MyVite, /MyOther, /MyAstro, /MyElectron, /my_n8n and /MyNext
 
+## Prerequisites
+
+**Git remote must be configured.** The `/r-start` and `/r-end` skills pull and push to keep the conversation counter in sync across machines. If you're copying this template into a repo that already has a remote (like ~/research), you're fine. If you're starting a standalone project, set up a git remote before running `/r-start`:
+
+```bash
+cd My-New-Project
+git init
+git remote add origin <your-repo-url>
+git add -A && git commit -m "Initial project from template"
+git push -u origin main
+```
+
+Without a remote, `/r-start` will HALT at the pull/push steps.
+
 ## Usage
 
 1. Copy this entire folder and rename it for your new project:
@@ -22,39 +36,95 @@ This folder is a template for new non-programming projects in the ~/MyResearch r
    cp -r Minimum-Project My-New-Project
    ```
 
-2. Launch Claude Code from your new project folder:
+2. Set your project prefix in `PROJECT.yaml`:
+   - Choose a 3-letter prefix (e.g., `MNP` for My New Project)
+   - Register it in `/PROJECTS.yaml` at the repo root
+
+3. Launch Claude Code from your new project folder:
    ```bash
    cd My-New-Project
    claude
    ```
-3. Customize `PURPOSE.md` sections for your project:
+
+4. Customize `PURPOSE.md` sections for your project:
    - Review the Section Library below
    - Keep core sections, add/remove others as needed
    - Then fill out each section
 
-4. Run `/init` to have CC create `CLAUDE.md` from `README.md` and `PURPOSE.md`
-   - After creating CLAUDE.md, CC should offer: "Do you want me to create a basic PLAN.md from what I found in this folder?"
+5. Run `/init` to have CC customize `CLAUDE.md` from `PURPOSE.md`:
+   - Updates project overview and status
+   - Customizes DECISIONS.md categories for your project
+   - Customizes topic tables in r-learn-decide skill
+   - Customizes change detection matrix in r-docs skill
+   - CC should offer: "Do you want me to create a basic PLAN.md from what I found in this folder?"
 
-5. Create `PLAN.md` (CC will offer, or ask CC, or create your own skeleton for CC to augment)
+6. Create `PLAN.md` (CC will offer, or ask CC, or create your own skeleton for CC to augment)
+
+7. Commit your setup changes — `/r-start` will HALT if the repo is dirty:
+   ```
+   /r-commit
+   ```
+   Or manually: `git add . && git commit -m "Initial project setup"`
+
+8. Delete this README — it's setup instructions, not project documentation.
+
+---
+
+**Setup complete.** From now on, start every conversation with `/r-start` and end with `/r-end`. See `CONV-FLOWCHART.md` for the full workflow.
 
 ## What's Included
 
-| File/Folder         | Purpose                                                          |
-| ------------------- | ---------------------------------------------------------------- |
-| `README.md`         | These instructions (delete after setup)                          |
-| `PURPOSE.md`        | Fill this out with project goals, context, constraints, etc.     |
-| `.claude/commands/` | Project-specific slash commands (includes `/r-commit`)           |
+### Infrastructure (ready to use)
 
-## Created During Setup
+| File/Folder | Purpose |
+|-------------|---------|
+| `.claude/skills/` | 10 project-level r-* skills (full conversation lifecycle) |
+| `.claude/scripts/` | 10 shell helper scripts for skill pre-computation |
+| `.claude/settings.local.json` | Permissions for skills, scripts, and git operations |
+| `CONV-COUNTER` | Conversation counter (starts at 0) |
+| `CONV-FLOWCHART.md` | Visual guide to conversation lifecycle |
+| `.gitignore` | Ignores .DS_Store, .conv-current, credentials/ |
 
-| File        | Created By                                   |
-| ----------- | -------------------------------------------- |
-| `CLAUDE.md` | `/init` command (step 4)                     |
-| `PLAN.md`   | You or Claude Code (step 5)                  |
+### Project Files (templates to customize)
+
+| File | Purpose | Customized By |
+|------|---------|---------------|
+| `PURPOSE.md` | Project goals, context, constraints | You (before /init) |
+| `CLAUDE.md` | Claude Code guidance for this project | `/init` from PURPOSE.md |
+| `PROJECT.yaml` | Project prefix (3-letter code) | You (step 2) |
+| `PLAN.md` | Current & pending work | You or CC (step 6) |
+| `DECISIONS.md` | Project decision record | `/init` sets categories |
+| `DOC-DECISIONS.md` | Workflow conventions | Auto-populated as decisions are made |
+| `COMPLETED_PLAN.md` | Archive of completed phases | `/r-update-plan` |
+
+## Conversation Workflow
+
+All conversations follow this pattern:
+
+```
+/r-start → work → /r-end → exit
+```
+
+See `CONV-FLOWCHART.md` for the full visual guide and quick reference table.
+
+### Available r-* Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `/r-start` | Start conversation (pull, increment counter, push, resume) |
+| `/r-end` | End conversation (docs, save state, commit, push) |
+| `/r-eos` | End-of-conv sequence (learn-decide, dump, update-plan, docs) |
+| `/r-learn-decide` | Capture learnings and decisions |
+| `/r-dump` | Create development conv log |
+| `/r-update-plan` | Update PLAN.md with progress |
+| `/r-docs` | Update project documentation |
+| `/r-save-state` | Save work state for cross-session continuity |
+| `/r-commit` | Commit only this folder's changes |
+| `/r-resume` | Show current work position (called by /r-start) |
 
 ## Standard docs/ Folder Structure
 
-Folders are created as needed — never pre-create empty folders. This is the standard across all projects (both research and coding):
+Folders are created as needed — never pre-create empty folders. This is the standard across all projects:
 
 ```
 docs/
@@ -63,7 +133,6 @@ docs/
 ├── requirements/   # What needs to be built/done
 │   ├── user-stories.md (or user-stories/ dir if split by role)
 │   └── rfcs/       # Numbered change requests (RFC-001/, RFC-002/, ...)
-│       └── INDEX.md
 ├── reference/      # External tools, APIs, services (their docs, our notes)
 ├── as-designed/    # Pre-build: specs, formats, plans (how things SHOULD work)
 ├── as-built/       # Post-build: documentation of implemented systems (how things DO work)
@@ -81,7 +150,6 @@ docs/
 | `DECISIONS.md` | Project-domain decision record |
 | `DOC-DECISIONS.md` | Repo workflow & documentation conventions |
 | `PURPOSE.md` | Project goals, context, constraints |
-| `README.md` | Quick orientation (optional, delete after setup) |
 
 ## Section Library
 
@@ -168,56 +236,15 @@ Most projects blend types. A nature publication project might include:
 
 Start with core sections, scan the flavors above, add what fits.
 
-## Available Slash Commands
+## Parent-Level Commands
 
-When you launch Claude Code from any project folder, you get:
-
-**Parent-level commands** (from `MyResearch/.claude/commands/`):
+Also available from any project folder (from `research/.claude/commands/`):
 
 - `/par-resume` - Load PLAN.md and show where you left off
-- `/par-update` - Save progress to PLAN.md (run frequently!)
+- `/par-update` - Save progress to PLAN.md
 - `/par-end-session` - Full wrap-up: learnings, prompts, optional commit
 - `/repo-commit` - Stage and commit all changes in repo
 - `/par-learnings` - Document what you learned this session
 - `/par-prompts` - Save prompts used this session
 - `/par-timestamp` - Utility for other commands
 - `/par-pare` - Optimize CLAUDE.md by offloading content
-
-**Project-level commands** (from `.claude/commands/`):
-
-- `/r-commit` - Stage and commit only this project's changes
-
-## Adding Project-Specific Commands
-
-Create `.md` files in `.claude/commands/` with this format:
-
-```markdown
----
-description: Brief description shown in command list
-argument-hint: '<optional-arg>'
----
-
-# Command Name
-
-Instructions for Claude to follow when this command is invoked.
-```
-
-Suggested prefix: Use `/r-` for project-specific commands to distinguish from parent `/par-*` commands.
-
-## Caveats
-
-- **PLAN.md is required for session commands** - Create it during setup (step 5). The `/par-resume` and `/par-update` commands expect this file.
-
-- **Two commit options** - Use `/r-commit` to commit only this project's changes, or `/repo-commit` to commit all changes across the repo.
-
-- **Session files are auto-organized** - `/par-learnings` and `/par-prompts` create files in `docs/sessions/YYYY-MM/` automatically.
-
-## Suggestions
-
-- **Run `/par-update` frequently** - Don't wait until end of session. If Claude Code crashes or you lose context, PLAN.md is your recovery point.
-
-- **Keep CLAUDE.md focused** - Put only essential guidance here. Use `/par-pare` if it gets too long.
-
-- **Use phases in PLAN.md** - Break work into numbered phases (1.1, 1.2, 2.1...) for clear progress tracking.
-
-- **Delete this README** - Once you've set up your project, you don't need these instructions cluttering your folder.
