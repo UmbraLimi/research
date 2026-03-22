@@ -16,6 +16,9 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskList
 **Machine:**
 !`cat ~/.claude/.machine-name 2>/dev/null || echo "(unknown)"`
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
 **Current conv:**
 !`.claude/scripts/conv-read-current.sh`
 
@@ -79,7 +82,7 @@ rm .conv-current
 
 ```
 ╔═══════════════════════════════════╗
-║  Conv {PADDED_VALUE} closed       ║
+║  {PREFIX}-{PADDED_VALUE} closed   ║
 ╚═══════════════════════════════════╝
 
 End-of-Conv Complete

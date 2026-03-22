@@ -129,6 +129,13 @@ PRH-004 format. Each project owns its CONV-COUNTER. Prefix registered in repo-ro
 
 **Rationale:** Multiple projects in the same repo need distinct conv numbering.
 
+### Hyphenated Prefix Format (PRH-009) for All Conv Labels
+**Date:** 2026-03-22
+
+Hyphenated format `{PREFIX}-{CONV}` used in commit messages, conv headers, and session doc filenames. `.conv-current` stays as pure 3-digit counter (`009`); prefix composed at point of use via `grep '^prefix:' PROJECT.yaml`.
+
+**Rationale:** Hyphen works in filenames, commits, and display. Counter and label are separate concerns — counter auto-increments, label is a display composition.
+
 ### YAML Project Identity Files
 **Date:** 2026-03-21
 

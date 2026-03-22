@@ -13,6 +13,12 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 
 ## Pre-computed Context
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
+**Conv:**
+!`.claude/scripts/conv-read-current.sh`
+
 **Existing conv files this month:**
 !`.claude/scripts/session-files-learn-decide.sh`
 
@@ -31,8 +37,8 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 2. **Scan conversation** for learnings and decisions
 
 3. **Create files** in `docs/sessions/{MONTH}/`:
-   - `{FILENAME} Learnings.md`
-   - `{FILENAME} Decisions.md` (skip if no decisions)
+   - `{FILENAME} {PREFIX}-{CONV} Learnings.md`
+   - `{FILENAME} {PREFIX}-{CONV} Decisions.md` (skip if no decisions)
 
 4. **Check Important decisions** — route to `DECISIONS.md` or `DOC-DECISIONS.md` (see Decision Routing below)
 
@@ -100,7 +106,7 @@ When documenting, consider if items should also update:
 - Patterns or approaches that worked well
 - Gotchas or caveats to remember
 
-**File format:** `{FILENAME} Learnings.md`
+**File format:** `{FILENAME} {PREFIX}-{CONV} Learnings.md`
 
 ```markdown
 # Conv Learnings - YYYY-MM-DD
@@ -133,7 +139,7 @@ Code or reusable approach
 - Architecture/design choices
 - Trade-off discussions that reached a conclusion
 
-**File format:** `{FILENAME} Decisions.md`
+**File format:** `{FILENAME} {PREFIX}-{CONV} Decisions.md`
 
 ```markdown
 # Conv Decisions - YYYY-MM-DD
@@ -219,11 +225,11 @@ During processing, scan for **durable, informative insights** worth preserving. 
 
 Display:
 ```
-Created: docs/sessions/{MONTH}/{FILENAME} Learnings.md
+Created: docs/sessions/{MONTH}/{FILENAME} {PREFIX}-{CONV} Learnings.md
   Learnings: {count}
   Topics: {topics used}
 
-Created: docs/sessions/{MONTH}/{FILENAME} Decisions.md
+Created: docs/sessions/{MONTH}/{FILENAME} {PREFIX}-{CONV} Decisions.md
   Decisions: {count}
   Types: {Strategic: N, Implementation: N}
   Topics: {topics used}

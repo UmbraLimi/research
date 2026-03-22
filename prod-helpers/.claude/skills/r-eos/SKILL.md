@@ -13,9 +13,15 @@ Runs the 4-skill end-of-conv workflow in order. Each skill is invoked via the Sk
 
 ---
 
-## Shared Timestamp
+## Pre-computed Context
 
-All conv files created by this run share a single timestamp, pre-computed here:
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
+**Conv:**
+!`.claude/scripts/conv-read-current.sh`
+
+**Shared timestamp** (all conv files share this):
 
 !`echo "MONTH: $(date '+%Y-%m')" && echo "FILENAME: $(date '+%Y%m%d_%H%M')"`
 

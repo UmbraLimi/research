@@ -16,6 +16,9 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TaskCreate
 **Machine:**
 !`cat ~/.claude/.machine-name 2>/dev/null || echo "(unknown)"`
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
 **Current CONV-COUNTER value (before increment):**
 !`.claude/scripts/conv-read-counter.sh`
 
@@ -81,7 +84,7 @@ echo {PADDED_VALUE} > .conv-current
 
 ```bash
 git add CONV-COUNTER
-git commit -m "Conv {PADDED_VALUE} start — {MACHINE}"
+git commit -m "{PREFIX}-{PADDED_VALUE} start — {MACHINE}"
 git push
 ```
 
@@ -91,7 +94,7 @@ If the push fails, **HALT** and tell the user. The counter increment is not sync
 
 ```
 ╔═══════════════════════════════════╗
-║  Conv {PADDED_VALUE}  ·  {MACHINE}  ║
+║  {PREFIX}-{PADDED_VALUE}  ·  {MACHINE}  ║
 ╚═══════════════════════════════════╝
 ```
 
@@ -102,7 +105,7 @@ If `RESUME-STATE.md` exists and has a `## Remaining` section with unchecked item
 1. Extract each unchecked item from the Remaining section
 2. Create a TodoWrite (TaskCreate) entry for each one, using:
    - **subject:** The item text (trimmed, without the checkbox prefix)
-   - **description:** Include any sub-heading context (e.g., "Bug Fix (carried from Conv 010)") and the source: "From RESUME-STATE.md"
+   - **description:** Include any sub-heading context (e.g., "Bug Fix (carried from PRH-010)") and the source: "From RESUME-STATE.md"
 3. Display a brief summary:
 
 ```

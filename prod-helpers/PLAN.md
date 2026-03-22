@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**Phase 1 — Foundation** (in progress — 1.1 documented, 1.4 complete except deferred test harness)
+**Phase 1 — Foundation** (in progress — 1.1 complete on MacMiniM4, 1.4 complete except deferred test harness)
 
 ---
 
@@ -15,10 +15,12 @@ Establish the infrastructure before migrating data or building agents.
 - [x] Confirm Joplin Clipper API access and document endpoints (notebooks, notes, tags, export)
 - [x] Confirm Obsidian CLI (v1.12+) capabilities and document commands available
 - [x] Document rate limits, auth mechanisms, and data formats for each
-- [ ] Configure Dynalist API token on MacMiniM4 (credentials/MacMiniM4.env)
-- [ ] Configure Joplin API token on MacMiniM4 (credentials/MacMiniM4.env)
+- [x] Configure Dynalist API token on MacMiniM4 (credentials/MacMiniM4.env)
+- [x] Configure Joplin API token on MacMiniM4 (credentials/MacMiniM4.env)
+- [x] Verify Obsidian CLI registered and working on MacMiniM4 (v1.12.4)
 - [ ] Configure Dynalist API token on MacMiniM4-Pro (credentials/MacMiniM4-Pro.env)
 - [ ] Configure Joplin API token on MacMiniM4-Pro (credentials/MacMiniM4-Pro.env)
+- [ ] Register Obsidian CLI on MacMiniM4-Pro
 
 ### 1.2 Tag Mapping System
 - [ ] Inventory existing tags in Dynalist
@@ -39,7 +41,7 @@ Establish the infrastructure before migrating data or building agents.
 - [x] Create shadow doc template (defined in r-docs skill)
 - [x] Machine tracking in commits (Machine: line via r-commit skill)
 - [x] Conversation numbering system (CONV-COUNTER, /r-start, /r-end)
-- [ ] Update /r-start, /r-end, /r-commit skills to use PROJECT.yaml prefix in conv numbering and commit messages
+- [x] Update /r-start, /r-end, /r-commit skills to use PROJECT.yaml prefix in conv numbering and commit messages
 - [ ] Set up test harness / test conventions (deferred — will establish when first script is created)
 
 ---

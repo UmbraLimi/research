@@ -16,6 +16,9 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TaskList, TaskUpdate
 **Existing state file:**
 !`.claude/scripts/resume-state-check.sh`
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
 **Conv counter:**
 !`.claude/scripts/conv-read-counter.sh`
 
@@ -49,7 +52,7 @@ Wait for user choice before proceeding.
 
 When the user chooses Append:
 
-1. **Label the existing first block** (if not already labeled). The file's first heading should be `# State — Conv NNN (YYYY-MM-DD ~HH:MM)`. If the file starts with `# Resume State` instead, rewrite that heading using the `**Saved:**` and `**Conv:**` values found in the existing content.
+1. **Label the existing first block** (if not already labeled). The file's first heading should be `# State — {PREFIX}-{CONV} (YYYY-MM-DD ~HH:MM)`. If the file starts with `# Resume State` instead, rewrite that heading using the `**Saved:**` and `**Conv:**` values found in the existing content.
 
 2. **Add the new block** at the end of the file:
 
@@ -57,7 +60,7 @@ When the user chooses Append:
 
 ---
 
-# State — Conv NNN (YYYY-MM-DD ~HH:MM)
+# State — {PREFIX}-{CONV} (YYYY-MM-DD ~HH:MM)
 
 **Conv:** [from pre-computed context]
 **Machine:** [from pre-computed context]
@@ -110,7 +113,7 @@ Review the full conversation **and** the active TaskList to identify:
 Create in the project root. Use the conv-labeled heading format so the file is ready for future appends:
 
 ```markdown
-# State — Conv NNN (YYYY-MM-DD ~HH:MM)
+# State — {PREFIX}-{CONV} (YYYY-MM-DD ~HH:MM)
 
 **Conv:** [from pre-computed context — NNN if active, or "ended" if .conv-current was cleaned up]
 **Machine:** [from pre-computed context]

@@ -62,7 +62,7 @@ Session management skills adapted from peerloop-docs (w-* series, 386+ sessions 
 - **MONTH:** `YYYY-MM` (directory name)
 - **FILENAME:** `YYYYMMDD_HHMM` (file prefix, compact, no hyphens)
 
-Example: `docs/sessions/2026-03/20260313_2139 Learnings.md`
+Example: `docs/sessions/2026-03/20260322_0906 PRH-009 Learnings.md`
 
 When skills are called standalone (not via `/r-eos`), they compute their own timestamp.
 
@@ -97,8 +97,9 @@ A **conv** (conversation) = one Claude Code invocation with continuous memory. A
 | File | Committed? | Purpose |
 |------|-----------|---------|
 | `CONV-COUNTER` | Yes | Persistent integer, incremented each conv. Cross-machine sync via git. |
-| `.conv-current` | No (gitignored) | Zero-padded conv number for the active session (e.g. `003`). Ephemeral — deleted by `/r-end`. |
-| `RESUME-STATE.md` | Yes | Captures work state for resumption after `/clear` or new session. Conv-labeled blocks (`# State — Conv NNN`), max 2 before consolidation. Includes TodoWrite items, conv state, remaining work. |
+| `.conv-current` | No (gitignored) | Zero-padded conv number for the active session (e.g. `009`). Ephemeral — deleted by `/r-end`. Pure sequential counter; prefix composed at point of use. |
+| `PROJECT.yaml` | Yes | Project identity file with `prefix:` field (e.g. `PRH`). Read by skills to compose labels like `PRH-009`. |
+| `RESUME-STATE.md` | Yes | Captures work state for resumption after `/clear` or new session. Conv-labeled blocks (`# State — PRH-009`), max 2 before consolidation. Includes TodoWrite items, conv state, remaining work. |
 
 ### Single Entry Point
 
@@ -149,21 +150,20 @@ Machine B: /r-start → [work] → /r-end → exit
 ### Commit Message Metadata
 
 Every commit via `/r-commit` includes:
-```
-Conv: 003
-Machine: MacMiniM4
-```
-These are pre-computed via `!` backticks reading `.conv-current` and `~/.claude/.machine-name`.
+- **Title:** `PRH-009: description` (prefix from `PROJECT.yaml` + conv from `.conv-current`)
+- **Body:** `Conv: 009`, `Machine: MacMiniM4`
+
+These are pre-computed via `!` backticks reading `PROJECT.yaml`, `.conv-current`, and `~/.claude/.machine-name`.
 
 ---
 
 ## Conventions
 
 ### Session file naming
-All session files go to `docs/sessions/YYYY-MM/` with format `YYYYMMDD_HHMM {Type}.md`:
-- `{prefix} Learnings.md` — insights, gotchas, patterns
-- `{prefix} Decisions.md` — choices between alternatives (skipped if none)
-- `{prefix} Dev.md` — chronological transcript with verbatim user prompts
+All session files go to `docs/sessions/YYYY-MM/` with format `YYYYMMDD_HHMM {PREFIX}-{CONV} {Type}.md`:
+- `20260322_0906 PRH-009 Learnings.md` — insights, gotchas, patterns
+- `20260322_0906 PRH-009 Decisions.md` — choices between alternatives (skipped if none)
+- `20260322_0906 PRH-009 Dev.md` — chronological transcript with verbatim user prompts
 
 ### Topic tags
 Learnings and decisions are tagged with topics from this list (extensible):
@@ -183,3 +183,4 @@ Completed phases move to `COMPLETED_PLAN.md`. PLAN.md never contains finished wo
 - 2026-03-14: Added append mode to `/r-save-state` (conv-labeled blocks, max 2); added multi-block consolidation to `/r-resume` (walk → evaluate → merge → rewrite)
 - 2026-03-14: Unified entry point — `/r-start` is sole entry for all convs; `/r-resume` internal only. Added conv state warnings and all-done auto-delete to `/r-resume` and `/r-save-state`
 - 2026-03-21: Simplified workflow — removed `/r-pre-clear`; `/r-end` now auto-calls `/r-save-state` to capture TodoWrite items; `/r-start` now transfers RESUME-STATE.md tasks back to TodoWrite. Closed-loop task persistence across sessions.
+- 2026-03-22: Added PROJECT.yaml prefix to all 8 skills. Commit titles now `PRH-009:`, session filenames include `PRH-009`, headers show `PRH-009 · Machine`. `.conv-current` stays as pure counter; prefix composed at point of use.

@@ -25,6 +25,9 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 **Open questions:**
 !`.claude/scripts/plan-open-questions.sh`
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
 **Active conv (.conv-current):**
 !`test -f .conv-current && echo "$(cat .conv-current)" || echo "(none)"`
 
@@ -57,12 +60,12 @@ If `.conv-current` exists **and** `RESUME-STATE.md` either doesn't exist or its 
 git log -1 --format=%s
 ```
 
-If the message matches `Conv {NNN} start —` (where `{NNN}` matches `.conv-current`), this is a **fresh conv** just created by `/r-start` — suppress the warning silently.
+If the message matches `{PREFIX}-{NNN} start —` (where `{NNN}` matches `.conv-current`), this is a **fresh conv** just created by `/r-start` — suppress the warning silently.
 
 Otherwise, display:
 
 ```
-⚠️  Active conv {NNN} but RESUME-STATE.md is stale/missing.
+⚠️  Active conv {PREFIX}-{NNN} but RESUME-STATE.md is stale/missing.
     A raw /clear may have been run without /r-end.
     Consider running /r-save-state to capture current work before continuing.
 ```
@@ -73,7 +76,7 @@ This is a soft warning — do not block.
 
 ## Multi-Block Consolidation
 
-If `RESUME-STATE.md` contains multiple state blocks (detected by more than one `# State — Conv` heading), consolidate **before** presenting the resume context:
+If `RESUME-STATE.md` contains multiple state blocks (detected by more than one `# State —` heading), consolidate **before** presenting the resume context:
 
 ### Step A: Walk blocks oldest → newest
 
@@ -90,8 +93,8 @@ For each item across both blocks, explain your reasoning:
 🔄 Consolidating RESUME-STATE.md (2 blocks)
 ─────────────────────────────────────────────
 
-Block 1: Conv NNN (date) — [1-line summary]
-Block 2: Conv MMM (date) — [1-line summary]
+Block 1: {PREFIX}-NNN (date) — [1-line summary]
+Block 2: {PREFIX}-MMM (date) — [1-line summary]
 
 ✅ Marking as done:
 - [item] — done because [evidence: file exists, git log shows commit, etc.]
@@ -112,7 +115,7 @@ Block 2: Conv MMM (date) — [1-line summary]
 
 ### Step C: Rewrite as single block
 
-Rewrite `RESUME-STATE.md` as a single `# State — Conv MMM (date)` block (using the latest conv) that merges:
+Rewrite `RESUME-STATE.md` as a single `# State — {PREFIX}-MMM (date)` block (using the latest conv) that merges:
 - **Completed**: items from both blocks that are done
 - **Remaining**: items from both blocks that are still pending, deduplicated
 - **Key Context**: merged from both blocks, dropping stale entries

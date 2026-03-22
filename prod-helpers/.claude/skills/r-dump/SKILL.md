@@ -13,6 +13,12 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 
 ## Pre-computed Context
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
+**Conv:**
+!`.claude/scripts/conv-read-current.sh`
+
 **Existing conv files this month:**
 !`.claude/scripts/session-files-dev.sh`
 
@@ -30,8 +36,8 @@ allowed-tools: Read, Write, Edit, Bash, Glob
 
 2. **Create the file:**
    - Directory: `docs/sessions/{MONTH}/`
-   - Filename: `{FILENAME} Dev.md`
-   - Example: `docs/sessions/2026-03/20260321_1400 Dev.md`
+   - Filename: `{FILENAME} {PREFIX}-{CONV} Dev.md`
+   - Example: `docs/sessions/2026-03/20260321_1400 PRH-009 Dev.md`
 
 3. **Write the content** (see format below)
 
@@ -106,7 +112,7 @@ User prompts from this conversation (for future reference):
 
 Display:
 ```
-Created: docs/sessions/{MONTH}/{FILENAME} Dev.md
+Created: docs/sessions/{MONTH}/{FILENAME} {PREFIX}-{CONV} Dev.md
   Transcript entries: {count}
   Prompts captured: {count}
 ```

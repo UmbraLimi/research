@@ -16,6 +16,9 @@ Commit only changes within this project folder, leaving other folders' changes u
 **Machine:**
 !`cat ~/.claude/.machine-name 2>/dev/null || echo "(unknown)"`
 
+**Project prefix:**
+!`grep '^prefix:' PROJECT.yaml | awk '{print $2}'`
+
 **Conv:**
 !`.claude/scripts/conv-read-current.sh`
 
@@ -54,7 +57,7 @@ git status
 ### Step 3: Commit Message Format
 
 ```
-Conv NNN: Concise title describing the change
+{PREFIX}-{CONV}: Concise title describing the change
 
 Changes:
 - Specific change with file/component name
@@ -71,7 +74,7 @@ Machine: [from pre-computed context]
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-**Title:** Start with `Conv NNN:`, imperative mood, under 72 chars total.
+**Title:** Start with `{PREFIX}-{CONV}:`, imperative mood, under 72 chars total.
 
 **Conv line:** If Conv shows "MISSING", warn the user that `/r-start` was not run, but proceed with the commit (omit the Conv line).
 
